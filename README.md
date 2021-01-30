@@ -34,4 +34,4 @@ PHPMessDetector, PHPTalLint and TechnicalDebt;
 
 ## License
 
-PHP Censor is open source software licensed under the [BSD-2-Clause license](LICENSE).
+Core Hub is open source software licensed under the [BSD-2-Clause license](LICENSE).
