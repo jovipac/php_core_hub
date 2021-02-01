@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
-use App\Models\Catalogs\Puesto;
+use App\Models\Catalogs\Dependencia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class PuestoController extends ApiController
+class DependenciaController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -16,12 +16,12 @@ class PuestoController extends ApiController
      */
     public function index()
     {
-        $puestos = Puesto::all();
+        $dependencias = Dependencia::all();
         return $this->apiResponse(
             [
                 'success' => true,
-                'message' => "Listado de puestos",
-                'result' => $puestos
+                'message' => "Listado de dependencias",
+                'result' => $dependencias
             ]
         );
     }
@@ -41,28 +41,28 @@ class PuestoController extends ApiController
             return $this->respondError($validator->errors(), 422);
         }
         $input = $request->all();
-        $puesto = Puesto::create($input);
+        $dependencia = Dependencia::create($input);
 
         return $this->respondCreated([
             'success' => true,
-            'message' => "Puesto creado con exito",
-            'result' => $puesto
+            'message' => "Dependencia creado con exito",
+            'result' => $dependencia
         ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Puesto  $puesto
+     * @param  \App\Dependencia  $dependencia
      * @return \Illuminate\Http\Response
      */
-    public function show(Puesto $puesto)
+    public function show(Dependencia $dependencia)
     {
         return $this->apiResponse(
             [
                 'success' => true,
-                'message' => "Puesto encontrado",
-                'result' => $puesto
+                'message' => "Dependencia encontrado",
+                'result' => $dependencia
             ]
         );
     }
@@ -71,29 +71,29 @@ class PuestoController extends ApiController
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Puesto  $puesto
+     * @param  \App\Dependencia  $dependencia
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Puesto $puesto)
+    public function update(Request $request, Dependencia $dependencia)
     {
-        $puesto->update($request->all());
+        $dependencia->update($request->all());
 
         return $this->respondSuccess([
             'success' => true,
-            'message' => "Puesto actualizado con exito",
-            'result' => $puesto
+            'message' => "Dependencia actualizado con exito",
+            'result' => $dependencia
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Puesto  $puesto
+     * @param  \App\Dependencia  $dependencia
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Puesto $puesto)
+    public function destroy(Dependencia $dependencia)
     {
-        $puesto->delete();
+        $dependencia->delete();
 
         return $this->respondSuccess('Eliminado con exito');
     }

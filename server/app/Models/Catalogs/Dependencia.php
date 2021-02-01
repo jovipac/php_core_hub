@@ -5,7 +5,7 @@ namespace App\Models\Catalogs;
 use Illuminate\Database\Eloquent\Model;
 use Webkid\LaravelBooleanSoftdeletes\SoftDeletesBoolean;
 
-class Puesto extends Model
+class Dependencia extends Model
 {
     use SoftDeletesBoolean;
 

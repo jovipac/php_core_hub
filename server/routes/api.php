@@ -32,6 +32,16 @@ Route::group([
 Route::group([
     'middleware' => 'auth:api'
 ], function () {
-    Route::resource('users', 'Api\UserController');
-    Route::resource('auxiliatura', 'Api\AuxiliaturaController');
+    Route::resource('users', 'Api\UserController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+    Route::resource('dependencias', 'Api\DependenciaController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+    Route::resource('puestos', 'Api\PuestoController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+    Route::resource('auxiliaturas', 'Api\AuxiliaturaController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
 });
