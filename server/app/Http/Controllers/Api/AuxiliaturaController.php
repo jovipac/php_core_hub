@@ -95,9 +95,15 @@ class AuxiliaturaController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Auxiliatura $auxiliatura)
     {
-        //
+        $auxiliatura->update($request->all());
+
+        return $this->respondSuccess([
+            'success' => true,
+            'message' => "Auxiliatura actualizada con exito",
+            'result' => $auxiliatura
+        ]);
     }
 
     /**

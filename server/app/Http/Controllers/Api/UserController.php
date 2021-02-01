@@ -81,7 +81,25 @@ class UserController extends ApiController
      */
     public function update(Request $request, User $user)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'codigo' => 'required',
+            'username' => 'required',
+            'email' => 'email',
+            'password' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return $this->respondError($validator->errors(), 422);
+        }
+
+        $input = $request->all();
+        $input['password'] = bcrypt($input['password']);
+        $user->update($input);
+
+        return $this->respondSuccess([
+            'success' => true,
+            'message' => "Usuario actualizado con exito",
+            'result' => $user
+        ]);
     }
 
     /**
