@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Entities\Puesto;
+use App\Models\Catalogs\Puesto;
 use Illuminate\Http\Request;
 
 class PuestoController extends Controller
