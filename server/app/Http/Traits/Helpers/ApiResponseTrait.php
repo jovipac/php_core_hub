@@ -55,7 +55,7 @@ trait ApiResponseTrait
 
 
         if (isset($data['exception']) && ($data['exception'] instanceof Error || $data['exception'] instanceof Exception)) {
-            if (config('app.env') !== 'production') {
+            if (config('.env') !== 'production') {
                 $responseStructure['exception'] = [
                     'message' => $data['exception']->getMessage(),
                     'file' => $data['exception']->getFile(),

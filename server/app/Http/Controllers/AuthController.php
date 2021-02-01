@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Traits\Helpers\ApiResponseTrait;
 use Carbon\Carbon;
 use App\Models\Entities\User;
 
 class AuthController extends Controller
 {
+    use ApiResponseTrait;
+
     /**
      * Registro de usuario
      */
@@ -21,15 +24,18 @@ class AuthController extends Controller
             'password' => 'required|string'
         ]);
 
-        User::create([
+        $user = User::create([
             'username' => $request->username,
             'email' => $request->email,
             'password' => bcrypt($request->password)
         ]);
 
-        return response()->json([
-            'message' => 'Successfully created user!'
-        ], 201);
+        return $this->respondCreated([
+            'success' => true,
+            'message' => "Usuario agregado con exito",
+            'result' => $user
+        ]);
+
     }
 
     /**
@@ -46,9 +52,7 @@ class AuthController extends Controller
         $credentials = request(['username', 'password']);
 
         if (!Auth::attempt($credentials))
-            return response()->json([
-                'message' => 'Unauthorized'
-            ], 401);
+            return $this->respondUnAuthorized('No autorizado');
 
         $user = $request->user();
         $tokenResult = $user->createToken('Personal Access Token');
@@ -58,11 +62,18 @@ class AuthController extends Controller
             $token->expires_at = Carbon::now()->addWeeks(1);
         $token->save();
 
-        return response()->json([
+        $response = [
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
             'expires_at' => Carbon::parse($token->expires_at)->toDateTimeString()
-        ]);
+        ];
+        return $this->apiResponse(
+            [
+                'success' => true,
+                'message' => "Autenticado correctamente",
+                'result' => $response
+            ]
+        );
     }
 
     /**
@@ -72,9 +83,8 @@ class AuthController extends Controller
     {
         $request->user()->token()->revoke();
 
-        return response()->json([
-            'message' => 'Successfully logged out'
-        ]);
+        return $this->respondSuccess('Sesión cerrada correctamente');
+
     }
 
     /**

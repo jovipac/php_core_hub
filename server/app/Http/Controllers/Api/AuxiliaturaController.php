@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
-use App\Models\Entities\User;
+use App\Models\Catalogs\Auxiliatura;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class UserController extends ApiController
+class AuxiliaturaController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -16,15 +16,24 @@ class UserController extends ApiController
      */
     public function index()
     {
-        $users = User::all();
+        $auxiliaturas = Auxiliatura::all();
         return $this->apiResponse(
             [
                 'success' => true,
-                'message' => "Listado de usuarios",
-                'result' => $users
+                'message' => "Listado de auxiliaturas",
+                'result' => $auxiliaturas
             ]
         );
+    }
 
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
     }
 
     /**
@@ -36,50 +45,57 @@ class UserController extends ApiController
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'codigo' => 'required',
-            'username' => 'required',
-            'email' => 'email',
-            'password' => 'required',
+            'nombre' => 'required',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
         }
         $input = $request->all();
-        $input['password'] = bcrypt($input['password']);
-        $user = User::create($input);
+        $auxiliatura = Auxiliatura::create($input);
 
-        return $this->respondCreated(            [
+        return $this->respondCreated([
             'success' => true,
-            'message' => "Usuario creado con exito",
-            'result' => $user
+            'message' => "Auxiliatura creada con exito",
+            'result' => $auxiliatura
         ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\User  $user
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show($id)
     {
         return $this->apiResponse(
             [
                 'success' => true,
-                'message' => "Usuario encontrado",
-                'result' => $user
+                'message' => "Auxiliatura encontrada",
+                'result' => $id
             ]
         );
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\User  $user
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -87,12 +103,12 @@ class UserController extends ApiController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\User  $user
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(Auxiliatura $auxiliatura)
     {
-        $user->delete();
+        $auxiliatura->delete();
 
         return $this->respondSuccess('Eliminado con exito');
     }
