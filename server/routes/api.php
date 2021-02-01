@@ -33,4 +33,5 @@ Route::group([
     'middleware' => 'auth:api'
 ], function () {
     Route::resource('users', 'Api\UserController');
+    Route::resource('auxiliatura', 'Api\AuxiliaturaController');
 });

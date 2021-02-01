@@ -37,7 +37,7 @@ class UserController extends ApiController
     {
         $validator = Validator::make($request->all(), [
             'codigo' => 'required',
-            'username' => 'required',
+            'username' => 'required|unique:ts_usuario',
             'email' => 'email',
             'password' => 'required',
         ]);
