@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePuestosTable extends Migration
+class CreateAuxiliaturasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class CreatePuestosTable extends Migration
      */
     public function up()
     {
-        Schema::create('tc_puesto', function (Blueprint $table) {
-            $table->increments('id_puesto');
-            $table->string('nombre');
+        Schema::create('tc_auxiliatura', function (Blueprint $table) {
+            $table->increments('id_auxiliatura');
             $table->boolean('borrado')->default(0)->index();
             $table->timestamps();
             $table->softDeletes();
@@ -29,6 +28,6 @@ class CreatePuestosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tc_puesto');
+        Schema::dropIfExists('tc_auxiliatura');
     }
 }

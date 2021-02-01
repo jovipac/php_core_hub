@@ -1,15 +1,18 @@
 <?php
 
-namespace App\Entities;
+namespace App\Models\Entities;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use Webkid\LaravelBooleanSoftdeletes\SoftDeletesBoolean;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, Notifiable;
+    use HasApiTokens, Notifiable, SoftDeletesBoolean;
+
+    const IS_DELETED = 'borrado';
 
     /**
      * The attributes for primary key.
