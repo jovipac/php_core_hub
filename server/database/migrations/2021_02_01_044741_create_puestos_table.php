@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAuxiliaturasTable extends Migration
+class CreatePuestosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,17 @@ class CreateAuxiliaturasTable extends Migration
      */
     public function up()
     {
-        Schema::create('tc_auxiliatura', function (Blueprint $table) {
-            $table->increments('id_auxiliatura');
+        Schema::create('tc_puesto', function (Blueprint $table) {
+            $table->increments('id_puesto');
             $table->string('nombre');
+            $table->integer('id_dependencia')->nullable()->unsigned();
             $table->boolean('borrado')->default(0)->index();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('id_dependencia')->references('id_dependencia')
+                ->on('tc_dependencia')
+                ->onDelete('cascade');
         });
     }
 
@@ -29,6 +34,6 @@ class CreateAuxiliaturasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tc_auxiliatura');
+        Schema::dropIfExists('tc_puesto');
     }
 }

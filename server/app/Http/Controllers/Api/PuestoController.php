@@ -36,6 +36,7 @@ class PuestoController extends ApiController
     {
         $validator = Validator::make($request->all(), [
             'nombre' => 'required',
+            'id_dependencia' => 'required',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
@@ -76,6 +77,14 @@ class PuestoController extends ApiController
      */
     public function update(Request $request, Puesto $puesto)
     {
+        $validator = Validator::make($request->all(), [
+            'nombre' => 'required',
+            'id_dependencia' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return $this->respondError($validator->errors(), 422);
+        }
+
         $puesto->update($request->all());
 
         return $this->respondSuccess([

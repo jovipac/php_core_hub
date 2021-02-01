@@ -97,6 +97,13 @@ class AuxiliaturaController extends ApiController
      */
     public function update(Request $request, Auxiliatura $auxiliatura)
     {
+        $validator = Validator::make($request->all(), [
+            'nombre' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return $this->respondError($validator->errors(), 422);
+        }
+
         $auxiliatura->update($request->all());
 
         return $this->respondSuccess([

@@ -76,6 +76,13 @@ class DependenciaController extends ApiController
      */
     public function update(Request $request, Dependencia $dependencia)
     {
+        $validator = Validator::make($request->all(), [
+            'nombre' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return $this->respondError($validator->errors(), 422);
+        }
+
         $dependencia->update($request->all());
 
         return $this->respondSuccess([
