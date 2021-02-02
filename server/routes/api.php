@@ -24,7 +24,7 @@ Route::group([
         'middleware' => 'auth:api'
     ], function () {
         Route::get('logout', 'AuthController@logout');
-        Route::get('profile', 'AuthController@profile');
+
     });
 });
 
@@ -32,6 +32,9 @@ Route::group([
 Route::group([
     'middleware' => 'auth:api'
 ], function () {
+    Route::resource('modulos', 'Api\ModuloController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
     Route::resource('users', 'Api\UserController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);

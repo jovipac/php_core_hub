@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
-use App\Models\Entities\User;
+use App\Models\Entities\Modulo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class UserController extends ApiController
+class ModuloController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -16,15 +16,15 @@ class UserController extends ApiController
      */
     public function index()
     {
-        $users = User::all();
+        //$modulos = Modulo::all();
+        $modulos = Modulo::tree();
         return $this->apiResponse(
             [
                 'success' => true,
-                'message' => "Listado de usuarios",
-                'result' => $users
+                'message' => "Listado de modulos",
+                'result' => $modulos
             ]
         );
-
     }
 
     /**
@@ -36,36 +36,35 @@ class UserController extends ApiController
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'username' => 'required|unique:ts_usuario',
-            'password' => 'required|string|min:6',
+            'nombre' => 'required',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
         }
         $input = $request->all();
-        $input['password'] = bcrypt($input['password']);
-        $user = User::create($input);
+        $input['order'] = Modulo::max('order')+1;
+        $modulo = Modulo::create($input);
 
-        return $this->respondCreated(            [
+        return $this->respondCreated([
             'success' => true,
-            'message' => "Usuario creado con exito",
-            'result' => $user
+            'message' => "Modulo creado con exito",
+            'result' => $modulo
         ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\User  $user
+     * @param  \App\Modulo  $modulo
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(Modulo $modulo)
     {
         return $this->apiResponse(
             [
                 'success' => true,
-                'message' => "Usuario encontrado",
-                'result' => $user
+                'message' => "Modulo encontrado",
+                'result' => $modulo
             ]
         );
     }
@@ -74,39 +73,42 @@ class UserController extends ApiController
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\User  $user
+     * @param  \App\Modulo  $modulo
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, Modulo $modulo)
     {
         $validator = Validator::make($request->all(), [
-            'username' => 'required',
-            'password' => 'required',
+            'nombre' => 'required',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
         }
 
-        $input = $request->all();
-        $input['password'] = bcrypt($input['password']);
-        $user->update($input);
+        $modulo->update($request->all());
 
         return $this->respondSuccess([
             'success' => true,
-            'message' => "Usuario actualizado con exito",
-            'result' => $user
+            'message' => "Modulo actualizado con exito",
+            'result' => $modulo
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\User  $user
+     * @param  \App\Modulo  $modulo
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(Modulo $modulo)
     {
-        $user->delete();
+        // Encuentre todos los elementos con el parent_id de este y restablezca el parent_id a nulo
+        $items = Modulo::where('parent_id', $modulo)->get()->each(function ($item) {
+            $item->parent_id = '';
+            $item->save();
+        });
+
+        $modulo->delete();
 
         return $this->respondSuccess('Eliminado con exito');
     }

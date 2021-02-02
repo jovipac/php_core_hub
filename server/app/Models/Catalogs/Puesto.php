@@ -27,4 +27,14 @@ class Puesto extends Model
     protected $fillable = [
         'id_puesto', 'nombre', 'id_dependencia',
     ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'borrado',
+    ];
+
 }

@@ -27,4 +27,14 @@ class Auxiliatura extends Model
     protected $fillable = [
         'id_auxiliatura', 'nombre',
     ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'borrado',
+    ];
+
 }

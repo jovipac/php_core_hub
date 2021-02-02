@@ -27,4 +27,14 @@ class Dependencia extends Model
     protected $fillable = [
         'id_dependencia', 'nombre',
     ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'borrado',
+    ];
+
 }

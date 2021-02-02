@@ -27,4 +27,14 @@ class Funcionario extends Model
     protected $fillable = [
         'codigo', 'nombres', 'apellidos', 'email', 'id_usuario',
     ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'borrado',
+    ];
+
 }

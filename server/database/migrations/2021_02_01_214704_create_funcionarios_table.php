@@ -32,6 +32,9 @@ class CreateFuncionariosTable extends Migration
             $table->foreign('id_usuario')->references('id_usuario')
                 ->on('ts_usuario')
                 ->onDelete('cascade');
+            $table->foreign('id_auxiliatura')->references('id_auxiliatura')
+                ->on('tc_auxiliatura')
+                ->onDelete('cascade');
         });
     }
 
