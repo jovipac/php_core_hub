@@ -15,13 +15,14 @@ class CreateModulosTable extends Migration
     {
         Schema::create('ts_modulo', function (Blueprint $table) {
             $table->increments('id_modulo');
+            $table->integer('id_menu')->nullable()->unsigned();
             $table->string('nombre');
             $table->string('nombre_corto', 50)->nullable();
             $table->string('url')->nullable();
             $table->string('tipo', 10)->nullable();
             $table->string('icono', 25)->nullable();
             $table->integer('id_parent')->nullable()->unsigned();
-            $table->integer('order');
+            $table->integer('order')->default(0);
             $table->boolean('borrado')->default(0)->index();
             $table->timestamps();
 
@@ -29,6 +30,10 @@ class CreateModulosTable extends Migration
                 ->on('ts_modulo')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
+        });
+
+        Schema::table('ts_modulo', function (Blueprint $table) {
+            $table->foreign('id_menu')->references('id_menu')->on('ts_menu')->onDelete('cascade');
         });
     }
 

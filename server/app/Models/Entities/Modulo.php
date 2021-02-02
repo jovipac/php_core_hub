@@ -28,22 +28,22 @@ class Modulo extends Model
         'created_at', 'updated_at', 'borrado',
     ];
 
-    public function parent() {
+    public function parent()
+    {
 
         return $this->hasOne('App\Models\Entities\Modulo', 'id_modulo', 'id_parent');
-
     }
 
-    public function children(){
+    public function children()
+    {
 
         return $this->hasMany('App\Models\Entities\Modulo', 'id_parent', 'id_modulo');
-
     }
 
-    public static function tree() {
+    public static function tree()
+    {
 
         return static::with(implode('.', array_fill(0, 4, 'children')))->where('id_parent', '=', NULL)->get();
-
     }
 
 }
