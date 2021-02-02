@@ -35,6 +35,9 @@ Route::group([
     Route::resource('users', 'Api\UserController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
+    Route::resource('funcionarios', 'Api\FuncionarioController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
     Route::resource('dependencias', 'Api\DependenciaController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);

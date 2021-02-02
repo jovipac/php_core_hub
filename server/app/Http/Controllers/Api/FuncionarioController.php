@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
-use App\Models\Entities\User;
+use App\Models\Catalogs\Funcionario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class UserController extends ApiController
+class FuncionarioController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -16,15 +16,14 @@ class UserController extends ApiController
      */
     public function index()
     {
-        $users = User::all();
+        $funcionarios = Funcionario::all();
         return $this->apiResponse(
             [
                 'success' => true,
-                'message' => "Listado de usuarios",
-                'result' => $users
+                'message' => "Listado de funcionarios",
+                'result' => $funcionarios
             ]
         );
-
     }
 
     /**
@@ -36,36 +35,37 @@ class UserController extends ApiController
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'username' => 'required|unique:ts_usuario',
-            'password' => 'required',
+            'codigo' => 'required',
+            'nombres' => 'required',
+            'apellidos' => 'required',
+            'email' => 'email',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
         }
         $input = $request->all();
-        $input['password'] = bcrypt($input['password']);
-        $user = User::create($input);
+        $funcionario = Funcionario::create($input);
 
-        return $this->respondCreated(            [
+        return $this->respondCreated([
             'success' => true,
-            'message' => "Usuario creado con exito",
-            'result' => $user
+            'message' => "Funcionario creado con exito",
+            'result' => $funcionario
         ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\User  $user
+     * @param  \App\Models\Catalogs\Funcionario  $funcionario
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(Funcionario $funcionario)
     {
         return $this->apiResponse(
             [
                 'success' => true,
-                'message' => "Usuario encontrado",
-                'result' => $user
+                'message' => "Funcionario encontrado",
+                'result' => $funcionario
             ]
         );
     }
@@ -74,39 +74,40 @@ class UserController extends ApiController
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\User  $user
+     * @param  \App\Models\Catalogs\Funcionario  $funcionario
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, Funcionario $funcionario)
     {
         $validator = Validator::make($request->all(), [
-            'username' => 'required',
-            'password' => 'required',
+            'codigo' => 'required',
+            'nombres' => 'required',
+            'apellidos' => 'required',
+            'email' => 'email',
+            'id_usuario' => 'integer',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
         }
 
-        $input = $request->all();
-        $input['password'] = bcrypt($input['password']);
-        $user->update($input);
+        $funcionario->update($request->all());
 
         return $this->respondSuccess([
             'success' => true,
-            'message' => "Usuario actualizado con exito",
-            'result' => $user
+            'message' => "Funcionario actualizado con exito",
+            'result' => $funcionario
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\User  $user
+     * @param  \App\Models\Catalogs\Funcionario  $funcionario
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(Funcionario $funcionario)
     {
-        $user->delete();
+        $funcionario->delete();
 
         return $this->respondSuccess('Eliminado con exito');
     }
