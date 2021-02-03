@@ -25,7 +25,7 @@ class Funcionario extends Model
      * @var array
      */
     protected $fillable = [
-        'codigo', 'nombres', 'apellidos', 'email', 'id_usuario',
+        'codigo', 'nombres', 'apellidos', 'email', 'id_puesto',
     ];
 
     /**

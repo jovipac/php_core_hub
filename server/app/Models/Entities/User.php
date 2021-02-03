@@ -2,6 +2,7 @@
 
 namespace App\Models\Entities;
 
+use App\Http\Traits\HasPermissionsTrait;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -10,7 +11,7 @@ use Webkid\LaravelBooleanSoftdeletes\SoftDeletesBoolean;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, Notifiable, SoftDeletesBoolean;
+    use HasApiTokens, Notifiable, HasPermissionsTrait, SoftDeletesBoolean;
 
     const IS_DELETED = 'borrado';
 
@@ -28,7 +29,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'username', 'password',
+        'username', 'password', 'email', 'id_auxiliatura', 'id_funcionario'
     ];
 
     /**

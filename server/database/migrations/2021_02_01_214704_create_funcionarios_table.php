@@ -19,21 +19,13 @@ class CreateFuncionariosTable extends Migration
             $table->string('nombres');
             $table->string('apellidos');
             $table->string('email')->nullable();
-            $table->integer('id_usuario')->nullable()->unsigned();
             $table->integer('id_puesto')->nullable()->unsigned();
-            $table->integer('id_auxiliatura')->nullable()->unsigned();
             $table->boolean('borrado')->default(0)->index();
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('id_puesto')->references('id_puesto')
                 ->on('tc_puesto')
-                ->onDelete('cascade');
-            $table->foreign('id_usuario')->references('id_usuario')
-                ->on('ts_usuario')
-                ->onDelete('cascade');
-            $table->foreign('id_auxiliatura')->references('id_auxiliatura')
-                ->on('tc_auxiliatura')
                 ->onDelete('cascade');
         });
     }

@@ -5,7 +5,7 @@ namespace App\Models\Entities;
 use Illuminate\Database\Eloquent\Model;
 use Webkid\LaravelBooleanSoftdeletes\SoftDeletesBoolean;
 
-class Permiso extends Model
+class Rol extends Model
 {
     use SoftDeletesBoolean;
 
@@ -16,8 +16,8 @@ class Permiso extends Model
      *
      * @var array
      */
-    protected $table = 'ts_permiso';
-    protected $primaryKey = 'id_permiso';
+    protected $table = 'ts_rol';
+    protected $primaryKey = 'id_rol';
 
     /**
      * The attributes that are mass assignable.
@@ -25,7 +25,7 @@ class Permiso extends Model
      * @var array
      */
     protected $fillable = [
-        'id_permiso', 'nombre',
+        'nombre', 'slug',
     ];
 
     /**
@@ -37,16 +37,22 @@ class Permiso extends Model
         'borrado',
     ];
 
-    public function roles()
+    /**
+    * The attributes that should be mutated to dates.
+    *
+    * @var array
+    */
+    protected $dates = ['deleted_at'];
+/*
+    public function permissions()
     {
 
-        return $this->belongsToMany(Rol::class, 'tt_rol_permiso', 'id_rol', 'id_rol');
+        return $this->belongsToMany(Permiso::class, 'tt_rol_permiso','id_permiso', 'id_permiso);
     }
-/*
+*/
     public function users()
     {
 
-        return $this->belongsToMany(User::class, 'tt_usuario_permiso', 'id_usuario', 'id_usuario');
+        return $this->belongsToMany(User::class, 'tt_usuario_rol','id_usuario','id_usuario');
     }
-*/
 }
