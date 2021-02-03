@@ -19,9 +19,9 @@ class AuthController extends Controller
     public function signUp(Request $request)
     {
         $request->validate([
-            'username' => 'required|string',
+            'username' => 'required|string|unique:ts_usuario',
             'email' => 'string|email',
-            'password' => 'required|string'
+            'password' => 'required|string|min:6'
         ]);
 
         $user = User::create([

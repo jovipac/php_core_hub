@@ -36,7 +36,7 @@ class PuestoController extends ApiController
     {
         $validator = Validator::make($request->all(), [
             'nombre' => 'required',
-            'id_dependencia' => 'required',
+            'id_dependencia' => 'required|integer',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
