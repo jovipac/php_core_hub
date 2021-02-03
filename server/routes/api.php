@@ -50,4 +50,6 @@ Route::group([
     Route::resource('auxiliaturas', 'Api\AuxiliaturaController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
+
+    Route::get('menuItems', 'Api\MenuController@menuItems')->name('modulos.menuItems');
 });

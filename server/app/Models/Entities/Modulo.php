@@ -40,10 +40,39 @@ class Modulo extends Model
         return $this->hasMany('App\Models\Entities\Modulo', 'id_parent', 'id_modulo');
     }
 
+    public function menu()
+    {
+
+        //return $this->hasOne(Menu::class, 'id_menu', 'id_menu');
+        return $this->belongsTo(Menu::class, 'id_menu', 'id_menu');
+    }
+
     public static function tree()
     {
 
         return static::with(implode('.', array_fill(0, 4, 'children')))->where('id_parent', '=', NULL)->get();
+    }
+
+    /**
+     * Return the Highest Order Menu Item.
+     *
+     * @param number $parent (Optional) Parent id. Default null
+     *
+     * @return number Order number
+     */
+    public function highestOrderMenuItem($parent = null)
+    {
+        $order = 1;
+
+        $item = $this->where('id_parent', '=', $parent)
+            ->orderBy('order', 'DESC')
+            ->first();
+
+        if (!is_null($item)) {
+            $order = intval($item->order) + 1;
+        }
+
+        return $order;
     }
 
 }

@@ -16,8 +16,8 @@ class ModuloController extends ApiController
      */
     public function index()
     {
-        //$modulos = Modulo::all();
-        $modulos = Modulo::tree();
+        $modulos = Modulo::all()->whereNotNull('id_parent');
+        //$modulos = Modulo::tree();
         return $this->apiResponse(
             [
                 'success' => true,
