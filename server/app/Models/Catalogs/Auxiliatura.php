@@ -25,7 +25,7 @@ class Auxiliatura extends Model
      * @var array
      */
     protected $fillable = [
-        'id_auxiliatura', 'nombre',
+        'id_auxiliatura', 'nombre', 'borrado'
     ];
 
     /**

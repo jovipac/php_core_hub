@@ -25,7 +25,7 @@ class Puesto extends Model
      * @var array
      */
     protected $fillable = [
-        'nombre', 'id_dependencia',
+        'nombre', 'id_dependencia', 'borrado'
     ];
 
     /**
