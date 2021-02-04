@@ -21,6 +21,7 @@ class FuncionarioController extends ApiController
         $funcionarios = Funcionario::select('id_funcionario', 'codigo', 'nombres', 'apellidos', 'email', 'created_at', 'updated_at')
         ->join('ts_usuario as T01', 'T01.id_funcionario', '=', 'id_funcionario')
         ->join('ts_puesto as T02', 'T01.id_puesto', '=', 'id_puesto')
+        ->join('ts_puesto as T02', 'T01.id_puesto', '=', 'id_puesto')
         ->get();
         //->join('id_funcionario');
 
@@ -133,12 +134,12 @@ class FuncionarioController extends ApiController
     public function update(Request $request, Funcionario $funcionario)
     {
         $validator = Validator::make($request->all(), [
+            'id_funcionario' => 'required|integer',
             'codigo' => 'required',
             'nombres' => 'required',
             'apellidos' => 'required',
             'email' => 'email',
             'id_puesto' => 'required|integer',
-            'id_usuario' => 'integer',
             'id_rol' => 'integer',
         ]);
         if ($validator->fails()) {
@@ -146,6 +147,9 @@ class FuncionarioController extends ApiController
         }
 
         $funcionario->update($request->all());
+
+        $findUser = User::where("id_funcionario",'=', $request->id_funcionario)->first()
+            ->update($request->all());
 
         return $this->respondSuccess([
             'success' => true,
