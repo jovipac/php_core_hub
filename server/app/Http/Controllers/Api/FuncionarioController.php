@@ -166,6 +166,8 @@ class FuncionarioController extends ApiController
      */
     public function destroy(Funcionario $funcionario)
     {
+        $findUser = User::where("id_funcionario",'=', $funcionario->id_funcionario)->first();
+        $findUser->delete();
         $funcionario->delete();
 
         return $this->respondSuccess('Eliminado con exito');
