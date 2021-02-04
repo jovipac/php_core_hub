@@ -25,7 +25,7 @@ class Puesto extends Model
      * @var array
      */
     protected $fillable = [
-        'id_puesto', 'nombre', 'id_dependencia',
+        'nombre', 'id_dependencia',
     ];
 
     /**
@@ -36,5 +36,21 @@ class Puesto extends Model
     protected $hidden = [
         'borrado',
     ];
+
+    //protected $appends = ['nombre_dependencia'];
+
+    public function getNombreDependenciaAttribute()
+    {
+        $value = null;
+        if (!is_null($this->attributes['id_dependencia'])) {
+            $value = $this->dependencia->nombre;
+        }
+        return $value;
+    }
+
+    public function dependencia()
+    {
+        return $this->belongsTo(Dependencia::class, 'id_dependencia', 'id_dependencia');
+    }
 
 }

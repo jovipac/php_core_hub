@@ -25,7 +25,7 @@ class Dependencia extends Model
      * @var array
      */
     protected $fillable = [
-        'id_dependencia', 'nombre',
+        'nombre',
     ];
 
     /**
@@ -37,4 +37,12 @@ class Dependencia extends Model
         'borrado',
     ];
 
+    public function puestos()
+    {
+        return $this->hasMany(Puesto::class, 'id_dependencia', 'id_dependencia');
+    }
+
+    public function search(){
+        return "nada";
+    }
 }

@@ -37,4 +37,9 @@ class Auxiliatura extends Model
         'borrado',
     ];
 
+    public function usuarios()
+    {
+        return $this->hasMany(User::class, 'id_usuario', 'id_usuario');
+    }
+
 }

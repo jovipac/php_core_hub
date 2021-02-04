@@ -63,11 +63,6 @@ trait HasPermissionsTrait
         return false;
     }
 
-    public function roles()
-    {
-
-        return $this->belongsToMany(Rol::class, 'tt_usuario_rol','id_rol','id_rol');
-    }
     public function permissions()
     {
 

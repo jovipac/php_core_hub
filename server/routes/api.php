@@ -54,5 +54,11 @@ Route::group([
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
 
+    Route::get('dependencia/search', [
+        'uses' => 'Api\DependenciaController@searchBy',
+        'as' => 'dependencias.search'
+    ]);
+
+    Route::get('funcionarios/list', 'Api\FuncionarioController@list')->name('funcionarios.list');
     Route::get('menuItems', 'Api\MenuController@menuItems')->name('modulos.menuItems');
 });

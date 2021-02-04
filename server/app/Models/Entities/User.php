@@ -3,6 +3,7 @@
 namespace App\Models\Entities;
 
 use App\Http\Traits\HasPermissionsTrait;
+use App\Models\Catalogs\Auxiliatura;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -29,7 +30,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'username', 'password', 'email', 'id_auxiliatura', 'id_funcionario'
+        'id_auxiliatura', 'username', 'password', 'email', 'id_auxiliatura', 'id_funcionario'
     ];
 
     /**
@@ -40,6 +41,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'borrado',
     ];
+    protected $appends = ['nombre_auxiliatura'];
 
     /**
      * The attributes that should be cast to native types.
@@ -49,4 +51,29 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function roles()
+    {
+
+        return $this->belongsToMany(Rol::class, 'tt_usuario_rol','id_rol','id_rol');
+    }
+
+    public function getNombreAuxiliaturaAttribute()
+    {
+        $value = null;
+        if (!is_null($this->attributes['id_auxiliatura'])) {
+            $value = $this->auxiliatura->nombre;
+        }
+        return $value;
+    }
+
+    public function auxiliatura()
+    {
+        return $this->belongsTo(Auxiliatura::class, 'id_auxiliatura', 'id_auxiliatura');
+    }
+
+    public function funcionario()
+    {
+        return $this->belongsTo(Funcionario::class, 'id_funcionario', 'id_funcionario');
+    }
 }

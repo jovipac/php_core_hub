@@ -14,6 +14,37 @@ class DependenciaController extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
+    public function searchBy(Request $request)
+    {
+        if ($request->has('nombre')) {
+            $term = $request->input('nombre');
+            $dependencias = Dependencia::where('nombre', 'like', '%'. $term . '%')
+                ->with('puestos')
+                ->get();
+            return $this->apiResponse(
+                [
+                    'success' => true,
+                    'message' => "Listado de menus",
+                    'result' => $dependencias
+                ]
+            );
+        } else {
+            $dependencias = Dependencia::with('puestos')->get();
+            return $this->apiResponse(
+                [
+                    'success' => true,
+                    'message' => "Listado de dependencias",
+                    'result' => $dependencias
+                ]
+            );
+        }
+    }
+
+        /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
         $dependencias = Dependencia::all();
