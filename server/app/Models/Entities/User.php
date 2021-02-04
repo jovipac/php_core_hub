@@ -41,7 +41,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'borrado',
     ];
-    protected $appends = ['nombre_auxiliatura'];
+    //protected $appends = ['nombre_auxiliatura'];
 
     /**
      * The attributes that should be cast to native types.

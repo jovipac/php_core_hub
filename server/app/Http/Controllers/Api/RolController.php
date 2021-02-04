@@ -36,6 +36,7 @@ class RolController extends ApiController
     {
         $validator = Validator::make($request->all(), [
             'nombre' => 'required|string',
+            'descripcion' => 'string',
             'slug' => 'string',
         ]);
         if ($validator->fails()) {
@@ -79,6 +80,7 @@ class RolController extends ApiController
     {
         $validator = Validator::make($request->all(), [
             'nombre' => 'required|string',
+            'descripcion' => 'string',
             'slug' => 'string',
         ]);
         if ($validator->fails()) {
