@@ -16,9 +16,32 @@ class FuncionarioController extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
+    public function list()
+    {
+        $funcionarios = Funcionario::select('id_funcionario', 'codigo', 'nombres', 'apellidos', 'email', 'created_at', 'updated_at')
+        ->join('ts_usuario as T01', 'T01.id_funcionario', '=', 'id_funcionario')
+        ->join('ts_puesto as T02', 'T01.id_puesto', '=', 'id_puesto')
+        ->get();
+        //->join('id_funcionario');
+
+        return $this->apiResponse(
+            [
+                'success' => true,
+                'message' => "Listado de funcionarios",
+                'result' => $funcionarios
+            ]
+        );
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
         $funcionarios = Funcionario::all();
+
         return $this->apiResponse(
             [
                 'success' => true,
@@ -55,18 +78,26 @@ class FuncionarioController extends ApiController
 
         $funcionario = Funcionario::create($input);
 
-        $user = new User([
+        $newUser = new User([
             'username' => $input['username'],
             'password' => bcrypt($random_password),
             'email' => $input['email'],
             'id_funcionario' => $funcionario['id_funcionario'],
-            'id_auxiliatura' => $funcionario['id_auxiliatura'],
+            'id_auxiliatura' => $input['id_auxiliatura'],
         ]);
-        $user->save();
-        //user->roles()->attach(array)
-
+        $newUser->save();
+        /*
+        $rolInit = $input['id_rol'];
+        $newRolUser = new RolUser([
+            'id_usuario' => $newUser['id_usuario'],
+            'id_rol' => $input['id_rol'],
+        ]);
+        $user = User::find($newUser->id_usuario);
+        $user->roles()->attach($rolInit);
+        */
         $funcionario['username'] = $input['username'];
         $funcionario['password'] = $random_password;
+        $funcionario['id_auxiliatura'] = $input['id_auxiliatura'];
 
         return $this->respondCreated([
             'success' => true,
