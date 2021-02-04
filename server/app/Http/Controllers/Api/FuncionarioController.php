@@ -42,8 +42,9 @@ class FuncionarioController extends ApiController
             'apellidos' => 'required',
             'username' => 'required|unique:ts_usuario',
             'email' => 'email',
-            'id_puesto' => 'required',
-            'id_auxiliatura' => 'required',
+            'id_puesto' => 'required|integer',
+            'id_auxiliatura' => 'required|integer',
+            'id_rol' => 'integer',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
@@ -51,7 +52,7 @@ class FuncionarioController extends ApiController
 
         $input = $request->all();
         $random_password = Str::random(8);
-        //$input['id_usuario'] = $user['id_usuario'];
+
         $funcionario = Funcionario::create($input);
 
         $user = new User([
@@ -62,6 +63,7 @@ class FuncionarioController extends ApiController
             'id_auxiliatura' => $funcionario['id_auxiliatura'],
         ]);
         $user->save();
+        //user->roles()->attach(array)
 
         $funcionario['username'] = $input['username'];
         $funcionario['password'] = $random_password;
@@ -104,7 +106,9 @@ class FuncionarioController extends ApiController
             'nombres' => 'required',
             'apellidos' => 'required',
             'email' => 'email',
+            'id_puesto' => 'required|integer',
             'id_usuario' => 'integer',
+            'id_rol' => 'integer',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
