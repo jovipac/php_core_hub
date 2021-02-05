@@ -32,7 +32,7 @@ class FuncionarioController extends ApiController
         ->leftJoin('tc_dependencia as T03', 'T02.id_dependencia', '=', 'T03.id_dependencia')
         ->leftJoin('tc_auxiliatura as T04', 'T04.id_auxiliatura', '=', 'T01.id_auxiliatura')
         ->leftJoin('tt_usuario_rol as T05', 'T05.id_usuario', '=', 'T01.id_usuario')
-        ->join('ts_rol as T06', 'T06.id_rol', '=', 'T05.id_rol')
+        ->leftJoin('ts_rol as T06', 'T06.id_rol', '=', 'T05.id_rol')
         ->get();
 
         return $this->apiResponse(
