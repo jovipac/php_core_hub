@@ -43,28 +43,28 @@ class RolController extends ApiController
             return $this->respondError($validator->errors(), 422);
         }
         $input = $request->all();
-        $rol = Rol::create($input);
+        $role = Rol::create($input);
 
         return $this->respondCreated([
             'success' => true,
             'message' => "Rol creado con exito",
-            'result' => $rol
+            'result' => $role
         ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Rol  $rol
+     * @param  \App\Rol  $role
      * @return \Illuminate\Http\Response
      */
-    public function show(Rol $rol)
+    public function show(Rol $role)
     {
         return $this->apiResponse(
             [
                 'success' => true,
                 'message' => "Rol encontrado",
-                'result' => $rol
+                'result' => $role
             ]
         );
     }
@@ -73,10 +73,10 @@ class RolController extends ApiController
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Rol  $rol
+     * @param  \App\Rol  $role
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Rol $rol)
+    public function update(Request $request, Rol $role)
     {
         $validator = Validator::make($request->all(), [
             'nombre' => 'required|string',
@@ -87,24 +87,24 @@ class RolController extends ApiController
             return $this->respondError($validator->errors(), 422);
         }
 
-        $rol->update($request->all());
+        $role->update($request->all());
 
         return $this->respondSuccess([
             'success' => true,
             'message' => "Rol actualizado con exito",
-            'result' => $rol
+            'result' => $role
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Rol  $rol
+     * @param  \App\Rol  $role
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Rol $rol)
+    public function destroy(Rol $role)
     {
-        $rol->delete();
+        $role->delete();
 
         return $this->respondSuccess('Eliminado con exito');
     }
