@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Traits\Helpers\ApiResponseTrait;
 use Carbon\Carbon;
 use App\Models\Entities\User;
+use App\Http\Resources\UsuarioResource;
 
 class AuthController extends Controller
 {
@@ -63,7 +64,7 @@ class AuthController extends Controller
         $token->save();
 
         $response = [
-            'user' => $request->user(),
+            'user' => new UsuarioResource($request->user()),
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
             'expires_at' => Carbon::parse($token->expires_at)->toDateTimeString()
