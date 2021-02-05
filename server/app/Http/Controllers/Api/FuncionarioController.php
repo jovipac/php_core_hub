@@ -22,7 +22,7 @@ class FuncionarioController extends ApiController
         ->select('tc_funcionario.id_funcionario', 'tc_funcionario.codigo',
             'T01.id_usuario', 'T01.username', 'tc_funcionario.nombres', 'tc_funcionario.apellidos',
             'T02.id_dependencia','T03.nombre AS nombre_dependencia', 'T02.id_puesto', 'T02.nombre AS nombre_puesto',
-            'tc_funcionario.email', 'tc_funcionario.borrado AS estado',
+            'tc_funcionario.email', 'tc_funcionario.borrado',
             'T04.id_auxiliatura', 'T04.nombre AS nombre_auxiliatura',
             'T05.id_rol', 'T06.nombre AS nombre_rol',
             'tc_funcionario.created_at', 'tc_funcionario.updated_at')
