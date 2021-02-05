@@ -6,6 +6,7 @@ use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
 use App\Models\Catalogs\Funcionario;
 use App\Models\Entities\User;
+use App\Models\Entities\UsuarioRol;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 
@@ -26,7 +27,7 @@ class FuncionarioController extends ApiController
             'T04.id_auxiliatura', 'T04.nombre AS nombre_auxiliatura',
             'T05.id_rol', 'T06.nombre AS nombre_rol',
             'tc_funcionario.created_at', 'tc_funcionario.updated_at')
-        ->leftJoin('ts_usuario as T01', 'T01.id_funcionario', '=', 'tc_funcionario.id_funcionario')
+        ->leftJoin('ts_usuario as T01', 'tc_funcionario.id_funcionario', '=', 'T01.id_funcionario')
         ->leftJoin('tc_puesto as T02', 'T02.id_puesto', '=', 'tc_funcionario.id_puesto')
         ->leftJoin('tc_dependencia as T03', 'T02.id_dependencia', '=', 'T03.id_dependencia')
         ->leftJoin('tc_auxiliatura as T04', 'T04.id_auxiliatura', '=', 'T01.id_auxiliatura')
@@ -96,15 +97,15 @@ class FuncionarioController extends ApiController
             'id_auxiliatura' => $input['id_auxiliatura'],
         ]);
         $newUser->save();
-        /*
-        $rolInit = $input['id_rol'];
-        $newRolUser = new RolUser([
+
+        $newRolUser = new UsuarioRol([
             'id_usuario' => $newUser['id_usuario'],
             'id_rol' => $input['id_rol'],
         ]);
-        $user = User::find($newUser->id_usuario);
-        $user->roles()->attach($rolInit);
-        */
+        //$user = User::find($newUser->id_usuario);
+        //$newUser->roles()->attach($input['id_rol']);
+        $newRolUser->save();
+
         $funcionario['username'] = $input['username'];
         $funcionario['password'] = $random_password;
         $funcionario['id_auxiliatura'] = $input['id_auxiliatura'];
