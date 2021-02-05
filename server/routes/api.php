@@ -59,6 +59,10 @@ Route::group([
         'as' => 'dependencias.search'
     ]);
 
-    Route::get('funcionarios/list', 'Api\FuncionarioController@list')->name('funcionarios.list');
+    Route::get('funcionario/list', [
+        'uses' => 'Api\FuncionarioController@list',
+        'as' => 'funcionarios.list'
+    ]);
+
     Route::get('menuItems', 'Api\MenuController@menuItems')->name('modulos.menuItems');
 });

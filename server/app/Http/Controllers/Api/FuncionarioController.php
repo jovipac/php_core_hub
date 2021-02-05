@@ -18,12 +18,21 @@ class FuncionarioController extends ApiController
      */
     public function list()
     {
-        $funcionarios = Funcionario::select('id_funcionario', 'codigo', 'nombres', 'apellidos', 'email', 'created_at', 'updated_at')
-        ->join('ts_usuario as T01', 'T01.id_funcionario', '=', 'id_funcionario')
-        ->join('ts_puesto as T02', 'T01.id_puesto', '=', 'id_puesto')
-        ->join('ts_puesto as T02', 'T01.id_puesto', '=', 'id_puesto')
+        $funcionarios = Funcionario::query()
+        ->select('tc_funcionario.id_funcionario', 'tc_funcionario.codigo',
+            'T01.id_usuario', 'T01.username', 'tc_funcionario.nombres', 'tc_funcionario.apellidos',
+            'T02.id_dependencia','T03.nombre AS nombre_dependencia', 'T02.id_puesto', 'T02.nombre AS nombre_puesto',
+            'tc_funcionario.email', 'tc_funcionario.borrado AS estado',
+            'T04.id_auxiliatura', 'T04.nombre AS nombre_auxiliatura',
+            'T05.id_rol', 'T06.nombre AS nombre_rol',
+            'tc_funcionario.created_at', 'tc_funcionario.updated_at')
+        ->leftJoin('ts_usuario as T01', 'T01.id_funcionario', '=', 'tc_funcionario.id_funcionario')
+        ->leftJoin('tc_puesto as T02', 'T02.id_puesto', '=', 'tc_funcionario.id_puesto')
+        ->leftJoin('tc_dependencia as T03', 'T02.id_dependencia', '=', 'T03.id_dependencia')
+        ->leftJoin('tc_auxiliatura as T04', 'T04.id_auxiliatura', '=', 'T01.id_auxiliatura')
+        ->leftJoin('tt_usuario_rol as T05', 'T05.id_usuario', '=', 'T01.id_usuario')
+        ->leftJoin('ts_rol as T06', 'T06.id_rol', '=', 'T05.id_rol')
         ->get();
-        //->join('id_funcionario');
 
         return $this->apiResponse(
             [
