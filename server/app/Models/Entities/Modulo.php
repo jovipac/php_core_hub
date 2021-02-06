@@ -28,6 +28,8 @@ class Modulo extends Model
         'created_at', 'updated_at', 'borrado',
     ];
 
+    //protected $appends = ['nombre_modulo_padre'];
+
     public function parent()
     {
 
@@ -54,6 +56,15 @@ class Modulo extends Model
     {
 
         return static::with(implode('.', array_fill(0, 4, 'children')))->where('id_parent', '=', NULL)->get();
+    }
+
+    public function getNombreModuloPadreAttribute()
+    {
+        $value = null;
+        if (!is_null($this->attributes['id_parent'])) {
+            $value = $this->parent->nombre;
+        }
+        return $value;
     }
 
     /**

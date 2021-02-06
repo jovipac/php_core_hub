@@ -36,7 +36,8 @@ class RolModuloController extends ApiController
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nombre' => 'required',
+            'id_rol' => 'required',
+            'id_modulo' => 'required',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
@@ -59,11 +60,13 @@ class RolModuloController extends ApiController
      */
     public function show($id)
     {
+        $rol_modulo = Rol::with('modulos')->where('id_rol',$id)->get();
+
         return $this->apiResponse(
             [
                 'success' => true,
                 'message' => "Modulo del rol encontrado",
-                'result' => $id
+                'result' => $rol_modulo
             ]
         );
     }
@@ -78,7 +81,8 @@ class RolModuloController extends ApiController
     public function update(Request $request, RolModulo $rol_modulo)
     {
         $validator = Validator::make($request->all(), [
-            'nombre' => 'required',
+            'id_rol' => 'required',
+            'id_modulo' => 'required',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
