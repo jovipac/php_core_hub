@@ -28,7 +28,7 @@ class Modulo extends Model
         'created_at', 'updated_at', 'borrado',
     ];
 
-    //protected $appends = ['nombre_modulo_padre'];
+    protected $appends = ['nombre_modulo_padre'];
 
     public function parent()
     {
@@ -49,7 +49,7 @@ class Modulo extends Model
 
     public function roles()
     {
-        return $this->belongsToMany(Rol::class, 'tt_rol_modulo','id_modulo','id_rol','id_modulo','id_rol');
+        return $this->belongsToMany(Rol::class, 'tt_rol_modulo','id_modulo','id_rol','id_modulo','id_rol')->withTimestamps();
     }
 
     public static function tree()

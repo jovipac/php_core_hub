@@ -46,12 +46,12 @@ class Rol extends Model
 
     public function modulos()
     {
-        return $this->belongsToMany(Modulo::class, 'tt_rol_modulo', 'id_rol', 'id_modulo', 'id_rol', 'id_modulo');
+        return $this->belongsToMany(Modulo::class, 'tt_rol_modulo', 'id_rol', 'id_modulo', 'id_rol', 'id_modulo')->withTimestamps();
     }
 
     public function usuarios()
     {
-        return $this->belongsToMany(User::class, 'tt_usuario_rol', 'id_rol', 'id_usuario', 'id_rol', 'id_usuario');
+        return $this->belongsToMany(User::class, 'tt_usuario_rol', 'id_rol', 'id_usuario', 'id_rol', 'id_usuario')->withTimestamps();
     }
 
 }

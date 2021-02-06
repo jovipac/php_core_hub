@@ -97,15 +97,15 @@ class FuncionarioController extends ApiController
             'id_auxiliatura' => $input['id_auxiliatura'],
         ]);
         $newUser->save();
-
+        $newUser->roles()->attach($input['id_rol']);
+        /*
         $newRolUser = new UsuarioRol([
             'id_usuario' => $newUser['id_usuario'],
             'id_rol' => $input['id_rol'],
         ]);
-        //$user = User::find($newUser->id_usuario);
-        //$newUser->roles()->attach($input['id_rol']);
+        $user = User::find($newUser->id_usuario);
         $newRolUser->save();
-
+        */
         $funcionario['username'] = $input['username'];
         $funcionario['password'] = $random_password;
         $funcionario['id_auxiliatura'] = $input['id_auxiliatura'];

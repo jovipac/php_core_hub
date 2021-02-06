@@ -54,7 +54,7 @@ class User extends Authenticatable
 
     public function roles()
     {
-        return $this->belongsToMany(Rol::class, 'tt_usuario_rol','id_usuario','id_rol','id_usuario','id_rol');
+        return $this->belongsToMany(Rol::class, 'tt_usuario_rol','id_usuario','id_rol','id_usuario','id_rol')->withTimestamps();
     }
 
     public function getNombreAuxiliaturaAttribute()
