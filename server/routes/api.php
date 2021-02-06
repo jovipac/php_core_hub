@@ -61,6 +61,8 @@ Route::group([
     ]]);
 
     Route::get('rol-modulos', 'Api\RolModuloController@index');
+    Route::get('rol-modulos/assigned/{id}', 'Api\RolModuloController@assigned');
+    Route::get('rol-modulos/unassigned/{id}', 'Api\RolModuloController@unassigned');
     Route::get('rol-modulos/{id}', 'Api\RolModuloController@show');
     Route::post('rol-modulos', 'Api\RolModuloController@store');
     Route::put('rol-modulos/{id}', 'Api\RolModuloController@update');
