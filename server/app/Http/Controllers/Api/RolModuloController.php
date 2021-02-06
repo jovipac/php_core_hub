@@ -78,7 +78,7 @@ class RolModuloController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, RolModulo $rol_modulo)
+    public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
             'id_rol' => 'required',
@@ -87,13 +87,14 @@ class RolModuloController extends ApiController
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
         }
-
-        $rol_modulo->update($request->all());
+        $rol_modulo = Rol::where('id_rol',$id)->first();
+        $rol_modulo->modulos()->syncWithoutDetaching([$request->id_modulo]);
+        //$rol_modulo->modulos()->updateExistingPivot($id, ['id_modulo' => $request->id_modulo]);
 
         return $this->respondSuccess([
             'success' => true,
             'message' => "Modulo del rol actualizado con exito",
-            'result' => $rol_modulo
+            'result' => $rol_modulo->modulos()->get()
         ]);
     }
 

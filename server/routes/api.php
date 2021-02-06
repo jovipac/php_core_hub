@@ -44,9 +44,9 @@ Route::group([
     Route::resource('usuario-roles', 'Api\UsuarioRolController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
-    Route::resource('rol-modulos', 'Api\RolModuloController', ['only' => [
+    /* Route::resource('rol-modulos', 'Api\RolModuloController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
-    ]]);
+    ]]); */
     Route::resource('funcionarios', 'Api\FuncionarioController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
@@ -59,6 +59,12 @@ Route::group([
     Route::resource('auxiliaturas', 'Api\AuxiliaturaController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
+
+    Route::get('rol-modulos', 'Api\RolModuloController@index');
+    Route::get('rol-modulos/{id}', 'Api\RolModuloController@show');
+    Route::post('rol-modulos', 'Api\RolModuloController@store');
+    Route::put('rol-modulos/{id}', 'Api\RolModuloController@update');
+    Route::delete('rol-modulos/{id}','Api\RolModuloController@destroy');
 
     Route::get('dependencia/search', [
         'uses' => 'Api\DependenciaController@searchBy',
