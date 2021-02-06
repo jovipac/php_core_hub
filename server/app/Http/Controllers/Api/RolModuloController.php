@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
 use App\Models\Entities\Rol;
+use App\Models\Entities\Modulo;
 use App\Models\Entities\RolModulo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -58,18 +59,22 @@ class RolModuloController extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
-    public function unassigned($id)
+    public function unassigned($rol_id)
     {
-        $rol_modulo = Rol::query()
-        ->select('tt_rol_modulo.id_rol', 'tt_rol_modulo.id_modulo',
-            'ts_rol.nombre AS nombre_rol', 'T01.nombre AS nombre_modulo',
-            'T02.nombre AS nombre_modulo_padre')
-            ->join('tt_rol_modulo', 'ts_rol.id_rol', '=', 'tt_rol_modulo.id_rol')
-            ->join('ts_modulo AS T01', 'tt_rol_modulo.id_modulo', '=', 'T01.id_modulo')
-            ->leftJoin('ts_modulo AS T02', 'T02.id_modulo', '=', 'T01.id_parent')
-            ->where('tt_rol_modulo.id_rol', $id)
+        $rol_modulo = Modulo::select(
+                'ts_modulo.id_modulo',
+                'ts_modulo.nombre AS nombre_modulo',
+                'T02.nombre AS nombre_modulo_padre'
+            )
+            ->leftJoin('ts_modulo AS T02', 'T02.id_modulo', '=', 'ts_modulo.id_parent')
+            ->whereNotIn('ts_modulo.id_modulo', function ($query) use ($rol_id) {
+                $query->select('id_modulo')
+                ->from(with(new RolModulo)->getTable())
+                    ->where('id_rol', $rol_id);
+            })
+            ->whereNotNull('ts_modulo.id_parent')
             ->get();
-        $rol = Rol::with('modulos')->get();
+
         return $this->apiResponse(
             [
                 'success' => true,
