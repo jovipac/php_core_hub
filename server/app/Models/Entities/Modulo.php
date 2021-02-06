@@ -42,9 +42,12 @@ class Modulo extends Model
 
     public function menu()
     {
-
-        //return $this->hasOne(Menu::class, 'id_menu', 'id_menu');
         return $this->belongsTo(Menu::class, 'id_menu', 'id_menu');
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Rol::class, 'tt_rol_modulo','id_modulo','id_rol','id_modulo','id_rol');
     }
 
     public static function tree()

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUsersRolesTable extends Migration
+class CreateRolModulosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,23 +13,23 @@ class CreateUsersRolesTable extends Migration
      */
     public function up()
     {
-        Schema::create('tt_usuario_rol', function (Blueprint $table) {
-            $table->integer('id_usuario')->unsigned();
+        Schema::create('tt_rol_modulo', function (Blueprint $table) {
             $table->integer('id_rol')->unsigned();
+            $table->integer('id_modulo')->unsigned();
             $table->boolean('borrado')->default(0)->index();
             $table->timestamps();
             $table->softDeletes();
 
             //FOREIGN KEY CONSTRAINTS
-            $table->foreign('id_usuario')->references('id_usuario')->on('ts_usuario')
+            $table->foreign('id_rol')->references('id_rol')->on('ts_rol')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->foreign('id_rol')->references('id_rol')->on('ts_rol')
+            $table->foreign('id_modulo')->references('id_modulo')->on('ts_modulo')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
             //SETTING THE PRIMARY KEYS
-            $table->primary(['id_usuario', 'id_rol']);
+            $table->primary(['id_rol', 'id_modulo']);
         });
     }
 
@@ -40,6 +40,6 @@ class CreateUsersRolesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tt_usuario_rol');
+        Schema::dropIfExists('tt_rol_modulo');
     }
 }

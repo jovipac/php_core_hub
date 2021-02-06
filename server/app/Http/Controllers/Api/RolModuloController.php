@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
-use App\Models\Catalogs\Auxiliatura;
+use App\Models\Entities\Rol;
+use App\Models\Entities\RolModulo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class AuxiliaturaController extends ApiController
+class RolModuloController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -16,24 +17,14 @@ class AuxiliaturaController extends ApiController
      */
     public function index()
     {
-        $auxiliaturas = Auxiliatura::all();
+        $rol_modulo = Rol::with('modulos')->get();
         return $this->apiResponse(
             [
                 'success' => true,
-                'message' => "Listado de auxiliaturas",
-                'result' => $auxiliaturas
+                'message' => "Listado de modulos del rol",
+                'result' => $rol_modulo
             ]
         );
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -51,12 +42,12 @@ class AuxiliaturaController extends ApiController
             return $this->respondError($validator->errors(), 422);
         }
         $input = $request->all();
-        $auxiliatura = Auxiliatura::create($input);
+        $rol_modulo = RolModulo::create($input);
 
         return $this->respondCreated([
             'success' => true,
-            'message' => "Auxiliatura creada con exito",
-            'result' => $auxiliatura
+            'message' => "Modulo del rol creado con exito",
+            'result' => $rol_modulo
         ]);
     }
 
@@ -71,21 +62,10 @@ class AuxiliaturaController extends ApiController
         return $this->apiResponse(
             [
                 'success' => true,
-                'message' => "Auxiliatura encontrada",
+                'message' => "Modulo del rol encontrado",
                 'result' => $id
             ]
         );
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -95,7 +75,7 @@ class AuxiliaturaController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Auxiliatura $auxiliatura)
+    public function update(Request $request, RolModulo $rol_modulo)
     {
         $validator = Validator::make($request->all(), [
             'nombre' => 'required',
@@ -104,12 +84,12 @@ class AuxiliaturaController extends ApiController
             return $this->respondError($validator->errors(), 422);
         }
 
-        $auxiliatura->update($request->all());
+        $rol_modulo->update($request->all());
 
         return $this->respondSuccess([
             'success' => true,
-            'message' => "Auxiliatura actualizada con exito",
-            'result' => $auxiliatura
+            'message' => "Modulo del rol actualizado con exito",
+            'result' => $rol_modulo
         ]);
     }
 
@@ -119,10 +99,10 @@ class AuxiliaturaController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Auxiliatura $auxiliatura)
+    public function destroy(RolModulo $rol_modulo)
     {
-        $auxiliatura->delete();
+        $rol_modulo->delete();
 
-        return $this->respondSuccess('Auxiliatura eliminado con exito');
+        return $this->respondSuccess('Modulo del rol eliminado con exito');
     }
 }

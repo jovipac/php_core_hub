@@ -5,7 +5,7 @@ namespace App\Models\Entities;
 use Illuminate\Database\Eloquent\Model;
 use Webkid\LaravelBooleanSoftdeletes\SoftDeletesBoolean;
 
-class UsuarioRol extends Model
+class RolModulo extends Model
 {
     use SoftDeletesBoolean;
 
@@ -16,7 +16,7 @@ class UsuarioRol extends Model
      *
      * @var array
      */
-    protected $table = 'tt_usuario_rol';
+    protected $table = 'tt_rol_modulo';
 
     /**
      * The attributes that are mass assignable.
@@ -24,7 +24,7 @@ class UsuarioRol extends Model
      * @var array
      */
     protected $fillable = [
-        'id_usuario', 'id_rol', 'borrado'
+        'id_rol', 'id_modulo', 'borrado'
     ];
 
     /**
@@ -42,10 +42,9 @@ class UsuarioRol extends Model
         return $this->hasMany(Rol::class, 'id_rol', 'id_rol');
     }
 
-    public function usuarios()
+    public function modulos()
     {
 
-        return $this->hasMany(User::class, 'id_usuario', 'id_usuario');
+        return $this->hasMany(Modulo::class, 'id_modulo', 'id_modulo');
     }
-
 }

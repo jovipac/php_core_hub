@@ -76,7 +76,7 @@ class DependenciaController extends ApiController
 
         return $this->respondCreated([
             'success' => true,
-            'message' => "Dependencia creado con exito",
+            'message' => "Dependencia creada con exito",
             'result' => $dependencia
         ]);
     }
@@ -92,7 +92,7 @@ class DependenciaController extends ApiController
         return $this->apiResponse(
             [
                 'success' => true,
-                'message' => "Dependencia encontrado",
+                'message' => "Dependencia encontrada",
                 'result' => $dependencia
             ]
         );
@@ -118,7 +118,7 @@ class DependenciaController extends ApiController
 
         return $this->respondSuccess([
             'success' => true,
-            'message' => "Dependencia actualizado con exito",
+            'message' => "Dependencia actualizada con exito",
             'result' => $dependencia
         ]);
     }
@@ -133,6 +133,6 @@ class DependenciaController extends ApiController
     {
         $dependencia->delete();
 
-        return $this->respondSuccess('Eliminado con exito');
+        return $this->respondSuccess('Dependencia eliminada con exito');
     }
 }

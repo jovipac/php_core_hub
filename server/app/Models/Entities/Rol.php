@@ -43,16 +43,15 @@ class Rol extends Model
     * @var array
     */
     protected $dates = ['deleted_at'];
-/*
-    public function permissions()
-    {
 
-        return $this->belongsToMany(Permiso::class, 'tt_rol_permiso','id_permiso', 'id_permiso);
+    public function modulos()
+    {
+        return $this->belongsToMany(Modulo::class, 'tt_rol_modulo', 'id_rol', 'id_modulo', 'id_rol', 'id_modulo');
     }
-*/
+
     public function usuarios()
     {
-
-        return $this->belongsToMany(User::class, 'tt_usuario_rol','id_usuario','id_usuario');
+        return $this->belongsToMany(User::class, 'tt_usuario_rol', 'id_rol', 'id_usuario', 'id_rol', 'id_usuario');
     }
+
 }
