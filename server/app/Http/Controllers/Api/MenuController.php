@@ -83,13 +83,13 @@ class MenuController extends ApiController
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nombre' => 'required',
+            'nombre' => 'required|unique',
+            'target' => 'required|string',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
         }
         $input = $request->all();
-        $input['order'] = Menu::max('order')+1;
         $menu = Menu::create($input);
 
         return $this->respondCreated([
@@ -126,7 +126,8 @@ class MenuController extends ApiController
     public function update(Request $request, Menu $menu)
     {
         $validator = Validator::make($request->all(), [
-            'nombre' => 'required',
+            'nombre' => 'required|unique',
+            'target' => 'required|string',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
