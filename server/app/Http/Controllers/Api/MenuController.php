@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
 use App\Models\Entities\Menu;
+use App\Models\Entities\Modulo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -107,11 +108,25 @@ class MenuController extends ApiController
      */
     public function show(Menu $menu)
     {
+        $menu_id = $menu->id_menu;
+        //Funcion de formateo de la data resultado del filtrado
+        $transform = function ($menu) use ($menu_id) {
+            $responseStructure = [
+                'id_menu' => $menu['id_menu'],
+                'nombre' => $menu['nombre'] ?? null,
+                'target' => $menu['target'] ?? null,
+                'items' => Modulo::scoped(['id_menu' => $menu_id])->get()->toTree()
+            ];
+            return $responseStructure;
+        };
+        // Se hace llamada a la funcion de formateo del menu con sus submenus
+        $submenu = $transform($menu);
+
         return $this->apiResponse(
             [
                 'success' => true,
                 'message' => "Menu encontrado",
-                'result' => $menu
+                'result' => $submenu
             ]
         );
     }

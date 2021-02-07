@@ -16,8 +16,9 @@ class ModuloController extends ApiController
      */
     public function index()
     {
-        $modulos = Modulo::all()->whereNotNull('id_parent');
-        //Modulo::fixTree();
+        Modulo::fixTree();
+        $modulos = Modulo::all();
+
         return $this->apiResponse(
             [
                 'success' => true,
@@ -64,7 +65,7 @@ class ModuloController extends ApiController
      */
     public function show(Modulo $modulo)
     {
-        $modulos = Modulo::descendantsAndSelf($modulo->id_modulo)->toTree();
+        $modulos = Modulo::scoped(['id_menu' => $modulo->id_menu])->descendantsAndSelf($modulo->id_modulo)->toTree();
 
         return $this->apiResponse(
             [

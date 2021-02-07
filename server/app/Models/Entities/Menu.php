@@ -24,17 +24,6 @@ class Menu extends Model
         return $this->hasMany(Modulo::class, 'id_menu', 'id_menu');
     }
 
-    public function parent_items()
-    {
-        return $this->hasMany(Modulo::class, 'id_menu', 'id_menu')
-            ->whereNull('id_parent');
-    }
-
-    public function children()
-    {
-        return $this->hasMany(Modulo::class, 'id_modulo', 'id_modulo')->whereNull('id_parent')->with('children');
-    }
-
 /*
     protected static function processItems($items)
     {

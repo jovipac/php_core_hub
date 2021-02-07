@@ -37,12 +37,12 @@ class Modulo extends Model
     protected $hidden = [
         'created_at', 'updated_at', 'borrado', '_lft', '_rgt'
     ];
-/*
+
     protected function getScopeAttributes()
     {
         return ['id_menu'];
     }
-*/
+
     public function getLftName()
     {
         return '_lft';
@@ -63,7 +63,7 @@ class Modulo extends Model
     {
         $this->setParentIdAttribute($value);
     }
-
+/*
     public function parent()
     {
 
@@ -75,7 +75,7 @@ class Modulo extends Model
 
         return $this->hasMany('App\Models\Entities\Modulo', 'id_parent', 'id_modulo');
     }
-
+*/
     public function menu()
     {
         return $this->belongsTo(Menu::class, 'id_menu', 'id_menu');
