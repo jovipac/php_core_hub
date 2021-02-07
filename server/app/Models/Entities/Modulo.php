@@ -4,10 +4,11 @@ namespace App\Models\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Webkid\LaravelBooleanSoftdeletes\SoftDeletesBoolean;
+use Kalnoy\Nestedset\NodeTrait;
 
 class Modulo extends Model
 {
-    use SoftDeletesBoolean;
+    use NodeTrait, SoftDeletesBoolean;
 
     const IS_DELETED = 'borrado';
 
@@ -34,8 +35,34 @@ class Modulo extends Model
      * @var array
      */
     protected $hidden = [
-        'created_at', 'updated_at', 'borrado',
+        'created_at', 'updated_at', 'borrado', '_lft', '_rgt'
     ];
+/*
+    protected function getScopeAttributes()
+    {
+        return ['id_menu'];
+    }
+*/
+    public function getLftName()
+    {
+        return '_lft';
+    }
+
+    public function getRgtName()
+    {
+        return '_rgt';
+    }
+
+    public function getParentIdName()
+    {
+        return 'id_parent';
+    }
+
+    // Specify parent id attribute mutator
+    public function setParentAttribute($value)
+    {
+        $this->setParentIdAttribute($value);
+    }
 
     public function parent()
     {
@@ -57,34 +84,6 @@ class Modulo extends Model
     public function roles()
     {
         return $this->belongsToMany(Rol::class, 'tt_rol_modulo','id_modulo','id_rol','id_modulo','id_rol')->withTimestamps();
-    }
-
-    public static function tree()
-    {
-
-        return static::with(implode('.', array_fill(0, 4, 'children')))->where('id_parent', '=', NULL)->get();
-    }
-
-    /**
-     * Return the Highest Order Menu Item.
-     *
-     * @param number $parent (Optional) Parent id. Default null
-     *
-     * @return number Order number
-     */
-    public function highestOrderMenuItem($parent = null)
-    {
-        $order = 1;
-
-        $item = $this->where('id_parent', '=', $parent)
-            ->orderBy('order', 'DESC')
-            ->first();
-
-        if (!is_null($item)) {
-            $order = intval($item->order) + 1;
-        }
-
-        return $order;
     }
 
 }

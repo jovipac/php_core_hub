@@ -17,7 +17,7 @@ class ModuloController extends ApiController
     public function index()
     {
         $modulos = Modulo::all()->whereNotNull('id_parent');
-        //$modulos = Modulo::tree();
+        //Modulo::fixTree();
         return $this->apiResponse(
             [
                 'success' => true,
@@ -64,11 +64,13 @@ class ModuloController extends ApiController
      */
     public function show(Modulo $modulo)
     {
+        $modulos = Modulo::descendantsAndSelf($modulo->id_modulo)->toTree();
+
         return $this->apiResponse(
             [
                 'success' => true,
                 'message' => "Modulo encontrado",
-                'result' => $modulo
+                'result' => $modulos
             ]
         );
     }
