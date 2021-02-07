@@ -53,13 +53,24 @@ class MenuController extends ApiController
     public function menuItems(Request $request)
     {
         if ($request->has('target')) {
-            $menu = Menu::where('target', 'like', '%' . $request->input('target') . '%')->with('children');
-            //$items = $menu->children()->get();
+            $menu = Menu::where('target', 'like', '%' . $request->input('target') . '%')->first();
+            $menu_id = $menu['id_menu'];
+
+            $transform = function ($menu) use ($menu_id) {
+                $responseStructure = [
+                    'id_menu' => $menu['id_menu'],
+                    'nombre' => $menu['nombre'] ?? null,
+                    'target' => $menu['target'] ?? null,
+                    'items' => Modulo::scoped(['id_menu' => $menu_id])->get()->toTree()
+                ];
+                return $responseStructure;
+            };
+            $items = $transform($menu);
             return $this->apiResponse(
                 [
                     'success' => true,
                     'message' => "Listado de menus",
-                    'result' => $menu->get()
+                    'result' => $items
                 ]
             );
         } else {

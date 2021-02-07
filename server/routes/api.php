@@ -83,5 +83,5 @@ Route::group([
     Route::post('menus', 'Api\MenuController@store')->name('menu.store');
     Route::put('menus/{menu}', 'Api\MenuController@update')->name('menu.update');
     Route::delete('menus/{menu}','Api\MenuController@destroy')->name('menu.destroy');
-    Route::get('menus/items', 'Api\MenuController@menuItems')->name('menu.menuItems');
+    Route::get('menu-items', 'Api\MenuController@menuItems')->name('menu.menuItems');
 });
