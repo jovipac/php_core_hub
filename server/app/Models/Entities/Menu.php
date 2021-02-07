@@ -32,7 +32,7 @@ class Menu extends Model
 
     public function children()
     {
-        return $this->hasMany(Modulo::class,'id_modulo')->whereNull('id_parent')->with('children');
+        return $this->hasMany(Modulo::class, 'id_modulo', 'id_modulo')->whereNull('id_parent')->with('children');
     }
 
 /*

@@ -67,7 +67,7 @@ class MenuController extends ApiController
                 [
                     'success' => true,
                     'message' => "Listado de items del menu",
-                    'result' => $menu
+                    'result' => $menu->get()
                 ]
             );
         }

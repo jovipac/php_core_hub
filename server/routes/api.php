@@ -78,5 +78,10 @@ Route::group([
         'as' => 'funcionarios.list'
     ]);
 
-    Route::get('menuItems', 'Api\MenuController@menuItems')->name('modulos.menuItems');
+    Route::get('menus', 'Api\MenuController@index')->name('menu.index');
+    Route::get('menus/{menu}', 'Api\MenuController@show')->name('menu.show');
+    Route::post('menus', 'Api\MenuController@store')->name('menu.store');
+    Route::put('menus/{menu}', 'Api\MenuController@update')->name('menu.update');
+    Route::delete('menus/{menu}','Api\MenuController@destroy')->name('menu.destroy');
+    Route::get('menus/items', 'Api\MenuController@menuItems')->name('menu.menuItems');
 });
