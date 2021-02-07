@@ -36,7 +36,11 @@ class ModuloController extends ApiController
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nombre' => 'required',
+            'id_menu' => 'required|integer',
+            'nombre' => 'required|string',
+            'url' => 'string',
+            'tipo' => 'string',
+            'order' => 'integer',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
@@ -79,7 +83,11 @@ class ModuloController extends ApiController
     public function update(Request $request, Modulo $modulo)
     {
         $validator = Validator::make($request->all(), [
-            'nombre' => 'required',
+            'id_menu' => 'required|integer',
+            'nombre' => 'required|string',
+            'url' => 'string',
+            'tipo' => 'string',
+            'order' => 'integer',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);

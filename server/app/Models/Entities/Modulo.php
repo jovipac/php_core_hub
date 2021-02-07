@@ -20,6 +20,15 @@ class Modulo extends Model
     protected $primaryKey = 'id_modulo';
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'id_menu', 'nombre', 'slug', 'url', 'tipo', 'icono', 'id_parent', 'borrado'
+    ];
+
+    /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
