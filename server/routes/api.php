@@ -60,13 +60,14 @@ Route::group([
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
 
-    Route::get('rol-modulos', 'Api\RolModuloController@index');
+    Route::get('rol-modulos', 'Api\RolModuloController@index')->name('menu.index');
     Route::get('rol-modulos/assigned/{id}', 'Api\RolModuloController@assigned');
     Route::get('rol-modulos/unassigned/{id}', 'Api\RolModuloController@unassigned');
+    Route::post('rol-modulos/delete/{id}', 'Api\RolModuloController@destroy')->name('menu.destroy');
     Route::get('rol-modulos/{id}', 'Api\RolModuloController@show');
     Route::post('rol-modulos', 'Api\RolModuloController@store');
     Route::put('rol-modulos/{id}', 'Api\RolModuloController@update');
-    Route::delete('rol-modulos/{id}','Api\RolModuloController@destroy');
+    //Route::delete('rol-modulos/{id}','Api\RolModuloController@destroy');
 
     Route::get('dependencia/search', [
         'uses' => 'Api\DependenciaController@searchBy',
