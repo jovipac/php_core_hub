@@ -164,8 +164,8 @@ class RolModuloController extends ApiController
     public function destroy(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'id_rol' => 'required',
-            'id_modulo' => 'required',
+            'id_rol' => 'integer',
+            'id_modulo' => 'required|integer',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
