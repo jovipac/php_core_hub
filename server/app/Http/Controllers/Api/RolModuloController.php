@@ -161,9 +161,18 @@ class RolModuloController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(RolModulo $rol_modulo)
+    public function destroy(Request $request, $id)
     {
-        $rol_modulo->delete();
+        $validator = Validator::make($request->all(), [
+            'id_rol' => 'required',
+            'id_modulo' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return $this->respondError($validator->errors(), 422);
+        }
+        $rol_modulo = Rol::where('id_rol',$id)->first();
+
+        $rol_modulo->modulos()->detach([$request->id_modulo]);
 
         return $this->respondSuccess('Modulo del rol eliminado con exito');
     }
