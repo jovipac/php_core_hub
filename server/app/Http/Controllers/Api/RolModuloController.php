@@ -6,8 +6,11 @@ use App\Http\Controllers\ApiController;
 use App\Models\Entities\Rol;
 use App\Models\Entities\Modulo;
 use App\Models\Entities\RolModulo;
+use App\Models\Entities\UsuarioRol;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Collection;
 
 class RolModuloController extends ApiController
 {
@@ -85,6 +88,54 @@ class RolModuloController extends ApiController
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  \App\Menu  $menu
+     * @return \Illuminate\Http\Response
+     */
+    public function menuRol(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id_rol' => 'required',
+            'id_usuario' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return $this->respondError($validator->errors(), 422);
+        }
+
+        $usuario_rol = UsuarioRol::where('id_usuario', $request->id_usuario)->first();
+        $rol_modulos = RolModulo::where('id_rol', $usuario_rol->id_rol)->get();
+
+        $modulos = new Collection([]);
+
+        foreach ($rol_modulos as $rol_modulo) {
+            $modulo = Modulo::defaultOrder()->ancestorsAndSelf($rol_modulo->id_modulo);
+            $modulos = $modulos->merge($modulo);
+        }
+        $modulos_menu = $modulos->unique();
+
+        $transform = function ($menu) use ($modulos_menu) {
+            $responseStructure = [
+                'id_menu' => $menu['id_menu'] ?? null,
+                'nombre' => $menu['nombre'] ?? null,
+                'target' => $menu['target'] ?? null,
+                'items' => $modulos_menu
+            ];
+            return $responseStructure;
+        };
+        // Se hace llamada a la funcion de formateo del menu con sus submenus
+        $avaible_menu = $transform($rol_modulos);
+
+        return $this->apiResponse(
+            [
+                'success' => true,
+                'message' => "Menu encontrado",
+                'result' => $avaible_menu
+            ]
+        );
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -92,15 +143,33 @@ class RolModuloController extends ApiController
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'id_rol' => 'required',
-            'id_modulo' => 'required',
-        ]);
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'id_rol' => [
+                    'required',
+                    'integer',
+                ],
+                'id_modulo' => [
+                    'required',
+                    'integer',
+                    Rule::unique('tt_rol_modulo')->where(function ($query) use ($request) {
+                        return $query->where('id_rol', $request->id_rol)
+                            ->where('id_modulo', $request->id_modulo);
+                    }),
+                ],
+            ],
+            []
+        );
+
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
         }
         $input = $request->all();
-        $rol_modulo = RolModulo::create($input);
+
+        $rol_modulo = Rol::where('id_rol', $input['id_rol'])->first();
+        $rol_modulo->modulos()->attach([$request->id_modulo]);
+        //$rol_modulo = RolModulo::create($input);
 
         return $this->respondCreated([
             'success' => true,
@@ -137,16 +206,30 @@ class RolModuloController extends ApiController
      */
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            'id_rol' => 'required',
-            'id_modulo' => 'required',
-        ]);
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'id_rol' => [
+                    'required',
+                    'integer',
+                    Rule::unique('tt_rol_modulo')->where(function ($query) use ($request) {
+                        return $query->where('id_rol', $request->id_rol)
+                            ->where('id_modulo', $request->id_modulo);
+                    }),
+                ],
+                'id_modulo' => [
+                    'required',
+                    'integer',
+                ],
+            ],
+            []
+        );
+
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
         }
         $rol_modulo = Rol::where('id_rol',$id)->first();
         $rol_modulo->modulos()->syncWithoutDetaching([$request->id_modulo]);
-        //$rol_modulo->modulos()->updateExistingPivot($id, ['id_modulo' => $request->id_modulo]);
 
         return $this->respondSuccess([
             'success' => true,

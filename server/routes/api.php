@@ -67,7 +67,7 @@ Route::group([
     Route::get('rol-modulos/{id}', 'Api\RolModuloController@show');
     Route::post('rol-modulos', 'Api\RolModuloController@store');
     Route::put('rol-modulos/{id}', 'Api\RolModuloController@update');
-    //Route::delete('rol-modulos/{id}','Api\RolModuloController@destroy');
+    Route::post('rol-modulos/menu', 'Api\RolModuloController@menuRol');
 
     Route::get('dependencia/search', [
         'uses' => 'Api\DependenciaController@searchBy',
