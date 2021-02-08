@@ -26,7 +26,7 @@ class Modulo extends Model
      * @var array
      */
     protected $fillable = [
-        'id_menu', 'nombre', 'slug', 'url', 'tipo', 'icono', 'id_parent', 'borrado'
+        'id_menu', 'nombre', 'slug', 'accion', 'url', 'tipo', 'icono', 'id_parent', 'borrado'
     ];
 
     /**

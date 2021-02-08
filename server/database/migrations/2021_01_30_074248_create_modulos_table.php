@@ -17,9 +17,10 @@ class CreateModulosTable extends Migration
             $table->increments('id_modulo');
             $table->integer('id_menu')->nullable()->unsigned();
             $table->string('nombre');
-            $table->string('nombre_corto', 50)->nullable();
-            $table->string('url')->nullable();
+            $table->string('slug', 50)->nullable();
             $table->string('tipo', 10)->nullable();
+            $table->string('accion', 100)->nullable();
+            $table->string('url')->nullable();
             $table->string('icono', 25)->nullable();
             $table->integer('id_parent')->nullable()->unsigned();
             $table->integer('order')->default(0);

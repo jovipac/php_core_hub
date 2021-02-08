@@ -17,6 +17,7 @@ class RolModulo extends Model
      * @var array
      */
     protected $table = 'tt_rol_modulo';
+    protected $primaryKey = 'id_rol_modulo';
 
     /**
      * The attributes that are mass assignable.
