@@ -10,7 +10,7 @@ use App\Models\Entities\UsuarioRol;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use Illuminate\Support\Collection;
+use Kalnoy\Nestedset\Collection;
 
 class RolModuloController extends ApiController
 {
@@ -103,16 +103,27 @@ class RolModuloController extends ApiController
             return $this->respondError($validator->errors(), 422);
         }
 
+        //Empezamos a buscar el primer rol del usuario asignado
         $usuario_rol = UsuarioRol::where('id_usuario', $request->id_usuario)->first();
-        $rol_modulos = RolModulo::where('id_rol', $usuario_rol->id_rol)->get();
+        //$menu = Menu::where('id_menu', $usuario_rol->id_menu)->get();
 
-        $modulos = new Collection([]);
-
+        $rol_modulos = Rol::query()
+        ->select('tt_rol_modulo.id_rol', 'tt_rol_modulo.id_modulo',
+            'ts_rol.nombre AS nombre_rol', 'T01.nombre AS nombre_modulo',
+            'T01.id_parent','T02.nombre AS nombre_modulo_padre')
+            ->join('tt_rol_modulo', 'ts_rol.id_rol', '=', 'tt_rol_modulo.id_rol')
+            ->join('ts_modulo AS T01', 'tt_rol_modulo.id_modulo', '=', 'T01.id_modulo')
+            ->leftJoin('ts_modulo AS T02', 'T02.id_modulo', '=', 'T01.id_parent')
+            ->where('tt_rol_modulo.id_rol', $usuario_rol->id_rol)
+            ->get();
+        //dd($rol_modulos);
+        //Se instancia una collection nueva para ir fusionando los modulos y submodulos asociados al rol
+        $modulos = new Collection();
         foreach ($rol_modulos as $rol_modulo) {
             $modulo = Modulo::defaultOrder()->ancestorsAndSelf($rol_modulo->id_modulo);
-            $modulos = $modulos->merge($modulo);
+            $modulos = $modulo->merge($modulos);
         }
-        $modulos_menu = $modulos->unique();
+        $modulos_menu = $modulos->sortBy('id_modulo')->toTree();
 
         $transform = function ($menu) use ($modulos_menu) {
             $responseStructure = [
@@ -129,8 +140,8 @@ class RolModuloController extends ApiController
         return $this->apiResponse(
             [
                 'success' => true,
-                'message' => "Menu encontrado",
-                'result' => $avaible_menu
+                'message' => "Listado de modulos asociados al usuario",
+                'result' => $modulos_menu
             ]
         );
     }
