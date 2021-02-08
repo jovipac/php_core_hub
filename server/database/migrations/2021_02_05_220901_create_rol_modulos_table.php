@@ -14,6 +14,7 @@ class CreateRolModulosTable extends Migration
     public function up()
     {
         Schema::create('tt_rol_modulo', function (Blueprint $table) {
+            $table->increments('id_rol_modulo');
             $table->integer('id_rol')->unsigned();
             $table->integer('id_modulo')->unsigned();
             $table->boolean('borrado')->default(0)->index();
@@ -28,8 +29,6 @@ class CreateRolModulosTable extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            //SETTING THE PRIMARY KEYS
-            $table->primary(['id_rol', 'id_modulo']);
         });
     }
 
