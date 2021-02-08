@@ -96,8 +96,8 @@ class RolModuloController extends ApiController
     public function menuRol(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'id_rol' => 'required',
-            'id_usuario' => 'required',
+            'id_rol' => 'required|integer',
+            'id_usuario' => 'required|integer',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
@@ -105,7 +105,6 @@ class RolModuloController extends ApiController
 
         //Empezamos a buscar el primer rol del usuario asignado
         $usuario_rol = UsuarioRol::where('id_usuario', $request->id_usuario)->first();
-        //$menu = Menu::where('id_menu', $usuario_rol->id_menu)->get();
 
         $rol_modulos = Rol::query()
         ->select('tt_rol_modulo.id_rol', 'tt_rol_modulo.id_modulo',
@@ -120,7 +119,10 @@ class RolModuloController extends ApiController
         //Se instancia una collection nueva para ir fusionando los modulos y submodulos asociados al rol
         $modulos = new Collection();
         foreach ($rol_modulos as $rol_modulo) {
-            $modulo = Modulo::defaultOrder()->ancestorsAndSelf($rol_modulo->id_modulo);
+            $modulo = Modulo::query()
+                ->select('ts_menu.nombre AS nombre_menu', 'ts_menu.target', 'ts_modulo.*')
+                ->join('ts_menu', 'ts_menu.id_menu', '=', 'ts_modulo.id_menu')
+                ->defaultOrder()->ancestorsAndSelf($rol_modulo->id_modulo);
             $modulos = $modulo->merge($modulos);
         }
         $modulos_menu = $modulos->sortBy('id_modulo')->toTree();
