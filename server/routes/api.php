@@ -32,6 +32,9 @@ Route::group([
 Route::group([
     'middleware' => 'auth:api'
 ], function () {
+    Route::resource('estados', 'Api\EstadoController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
     Route::resource('modulos', 'Api\ModuloController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
@@ -65,7 +68,11 @@ Route::group([
     Route::resource('motivos', 'Api\MotivoController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
+    Route::resource('visitas', 'Api\VisitaController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
 
+    Route::get('estados/restore/{estado}', 'Api\EstadoController@restore')->name('estados.restore');
     Route::get('motivos/restore/{motivo}', 'Api\MotivoController@restore')->name('motivos.restore');
     Route::get('users/restore/{user}', 'Api\UserController@restore')->name('users.restore');
     Route::post('personas/search', 'Api\PersonaController@search')->name('personas.search');
