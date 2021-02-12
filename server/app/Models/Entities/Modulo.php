@@ -3,7 +3,7 @@
 namespace App\Models\Entities;
 
 use Illuminate\Database\Eloquent\Model;
-use Webkid\LaravelBooleanSoftdeletes\SoftDeletesBoolean;
+use App\Http\Traits\SoftDeletesBoolean;
 use Kalnoy\Nestedset\NodeTrait;
 
 class Modulo extends Model

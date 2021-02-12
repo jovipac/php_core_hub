@@ -5,7 +5,7 @@ namespace App\Models\Catalogs;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Traits\SoftDeletesBoolean;
 
-class Dependencia extends Model
+class Motivo extends Model
 {
     use SoftDeletesBoolean;
 
@@ -16,8 +16,8 @@ class Dependencia extends Model
      *
      * @var array
      */
-    protected $table = 'tc_dependencia';
-    protected $primaryKey = 'id_dependencia';
+    protected $table = 'tc_motivo';
+    protected $primaryKey = 'id_motivo';
 
     /**
      * The attributes that are mass assignable.
@@ -25,7 +25,7 @@ class Dependencia extends Model
      * @var array
      */
     protected $fillable = [
-        'nombre', 'borrado'
+        'id_motivo', 'nombre', 'borrado'
     ];
 
     /**
@@ -37,12 +37,4 @@ class Dependencia extends Model
         'borrado',
     ];
 
-    public function puestos()
-    {
-        return $this->hasMany(Puesto::class, 'id_dependencia', 'id_dependencia');
-    }
-
-    public function search(){
-        return "nada";
-    }
 }

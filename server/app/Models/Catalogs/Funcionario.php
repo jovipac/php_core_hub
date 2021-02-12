@@ -3,7 +3,7 @@
 namespace App\Models\Catalogs;
 
 use Illuminate\Database\Eloquent\Model;
-use Webkid\LaravelBooleanSoftdeletes\SoftDeletesBoolean;
+use App\Http\Traits\SoftDeletesBoolean;
 
 class Funcionario extends Model
 {

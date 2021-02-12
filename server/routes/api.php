@@ -62,7 +62,11 @@ Route::group([
     Route::resource('personas', 'Api\PersonaController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy',
     ]]);
+    Route::resource('motivos', 'Api\MotivoController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
 
+    Route::get('motivos/restore/{motivo}', 'Api\MotivoController@restore')->name('motivos.restore');
     Route::get('users/restore/{user}', 'Api\UserController@restore')->name('users.restore');
     Route::get('personas/restore/{persona}', 'Api\PersonaController@restore')->name('personas.restore');
 

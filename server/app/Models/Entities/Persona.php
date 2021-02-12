@@ -44,4 +44,15 @@ class Persona extends Model
      */
     protected $dates = ['fecha_nacimiento'];
 
+    protected $appends = ['edad'];
+
+    public function getEdadAttribute()
+    {
+        $value = null;
+        if (!is_null($this->attributes['fecha_nacimiento'])) {
+            $value = \Carbon\Carbon::parse($this->fecha_nacimiento)->age;
+        }
+        return $value;
+    }
+
 }
