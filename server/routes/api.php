@@ -44,9 +44,6 @@ Route::group([
     Route::resource('usuario-roles', 'Api\UsuarioRolController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
-    /* Route::resource('rol-modulos', 'Api\RolModuloController', ['only' => [
-        'index', 'store', 'update', 'show', 'destroy'
-    ]]); */
     Route::resource('funcionarios', 'Api\FuncionarioController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
@@ -59,6 +56,15 @@ Route::group([
     Route::resource('auxiliaturas', 'Api\AuxiliaturaController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
+    Route::resource('sexo', 'Api\SexoController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+    Route::resource('personas', 'Api\PersonaController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy',
+    ]]);
+
+    Route::get('users/restore/{user}', 'Api\UserController@restore')->name('users.restore');
+    Route::get('personas/restore/{persona}', 'Api\PersonaController@restore')->name('personas.restore');
 
     Route::get('rol-modulos', 'Api\RolModuloController@index')->name('menu.index');
     Route::get('rol-modulos/assigned/{id}', 'Api\RolModuloController@assigned');

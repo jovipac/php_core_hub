@@ -108,6 +108,21 @@ class UserController extends ApiController
     {
         $user->delete();
 
-        return $this->respondSuccess('Eliminado con exito');
+        return $this->respondSuccess('Usuario eliminado con exito');
     }
+
+    /**
+     * Restore the specified resource from storage.
+     *
+     * @param  \App\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id)
+    {
+        $user = User::withTrashed()->findorfail($id);
+        $user->restore();
+
+        return $this->respondSuccess('Usuario restaurado con exito');
+    }
+
 }

@@ -110,4 +110,19 @@ class PersonaController extends ApiController
 
         return $this->respondSuccess('Persona eliminada con exito');
     }
+
+    /**
+     * Restore the specified resource from storage.
+     *
+     * @param  \App\Persona  $persona
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id)
+    {
+        $persona = Persona::withTrashed()->findorfail($id);
+        $persona->restore();
+
+        return $this->respondSuccess('Persona restaurada con exito');
+    }
+
 }

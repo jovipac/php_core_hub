@@ -36,7 +36,7 @@ class SexoController extends ApiController
     {
         $validator = Validator::make($request->all(), [
             'nombre' => 'required|string',
-            'slug' => 'string|unique',
+            'slug' => 'string|unique:tc_sexo',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
@@ -79,7 +79,7 @@ class SexoController extends ApiController
     {
         $validator = Validator::make($request->all(), [
             'nombre' => 'required|string',
-            'slug' => 'string|unique',
+            'slug' => 'string',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
