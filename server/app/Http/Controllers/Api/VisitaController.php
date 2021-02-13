@@ -16,7 +16,14 @@ class VisitaController extends ApiController
      */
     public function index()
     {
-        //
+        $visitas = Visita::all();
+        return $this->apiResponse(
+            [
+                'success' => true,
+                'message' => "Listado de registros de visitas",
+                'result' => $visitas
+            ]
+        );
     }
 
     /**
@@ -37,7 +44,26 @@ class VisitaController extends ApiController
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'id_persona' => 'required|integer',
+            'id_motivo' => 'required|integer',
+            'entrada' => 'date_format:H:i|before:tomorrow',
+            'salida' => 'nullable|date_format:H:i|after:entrada',
+            'llamadas' => 'integer',
+            'id_dependencia' => 'required|integer',
+            'id_funcionario' => 'required|integer',
+        ]);
+        if ($validator->fails()) {
+            return $this->respondError($validator->errors(), 422);
+        }
+        $input = $request->all();
+        $visita = Visita::create($input);
+
+        return $this->respondCreated([
+            'success' => true,
+            'message' => "Registro de visita creado con exito",
+            'result' => $visita
+        ]);
     }
 
     /**
@@ -48,7 +74,13 @@ class VisitaController extends ApiController
      */
     public function show(Visita $visita)
     {
-        //
+        return $this->apiResponse(
+            [
+                'success' => true,
+                'message' => "Registro de visita encontrado con exito",
+                'result' => $visita
+            ]
+        );
     }
 
     /**
@@ -71,7 +103,26 @@ class VisitaController extends ApiController
      */
     public function update(Request $request, Visita $visita)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'id_persona' => 'integer',
+            'id_motivo' => 'integer',
+            'entrada' => 'date_format:H:i|before:tomorrow',
+            'salida' => 'nullable|date_format:H:i|after:entrada',
+            'llamadas' => 'integer',
+            'id_dependencia' => 'integer',
+            'id_funcionario' => 'integer',
+        ]);
+        if ($validator->fails()) {
+            return $this->respondError($validator->errors(), 422);
+        }
+
+        $visita->update($request->all());
+
+        return $this->respondSuccess([
+            'success' => true,
+            'message' => "Registro de visita actualizado con exito",
+            'result' => $visita
+        ]);
     }
 
     /**
@@ -82,6 +133,8 @@ class VisitaController extends ApiController
      */
     public function destroy(Visita $visita)
     {
-        //
+        $visita->delete();
+
+        return $this->respondSuccess('Registro de visita eliminado con exito');
     }
 }
