@@ -68,6 +68,7 @@ class PersonaController extends ApiController
             'nombres' => 'required|string',
             'apellidos' => 'required|string',
             'id_sexo' => 'required|integer',
+            'fecha_nacimiento' => 'date',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
@@ -112,7 +113,8 @@ class PersonaController extends ApiController
             'cui' => 'required',
             'nombres' => 'required|string',
             'apellidos' => 'required|string',
-            'id_sexo' => 'required|integer',
+            'id_sexo' => 'integer',
+            'fecha_nacimiento' => 'date',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
