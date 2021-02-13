@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\ApiController;
 use App\Models\Visita;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
-class VisitaController extends Controller
+class VisitaController extends ApiController
 {
     /**
      * Display a listing of the resource.

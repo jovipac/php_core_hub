@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\ApiController;
 use App\Models\Catalogs\Estado;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
