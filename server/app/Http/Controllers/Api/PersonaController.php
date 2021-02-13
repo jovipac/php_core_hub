@@ -33,20 +33,29 @@ class PersonaController extends ApiController
      */
     public function search(Request $request)
     {
+        $resSuccess = false;
         if ($request->has('cui')) {
+            $resMessage = '';
             $persona = Persona::where('cui', 'like', '%' . $request->input('cui') . '%')->first();
+            if (empty($persona) == false) {
+                $resSuccess = true;
+                $resMessage = "Persona encontrada con exito";
+            } else {
+                $resSuccess = false;
+                $resMessage = "Persona no encontrada";
+            }
 
             return $this->apiResponse(
                 [
-                    'success' => true,
-                    'message' => "Persona encontrada con exito",
+                    'success' => $resSuccess,
+                    'message' => $resMessage,
                     'result' => $persona
                 ]
             );
         } else {
             return $this->apiResponse(
                 [
-                    'success' => false,
+                    'success' => $resSuccess,
                     'message' => "Persona no encontrada",
                     'result' => []
                 ]
