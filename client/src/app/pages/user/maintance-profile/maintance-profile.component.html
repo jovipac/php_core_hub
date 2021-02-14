@@ -1,0 +1,286 @@
+<div class="row">
+  <div class="maintance">
+    <div class="col-md-12 buttoms">
+      <!-- Button trigger modal -->
+      <button (click)="open(addProfile,0)" class="btn btn-primary float-right btn-md button-separate"><i
+          class="icofont icofont-plus-circle">
+        </i>Nuevo Perfil</button>
+    </div>
+
+    <div class="col-md-12 container-table">
+      <div class="table-responsive">
+        <table class="table" id="list">
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Nombre</th>
+              <th>Descripción</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let profile of listRol">
+              <td>{{profile.slug}}</td>
+              <td>{{profile.nombre}}</td>
+              <td>{{profile.descripcion}}</td>
+              <td>
+                <div class="row">
+                  <div class="col">
+                    <div ngbDropdown class="d-inline-block">
+                      <button class="btn btn-outline-primary btn-mini" id="dropdownBasic1"
+                        ngbDropdownToggle>Acciones</button>
+                      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                        <button class="btn-mini" (click)="open(updateProfile,profile.id_rol); getRol(profile.id_rol)"
+                          ngbDropdownItem>Actualizar</button>
+                        <button class="btn-mini"
+                          (click)="open(addPermit, profile.id_rol); loadModuleAssigned(profile.id_rol)"
+                          ngbDropdownItem>Asignar
+                          herramientas</button>
+                        <button class="btn-mini" (click)="deleteProfile(profile.id_rol)"
+                          ngbDropdownItem>Eliminar</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<ng-template #addProfile let-c="close" let-d="dismiss">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h6 class="modal-title" id="modal-title-default">Administración de perfiles</h6>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form novalidate [formGroup]="createProfile" (ngSubmit)="newProfile($event)">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">Código:</label>
+              <input type="text" class="form-control" formControlName="codigo" placeholder="Código" required>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">Nombre:</label>
+              <input type="text" class="form-control" formControlName="nombre" placeholder="Nombre" required>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">Estado:</label>
+              <select class="form-control" formControlName="borrado" required>
+                <option value="">Seleccionar</option>
+                <option value="0">Activo</option>
+                <option value="1">Inactivo</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="">Descripción:</label>
+              <textarea cols="30" rows="3" class="form-control" formControlName="slug"
+                placeholder="Descripción"></textarea>
+            </div>
+          </div>
+
+
+        </div>
+        <div class="alert alert-warning alert-dismissible fade show" role="alert" *ngIf="errorState">
+          <span class="alert-inner--text">{{message.error}}</span>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="row">
+
+          <div class="col-md-6">
+            <button type="button" class="btn btn-danger" (click)="getDismissReason('Close click')">
+              Cancelar
+            </button>
+          </div>
+          <div class="col-md-6">
+            <button type="submit" class="btn btn-info">Guardar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #updateProfile let-c="close" let-d="dismiss">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h6 class="modal-title" id="modal-title-default">Administración de usuarios</h6>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form novalidate [formGroup]="updatingProfile" (ngSubmit)="updateProfiles($event)">
+        <div class="row">
+
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="">Código:</label>
+              <input type="text" class="form-control" formControlName="slug" required placeholder="Código">
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="">Nombre:</label>
+              <input type="text" class="form-control" formControlName="nombre" required placeholder="Nombre">
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="">Estado:</label>
+              <select class="form-control" formControlName="borrado" required>
+                <option value="">Seleccionar</option>
+                <option value="0">Activo</option>
+                <option value="1">Inactivo</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="">Descripcion:</label>
+              <textarea cols="30" rows="3" class="form-control" formControlName="descripcion" required></textarea>
+            </div>
+          </div>
+
+        </div>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="errorState">
+          <span class="alert-inner--text">{{message.error}}</span>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="row">
+
+          <div class="col-md-6">
+            <button type="button" class="btn btn-danger" (click)="getDismissReason('Close click')">
+              Cancelar
+            </button>
+          </div>
+          <div class="col-md-6">
+            <button type="submit" class="btn btn-info">Guardar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #addPermit let-c="close" let-d="dismiss">
+  <ngx-spinner></ngx-spinner>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h6 class="modal-title" id="modal-title-default">Administración de usuarios</h6>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="">Código:</label>
+            <input type="text" class="form-control" [(ngModel)]="codeAssigned">
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="">Nombre:</label>
+            <input type="text" class="form-control" [(ngModel)]="nameAssigned">
+          </div>
+        </div>
+      </div>
+      <div class="row container-list">
+        <div class="col-md-5">
+          <ul class="list-group">
+            <li *ngFor="let u of unassigned" class="{{(!u.active) ? 'list-group-item' : 'list-group-item active' }}"
+              (click)="selectAsignatureAccess(u.id_modulo)">
+              <b>Modulo: </b>{{u.nombre_modulo_padre}}
+              <br>
+              <b>Herramienta: </b>{{u.nombre_modulo}}
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-2 ">
+          <div class="row align-middle">
+            <div class="col-md-12 ">
+              <button
+                class="{{(!assignedOne) ? 'btn btn-success btn-sm size' : 'btn btn-disabled disabled btn-sm size' }}"
+                (click)="rolAssignedOne()" [disabled]="assignedOne"> > </button>
+            </div>
+            <div class="col-md-12" style="margin-top: 1.5%;">
+              <button class="btn btn-success btn-sm size" (click)="rollAssignedAll()"> >> </button>
+            </div>
+            <div class="col-md-12" style="margin-top: 20px;">
+              <button class="btn btn-danger btn-sm size" (click)="rollUnassignedAll()">
+                << </button>
+            </div>
+            <div class="col-md-12" style="margin-top: 1%;">
+              <button
+                class="{{(!unassignedOne) ? 'btn btn-success btn-sm size' : 'btn btn-disabled disabled btn-sm size' }}"
+                (click)="rolUnassignedOne()" [disabled]="unassignedOne">
+                < </button>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md-5">
+          <ul class="list-group">
+            <li *ngFor="let u of assigned" class="{{(!u.active) ? 'list-group-item' : 'list-group-item active' }}"
+              (click)="selectUnasignatureAccess(u.id_modulo)">
+              <b>Modulo: </b>{{u.nombre_modulo_padre}}
+              <br>
+              <b>Herramienta: </b>{{u.nombre_modulo}}
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="errorState">
+        <span class="alert-inner--text">{{message.error}}</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <br><br>
+      <div class="row">
+        <div class="col-md-12">
+          <button type="button" class="btn btn-danger float-left" (click)="getDismissReason('Close click')">
+            Cancelar
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+    </div>
+  </div>
+</ng-template>

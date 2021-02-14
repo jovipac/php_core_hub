@@ -1,23 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
-
-import { IconSetService } from '@coreui/icons-angular';
-import { freeSet } from '@coreui/icons';
+import {Component, OnInit} from '@angular/core';
+import {NavigationEnd, Router} from '@angular/router';
 
 @Component({
-  // tslint:disable-next-line
-  selector: 'body',
-  template: '<router-outlet></router-outlet>',
-  providers: [IconSetService],
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  constructor(
-    private router: Router,
-    public iconSet: IconSetService
-  ) {
-    // iconSet singleton
-    iconSet.icons = { ...freeSet };
-  }
+  title = 'SGD';
+
+  constructor(private router: Router) { }
 
   ngOnInit() {
     this.router.events.subscribe((evt) => {

@@ -1,0 +1,73 @@
+<header>
+  <div class="">
+    <div class="row">
+      <div class="col-md-1 col one">
+        <div class="dropdown">
+          <button class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span class="three"></span>
+          </button>
+          <ul class="dropdown-menu multi-level" *ngFor="let menu of menuItems">
+            <li class="dropdown-submenu" *ngFor="let menus of menu.main">
+              <a class="dropdown-item" href="#">{{menus.name}}</a>
+              <ul class="dropdown-menu " *ngIf="menus.children.length > 0">
+                <li class="dropdown-item" *ngFor="let item of menus.children"><a
+                    [routerLink]="[menus.state,item.state]">{{item.name}} {{menus.state}}</a></li>
+              </ul>
+
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <a [routerLink]="['/dashboard']"> 
+          <img class="image" src="../../../assets/images/pdh_images/logo_inicio_sesion.png" alt="">
+        </a>
+      </div>
+      <div class="col-md-3 col three">
+        <ul>
+          <li>
+            <a href="#">
+              <span class="text">Modulo 1 </span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-3 col three">
+        <input type="text" class="form-control" placeholder="Buscar">
+      </div>
+      <div class="col-md-2 col four">
+        <div class="row">
+          <div class="col-md-6 colint twoint">
+            {{username}}
+          </div>
+          <div class="col-md-6">
+              <img class="avatar" src="../../../assets/images/pdh_images/avatar.png" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="pcoded-main-container">
+  <div class="pcoded-wrapper">
+    <div class="pcoded-content">
+      <div class="pcoded-inner-content">
+        <div class="main-body">
+          <div class="page-wrapper">
+            <app-title></app-title>
+            <app-breadcrumbs></app-breadcrumbs>
+            <div class="page-body">
+              <router-outlet>
+                <app-spinner></app-spinner>
+              </router-outlet>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

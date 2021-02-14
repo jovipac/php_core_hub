@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ng": {
+    "guru-able-v1.7.0": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -17,37 +17,36 @@
             "tsConfig": "src/tsconfig.app.json",
             "polyfills": "src/polyfills.ts",
             "assets": [
-              "src/assets"
+              "src/assets",
+              "src/favicon.ico"
             ],
             "styles": [
-              "node_modules/@coreui/icons/css/free.css",
-              "node_modules/flag-icon-css/css/flag-icon.css",
-              "node_modules/font-awesome/css/font-awesome.css",
-              "node_modules/simple-line-icons/dist/styles/simple-line-icons.css",
-              "src/scss/style.scss"
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/font-awesome-scss/scss/font-awesome.scss",
+              "node_modules/ti-icons/css/themify-icons.css",
+              "src/assets/icon/icofont/css/icofont.scss",
+              "node_modules/ngx-toastr/toastr.css",
+              "node_modules/datatables.net-dt/css/jquery.dataTables.css",
+              "node_modules/datatables.net-buttons-dt/css/buttons.dataTables.css",
+              "src/styles.scss"
             ],
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "./node_modules"
-              ]
-            },
-            "scripts": [],
-            "allowedCommonJsDependencies": [
-              "chart.js",
-              "classnames"
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/jszip/dist/jszip.js",
+              "node_modules/datatables.net/js/jquery.dataTables.js",
+              "node_modules/datatables.net-buttons/js/dataTables.buttons.js",
+              "node_modules/datatables.net-buttons/js/buttons.colVis.js",
+              "node_modules/datatables.net-buttons/js/buttons.flash.js",
+              "node_modules/datatables.net-buttons/js/buttons.html5.js",
+              "node_modules/datatables.net-buttons/js/buttons.print.js"
             ]
           },
           "configurations": {
             "production": {
-              "budgets": [
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
-                }
-              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
+              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
@@ -65,18 +64,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "ng:build"
+            "browserTarget": "guru-able-v1.7.0:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "ng:build:production"
+              "browserTarget": "guru-able-v1.7.0:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ng:build"
+            "browserTarget": "guru-able-v1.7.0:build"
           }
         },
         "test": {
@@ -86,19 +85,34 @@
             "karmaConfig": "./karma.conf.js",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.spec.json",
-            "scripts": [],
-            "styles": [
-              "node_modules/@coreui/icons/css/free.css",
-              "node_modules/flag-icon-css/css/flag-icon.css",
-              "node_modules/font-awesome/css/font-awesome.css",
-              "node_modules/simple-line-icons/dist/styles/simple-line-icons.css",
-              "src/scss/style.scss"
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/froala-editor/js/froala_editor.pkgd.min.js",
+              "src/assets/charts/flot/jquery.flot.js",
+              "src/assets/charts/flot/jquery.flot.categories.js",
+              "src/assets/charts/flot/jquery.flot.pie.js",
+              "src/assets/charts/knob/jquery.knob.js",
+              "src/assets/charts/waterball/createWaterBall-jquery.js",
+              "node_modules/jquery-sparkline/jquery.sparkline.min.js",
+              "node_modules/datatables.net/js/jquery.dataTables.js",
+              "node_modules/jszip/dist/jszip.js",
+              "node_modules/datatables.net-buttons/js/dataTables.buttons.js",
+              "node_modules/datatables.net-buttons/js/buttons.colVis.js",
+              "node_modules/datatables.net-buttons/js/buttons.flash.js",
+              "node_modules/datatables.net-buttons/js/buttons.html5.js",
+              "node_modules/datatables.net-buttons/js/buttons.print.js"
             ],
-            "stylePreprocessorOptions": {
-              "includePaths": [
-                "./node_modules"
-              ]
-            },
+            "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/font-awesome-scss/scss/font-awesome.scss",
+              "node_modules/ti-icons/css/themify-icons.css",
+              "src/assets/icon/icofont/css/icofont.scss",
+              "src/styles.scss",
+              "node_modules/ngx-toastr/toastr.css",
+              "node_modules/datatables.net-dt/css/jquery.dataTables.css",
+              "node_modules/datatables.net-buttons-dt/css/buttons.dataTables.css"
+
+            ],
             "assets": [
               "src/assets",
               "src/favicon.ico"
@@ -119,16 +133,16 @@
         }
       }
     },
-    "ng-e2e": {
-      "root": "",
-      "sourceRoot": "",
+    "guru-able-v1.7.0-e2e": {
+      "root": "e2e",
+      "sourceRoot": "e2e",
       "projectType": "application",
       "architect": {
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "ng:serve"
+            "devServerTarget": "guru-able-v1.7.0:serve"
           }
         },
         "lint": {
@@ -145,17 +159,17 @@
       }
     }
   },
-  "defaultProject": "ng",
+  "defaultProject": "guru-able-v1.7.0",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",
-      "style": "scss"
+      "styleext": "scss"
     },
     "@schematics/angular:directive": {
       "prefix": "app"
     }
   },
   "cli": {
-    "analytics": false
+    "analytics": "41f6993f-bc13-4d1f-b738-53c14e5ebc52"
   }
 }

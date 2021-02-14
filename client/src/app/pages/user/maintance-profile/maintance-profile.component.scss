@@ -1,0 +1,35 @@
+body {
+    font-size: 18px;
+}
+
+.maintance {
+    background-color: #ffffff;
+    height: 70vh;
+    width: 100%;
+}
+
+.buttons {
+    height: 200px;
+}
+
+.button-separate {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+.container-table {
+    margin-top: 100px;
+}
+
+.table.dataTable {
+    font-size: 20px !important;
+}
+
+.size {
+    width: 100px;
+    justify-content: center;
+}
+
+.container-list {
+    min-width: 50vh;
+    max-height: auto;
+}

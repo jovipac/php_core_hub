@@ -1,0 +1,90 @@
+<section class="login-change common-img-bg">
+  <!-- starts -->
+  <div class="row">
+    <div class="col-md-6">
+      <!-- Authentication card start -->
+      <div class="login-card card-body auth-body" style="margin-top: 25%;">
+        <div class="auth-box">
+
+          <b>Misión</b>
+          <br>
+          Ser la Institución que defiende los Derechos Humanos de los guatemaltecos sin discriminación alguna, con
+          énfasis en la acción preventiva y con capacidad de intervención: territorial, oportuna y efectiva, con
+          independencia, objetividad e imparcialidad.
+          <br>
+          <br>
+          <b>Visión</b>
+          <br>
+          Promover el respeto de los Derechos Humanos de los guatemaltecos con atención integral, educación,
+          promoción, procuración y supervisión de la administración pública, para lograr la vigencia de los mismos,
+          así como para el logro del bien común y la convivencia pacífica en observancia de la Constitución Política
+          de la República de Guatemala, Tratados y Convenciones Internacionales en materia de Derechos Humanos.
+        </div>
+        <!-- end of form -->
+      </div>
+      <!-- Authentication card end -->
+    </div>
+    <div class="col-md-6">
+      <!-- Authentication card start -->
+      <div class="login-card card-body auth-body" style="margin-top: 20%;">
+        <div class="text-center">
+          <img src="assets/images/pdh_images/logo_inicio_sesion.png">
+        </div>
+        <form class="md-float-material" novalidate [formGroup]="login" >
+          <div class="auth-box" style="border: 2px solid;">
+            <div class="row m-b-20">
+              <div class="col-md-12">
+                <h5 class="text-center txt-primary">Inicio de sesión.</h5>
+              </div>
+            </div>
+            <hr />
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Usuario" formControlName="username"
+                placeholder="usuario" required type="text">
+              <span class="md-line"></span>
+              <br>
+            </div>
+            <div *ngIf="
+            login.get('username').errors && login.get('username').touched ">
+              <p *ngIf="login.get('username').hasError('required')" class="error-message">
+                * Es un campo requerido
+              </p>
+            </div>
+            <div class="input-group">
+              <input type="password" class="form-control" placeholder="Contraseña" formControlName="password"
+                placeholder="Password" required>
+              <span class="md-line"></span>
+            </div>
+            <div *ngIf="login.get('password').errors && login.get('password').touched">
+              <p *ngIf="login.get('password').hasError('required')" class="error-message">
+                * Es un campo requerido
+              </p>
+            </div>
+            <p class="danger" *ngIf="errorLogin">
+              {{ message.error }}
+            </p>
+            <div class="row m-t-30">
+              <div class="col-md-12">
+                <button type="button" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20"
+                  (click)="signin($event)">
+                  Ingresar
+                </button>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-md-12">
+                <a href="#">¿Olvidé mi contraseña?</a>
+              </div>
+            </div>
+          </div>
+        </form>
+        <!-- end of form -->
+      </div>
+      <!-- Authentication card end -->
+    </div>
+    <!-- end of col-sm-12 -->
+  </div>
+  <!-- end of row -->
+  <!-- end of -->
+</section>

@@ -1,0 +1,317 @@
+<!-- maintance users -->
+<div class="row">
+  <div class="col-lg-12">
+    <app-card [classHeader]="true" [blockClass]="'table-border-style'">
+      <div class="col-lg-12 buttoms">
+        <!-- Button trigger modal -->
+        <button (click)="open(addUser,0);" class="btn btn-primary float-right btn-md button-separate"><i
+            class="icofont icofont-plus-circle">
+          </i>Nuevo usuario</button>
+      </div>
+      <div class="table-responsive" >
+        <div class="col-md-12" style="margin-bottom: 50px;">
+          <table class="table  table-striped" id="list">
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Usuario</th>
+                <th>Nombres</th>
+                <th>Apellidos</th>
+                <th>Dependencia</th>
+                <th>Puesto</th>
+                <th>Perfil</th>
+                <th>Correo</th>
+                <th>Estado</th>
+                <th>Auxilatura</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of listUsers">
+                <td>{{user.codigo}}</td>
+                <td>{{user.username}}</td>
+                <td>{{user.nombres}}</td>
+                <td>{{user.apellidos}}</td>
+                <td>{{user.nombre_dependencia}}</td>
+                <td>{{user.nombre_puesto}}</td>
+                <td>{{user.nombre_rol}}</td>
+                <td>{{user.email}}</td>
+                <td><span class="badge bg-success">Activo</span></td>
+                <td>{{user.nombre_auxiliatura}}</td>
+                <td>
+                  <div class="row">
+                    <div class="col">
+                      <div ngbDropdown class="d-inline-block">
+                        <button class="btn btn-outline-primary btn-mini" id="dropdownBasic1"
+                          ngbDropdownToggle>Acciones</button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                          <button class="btn-mini"
+                            (click)="open(updateUser,user.id_funcionario); getOficial(user.id_funcionario)"
+                            ngbDropdownItem>Actualizar</button>
+                          <button class="btn-mini" (click)="deleteOficial(user.id_funcionario)" ngbDropdownItem>Eliminar</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </app-card>
+  </div>
+</div>
+
+
+
+<ng-template #addUser let-c="close" let-d="dismiss">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h6 class="modal-title" id="modal-title-default">Administración de usuarios</h6>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form novalidate [formGroup]="createOficial" (ngSubmit)="createNewOficial($event)">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="">* Código:</label>
+              <input type="text" class="form-control" formControlName="codigo" placeholder="Código" required>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="">* Usuario:</label>
+              <input type="text" class="form-control" formControlName="username" placeholder="Usuario" required>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="">* Correo electrónico:</label>
+              <input type="text" class="form-control" formControlName="email" placeholder="Correo electrónico" required>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="">* Nombres:</label>
+              <input type="text" class="form-control" formControlName="nombres" placeholder="Nombres" required>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="">* Apellidos:</label>
+              <input type="text" class="form-control" formControlName="apellidos" placeholder="Apellidos" required>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="">* Dependencia:</label>
+              <select class="form-control" formControlName="id_dependencia" required>
+                <option value="">SELECCIONAR</option>
+                <option *ngFor="let dependency of listDependency" value="{{dependency.id_dependencia}}">
+                  {{dependency.nombre}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="">* Puesto:</label>
+              <select class="form-control" formControlName="id_puesto" required>
+                <option value="">Seleccionar</option>
+                <option *ngFor="let position of listPosition" value="{{position.id_puesto}}">{{position.nombre}}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="">* Perfil inicial:</label>
+              <select class="form-control" formControlName="id_rol" required disabled>
+                <option value="1">Perfil inicial</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="">* Estado:</label>
+              <select class="form-control" formControlName="borrado" required>
+                <option value="">Seleccionar</option>
+                <option value="0">Activo</option>
+                <option value="1">Inactivo</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="">* Auxilatura:</label>
+              <select class="form-control" formControlName="id_auxiliatura" required>
+                <option value="">Seleccionar</option>
+                <option *ngFor="let auxiliary of listAuxiliary" value="{{auxiliary.id_auxiliatura}}">
+                  {{auxiliary.nombre}}</option>
+              </select>
+            </div>
+          </div>
+
+        </div>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="errorState">
+          <span class="alert-inner--text">{{message.error}}</span>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="row">
+
+          <div class="col-md-6">
+            <button type="button" class="btn btn-danger" (click)="getDismissReason('Close click')">
+              Cancelar
+            </button>
+          </div>
+          <div class="col-md-6">
+            <button type="submit" class="btn btn-info">Guardar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #updateUser let-c="close" let-d="dismiss">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h6 class="modal-title" id="modal-title-default">Administración de usuarios</h6>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form novalidate [formGroup]="updateOficial" (ngSubmit)="updateNewOficial($event)">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="">Código:</label>
+              <input type="text" class="form-control" formControlName="codigo" placeholder="Código" required>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="">Usuario:</label>
+              <input type="text" class="form-control" formControlName="username" placeholder="Usuario" required>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="">Correo electrónico:</label>
+              <input type="text" class="form-control" formControlName="email" placeholder="Correo electrónico" required>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="">Nombres:</label>
+              <input type="text" class="form-control" formControlName="nombres" placeholder="Nombres" required>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="">Apellidos:</label>
+              <input type="text" class="form-control" formControlName="apellidos" placeholder="Apellidos" required>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="">Dependencia:</label>
+              <select class="form-control" formControlName="id_dependencia" required>
+                <option value="">SELECCIONAR</option>
+                <option *ngFor="let dependency of listDependency" value="{{dependency.id_dependencia}}">
+                  {{dependency.nombre}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="">Puesto:</label>
+              <select class="form-control" formControlName="id_puesto" required>
+                <option value="">Seleccionar</option>
+                <option *ngFor="let position of listPosition" value="{{position.id_puesto}}">{{position.nombre}}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="">Perfil inicial:</label>
+              <select class="form-control" formControlName="id_rol" required>
+                <option value="">Seleccionar</option>
+                <option *ngFor="let rol of listRol" value="{{rol.id_rol}}">{{rol.nombre}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="">Estado:</label>
+              <select class="form-control" formControlName="borrado" required>
+                <option value="">Seleccionar</option>
+                <option value="0">Activo</option>
+                <option value="1">Inactivo</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="">Auxilatura:</label>
+              <select class="form-control" formControlName="id_auxiliatura" required>
+                <option value="">Seleccionar</option>
+                <option *ngFor="let auxiliary of listAuxiliary" value="{{auxiliary.id_auxiliatura}}">
+                  {{auxiliary.nombre}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="errorState">
+          <span class="alert-inner--text">{{message.error}}</span>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="row">
+
+          <div class="col-md-6">
+            <button type="button" class="btn btn-danger" (click)="getDismissReason('Close click')">
+              Cancelar
+            </button>
+          </div>
+          <div class="col-md-6">
+            <button type="submit" class="btn btn-info">Guardar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+
+    </div>
+  </div>
+</ng-template>

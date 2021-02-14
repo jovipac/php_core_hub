@@ -5,10 +5,9 @@
 /dist-server
 /tmp
 /out-tsc
-
+/dist.7z
 # dependencies
 /node_modules
-package-lock.json
 
 # IDEs and editors
 /.idea
@@ -32,7 +31,6 @@ package-lock.json
 /coverage
 /libpeerconnection.log
 npm-debug.log
-yarn-error.log
 testem.log
 /typings
 
