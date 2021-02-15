@@ -1,4 +1,4 @@
-.dropdown-menu .multi-level{
+.dropdown-menu .multi-level {
     margin-top: -20px !important;
 }
 .dropdown-item {
@@ -14,16 +14,26 @@ select {
     -moz-appearance: none;
 }
 
-.image {
-    width: 60%;
-    height: 50%;
-    margin-top: 2%;
-    margin-bottom: 2%;
-}
 .avatar {
-    width: 60%;
-    height: 60%;
+    border-radius: 50%;
+    width: 50px !important;
+    height: 50px !important;
 }
+
+@media (max-width: 992px) {
+    .avatar {
+        display: none;
+    }
+}
+
+@media (max-width: 1380px) and (min-width: 993px) {
+    .avatar {
+        margin-top: -50px;
+        margin-left: 125px;
+        float: right;
+    }
+}
+
 
 body {
     color: #172b4d;
@@ -542,7 +552,7 @@ header .col.four .colint {
 header .col.four .colint.img img {
     overflow: hidden;
     border-radius: 50px;
-    -moz-border-radius: 50px;
+    -moz-border-radius: 75px;
     -webkit-border-radius: 50px;
 }
 header .col.four .colint.oneint,
@@ -1009,7 +1019,7 @@ header .col.four .colint.twoint {
     border-bottom-left-radius: 5px;
 }
 .dropdown-menu li a {
-    color: #fff!important;
+    color: #fff !important;
     position: relative;
     padding: 8px 20px;
 }
@@ -1299,7 +1309,7 @@ header .col.four .colint.twoint {
     border-bottom: solid 1px #00b528;
     color: #00b528;
 }
-.col-5 .col-md-3 {
+.col-5 {
     width: 20%;
 }
 .formmodal input,
@@ -1359,7 +1369,7 @@ header .col.four .colint.twoint {
         padding: 0 5px;
     }
     header .col.four .colint {
-        font-size: 12px;
+        font-size: 14px;
     }
     .content-g .nav-bottom {
         text-align: center;
@@ -1438,7 +1448,6 @@ header .col.four .colint.twoint {
         float: left;
     }
     header .col.four .colint.oneint {
-        width: 7%;
         padding: 12px 0 15px 0;
         float: right;
     }
@@ -1448,7 +1457,6 @@ header .col.four .colint.twoint {
         float: right;
     }
     header .col.four .colint.img {
-        width: 25%;
         float: right;
         display: none;
     }

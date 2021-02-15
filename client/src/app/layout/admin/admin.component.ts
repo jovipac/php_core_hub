@@ -403,6 +403,16 @@ export class AdminComponent implements OnInit {
           }
           /* Finaliza recorrido si es menu lateral */
         }
+        let exit = {
+          children: [],
+          icon: "ti-user",
+          name: "Salir",
+          short_label: "B",
+          state: "/",
+          type: "link",
+        }
+
+        menuLeft.push(exit)
         this.menuItems = [{
           main: menuLeft
         }]
