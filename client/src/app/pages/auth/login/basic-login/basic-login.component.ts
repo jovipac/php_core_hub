@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from "@angular/forms";
 import { Router } from '@angular/router';
 import { ServicesService } from '../../../../service/services.service'
-import CryptoJS  from 'crypto-js';
+import CryptoJS  from 'crypto-es';
 
 @Component({
   selector: 'app-basic-login',

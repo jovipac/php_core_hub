@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ServicesService } from '../../service/services.service'
-import CryptoJS from 'crypto-js';
+import CryptoJS from 'crypto-es';
 
 export interface BadgeItem {
   type: string;

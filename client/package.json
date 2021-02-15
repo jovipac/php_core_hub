@@ -28,7 +28,7 @@
     "bootstrap": "^4.0.0",
     "c3": "^0.4.21",
     "core-js": "^2.4.1",
-    "crypto-js": "^4.0.0",
+    "crypto-es": "^1.2.7",
     "css-animator": "^2.3.0",
     "d3": "^4.13.0",
     "datatables.net": "^1.10.23",

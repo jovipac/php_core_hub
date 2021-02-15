@@ -3,7 +3,7 @@ import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular
 import { Menu } from '../../shared/menu-items/menu-items';
 import { Router } from '@angular/router';
 import { ServicesService } from '../../service/services.service'
-import CryptoJS from 'crypto-js';
+import CryptoJS from 'crypto-es';
 import * as $ from 'jquery';
 
 @Component({
