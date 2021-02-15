@@ -32,13 +32,13 @@ const routes: Routes = [
       // {
       //   path: 'user',
       //   loadChildren: () => import('./pages/user/profile/profile.module').then(m => m.ProfileModule)
-      // }, 
+      // },
       {
         path: 'user',
         loadChildren: () => import('./pages/user/user.module').then(m => m.UserModule)
       }, {
-        path: 'simple-page',
-        loadChildren: () => import('./pages/simple-page/simple-page.module').then(m => m.SimplePageModule)
+        path: 'visita',
+        loadChildren: () => import('./pages/visita/visita.module').then(m => m.VisitaModule)
       },
     ],
     canActivate: [GuardGuard],

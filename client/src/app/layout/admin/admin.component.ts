@@ -355,18 +355,18 @@ export class AdminComponent implements OnInit {
         };
         for (let res of repsonse.result) {
           /* Inicia el recorrido si es menu lateral */
-          if (res.nombre_menu === "Menu lateral izquierdo") {
+          if (res.target === "left") {
             /* Se recorre todos los elemntos del menu lateral */
             for (let i = 0; i < res.children.length; i++) {
               /* Se valida si es de menu lateral */
-              if (res.children[i].nombre_menu === "Menu lateral izquierdo") {
+              if (res.children[i].target === "left") {
                 let children = [];/* Para guardar hijos de un subruta */
                 /* inicia verificacion si tiene hijos la ruta */
                 if (res.children[i].children.length > 0) {
                   /* Si tiene hijos se inicia el recorrido */
                   for (let j = 0; j < res.children[i].children.length; j++) {
                     /* Se verifica si es menu de tipo lateral */
-                    if (res.children[i].children[j].nombre_menu === 'Menu lateral izquierdo') {
+                    if (res.children[i].children[j].target === 'left') {
                       children.push({
                         state: res.children[i].children[j].accion,
                         name: res.children[i].children[j].nombre
@@ -376,7 +376,7 @@ export class AdminComponent implements OnInit {
                   /* fin de recorrid */
                   menuLeft.push({
                     state: res.children[i].accion,
-                    short_label: 'B',
+                    short_label: res.children[i].slug,
                     name: res.children[i].nombre,
                     type: res.children[i].tipo,
                     icon: (res.children[i].icono) ? res.children[i].icono : 'ti-user',
@@ -388,7 +388,7 @@ export class AdminComponent implements OnInit {
                   menuLeft.push(
                     {
                       state: res.children[i].accion,
-                      short_label: 'B',
+                      short_label: res.children[i].slug,
                       name: res.children[i].nombre,
                       type: res.children[i].tipo,
                       icon: (res.children[i].icono) ? res.children[i].icono : 'ti-user',
