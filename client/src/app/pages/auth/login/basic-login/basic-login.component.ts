@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from "@angular/forms";
 import { Router } from '@angular/router';
 import { ServicesService } from '../../../../service/services.service'
-import CryptoJS  from 'crypto-es';
+//import CryptoJS  from 'crypto-es';
 
 @Component({
   selector: 'app-basic-login',
@@ -41,7 +41,8 @@ export class BasicLoginComponent implements OnInit {
           access_token: response.result.access_token,
           token_type: response.result.token_type,
           username: response.result.user.username,
-          codes: CryptoJS.AES.encrypt(JSON.stringify(dataMenu), 'secret key 123').toString()
+          //codes: CryptoJS.AES.encrypt(JSON.stringify(dataMenu), 'secret key 123').toString()
+          codes: JSON.stringify(dataMenu)
         }
         sessionStorage.setItem("validate", JSON.stringify(user));
         this.router.navigate(['dashboard'])

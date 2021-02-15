@@ -340,10 +340,10 @@ export class AdminComponent implements OnInit {
 
 
       let codes = JSON.parse(sessionStorage.getItem('validate')).codes;
-      var bytes = CryptoJS.AES.decrypt(codes, 'secret key 123');
-      let original = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+      //var bytes = CryptoJS.AES.decrypt(codes, 'secret key 123');
+      //let original = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
       let menuLeft = [];
-      let menu = this.service.getMenu(original).then(res => {
+      let menu = this.service.getMenu(codes).then(res => {
         let repsonse: any = res;
         let firstGroup = {
           state: "",
@@ -407,7 +407,7 @@ export class AdminComponent implements OnInit {
           children: [],
           icon: "ti-user",
           name: "Salir",
-          short_label: "B",
+          short_label: "S",
           state: "/",
           type: "link",
         }

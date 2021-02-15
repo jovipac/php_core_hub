@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {Title} from '@angular/platform-browser';
-
+import 'rxjs/add/operator/filter';
 @Component({
   selector: 'app-title',
   template: '<span></span>'

@@ -13,6 +13,10 @@ const routes: Routes = [
                 path: 'solicitud',
                 loadChildren: () => import('./solicitud/solicitud-visita.module').then(m => m.SolicitudVisitaPageModule)
             },
+            {
+              path: 'monitoreo-visitas',
+              loadChildren: () => import('./monitoreo-visitas/monitoreo-visitas.module').then(m => m.MonitoreoVisitasModule)
+          },
         ]
     }
 ];
