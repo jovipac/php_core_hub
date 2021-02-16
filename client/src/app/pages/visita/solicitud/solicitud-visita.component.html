@@ -1,14 +1,14 @@
 <div class="row">
   <div class="col-sm-12">
     <app-card [title]="'Información General'">
-      <form action="javascript:" class="needs-validation" novalidate>
+      <form action="javascript:" class="needs-validation" novalidate [formGroup]="visitaForm" (ngSubmit)="onSubmit()">
         <div class="form-row">
           <div class="col-md-4 mb-3">
-            <label for="validationCustomUsername">CUI</label>
+            <label for="txtCUI">CUI</label>
             <div class="input-group">
-              <input type="text" class="form-control" id="validationCustomUsername" placeholder="Completo"
+              <input type="text" class="form-control" id="txtCUI" formControlName="cui" placeholder="Completo"
                 aria-describedby="inputGroupPrepend" required>
-              <button class="btn btn-sm btn-outline-secondary" type="button" id="button-addon2">Buscar</button>
+              <button class="btn btn-sm btn-outline-secondary" type="button" id="btnBuscarByCUI">Buscar</button>
               <div class="invalid-feedback">
                 Please choose a username.
               </div>
@@ -18,15 +18,15 @@
 
         <div class="form-row">
           <div class="col-md-6 mb-3">
-            <label for="validationCustom03">Nombres:</label>
-            <input type="text" class="form-control" id="validationCustom03" placeholder="Completos" required>
+            <label for="txtNombres">Nombres:</label>
+            <input type="text" class="form-control" id="txtNombres" formControlName="nombres" placeholder="Completos" required>
             <div class="invalid-feedback">
               Please provide a valid city.
             </div>
           </div>
           <div class="col-md-6 mb-3">
-            <label for="validationCustom04">Apellidos:</label>
-            <input type="text" class="form-control" id="validationCustom04" placeholder="Completos" required>
+            <label for="txtApellidos">Apellidos:</label>
+            <input type="text" class="form-control" id="txtApellidos" formControlName="apellidos" placeholder="Completos" required>
             <div class="invalid-feedback">
               Please provide a valid state.
             </div>
@@ -35,29 +35,29 @@
 
         <div class="form-row">
           <div class="col-md-3 mb-3">
-            <label for="validationCustom03">Teléfono:</label>
-            <input type="text" class="form-control" id="validationCustom03" placeholder="">
+            <label for="txtTelefono">Teléfono:</label>
+            <input type="text" class="form-control" id="txtTelefono" formControlName="telefono" placeholder="">
             <div class="invalid-feedback">
               Please provide a valid city.
             </div>
           </div>
           <div class="col-md-3 mb-3">
-            <label for="validationCustom04">Fecha Nacimiento</label>
-            <input type="date" class="form-control" id="validationCustom04" placeholder="">
+            <label for="txtFechaNacimiento">Fecha Nacimiento</label>
+            <input type="date" class="form-control" id="txtFechaNacimiento" formControlName="fecha_nacimiento" placeholder="">
             <div class="invalid-feedback">
               Please provide a valid state.
             </div>
           </div>
           <div class="col-md-2 mb-3">
-            <label for="validationCustom05">Edad</label>
-            <input type="text" class="form-control" id="validationCustom05" placeholder="">
+            <label for="txtEdad">Edad</label>
+            <input type="text" class="form-control" id="txtEdad"  formControlName="edad" placeholder="">
             <div class="invalid-feedback">
               Please provide a valid zip.
             </div>
           </div>
           <div class="col-md-4 mb-3">
-            <label for="exampleFormControlSelect1">Sexo</label>
-            <select class="form-control" id="exampleFormControlSelect1" required>
+            <label for="txtSexo">Sexo</label>
+            <select class="form-control" id="txtSexo" formControlName="id_sexo" required>
               <option value="">Open this select menu</option>
               <option value="1">Hombre</option>
               <option value="2">Mujer</option>
@@ -69,8 +69,8 @@
 
         <div class="form-row">
           <div class="col-md-3 mb-3">
-            <label for="validationCustom03">Motivo de la visita:</label>
-            <select class="form-control" id="exampleFormControlSelect1" placeholder="Open" required>
+            <label for="txtMotivo">Motivo de la visita:</label>
+            <select class="form-control" id="txtMotivo" formControlName="id_motivo" placeholder="Open" required>
               <option value="1">Hombre</option>
               <option value="2">Mujer</option>
               <option value="3">No definido</option>
@@ -80,27 +80,27 @@
             </div>
           </div>
           <div class="col-md-3 mb-3">
-            <label for="validationCustom04">Visita a unidad</label>
-            <input type="text" class="form-control" id="validationCustom04" placeholder="">
+            <label for="txtDependencia">Visita a unidad</label>
+            <input type="text" class="form-control" id="txtDependencia" formControlName="id_dependencia" placeholder="">
             <div class="invalid-feedback">
               Please provide a valid state.
             </div>
           </div>
           <div class="col-md-2 mb-3">
-            <label for="validationCustom05">Visita a</label>
-            <input type="text" class="form-control" id="validationCustom05" placeholder="">
+            <label for="txtEmpleado">Visita a</label>
+            <input type="text" class="form-control" id="txtEmpleado" formControlName="id_funcionario" placeholder="">
             <div class="invalid-feedback">
               Please provide a valid zip.
             </div>
           </div>
           <div class="col-md-4 mb-3">
-            <label for="exampleFormControlSelect1">Llamadas</label>
-            <input type="text" class="form-control" id="validationCustom05" placeholder="">
+            <label for="txtLlamadas">Llamadas</label>
+            <input type="text" class="form-control" id="txtLlamadas" formControlName="llamadas" placeholder="">
             <div class="invalid-feedback">Example invalid custom select feedback</div>
           </div>
         </div>
 
-        <button class="btn btn-primary" type="submit">Guardar e Imprimir</button>
+        <button class="btn btn-primary" type="submit" id="btnSavePrint">Guardar e Imprimir</button>
       </form>
     </app-card>
 
