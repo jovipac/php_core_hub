@@ -16,23 +16,7 @@ const routes: Routes = [
       }, {
         path: 'dashboard',
         loadChildren: () => import('./pages/dashboard/dashboard-default/dashboard-default.module').then(m => m.DashboardDefaultModule)
-      }, {
-        path: 'basic',
-        loadChildren: () => import('./pages/ui-elements/basic/basic.module').then(m => m.BasicModule)
-      }, {
-        path: 'notifications',
-        loadChildren: () => import('./pages/ui-elements/advance/notifications/notifications.module').then(m => m.NotificationsModule)
-      }, {
-        path: 'bootstrap-table',
-        loadChildren: () => import('./pages/ui-elements/tables/bootstrap-table/basic-bootstrap/basic-bootstrap.module').then(m => m.BasicBootstrapModule),
-      }, {
-        path: 'map',
-        loadChildren: () => import('./pages/map/google-map/google-map.module').then(m => m.GoogleMapModule),
       },
-      // {
-      //   path: 'user',
-      //   loadChildren: () => import('./pages/user/profile/profile.module').then(m => m.ProfileModule)
-      // },
       {
         path: 'user',
         loadChildren: () => import('./pages/user/user.module').then(m => m.UserModule)
@@ -59,7 +43,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
