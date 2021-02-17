@@ -24,7 +24,7 @@ export class ServicesService {
   /* Services from login and logout */
   /* Service from logout */
   /**
-   * 
+   *
    * @param auth : json from auth
    * @function login
    * @returns true and false, if exist user
@@ -40,7 +40,7 @@ export class ServicesService {
   /* service logout */
   /**
    * @function logout
-   * @returns true and false, delete token 
+   * @returns true and false, delete token
    */
   logout() {
     return this.httpClient.get(`${environment.host}auth/logout`, this.createHeaders());
@@ -134,7 +134,7 @@ export class ServicesService {
   /* End maintance users */
   getMenu(data) {
     return new Promise((resolve, reject) => {
-      this.httpClient.post(`${environment.host}rol-modulos/menu`, data, this.createHeaders()).subscribe(res => {
+      this.httpClient.post(`${environment.host}usuario-modulos/menu`, data, this.createHeaders()).subscribe(res => {
         resolve(res)
       }, err => {
         reject(err)

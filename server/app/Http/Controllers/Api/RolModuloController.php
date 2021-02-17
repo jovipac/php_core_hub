@@ -115,7 +115,7 @@ class RolModuloController extends ApiController
             ->leftJoin('ts_modulo AS T02', 'T02.id_modulo', '=', 'T01.id_parent')
             ->where('tt_rol_modulo.id_rol', $usuario_rol->id_rol)
             ->get();
-        //dd($rol_modulos);
+
         //Se instancia una collection nueva para ir fusionando los modulos y submodulos asociados al rol
         $modulos = new Collection();
         foreach ($rol_modulos as $rol_modulo) {
@@ -126,18 +126,6 @@ class RolModuloController extends ApiController
             $modulos = $modulo->merge($modulos);
         }
         $modulos_menu = $modulos->sortBy('id_modulo')->toTree();
-
-        $transform = function ($menu) use ($modulos_menu) {
-            $responseStructure = [
-                'id_menu' => $menu['id_menu'] ?? null,
-                'nombre' => $menu['nombre'] ?? null,
-                'target' => $menu['target'] ?? null,
-                'items' => $modulos_menu
-            ];
-            return $responseStructure;
-        };
-        // Se hace llamada a la funcion de formateo del menu con sus submenus
-        $avaible_menu = $transform($rol_modulos);
 
         return $this->apiResponse(
             [

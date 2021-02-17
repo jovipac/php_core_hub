@@ -131,7 +131,7 @@ class UsuarioModuloController extends ApiController
             ->where('tt_usuario_rol.id_usuario', $usuario_rol->id_usuario)
             ->where('T02.id_rol', $usuario_rol->id_rol)
             ->get();
-        //dd($usuario_modulos);
+
         //Se instancia una collection nueva para ir fusionando los modulos y submodulos asociados al rol
         $modulos = new Collection();
         foreach ($usuario_modulos as $usuario_modulo) {
@@ -142,18 +142,6 @@ class UsuarioModuloController extends ApiController
             $modulos = $modulo->merge($modulos);
         }
         $modulos_menu = $modulos->sortBy('id_modulo')->toTree();
-
-        $transform = function ($menu) use ($modulos_menu) {
-            $responseStructure = [
-                'id_menu' => $menu['id_menu'] ?? null,
-                'nombre' => $menu['nombre'] ?? null,
-                'target' => $menu['target'] ?? null,
-                'items' => $modulos_menu
-            ];
-            return $responseStructure;
-        };
-        // Se hace llamada a la funcion de formateo del menu con sus submenus
-        $avaible_menu = $transform($usuario_modulos);
 
         return $this->apiResponse(
             [
