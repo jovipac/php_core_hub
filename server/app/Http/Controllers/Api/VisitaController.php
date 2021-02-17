@@ -6,6 +6,7 @@ use App\Http\Controllers\ApiController;
 use App\Models\Visita;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 class VisitaController extends ApiController
 {
@@ -34,14 +35,13 @@ class VisitaController extends ApiController
     public function search(Request $request)
     {
         if ($request->has('id_auxiliatura') || $request->has('id_motivo')) {
-            $query = Visita::query()
+            $list = Visita::query()
                 ->select('tt_visita.id_visita', 'tt_visita.id_persona',
-                'T01.cui', 'T01.nombres', 'T01.apellidos', 'T01.telefono',
+                'T01.cui', 'T01.nombres', 'T01.apellidos', 'T01.fecha_nacimiento', 'T01.telefono',
                 'tt_visita.entrada', 'tt_visita.salida', 'tt_visita.llamadas',
                 'tt_visita.id_motivo', 'T02.nombre AS nombre_motivo',
                 'tt_visita.id_dependencia', 'T03.nombre AS nombre_dependencia',
                 'tt_visita.id_estado', 'T05.nombre AS nombre_estado',
-                //'tt_visita.id_auxiliatura', 'T06.nombre AS nombre_auxiliatura',
                 )
                 ->join('tc_persona AS T01', 'tt_visita.id_persona', 'T01.id_persona')
                 ->join('tc_motivo AS T02', 'tt_visita.id_motivo', 'T02.id_motivo')
@@ -50,24 +50,31 @@ class VisitaController extends ApiController
                 ->join('tc_estado AS T05', 'tt_visita.id_estado', 'T05.id_estado')
                 ->join('tc_auxiliatura AS T06', 'tt_visita.id_auxiliatura', 'T06.id_auxiliatura');
 
+            if ($request->has('id_auxiliatura'))
+                $list = $list->where('tt_visita.id_auxiliatura', $request->input('id_auxiliatura'));
 
-        if ($request->has('id_auxiliatura'))
-            $query = $query->where('tt_visita.id_auxiliatura', $request->input('id_auxiliatura'));
+            if ($request->has('id_motivo'))
+                $list = $list->where('tt_visita.id_motivo', $request->input('id_motivo'));
 
-        if ($request->has('id_motivo'))
-            $query = $query->where('tt_visita.id_motivo', $request->input('id_motivo'));
-
+            $visitas = $list->get()->each(function ($query) {
+                if (!is_null($query->fecha_nacimiento ?? null))
+                    $query->edad = Carbon::parse($query->fecha_nacimiento)->age;
+                else
+                    $query->edad = null;
+            });
             return $this->apiResponse(
                 [
                     'success' => true,
                     'message' => "Listado de solicitud de visitas",
-                    'result' => $query->get()
+                    'result' => $visitas
                 ]
             );
+
         } else {
-            $query = Visita::query()
+            //$user_age = Carbon::parse($birthday)->diff(Carbon::now())->format('%y');
+            $list = Visita::query()
                 ->select('tt_visita.id_visita', 'tt_visita.id_persona',
-                'T01.cui', 'T01.nombres', 'T01.apellidos', 'T01.telefono',
+                'T01.cui', 'T01.nombres', 'T01.apellidos', 'T01.fecha_nacimiento', 'T01.telefono',
                 'tt_visita.entrada', 'tt_visita.salida', 'tt_visita.llamadas',
                 'tt_visita.id_motivo', 'T02.nombre AS nombre_motivo',
                 'tt_visita.id_dependencia', 'T03.nombre AS nombre_dependencia',
@@ -81,11 +88,18 @@ class VisitaController extends ApiController
                 ->join('tc_estado AS T05', 'tt_visita.id_estado', 'T05.id_estado')
                 ->join('tc_auxiliatura AS T06', 'tt_visita.id_auxiliatura', 'T06.id_auxiliatura');
 
+            $visitas = $list->get()->each(function ($query) {
+                if (!is_null($query->fecha_nacimiento ?? null))
+                    $query->edad = Carbon::parse($query->fecha_nacimiento)->age;
+                else
+                    $query->edad = null;
+            });
+
             return $this->apiResponse(
                 [
                     'success' => true,
                     'message' => "Listado de solicitud de visitas",
-                    'result' => $query->get()
+                    'result' => $visitas
                 ]
             );
         }
