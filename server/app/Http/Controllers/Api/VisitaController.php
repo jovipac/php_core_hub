@@ -31,9 +31,64 @@ class VisitaController extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function search(Request $request)
     {
-        //
+        if ($request->has('id_auxiliatura') || $request->has('id_motivo')) {
+            $query = Visita::query()
+                ->select('tt_visita.id_visita', 'tt_visita.id_persona',
+                'T01.cui', 'T01.nombres', 'T01.apellidos', 'T01.telefono',
+                'tt_visita.entrada', 'tt_visita.salida', 'tt_visita.llamadas',
+                'tt_visita.id_motivo', 'T02.nombre AS nombre_motivo',
+                'tt_visita.id_dependencia', 'T03.nombre AS nombre_dependencia',
+                'tt_visita.id_estado', 'T05.nombre AS nombre_estado',
+                //'tt_visita.id_auxiliatura', 'T06.nombre AS nombre_auxiliatura',
+                )
+                ->join('tc_persona AS T01', 'tt_visita.id_persona', 'T01.id_persona')
+                ->join('tc_motivo AS T02', 'tt_visita.id_motivo', 'T02.id_motivo')
+                ->join('tc_dependencia AS T03', 'tt_visita.id_dependencia', 'T03.id_dependencia')
+                ->join('tc_funcionario AS T04', 'tt_visita.id_funcionario', 'T04.id_funcionario')
+                ->join('tc_estado AS T05', 'tt_visita.id_estado', 'T05.id_estado')
+                ->join('tc_auxiliatura AS T06', 'tt_visita.id_auxiliatura', 'T06.id_auxiliatura');
+
+
+        if ($request->has('id_auxiliatura'))
+            $query = $query->where('tt_visita.id_auxiliatura', $request->input('id_auxiliatura'));
+
+        if ($request->has('id_motivo'))
+            $query = $query->where('tt_visita.id_motivo', $request->input('id_motivo'));
+
+            return $this->apiResponse(
+                [
+                    'success' => true,
+                    'message' => "Listado de solicitud de visitas",
+                    'result' => $query->get()
+                ]
+            );
+        } else {
+            $query = Visita::query()
+                ->select('tt_visita.id_visita', 'tt_visita.id_persona',
+                'T01.cui', 'T01.nombres', 'T01.apellidos', 'T01.telefono',
+                'tt_visita.entrada', 'tt_visita.salida', 'tt_visita.llamadas',
+                'tt_visita.id_motivo', 'T02.nombre AS nombre_motivo',
+                'tt_visita.id_dependencia', 'T03.nombre AS nombre_dependencia',
+                'tt_visita.id_estado', 'T05.nombre AS nombre_estado',
+                'tt_visita.id_auxiliatura', 'T06.nombre AS nombre_auxiliatura',
+                )
+                ->join('tc_persona AS T01', 'tt_visita.id_persona', 'T01.id_persona')
+                ->join('tc_motivo AS T02', 'tt_visita.id_motivo', 'T02.id_motivo')
+                ->join('tc_dependencia AS T03', 'tt_visita.id_dependencia', 'T03.id_dependencia')
+                ->join('tc_funcionario AS T04', 'tt_visita.id_funcionario', 'T04.id_funcionario')
+                ->join('tc_estado AS T05', 'tt_visita.id_estado', 'T05.id_estado')
+                ->join('tc_auxiliatura AS T06', 'tt_visita.id_auxiliatura', 'T06.id_auxiliatura');
+
+            return $this->apiResponse(
+                [
+                    'success' => true,
+                    'message' => "Listado de solicitud de visitas",
+                    'result' => $query->get()
+                ]
+            );
+        }
     }
 
     /**

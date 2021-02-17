@@ -23,6 +23,7 @@ class CreateVisitasTable extends Migration
             $table->integer('id_dependencia')->unsigned();
             $table->integer('id_funcionario')->unsigned();
             $table->integer('id_estado')->unsigned();
+            $table->integer('id_auxiliatura')->unsigned();
             $table->boolean('borrado')->default(0)->index();
             $table->timestamps();
             $table->softDeletes();
@@ -41,6 +42,10 @@ class CreateVisitasTable extends Migration
                 ->onDelete('cascade');
 
             $table->foreign('id_funcionario')->references('id_funcionario')->on('tc_funcionario')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+            $table->foreign('id_auxiliatura')->references('id_auxiliatura')->on('tc_auxiliatura')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 

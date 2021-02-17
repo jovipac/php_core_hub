@@ -77,6 +77,7 @@ Route::group([
     Route::get('users/restore/{user}', 'Api\UserController@restore')->name('users.restore');
     Route::post('personas/search', 'Api\PersonaController@search')->name('personas.search');
     Route::get('personas/restore/{persona}', 'Api\PersonaController@restore')->name('personas.restore');
+    Route::post('visitas/search', 'Api\VisitaController@search')->name('visitas.search');
 
     Route::get('rol-modulos', 'Api\RolModuloController@index')->name('menu.index');
     Route::get('rol-modulos/assigned/{id}', 'Api\RolModuloController@assigned');
