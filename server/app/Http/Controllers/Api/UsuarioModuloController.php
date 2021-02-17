@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\ApiController;
 use App\Models\Entities\Modulo;
 use App\Models\Entities\UsuarioModulo;
+use App\Models\Entities\RolModulo;
+use App\Models\Entities\UsuarioRol;
 use App\Models\Entities\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -67,18 +69,26 @@ class UsuarioModuloController extends ApiController
      */
     public function unassigned($id)
     {
+        //Empezamos a buscar el primer Rol del usuario asignado
+        $usuario_rol = UsuarioRol::where('id_usuario', $id)->first();
+        //Procedemos a hacer una busqueda de modulos que no esten asociados con su rol y ni asocaidos al usuario
         $usuario_modulo = Modulo::select(
                 'ts_modulo.id_modulo',
                 'ts_modulo.nombre AS nombre_modulo',
                 'T02.nombre AS nombre_modulo_padre'
             )
             ->leftJoin('ts_modulo AS T02', 'T02.id_modulo', '=', 'ts_modulo.id_parent')
-            ->whereNotIn('ts_modulo.id_modulo', function ($query) use ($id) {
-                $query->select('id_modulo')
-                ->from(with(new UsuarioModulo)->getTable())
-                    ->where('id_usuario', $id);
-            })
             ->whereNotNull('ts_modulo.id_parent')
+            ->whereNotIn('ts_modulo.id_modulo', function ($query) use ($usuario_rol) {
+                $query->select('id_modulo')
+                    ->from(with(new UsuarioModulo)->getTable())
+                    ->where('id_usuario', $usuario_rol->id_usuario);
+            })
+            ->whereNotIn('ts_modulo.id_modulo', function ($query) use ($usuario_rol) {
+                $query->select('id_modulo')
+                    ->from(with(new RolModulo)->getTable())
+                    ->where('id_rol', $usuario_rol->id_rol);
+            })
             ->get();
 
         return $this->apiResponse(
