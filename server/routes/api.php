@@ -86,7 +86,7 @@ Route::group([
     Route::get('rol-modulos/{id}', 'Api\RolModuloController@show');
     Route::post('rol-modulos', 'Api\RolModuloController@store');
     Route::put('rol-modulos/{id}', 'Api\RolModuloController@update');
-    Route::post('rol-modulos/menu', 'Api\RolModuloController@menuRol');
+    Route::post('rol-modulos/menu', 'Api\RolModuloController@menuRol')->name('rol-modulos.menu');
 
     Route::get('usuario-modulos', 'Api\UsuarioModuloController@index')->name('usuario-modulo.index');
     Route::get('usuario-modulos/assigned/{id}', 'Api\UsuarioModuloController@assigned')->name('usuario-modulo.assigned');
@@ -95,6 +95,7 @@ Route::group([
     Route::get('usuario-modulos/{id}', 'Api\UsuarioModuloController@show')->name('usuario-modulo.show');
     Route::post('usuario-modulos', 'Api\UsuarioModuloController@store')->name('usuario-modulo.store');
     Route::put('usuario-modulos/{id}', 'Api\UsuarioModuloController@update')->name('usuario-modulo.update');
+    Route::post('usuario-modulos/menu', 'Api\UsuarioModuloController@menuUser')->name('usuario-modulos.menu');
 
     Route::get('dependencia/search', [
         'uses' => 'Api\DependenciaController@searchBy',

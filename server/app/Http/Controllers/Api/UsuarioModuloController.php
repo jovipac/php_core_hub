@@ -107,7 +107,7 @@ class UsuarioModuloController extends ApiController
      * @return \Illuminate\Http\Response
      */
 
-    public function menuRol(Request $request)
+    public function menuUser(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'id_rol' => 'required|integer',
@@ -117,17 +117,19 @@ class UsuarioModuloController extends ApiController
             return $this->respondError($validator->errors(), 422);
         }
 
-        //Empezamos a buscar el primer UsuarioModulo del usuario asignado
-        $usuario_rol = UsuarioModulo::where('id_usuario', $request->id_usuario)->first();
+        //Empezamos a buscar el primer rol del usuario asignado
+        $usuario_rol = UsuarioRol::where('id_usuario', $request->id_usuario)->first();
 
-        $usuario_modulos = UsuarioModulo::query()
-        ->select('tt_rol_modulo.id_rol', 'tt_rol_modulo.id_modulo',
-            'ts_rol.nombre AS nombre_rol', 'T01.nombre AS nombre_modulo',
-            'T01.id_parent','T02.nombre AS nombre_modulo_padre')
-            ->join('tt_rol_modulo', 'ts_rol.id_rol', '=', 'tt_rol_modulo.id_rol')
-            ->join('ts_modulo AS T01', 'tt_rol_modulo.id_modulo', '=', 'T01.id_modulo')
-            ->leftJoin('ts_modulo AS T02', 'T02.id_modulo', '=', 'T01.id_parent')
-            ->where('tt_rol_modulo.id_rol', $usuario_rol->id_rol)
+        $usuario_modulos = UsuarioRol::query()
+        ->select('T02.id_rol', 'T02.id_modulo',
+            'T01.nombre AS nombre_rol', 'T03.nombre AS nombre_modulo',
+            'T03.id_parent','T04.nombre AS nombre_modulo_padre')
+            ->join('ts_rol AS T01', 'T01.id_rol', '=', 'tt_usuario_rol.id_rol')
+            ->join('tt_rol_modulo AS T02', 'T01.id_rol', '=', 'T02.id_rol')
+            ->join('ts_modulo AS T03', 'T02.id_modulo', '=', 'T03.id_modulo')
+            ->leftJoin('ts_modulo AS T04', 'T04.id_modulo', '=', 'T03.id_parent')
+            ->where('tt_usuario_rol.id_usuario', $usuario_rol->id_usuario)
+            ->where('T02.id_rol', $usuario_rol->id_rol)
             ->get();
         //dd($usuario_modulos);
         //Se instancia una collection nueva para ir fusionando los modulos y submodulos asociados al rol
