@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\ApiController;
 use App\Models\Entities\Modulo;
 use App\Models\Entities\UsuarioModulo;
-use App\Models\Entities\UsuarioRol;
+use App\Models\Entities\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -20,12 +20,12 @@ class UsuarioModuloController extends ApiController
      */
     public function index()
     {
-        $rol_modulo = UsuarioModulo::with('modulos')->get();
+        $usuario_modulo = UsuarioModulo::with('modulos')->get();
         return $this->apiResponse(
             [
                 'success' => true,
                 'message' => "Listado de modulos del rol",
-                'result' => $rol_modulo
+                'result' => $usuario_modulo
             ]
         );
     }
@@ -37,21 +37,25 @@ class UsuarioModuloController extends ApiController
      */
     public function assigned($id)
     {
-        $rol_modulo = UsuarioModulo::query()
-        ->select('tt_rol_modulo.id_rol', 'tt_rol_modulo.id_modulo',
-            'ts_rol.nombre AS nombre_rol', 'T01.nombre AS nombre_modulo',
-            'T02.nombre AS nombre_modulo_padre')
-            ->join('tt_rol_modulo', 'ts_rol.id_rol', '=', 'tt_rol_modulo.id_rol')
-            ->join('ts_modulo AS T01', 'tt_rol_modulo.id_modulo', '=', 'T01.id_modulo')
-            ->leftJoin('ts_modulo AS T02', 'T02.id_modulo', '=', 'T01.id_parent')
-            ->where('tt_rol_modulo.id_rol', $id)
+        $usuario_modulo = User::query()
+            ->select(
+                //'T01.id_usuario',
+                'T01.id_modulo',
+                //'ts_usuario.username',
+                'T02.nombre AS nombre_modulo',
+                'T03.nombre AS nombre_modulo_padre'
+            )
+            ->join('tt_usuario_modulo AS T01', 'ts_usuario.id_usuario', 'T01.id_usuario')
+            ->join('ts_modulo AS T02', 'T01.id_modulo', 'T02.id_modulo')
+            ->leftJoin('ts_modulo AS T03', 'T03.id_modulo', 'T02.id_parent')
+            ->where('T01.id_usuario', $id)
             ->get();
 
         return $this->apiResponse(
             [
                 'success' => true,
                 'message' => "Listado de modulos asociados al rol",
-                'result' => $rol_modulo
+                'result' => $usuario_modulo
             ]
         );
     }
@@ -61,18 +65,18 @@ class UsuarioModuloController extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
-    public function unassigned($rol_id)
+    public function unassigned($id)
     {
-        $rol_modulo = Modulo::select(
+        $usuario_modulo = Modulo::select(
                 'ts_modulo.id_modulo',
                 'ts_modulo.nombre AS nombre_modulo',
                 'T02.nombre AS nombre_modulo_padre'
             )
             ->leftJoin('ts_modulo AS T02', 'T02.id_modulo', '=', 'ts_modulo.id_parent')
-            ->whereNotIn('ts_modulo.id_modulo', function ($query) use ($rol_id) {
+            ->whereNotIn('ts_modulo.id_modulo', function ($query) use ($id) {
                 $query->select('id_modulo')
                 ->from(with(new UsuarioModulo)->getTable())
-                    ->where('id_rol', $rol_id);
+                    ->where('id_usuario', $id);
             })
             ->whereNotNull('ts_modulo.id_parent')
             ->get();
@@ -81,7 +85,7 @@ class UsuarioModuloController extends ApiController
             [
                 'success' => true,
                 'message' => "Listado de modulos no asociados al rol",
-                'result' => $rol_modulo
+                'result' => $usuario_modulo
             ]
         );
     }
@@ -92,6 +96,7 @@ class UsuarioModuloController extends ApiController
      * @param  \App\Menu  $menu
      * @return \Illuminate\Http\Response
      */
+
     public function menuRol(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -103,9 +108,9 @@ class UsuarioModuloController extends ApiController
         }
 
         //Empezamos a buscar el primer UsuarioModulo del usuario asignado
-        $usuario_rol = UsuarioRol::where('id_usuario', $request->id_usuario)->first();
+        $usuario_rol = UsuarioModulo::where('id_usuario', $request->id_usuario)->first();
 
-        $rol_modulos = UsuarioModulo::query()
+        $usuario_modulos = UsuarioModulo::query()
         ->select('tt_rol_modulo.id_rol', 'tt_rol_modulo.id_modulo',
             'ts_rol.nombre AS nombre_rol', 'T01.nombre AS nombre_modulo',
             'T01.id_parent','T02.nombre AS nombre_modulo_padre')
@@ -114,14 +119,14 @@ class UsuarioModuloController extends ApiController
             ->leftJoin('ts_modulo AS T02', 'T02.id_modulo', '=', 'T01.id_parent')
             ->where('tt_rol_modulo.id_rol', $usuario_rol->id_rol)
             ->get();
-        //dd($rol_modulos);
+        //dd($usuario_modulos);
         //Se instancia una collection nueva para ir fusionando los modulos y submodulos asociados al rol
         $modulos = new Collection();
-        foreach ($rol_modulos as $rol_modulo) {
+        foreach ($usuario_modulos as $usuario_modulo) {
             $modulo = Modulo::query()
                 ->select('ts_menu.nombre AS nombre_menu', 'ts_menu.target', 'ts_modulo.*')
                 ->join('ts_menu', 'ts_menu.id_menu', '=', 'ts_modulo.id_menu')
-                ->defaultOrder()->ancestorsAndSelf($rol_modulo->id_modulo);
+                ->defaultOrder()->ancestorsAndSelf($usuario_modulo->id_modulo);
             $modulos = $modulo->merge($modulos);
         }
         $modulos_menu = $modulos->sortBy('id_modulo')->toTree();
@@ -136,7 +141,7 @@ class UsuarioModuloController extends ApiController
             return $responseStructure;
         };
         // Se hace llamada a la funcion de formateo del menu con sus submenus
-        $avaible_menu = $transform($rol_modulos);
+        $avaible_menu = $transform($usuario_modulos);
 
         return $this->apiResponse(
             [
@@ -158,15 +163,15 @@ class UsuarioModuloController extends ApiController
         $validator = Validator::make(
             $request->all(),
             [
-                'id_rol' => [
+                'id_usuario' => [
                     'required',
                     'integer',
                 ],
                 'id_modulo' => [
                     'required',
                     'integer',
-                    Rule::unique('tt_rol_modulo')->where(function ($query) use ($request) {
-                        return $query->where('id_rol', $request->id_rol)
+                    Rule::unique('tt_usuario_modulo')->where(function ($query) use ($request) {
+                        return $query->where('id_usuario', $request->id_usuario)
                             ->where('id_modulo', $request->id_modulo);
                     }),
                 ],
@@ -179,14 +184,14 @@ class UsuarioModuloController extends ApiController
         }
         $input = $request->all();
 
-        $rol_modulo = UsuarioModulo::where('id_rol', $input['id_rol'])->first();
-        $rol_modulo->modulos()->attach([$request->id_modulo]);
-        //$rol_modulo = RolModulo::create($input);
+        $usuario_modulo = User::where('id_usuario', $input['id_usuario'])->first();
+        $usuario_modulo->modulos()->attach([$request->id_modulo]);
+        //$usuario_modulo = RolModulo::create($input);
 
         return $this->respondCreated([
             'success' => true,
             'message' => "Modulo del rol creado con exito",
-            'result' => $rol_modulo
+            'result' => $usuario_modulo
         ]);
     }
 
@@ -198,13 +203,13 @@ class UsuarioModuloController extends ApiController
      */
     public function show($id)
     {
-        $rol_modulo = UsuarioModulo::with('modulos')->where('id_rol',$id)->get();
+        $usuario_modulo = UsuarioModulo::with('modulos')->where('id_usuario',$id)->get();
 
         return $this->apiResponse(
             [
                 'success' => true,
-                'message' => "Modulo del rol encontrado",
-                'result' => $rol_modulo
+                'message' => "Modulo del usuario encontrado",
+                'result' => $usuario_modulo
             ]
         );
     }
@@ -221,11 +226,11 @@ class UsuarioModuloController extends ApiController
         $validator = Validator::make(
             $request->all(),
             [
-                'id_rol' => [
+                'id_usuario' => [
                     'required',
                     'integer',
                     Rule::unique('tt_rol_modulo')->where(function ($query) use ($request) {
-                        return $query->where('id_rol', $request->id_rol)
+                        return $query->where('id_usuario', $request->id_usuario)
                             ->where('id_modulo', $request->id_modulo);
                     }),
                 ],
@@ -240,13 +245,13 @@ class UsuarioModuloController extends ApiController
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
         }
-        $rol_modulo = UsuarioModulo::where('id_rol',$id)->first();
-        $rol_modulo->modulos()->syncWithoutDetaching([$request->id_modulo]);
+        $usuario_modulo = User::where('id_usuario',$id)->first();
+        $usuario_modulo->modulos()->syncWithoutDetaching([$request->id_modulo]);
 
         return $this->respondSuccess([
             'success' => true,
             'message' => "Modulo del rol actualizado con exito",
-            'result' => $rol_modulo->modulos()->get()
+            'result' => $usuario_modulo->modulos()->get()
         ]);
     }
 
@@ -259,15 +264,15 @@ class UsuarioModuloController extends ApiController
     public function destroy(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'id_rol' => 'integer',
+            'id_usuario' => 'integer',
             'id_modulo' => 'required|integer',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
         }
-        $rol_modulo = UsuarioModulo::where('id_rol',$id)->first();
+        $usuario_modulo = User::where('id_usuario',$id)->first();
 
-        $rol_modulo->modulos()->detach([$request->id_modulo]);
+        $usuario_modulo->modulos()->detach([$request->id_modulo]);
 
         return $this->respondSuccess('Modulo del rol eliminado con exito');
     }

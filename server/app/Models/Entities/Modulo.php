@@ -86,4 +86,9 @@ class Modulo extends Model
         return $this->belongsToMany(Rol::class, 'tt_rol_modulo','id_modulo','id_rol','id_modulo','id_rol')->withTimestamps();
     }
 
+    public function usuarios()
+    {
+        return $this->belongsToMany(User::class, 'tt_usuario_modulo','id_modulo','id_usuario','id_modulo','id_rol')->withTimestamps();
+    }
+
 }
