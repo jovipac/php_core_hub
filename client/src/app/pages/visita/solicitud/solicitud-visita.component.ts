@@ -19,8 +19,8 @@ interface auxiliary {
 })
 
 export class SolicitudVisitaComponent implements OnInit {
-  private visitaForm: FormGroup;
-  private isAddMode: boolean;
+  public visitaForm: FormGroup;
+  public isAddMode: boolean;
   id: string;
   public listDependency: Array<dependency>;
   public listAuxiliary: Array<auxiliary>;
