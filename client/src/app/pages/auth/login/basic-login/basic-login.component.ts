@@ -41,9 +41,11 @@ export class BasicLoginComponent implements OnInit {
           access_token: response.result.access_token,
           token_type: response.result.token_type,
           username: response.result.user.username,
+          rol: response.result.user.rol[0].id_rol,
           //codes: CryptoJS.AES.encrypt(JSON.stringify(dataMenu), 'secret key 123').toString()
           codes: JSON.stringify(dataMenu)
         }
+        console.log(user);
         sessionStorage.setItem("validate", JSON.stringify(user));
         this.router.navigate(['dashboard'])
       }, err => {

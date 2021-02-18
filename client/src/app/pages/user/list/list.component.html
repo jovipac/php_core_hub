@@ -48,6 +48,7 @@
                           <button class="btn-mini"
                             (click)="open(updateUser,user.id_funcionario); getOficial(user.id_funcionario)"
                             ngbDropdownItem>Actualizar</button>
+                          <button class="btn-mini" (click)="open(addPermit , user.id_usuario); loadModuleAssigned(user.id_usuario)" ngbDropdownItem>Asignar Herramientas</button>  
                           <button class="btn-mini" (click)="deleteOficial(user.id_funcionario)" ngbDropdownItem>Eliminar</button>
                         </div>
                       </div>
@@ -136,8 +137,9 @@
           <div class="col-md-3">
             <div class="form-group">
               <label for="">* Perfil inicial:</label>
-              <select class="form-control" formControlName="id_rol" required disabled>
-                <option value="1">Perfil inicial</option>
+              <select class="form-control" formControlName="id_rol" required >
+                <option value="">Seleccionar</option>
+                <option *ngFor="let rol of listRol" value="{{rol.id_rol}}">{{rol.nombre}}</option>                
               </select>
             </div>
           </div>
@@ -310,6 +312,100 @@
         </div>
       </form>
     </div>
+    <div class="modal-footer">
+
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #addPermit let-c="close" let-d="dismiss">
+  <ngx-spinner></ngx-spinner>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h6 class="modal-title" id="modal-title-default">Administración de usuarios</h6>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="">Código:</label>
+            <input type="text" class="form-control" [(ngModel)]="codeAssigned" disabled>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="">Nombre:</label>
+            <input type="text" class="form-control" [(ngModel)]="nameAssigned" disabled>
+          </div>
+        </div>
+      </div>
+      <div class="row container-list">
+        <div class="col-md-5">
+          <ul class="list-group">
+            <li *ngFor="let u of unassigned" class="{{(!u.active) ? 'list-group-item' : 'list-group-item active' }}"
+              (click)="selectAsignatureAccess(u.id_modulo)">
+              <b>Modulo: </b>{{u.nombre_modulo_padre}}
+              <br>
+              <b>Herramienta: </b>{{u.nombre_modulo}}
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-2 ">
+          <div class="row align-middle">
+            <div class="col-md-12 ">
+              <button
+                class="{{(!assignedOne) ? 'btn btn-success btn-sm size' : 'btn btn-disabled disabled btn-sm size' }}"
+                (click)="UserAssignedOne()" [disabled]="assignedOne"> > </button>
+            </div>
+            <div class="col-md-12" style="margin-top: 1.5%;">
+              <button class="btn btn-success btn-sm size" (click)="UserAssignedAll()"> >> </button>
+            </div>
+            <div class="col-md-12" style="margin-top: 20px;">
+              <button class="btn btn-danger btn-sm size" (click)="UserlUnassignedAll()">
+                << </button>
+            </div>
+            <div class="col-md-12" style="margin-top: 1%;">
+              <button
+                class="{{(!unassignedOne) ? 'btn btn-success btn-sm size' : 'btn btn-disabled disabled btn-sm size' }}"
+                (click)="UserUnassignedOne()" [disabled]="unassignedOne">
+                < </button>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md-5">
+          <ul class="list-group">
+            <li *ngFor="let u of assigned" class="{{(!u.active) ? 'list-group-item' : 'list-group-item active' }}"
+              (click)="selectUnasignatureAccess(u.id_modulo)">
+              <b>Modulo: </b>{{u.nombre_modulo_padre}}
+              <br>
+              <b>Herramienta: </b>{{u.nombre_modulo}}
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="errorState">
+        <span class="alert-inner--text">{{message.error}}</span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <br><br>
+      <div class="row">
+        <div class="col-md-12">
+          <button type="button" class="btn btn-danger float-left" (click)="getDismissReason('Close click')">
+            Cancelar
+          </button>
+        </div>
+      </div>
+
+    </div>
+
     <div class="modal-footer">
 
     </div>

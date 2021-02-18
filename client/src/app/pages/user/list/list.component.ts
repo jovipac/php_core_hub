@@ -6,7 +6,9 @@ import { ToastrService } from 'ngx-toastr';
 import * as $ from 'jquery';
 import 'datatables.net';
 import 'datatables.net-dt';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
+import { NgxSpinnerService } from "ngx-spinner"
+
 
 import "datatables.net-buttons/js/buttons.html5.js";
 
@@ -26,6 +28,7 @@ interface oficial {
   nombre_dependencia: string,
   nombre_puesto: string,
   nombre_rol: string,
+  id_usuario:number
 
 
 }
@@ -48,6 +51,13 @@ interface rol {
   nombre: string
 }
 
+interface rolAssigned {
+  id_modulo: number,
+  nombre_modulo: string,
+  nombre_modulo_padre: string,
+  active: boolean
+}
+
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
@@ -66,11 +76,21 @@ export class ListComponent implements OnInit {
   public updateOficial: FormGroup;
   public message: Object = {};
   private codeOficial: number = 0;
+  public codeAssigned: String = "";
+  public nameAssigned: String = "";
+  public unassigned: Array<rolAssigned>;
+  public assigned: Array<rolAssigned>;
+  public codeModule: number = 0;
+  public codeModuleUnassigned: number = 0;
+  public assignedOne: boolean = true;
+  public unassignedOne: boolean = true;
+
   constructor(
     private modalService: NgbModal,
     private service: ServicesService,
     private formBuilder: FormBuilder,
-    private toastr: ToastrService) {
+    private toastr: ToastrService,
+    private spinner: NgxSpinnerService) {
     this.buildForm();
     this.buildFormUpdate();
   }
@@ -322,5 +342,174 @@ export class ListComponent implements OnInit {
       }
     })
   }
+
+  loadModuleAssigned(codeOficial) {
+    console.log(codeOficial);
+    this.codeOficial = codeOficial;
+    let user = this.listUsers.filter(lu => (lu.id_usuario == codeOficial));
+    if (user.length > 0) {
+      this.codeAssigned = user[0].codigo;
+      this.nameAssigned = user[0].username;
+    }
+    this.spinner.show();
+    this.UserUnassigned(codeOficial);
+    this.UserAssigned(codeOficial);
+    setTimeout(() => {
+      /** spinner ends after 5 seconds */
+      this.spinner.hide();
+    }, 1000);    
+  }
+
+
+  async UserUnassigned(codeRol) {
+    this.service.UserUnassigned(codeRol).subscribe(res => {
+      let response: any = res;
+      this.unassigned = response.result.map(r => {
+        return {
+          id_modulo: r.id_modulo,
+          nombre_modulo: r.nombre_modulo,
+          nombre_modulo_padre: r.nombre_modulo_padre,
+          active: false
+        }
+      })
+    }, err => {
+      console.log(err)
+    })
+  }
+
+  async UserAssigned(codeRol) {
+    this.service.UserAssigned(codeRol).subscribe(res => {
+      let response: any = res;
+      this.assigned = response.result.map(r => {
+        return {
+          id_modulo: r.id_modulo,
+          nombre_modulo: r.nombre_modulo,
+          nombre_modulo_padre: r.nombre_modulo_padre,
+          active: false
+        }
+      })
+    }, err => {
+      console.log(err)
+    })
+  }  
+
+  selectAsignatureAccess(codeModule) {
+    this.codeModule = codeModule;
+    this.assignedOne = false;
+    this.unassignedOne = true;
+    /* cambiar el estado a true al elemento */
+    let positionActive = this.unassigned.map((u) => u.active).indexOf(true);
+    let positionNoActive = this.unassigned.map((u) => u.id_modulo).indexOf(codeModule);
+    if (positionActive !== positionNoActive) {
+      this.unassigned[positionNoActive].active = true;
+      if (positionActive !== -1) {
+        this.unassigned[positionActive].active = false;
+      }
+    }
+  }
+
+  selectUnasignatureAccess(codeModule) {
+    this.codeModuleUnassigned = codeModule;
+    this.unassignedOne = false;
+    this.assignedOne = true;
+    /* cambiar el estado a true al elemento */
+    let positionActive = this.assigned.map((u) => u.active).indexOf(true);
+    let positionNoActive = this.assigned.map((u) => u.id_modulo).indexOf(codeModule);
+    if (positionActive !== positionNoActive) {
+      this.assigned[positionNoActive].active = true;
+      if (positionActive !== -1) {
+        this.assigned[positionActive].active = false;
+      }
+    }
+  }  
+
+
+  UserAssignedOne() {
+    this.service.createUserModule({
+      "id_usuario": this.codeOficial,
+      "id_modulo": this.codeModule
+    }).subscribe(res => {
+      this.assignedOne = true;
+      this.unassignedOne = true;
+      this.unassigned.length = 0;
+      this.assigned.length = 0;
+      this.UserUnassigned(this.codeOficial);
+      this.UserAssigned(this.codeOficial);
+      this.toastr.success('Modulo/herramienta asigando correctamente')
+    }, err => {
+      console.log(err)
+    })
+  }
+
+  UserAssignedAll() {
+    this.spinner.show();
+    let temp = [];
+    for (let u of this.unassigned) {
+      temp.push(u)
+    }
+    this.unassigned.length = 0;
+    this.assigned.length = 0;
+    for (let rol of temp) {
+      let elemts = {
+        "id_usuario": this.codeOficial,
+        "id_modulo": rol.id_modulo
+      }
+      this.service.createUserModule({
+        "id_usuario": this.codeOficial,
+        "id_modulo": rol.id_modulo
+      }).subscribe(res => {
+        this.toastr.success(`Se ha asignado correctamente el modulo/herramienta`)
+      }, err => {
+        this.toastr.success(`No se ha asignado correctamente el modulo/herramienta`)
+      })
+    }
+    setTimeout(() => {
+      /** spinner ends after 2 seconds */
+      this.UserUnassigned(this.codeOficial);
+      this.UserAssigned(this.codeOficial);
+      this.spinner.hide();
+    }, 2000);
+  }
+
+  async UserUnassignedOne() {
+    this.service.deleteUserModule(this.codeOficial, { id_modulo: this.codeModuleUnassigned }).subscribe(res => {
+      this.unassigned.length = 0;
+      this.assigned.length = 0;
+      this.unassignedOne = true;
+      this.assignedOne = true;
+      let response: any = res;
+      this.UserUnassigned(this.codeOficial);
+      this.UserAssigned(this.codeOficial);
+      this.toastr.success('Modulo/herramienta desasignado correctamente')
+    }, err => {
+      console.log(err)
+    })
+  }
+
+  UserlUnassignedAll() {
+    this.spinner.show();
+    let temp = [];
+    for (let u of this.assigned) {
+      temp.push(u)
+    }
+    console.log(temp)
+    this.unassigned.length = 0;
+    this.assigned.length = 0;
+    for (let rol of temp) {
+      this.service.deleteUserModule(this.codeOficial, {
+        "id_modulo": rol.id_modulo
+      }).subscribe(res => {
+        this.toastr.success(`Se ha desasignado correctamente el modulo/herramienta`)
+      }, err => {
+        this.toastr.success(`No se ha desasignado correctamente el modulo/herramienta`)
+      })
+    }
+    setTimeout(() => {
+      /** spinner ends after 2 seconds */
+      this.UserUnassigned(this.codeOficial);
+      this.UserAssigned(this.codeOficial);
+      this.spinner.hide();
+    }, 2000);
+  }  
 
 }

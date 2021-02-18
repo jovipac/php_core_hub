@@ -131,6 +131,8 @@ export class ServicesService {
   }
   /* endmodule of roles */
 
+
+
   /* End maintance users */
   getMenu(data) {
     return new Promise((resolve, reject) => {
@@ -141,6 +143,41 @@ export class ServicesService {
       })
     })
   }
+
+  /* SERVICE OF MONITOR REASON */
+  getListReason() {
+    return this.httpClient.get(`${environment.host}motivos`, this.createHeaders())
+  } 
+  
+  getListVisit(data) {
+    return this.httpClient.post(`${environment.host}visitas/search`, data , this.createHeaders())
+  }   
+
+  updateVisit(codeRol, data) {
+    return this.httpClient.put(`${environment.host}visitas/${codeRol}`, data, this.createHeaders());
+  }  
+
+
+  /*start module of user */
+  /* user assigned */
+  UserAssigned(codeRol) {
+    return this.httpClient.get(`${environment.host}usuario-modulos/assigned/${codeRol}`, this.createHeaders())
+  }  
+
+  /* user unassigned filter ID*/
+  UserUnassigned(codeRol) {
+    return this.httpClient.get(`${environment.host}usuario-modulos/unassigned/${codeRol}`, this.createHeaders());
+  }
+
+  /* create user add new module */
+  createUserModule(data) {
+    return this.httpClient.post(`${environment.host}usuario-modulos`, data, this.createHeaders());
+  }
+
+  /* create user delete module */
+  deleteUserModule(id, data) {
+    return this.httpClient.post(`${environment.host}usuario-modulos/delete/${id}`, data, this.createHeaders());
+  }  
 
 
 

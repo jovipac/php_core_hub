@@ -1,1 +1,68 @@
-<p>monitoreo-visitas works!</p>
+<div class="row">
+    <div class="col-sm-12">
+        <app-card>
+            <form action="javascript:" class="needs-validation" novalidate>
+                <!-- PRIMER FILA -->
+                <div class="form-row">
+                    <div class="col-md-3 mb-3">
+                        <label for="validationCustom03">Auxiliatura:</label>
+                        <select class="form-control" formControlName="id_auxiliatura" required>
+                            <option value="" >Seleccionar</option>
+                            <option *ngFor="let auxiliary of listAuxiliary" value="{{auxiliary.id_auxiliatura}}">
+                                {{auxiliary.nombre}}</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            Please provide a valid city.
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 mb-3">
+                        <label for="validationCustom03">Motivo de la visita:</label>
+                        <select class="form-control" formControlName="id_Reason" required>
+                            <option value="" selected="selected">Seleccionar</option>
+                            <option *ngFor="let Reason of listReason" value="{{Reason.id_motivo}}">
+                                {{Reason.nombre}}</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            Please provide a valid city.
+                        </div>
+                    </div>
+                </div>
+                <!-- / PRIMER FILA -->
+
+                <!-- SEGUNDA FILA -->
+                <div class="form-row">
+                    <div class="col-md-12 mb-12">
+                        <table class="table  table-striped" id="listMonitor">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Motivo Visita</th>
+                                    <th>Nombres</th>
+                                    <th>Apellidos</th>
+                                    <th>Edad</th>
+                                    <th>Teléfono</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let visit of listVisit">
+                                    <td>{{visit.entrada | date:'medium' }}</td>
+                                    <td>{{visit.nombre_motivo}}</td>
+                                    <td>{{visit.nombres}}</td>
+                                    <td>{{visit.apellidos}}</td>
+                                    <td>{{visit.edad}}</td>
+                                    <td>{{visit.llamadas}}</td>
+                                    <td>                                        
+                                        <button  class="btn btn-primary btn-icon"  (click)="markExit(visit)"><i  class="icofont icofont-check-circled" ></i></button>                                        
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- / SEGUNDA FILA -->
+            </form>
+        </app-card>
+    </div>
+</div>
