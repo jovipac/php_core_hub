@@ -57,6 +57,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Rol::class, 'tt_usuario_rol','id_usuario','id_rol','id_usuario','id_rol')->withTimestamps();
     }
 
+    public function modulos()
+    {
+        return $this->belongsToMany(Modulo::class, 'tt_usuario_modulo', 'id_usuario', 'id_modulo', 'id_usuario', 'id_modulo')->withTimestamps();
+    }
+
     public function getNombreAuxiliaturaAttribute()
     {
         $value = null;
