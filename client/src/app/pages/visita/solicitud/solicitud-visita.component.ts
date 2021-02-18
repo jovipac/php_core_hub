@@ -62,19 +62,38 @@ export class SolicitudVisitaComponent implements OnInit {
 
   private buildForm() {
     this.visitaForm = this.fb.group({
-      id_persona: ['', [Validators.pattern("[0-9]")]],
+      id_persona: ['', [Validators.pattern("[0-9]+")]],
       cui: ['', [Validators.required, Validators.pattern("[0-9]{12,14}")]],
-      nombres: ['', [Validators.required]],
-      apellidos: ['', [Validators.required]],
+      nombres: ['', [Validators.required, Validators.minLength(2)]],
+      apellidos: ['', [Validators.required, Validators.minLength(2)]],
       telefono: ['', [Validators.pattern("[0-9]{8,10}")]],
       fecha_nacimiento: ['', []],
-      edad: ['', [Validators.pattern("[0-9]")]],
-      id_sexo: ['', [Validators.pattern("[0-9]")]],
-      id_motivo: ['', [Validators.pattern("[0-9]")]],
-      id_dependencia: ['', [Validators.required, Validators.pattern("[0-9]")]],
-      id_funcionario: ['', [Validators.required, Validators.pattern("[0-9]")]],
-      llamadas: [0, [Validators.pattern("[0-9]")]],
+      edad: ['', [Validators.pattern("[0-9]+")]],
+      id_sexo: ['', [Validators.pattern("[0-9]+")]],
+      id_motivo: ['', [Validators.pattern("[0-9]+")]],
+      id_dependencia: ['', [Validators.required, Validators.pattern("[0-9]+")]],
+      id_funcionario: ['', [Validators.required, Validators.pattern("[0-9]+")]],
+      llamadas: [0, [Validators.pattern("[0-9]+")]],
     }, { validators: this.dateLessThan('fecha_nacimiento') });
+  }
+
+  isFieldValid(field: string) {
+    return (this.visitaForm.get(field).dirty || this.visitaForm.get(field).touched || this.submitted) && this.visitaForm.get(field).errors
+  }
+
+  isHasErrors(field: string) {
+    return (this.submitted || this.visitaForm.get(field).invalid || this.visitaForm.get(field).errors);
+  }
+
+  displayErrorsCss(field: string) {
+    return {
+      'is-invalid': this.isFieldValid(field)
+    };
+  }
+
+  disableField(field: string) {
+    console.log(this.isAddMode);
+    return !this.isAddMode
   }
 
   getListDependecy() {
