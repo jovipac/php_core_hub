@@ -53,12 +53,12 @@ export class SolicitudVisitaComponent implements OnInit {
       nombres: ["", [Validators.required]],
       apellidos: ["", [Validators.required]],
       telefono: ["", []],
-      fecha_nacimiento: [null, []],
+      fecha_nacimiento: ["", []],
       edad: ["", []],
-      id_sexo: [null, []],
-      id_motivo: [null, []],
-      id_dependencia: [null, [Validators.required]],
-      id_funcionario: [null, [Validators.required]],
+      id_sexo: ["", []],
+      id_motivo: ["", []],
+      id_dependencia: ["", [Validators.required]],
+      id_funcionario: ["", [Validators.required]],
       llamadas: [0, []],
     });
   }
@@ -87,9 +87,7 @@ export class SolicitudVisitaComponent implements OnInit {
     })
   }
 
-  onSubmit(event: Event) {
-    event.preventDefault();
-
+  onSubmit() {
   }
 
 }
