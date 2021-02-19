@@ -112,6 +112,11 @@ export class SolicitudVisitaComponent implements OnInit {
     return !this.isAddMode
   }
 
+  toApiDate(rawDate) {
+    const bDate: Date = new Date(rawDate);
+    return bDate.toISOString().substring(0, 10);
+  }
+
   getListDependecy() {
     this.commonService.getListDependency().subscribe(res => {
       let response: any = res;
@@ -159,24 +164,28 @@ export class SolicitudVisitaComponent implements OnInit {
 
   }
 
-  public searchPersona(cui:string) {
+  public searchPersona(cui: string) {
     const dataSend = { 'cui': cui };
     this.personaService.searchPersona(dataSend)
-        .pipe(first())
-        .subscribe({
-            next: (data) => {
-                const response: any = data;
-                if (response.success)
-                  this.toastr.success(response.message)
-                else
-                  this.toastr.error(response.message)
-            },
-            error: (data) => {
-                const error: any = data;
-                this.toastr.error(error.message);
-                this.loading = false;
-            }
-        });
+      .pipe(first())
+      .subscribe({
+        next: (data) => {
+          const response: any = data;
+          if (response.success) {
+            console.log('before', response.result);
+            response.result.fecha_nacimiento = this.toApiDate(response.result.fecha_nacimiento);
+            console.log('after', response.result);
+            this.visitaForm.patchValue(response.result);
+            this.toastr.success(response.message)
+          } else
+            this.toastr.error(response.message)
+        },
+        error: (data) => {
+          const error: any = data;
+          this.toastr.error(error.message);
+          this.loading = false;
+        }
+      });
   }
 
   private createVisita() {
