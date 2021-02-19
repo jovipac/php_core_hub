@@ -39,10 +39,10 @@ class PersonaController extends ApiController
             $persona = Persona::where('cui', 'like', '%' . $request->input('cui') . '%')->first();
             if (empty($persona) == false) {
                 $resSuccess = true;
-                $resMessage = "Persona encontrada con exito";
+                $resMessage = "CUI de persona encontrada con exito.";
             } else {
                 $resSuccess = false;
-                $resMessage = "Persona no encontrada";
+                $resMessage = "CUI no registrado, debe ingresar los datos manualmente.";
             }
 
             return $this->apiResponse(

@@ -9,6 +9,7 @@ import { SpinnerComponent } from './spinner/spinner.component';
 import { CardComponent } from './card/card.component';
 import { ModalAnimationComponent } from './modal-animation/modal-animation.component';
 import { ModalBasicComponent } from './modal-basic/modal-basic.component';
+import { LabelInputComponent } from './element/input-label/input-label.component';
 import { DataFilterPipe } from './element/data-filter.pipe';
 import { MenuItems } from './menu-items/menu-items';
 import { ParentRemoveDirective } from './element/parent-remove.directive';
@@ -37,6 +38,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     CardComponent,
     ModalAnimationComponent,
     ModalBasicComponent,
+    LabelInputComponent,
     DataFilterPipe,
     ParentRemoveDirective
   ],
@@ -51,6 +53,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     CardComponent,
     ModalAnimationComponent,
     ModalBasicComponent,
+    LabelInputComponent,
     DataFilterPipe,
     ParentRemoveDirective,
     NgbModule,

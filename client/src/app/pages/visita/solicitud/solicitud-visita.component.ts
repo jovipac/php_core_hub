@@ -3,6 +3,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl, Validators } from "@angular/forms";
 import { ServicesService } from "../../../service/services.service";
 import { VisitasService } from '../../../service/visitas.service';
+import { PersonasService } from '../../../service/personas.service';
+import { ToastrService } from 'ngx-toastr';
 import { first } from 'rxjs/operators';
 
 interface dependency {
@@ -32,8 +34,10 @@ export class SolicitudVisitaComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
+    private toastr: ToastrService,
     private commonService: ServicesService,
     private visitaService: VisitasService,
+    private personaService: PersonasService,
   ) {
     this.buildForm();
   }
@@ -94,6 +98,10 @@ export class SolicitudVisitaComponent implements OnInit {
     };
   }
 
+  isFieldRequired(field: string) {
+    return this.visitaForm.get(field).errors.required || false;
+  }
+
   disableField(field: string) {
     console.log(this.isAddMode);
     return !this.isAddMode
@@ -146,18 +154,37 @@ export class SolicitudVisitaComponent implements OnInit {
 
   }
 
+  public searchPersona(cui:string) {
+    const dataSend = { 'cui': cui };
+    this.personaService.searchPersona(dataSend)
+        .pipe(first())
+        .subscribe({
+            next: (data) => {
+                const response: any = data;
+                if (response.success)
+                  this.toastr.success(response.message)
+                else
+                  this.toastr.error(response.message)
+            },
+            error: (data) => {
+                const error: any = data;
+                this.toastr.error(error.message);
+                this.loading = false;
+            }
+        });
+  }
+
   private createVisita() {
     this.visitaService.createVisit(this.visitaForm.value)
         .pipe(first())
-        .subscribe({
-            next: () => {
-                //this.alertService.success('User added', { keepAfterRouteChange: true });
-                this.router.navigate(['../'], { relativeTo: this.route });
-            },
-            error: error => {
-                //this.alertService.error(error);
-                this.loading = false;
-            }
+        .subscribe( res => {
+          const response: any = res;
+          this.toastr.success(response.message, 'Visitas')
+          this.router.navigate(['../'], { relativeTo: this.route });
+        }, err =>{
+          const error: any = err;
+          this.toastr.error(error.message, 'Visitas');
+          this.loading = false;
         });
   }
 
@@ -165,12 +192,14 @@ export class SolicitudVisitaComponent implements OnInit {
       this.visitaService.updateVisit(this.id, this.visitaForm.value)
           .pipe(first())
           .subscribe({
-              next: () => {
-                  //this.alertService.success('User updated', { keepAfterRouteChange: true });
+              next: (data) => {
+                  const response: any = data;
+                  this.toastr.success(response.message, 'Visitas')
                   this.router.navigate(['../../'], { relativeTo: this.route });
               },
-              error: error => {
-                  //this.alertService.error(error);
+              error: (data) => {
+                  const error: any = data;
+                  this.toastr.error(error.message, 'Visitas');
                   this.loading = false;
               }
           });
