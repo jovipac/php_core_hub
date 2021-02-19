@@ -80,6 +80,8 @@ export class SolicitudVisitaComponent implements OnInit {
       fecha_nacimiento: ['', []],
       edad: ['', [Validators.pattern("[0-9]+")]],
       id_sexo: ['', [Validators.pattern("[0-9]+")]],
+      entrada: ['', []],
+      salida: ['', []],
       id_motivo: ['', [Validators.pattern("[0-9]+")]],
       id_dependencia: ['', [Validators.required, Validators.pattern("[0-9]+")]],
       id_funcionario: ['', [Validators.required, Validators.pattern("[0-9]+")]],
