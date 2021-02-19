@@ -71,7 +71,7 @@ class VisitaController extends ApiController
             );
 
         } else {
-            //$user_age = Carbon::parse($birthday)->diff(Carbon::now())->format('%y');
+
             $list = Visita::query()
                 ->select('tt_visita.id_visita', 'tt_visita.id_persona',
                 'T01.cui', 'T01.nombres', 'T01.apellidos', 'T01.fecha_nacimiento', 'T01.telefono',
@@ -143,11 +143,35 @@ class VisitaController extends ApiController
      */
     public function show(Visita $visita)
     {
+        $item = Visita::query()
+            ->select('tt_visita.id_visita', 'tt_visita.id_persona', 'T01.cui',
+            'T01.nombres', 'T01.apellidos', 'T01.telefono', 'T01.fecha_nacimiento', 'T01.id_sexo',
+            'tt_visita.entrada', 'tt_visita.salida', 'tt_visita.llamadas',
+            'tt_visita.id_motivo', 'T02.nombre AS nombre_motivo',
+            'tt_visita.id_dependencia', 'T03.nombre AS nombre_dependencia',
+            'tt_visita.id_estado', 'T05.nombre AS nombre_estado',
+            'tt_visita.id_auxiliatura', 'T06.nombre AS nombre_auxiliatura',
+            )
+            ->join('tc_persona AS T01', 'tt_visita.id_persona', 'T01.id_persona')
+            ->join('tc_motivo AS T02', 'tt_visita.id_motivo', 'T02.id_motivo')
+            ->join('tc_dependencia AS T03', 'tt_visita.id_dependencia', 'T03.id_dependencia')
+            ->join('tc_funcionario AS T04', 'tt_visita.id_funcionario', 'T04.id_funcionario')
+            ->join('tc_estado AS T05', 'tt_visita.id_estado', 'T05.id_estado')
+            ->join('tc_auxiliatura AS T06', 'tt_visita.id_auxiliatura', 'T06.id_auxiliatura')
+            ->where('tt_visita.id_visita', $visita->id_visita);
+
+        $visita = $item->get()->each(function ($query) {
+            if (!is_null($query->fecha_nacimiento ?? null))
+                $query->edad = Carbon::parse($query->fecha_nacimiento)->age;
+            else
+                $query->edad = null;
+        });
+
         return $this->apiResponse(
             [
                 'success' => true,
                 'message' => "Registro de visita encontrado con exito",
-                'result' => $visita
+                'result' => $visita->first()
             ]
         );
     }

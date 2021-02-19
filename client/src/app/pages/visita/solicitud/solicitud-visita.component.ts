@@ -49,7 +49,7 @@ export class SolicitudVisitaComponent implements OnInit {
     this.getListAuxiliary();
 
     if (!this.isAddMode) {
-      this.commonService.updateOficial(this.id, this.visitaForm.value)
+      this.visitaService.getVisit(this.id)
           .pipe(first())
           .subscribe(x => this.visitaForm.patchValue(x));
     }

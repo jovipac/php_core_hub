@@ -14,6 +14,10 @@ export class VisitasService {
       return this.httpClient.post(`${environment.host}visitas/search`, data , getHeaders())
     }
 
+    getVisit(id) {
+      return this.httpClient.get(`${environment.host}visitas/${id}`, getHeaders())
+    }
+
     createVisit(data) {
       return this.httpClient.post(`${environment.host}visitas`, data, getHeaders());
     }
