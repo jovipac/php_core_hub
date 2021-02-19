@@ -51,7 +51,10 @@ export class SolicitudVisitaComponent implements OnInit {
     if (!this.isAddMode) {
       this.visitaService.getVisit(this.id)
           .pipe(first())
-          .subscribe(x => this.visitaForm.patchValue(x));
+          .subscribe(res => {
+            const data: any = res;
+            return this.visitaForm.patchValue(data.result);
+          });
     }
   }
 
