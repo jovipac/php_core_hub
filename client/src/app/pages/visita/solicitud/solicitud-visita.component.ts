@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl, Validators } from "@angular/forms";
 import { ServicesService } from "../../../service/services.service";
+import { VisitasService } from '../../../service/visitas.service';
 import { first } from 'rxjs/operators';
 
 interface dependency {
@@ -28,9 +29,11 @@ export class SolicitudVisitaComponent implements OnInit {
   public listAuxiliary: Array<auxiliary>;
 
   constructor(
-    private route: ActivatedRoute,
-    private commonService: ServicesService,
     private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+    private commonService: ServicesService,
+    private visitaService: VisitasService,
   ) {
     this.buildForm();
   }
@@ -136,11 +139,41 @@ export class SolicitudVisitaComponent implements OnInit {
 
     this.loading = true;
     if (this.isAddMode) {
-        //this.createVisita();
+        this.createVisita();
     } else {
-        //this.updateVisita();
+        this.updateVisita();
     }
 
+  }
+
+  private createVisita() {
+    this.visitaService.createVisit(this.visitaForm.value)
+        .pipe(first())
+        .subscribe({
+            next: () => {
+                //this.alertService.success('User added', { keepAfterRouteChange: true });
+                this.router.navigate(['../'], { relativeTo: this.route });
+            },
+            error: error => {
+                //this.alertService.error(error);
+                this.loading = false;
+            }
+        });
+  }
+
+  private updateVisita() {
+      this.visitaService.updateVisit(this.id, this.visitaForm.value)
+          .pipe(first())
+          .subscribe({
+              next: () => {
+                  //this.alertService.success('User updated', { keepAfterRouteChange: true });
+                  this.router.navigate(['../../'], { relativeTo: this.route });
+              },
+              error: error => {
+                  //this.alertService.error(error);
+                  this.loading = false;
+              }
+          });
   }
 
 }
