@@ -25,7 +25,7 @@ class Visita extends Model
      * @var array
      */
     protected $fillable = [
-        'id_visita', 'id_persona', 'id_motivo', 'entrada', 'salida', 'llamadas', 'id_dependencia', 'id_funcionario', 'id_estado',
+        'id_visita', 'id_persona', 'id_motivo', 'entrada', 'salida', 'llamadas', 'id_dependencia', 'id_funcionario', 'id_auxiliatura', 'id_estado',
     ];
 
     /**

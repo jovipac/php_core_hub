@@ -113,7 +113,12 @@ class VisitaController extends ApiController
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $input = $request->all();
+        if (!$request->has('entrada')) {
+            $input['entrada'] = Carbon::now()->format('H:i');
+        }
+
+        $validator = Validator::make($input, [
             'id_persona' => 'required|integer',
             'id_motivo' => 'required|integer',
             'entrada' => 'date_format:H:i|before:tomorrow',
@@ -125,7 +130,7 @@ class VisitaController extends ApiController
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
         }
-        $input = $request->all();
+
         $visita = Visita::create($input);
 
         return $this->respondCreated([
