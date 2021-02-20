@@ -6,6 +6,7 @@ import { CatalogosService, FuncionariosService, VisitasService, PersonasService 
 import { Sexo, Motivo, Funcionario } from '../../../shared/models';
 import { ToastrService } from 'ngx-toastr';
 import { first } from 'rxjs/operators';
+import { format } from 'date-fns';
 
 interface Reason {
   id_motivo: number,
@@ -254,6 +255,8 @@ export class SolicitudVisitaComponent implements OnInit {
   }
 
   private createVisita() {
+    this.visitaForm.value.entrada = format(new Date(), 'HH:mm');
+
     this.visitaService.createVisit(this.visitaForm.value)
         .pipe(first())
         .subscribe( res => {
