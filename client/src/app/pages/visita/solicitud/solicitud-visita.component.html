@@ -49,7 +49,8 @@
         <div class="form-row">
           <div class="col-md-3 mb-3">
             <input-label [label]="'Teléfono'" [id]="'txtTelefono'"></input-label>
-            <input type="text" class="form-control" id="txtTelefono" formControlName="telefono" placeholder="">
+            <input type="text" class="form-control" id="txtTelefono" formControlName="telefono" placeholder=""
+              [ngClass]="displayErrorsCss('telefono')">
             <div *ngIf="isHasErrors('telefono')" class="invalid-feedback">
               <div *ngIf="f.telefono.errors?.pattern">El telefono solo se aceptan digitos</div>
             </div>

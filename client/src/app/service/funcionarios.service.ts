@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import { getHeaders } from './common.service';
+import { getHeaders } from '../shared/utils/helpers';
 import { environment } from '../../environments/environment';
 
 @Injectable({

@@ -4,8 +4,10 @@ import { FormBuilder, FormGroup, FormControl, Validators } from "@angular/forms"
 import { ServicesService } from "../../../service/services.service";
 import { CatalogosService, FuncionariosService, VisitasService, PersonasService } from '../../../service';
 import { Sexo, Motivo, Funcionario } from '../../../shared/models';
+import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { first } from 'rxjs/operators';
+import { extractErrorMessages, FormStatus } from '../../../shared/utils';
 import { format } from 'date-fns';
 
 interface Reason {
@@ -28,6 +30,7 @@ interface auxiliary {
 
 export class SolicitudVisitaComponent implements OnInit {
   public visitaForm: FormGroup;
+  formStatus = new FormStatus();
   id: string;
   isAddMode: boolean;
   loading = false;
@@ -139,7 +142,8 @@ export class SolicitudVisitaComponent implements OnInit {
       else
         this.listGenre.length = 0
     }, err => {
-      console.log(err)
+      const error: HttpErrorResponse = err;
+      this.toastr.error(error.message);
     })
   }
 
@@ -151,7 +155,8 @@ export class SolicitudVisitaComponent implements OnInit {
       else
         this.listReason.length = 0
     }, err => {
-      console.log(err)
+      const error: HttpErrorResponse = err;
+      this.toastr.error(error.message);
     })
   }
 
@@ -163,7 +168,8 @@ export class SolicitudVisitaComponent implements OnInit {
       else
         this.listDependency.length = 0
     }, err => {
-      console.log(err)
+      const error: HttpErrorResponse = err;
+      this.toastr.error(error.message);
     })
   }
 
@@ -175,7 +181,8 @@ export class SolicitudVisitaComponent implements OnInit {
       else
         this.listAuxiliary.length = 0
     }, err => {
-      console.log(err)
+      const error: HttpErrorResponse = err;
+      this.toastr.error(error.message);
     })
   }
 
@@ -202,9 +209,8 @@ export class SolicitudVisitaComponent implements OnInit {
             this.toastr.error(response.message)
         },
         error: (data) => {
-          const error: any = data;
+          const error: HttpErrorResponse = data;
           this.toastr.error(error.message);
-          this.loading = false;
         }
       });
   }
@@ -217,10 +223,7 @@ export class SolicitudVisitaComponent implements OnInit {
     console.log("Probando")
     // stop here if form is invalid
     if (this.visitaForm.invalid) {
-      console.log(this.visitaForm)
       return;
-    } else {
-      console.log(this.visitaForm.value)
     }
 
     this.loading = true;
@@ -247,7 +250,7 @@ export class SolicitudVisitaComponent implements OnInit {
             this.toastr.error(response.message)
         },
         error: (data) => {
-          const error: any = data;
+          const error: HttpErrorResponse = data;
           this.toastr.error(error.message);
           this.loading = false;
         }
@@ -255,23 +258,39 @@ export class SolicitudVisitaComponent implements OnInit {
   }
 
   private createVisita() {
-    this.visitaForm.value.entrada = format(new Date(), 'HH:mm');
+    const formValues = {
+      ...this.visitaForm.value,
+      entrada: format(new Date(), 'HH:mm'),
+      id_auxiliatura: JSON.parse(sessionStorage.getItem('validate')).id_auxiliatura,
+      id_estado: 1
+    };
 
-    this.visitaService.createVisit(this.visitaForm.value)
+    this.visitaService.createVisit(formValues)
         .pipe(first())
         .subscribe( res => {
           const response: any = res;
           this.toastr.success(response.message, 'Visitas')
           this.router.navigate(['../'], { relativeTo: this.route });
         }, err =>{
-          const error: any = err;
-          this.toastr.error(error.message, 'Visitas');
+          const error: HttpErrorResponse = err;
+          const messages = extractErrorMessages(error);
+          messages.forEach(propertyErrors => {
+            for (let message in propertyErrors) {
+              this.toastr.error(propertyErrors[message], 'Visitas');
+            }
+          });
           this.loading = false;
         });
   }
 
   private updateVisita() {
-      this.visitaService.updateVisit(this.id, this.visitaForm.value)
+      const formValues = {
+        ...this.visitaForm.value,
+        entrada: format(new Date(this.visitaForm.value.entrada), 'HH:mm'),
+        salida: format(new Date(), 'HH:mm'),
+        id_estado: 2
+      };
+      this.visitaService.updateVisit(this.id, formValues)
           .pipe(first())
           .subscribe({
               next: (data) => {
@@ -280,8 +299,13 @@ export class SolicitudVisitaComponent implements OnInit {
                   this.router.navigate(['../../'], { relativeTo: this.route });
               },
               error: (data) => {
-                  const error: any = data;
-                  this.toastr.error(error.message, 'Visitas');
+                  const error: HttpErrorResponse = data;
+                  const messages = extractErrorMessages(error);
+                  messages.forEach(propertyErrors => {
+                    for (let message in propertyErrors) {
+                      this.toastr.error(propertyErrors[message], 'Visitas');
+                    }
+                  });
                   this.loading = false;
               }
           });
