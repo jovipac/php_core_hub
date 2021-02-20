@@ -13,22 +13,47 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   ]
 })
 export class InlineClockComponent implements OnInit, OnDestroy {
-  public time = new Date();
+  @Input() format: string = 'hh:mm:ss a';
+  @Input() value: Date;
+  @Input() id: string;
+
+  public time: Date;
+  private isPaused: boolean;
   private timer;
 
-  @Input() myLabel: string = '';
-  counter: number = 0;
-
-  constructor() { }
+  constructor() {
+    this.resetTimer();
+  }
 
   ngOnInit() {
+    this.timer = setInterval(() => this.tick(), 1000);
+    /*
     this.timer = setInterval(() => {
       this.time = new Date();
     }, 1000);
+    */
   }
 
   ngOnDestroy(){
     clearInterval(this.timer);
+  }
+
+  private tick(): void {
+    if (!this.isPaused) {
+      this.time = new Date();
+    } else {
+      this.setTimer(this.value);
+    }
+  }
+
+  public resetTimer() {
+    this.isPaused = false;
+    this.time = new Date();
+  }
+
+  public setTimer(value: Date) {
+    this.isPaused = true;
+    this.time = new Date(value);
   }
 
 }
