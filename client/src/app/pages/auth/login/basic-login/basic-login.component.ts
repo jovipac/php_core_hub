@@ -42,7 +42,7 @@ export class BasicLoginComponent implements OnInit {
           token_type: response.result.token_type,
           username: response.result.user.username,
           rol: response.result.user.rol[0].id_rol,
-          //codes: CryptoJS.AES.encrypt(JSON.stringify(dataMenu), 'secret key 123').toString()
+          id_auxiliatura: response.result.user.id_auxiliatura,
           codes: JSON.stringify(dataMenu)
         }
         console.log(user);

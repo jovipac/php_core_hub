@@ -74,10 +74,7 @@
             <input-label [requires]="true" [label]="'Sexo'" [id]="'txtSexo'"></input-label>
             <select class="form-control" id="txtSexo" formControlName="id_sexo"
               [ngClass]="displayErrorsCss('id_sexo')" required>
-              <option value="">Open this select menu</option>
-              <option value="1">Hombre</option>
-              <option value="2">Mujer</option>
-              <option value="3">No definido</option>
+              <option *ngFor="let genre of listGenre" value="{{genre.id_sexo}}">{{genre.nombre}}</option>
             </select>
             <div *ngIf="isHasErrors('id_sexo')" class="invalid-feedback">Seleccione un valor</div>
           </div>
@@ -86,12 +83,9 @@
         <div class="form-row">
           <div class="col-md-3 mb-3">
             <input-label [requires]="true" [label]="'Motivo de la visita'" [id]="'txtMotivo'"></input-label>
-            <select class="form-control" id="txtMotivo" formControlName="id_motivo" placeholder="Open"
-              [ngClass]="displayErrorsCss('id_motivo')" required>
-              <option value="1">Hombre</option>
-              <option value="2">Mujer</option>
-              <option value="3">No definido</option>
-            </select>
+            <ng-select [items]="listReason" #select bindLabel="nombre" dropdownPosition="auto" bindValue="id_motivo" labelForId="txtMotivo"
+              placeholder="Seleccionar motivo" [virtualScroll]="true" formControlName="id_motivo" [ngClass]="displayErrorsCss('id_motivo')">
+            </ng-select>
             <div *ngIf="isHasErrors('id_motivo')" class="invalid-feedback">
               <div *ngIf="f.id_motivo.errors?.required">El campo es requerido</div>
               <div *ngIf="f.id_motivo.errors?.pattern">Solo se aceptan digitos</div>
@@ -99,23 +93,27 @@
           </div>
           <div class="col-md-3 mb-3">
             <input-label [requires]="true" [label]="'Visita a unidad'" [id]="'txtDependencia'"></input-label>
-            <input type="text" class="form-control" id="txtDependencia" formControlName="id_dependencia" placeholder=""
-              [ngClass]="displayErrorsCss('id_dependencia')">
+            <ng-select id="txtDependencia" [items]="listDependency" #select bindLabel="nombre" dropdownPosition="auto"
+              bindValue="id_dependencia" labelForId="txtDependencia" placeholder="Seleccionar a unidad" [virtualScroll]="true"
+              formControlName="id_dependencia" [ngClass]="displayErrorsCss('id_dependencia')">
+            </ng-select>
             <div *ngIf="isHasErrors('id_dependencia')" class="invalid-feedback">
               <div *ngIf="f.id_dependencia.errors?.required">El campo es requerido</div>
               <div *ngIf="f.id_dependencia.errors?.pattern">Solo se aceptan digitos</div>
             </div>
           </div>
-          <div class="col-md-2 mb-3">
+          <div class="col-md-4 mb-3">
             <input-label [requires]="true" [label]="'Visita a'" [id]="'txtEmpleado'"></input-label>
-            <input type="text" class="form-control" id="txtEmpleado" formControlName="id_funcionario" placeholder=""
-              [ngClass]="displayErrorsCss('id_funcionario')">
+            <ng-select [items]="listEmployees" #select bindLabel="nombres_completos" dropdownPosition="auto" bindValue="id_funcionario" labelForId="txtEmpleado"
+              placeholder="Seleccionar empleado" [virtualScroll]="true" formControlName="id_funcionario" [ngClass]="displayErrorsCss('id_funcionario')">
+            </ng-select>
+
             <div *ngIf="isHasErrors('id_funcionario')" class="invalid-feedback">
               <div *ngIf="f.id_funcionario.errors?.required">El campo es requerido</div>
               <div *ngIf="f.id_funcionario.errors?.pattern">Solo se aceptan digitos</div>
             </div>
           </div>
-          <div class="col-md-4 mb-3">
+          <div class="col-md-2 mb-3">
             <input-label [label]="'Llamadas'" [id]="'txtLlamadas'"></input-label>
             <input type="text" class="form-control" id="txtLlamadas" formControlName="llamadas" placeholder=""
               [ngClass]="displayErrorsCss('llamadas')">

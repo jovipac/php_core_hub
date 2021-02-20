@@ -2,11 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl, Validators } from "@angular/forms";
 import { ServicesService } from "../../../service/services.service";
-import { VisitasService } from '../../../service/visitas.service';
-import { PersonasService } from '../../../service/personas.service';
+import { CatalogosService, FuncionariosService, VisitasService, PersonasService } from '../../../service';
+import { Sexo, Motivo, Funcionario } from '../../../shared/models';
 import { ToastrService } from 'ngx-toastr';
 import { first } from 'rxjs/operators';
 
+interface Reason {
+  id_motivo: number,
+  nombre: string
+}
 interface dependency {
   id_dependencia: number,
   nombre: String
@@ -27,15 +31,20 @@ export class SolicitudVisitaComponent implements OnInit {
   isAddMode: boolean;
   loading = false;
   submitted = false;
+  public listReason: Array<Motivo>;
   public listDependency: Array<dependency>;
+  public listEmployees: Array<Funcionario>;
   public listAuxiliary: Array<auxiliary>;
+  public listGenre: Array<Sexo>;
 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
-    private commonService: ServicesService,
+    private generalService: ServicesService,
+    private catalogoService: CatalogosService,
+    private empleadoService: FuncionariosService,
     private visitaService: VisitasService,
     private personaService: PersonasService,
   ) {
@@ -45,8 +54,11 @@ export class SolicitudVisitaComponent implements OnInit {
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
     this.isAddMode = !this.id;
+    this.getListGenre()
+    this.getListReason()
     this.getListDependecy();
     this.getListAuxiliary();
+    this.getEmployees();
 
     if (!this.isAddMode) {
       this.visitaService.getVisit(this.id)
@@ -82,7 +94,7 @@ export class SolicitudVisitaComponent implements OnInit {
       id_sexo: ['', [Validators.pattern("[0-9]+")]],
       entrada: ['', []],
       salida: ['', []],
-      id_motivo: ['', [Validators.pattern("[0-9]+")]],
+      id_motivo: ['', [Validators.required, Validators.pattern("[0-9]+")]],
       id_dependencia: ['', [Validators.required, Validators.pattern("[0-9]+")]],
       id_funcionario: ['', [Validators.required, Validators.pattern("[0-9]+")]],
       llamadas: [0, [Validators.pattern("[0-9]+")]],
@@ -117,9 +129,34 @@ export class SolicitudVisitaComponent implements OnInit {
     return bDate.toISOString().substring(0, 10);
   }
 
+  getListGenre() {
+    this.catalogoService.getListSexo().subscribe(res => {
+      const response: any = res;
+      console.log(response.result);
+      if (response.result.length > 0)
+        this.listGenre = response.result;
+      else
+        this.listGenre.length = 0
+    }, err => {
+      console.log(err)
+    })
+  }
+
+  getListReason() {
+    this.generalService.getListReason().subscribe(res => {
+      const response: any = res;
+      if (response.result.length > 0)
+        this.listReason = response.result;
+      else
+        this.listReason.length = 0
+    }, err => {
+      console.log(err)
+    })
+  }
+
   getListDependecy() {
-    this.commonService.getListDependency().subscribe(res => {
-      let response: any = res;
+    this.generalService.getListDependency().subscribe(res => {
+      const response: any = res;
       if (response.result.length > 0)
         this.listDependency = response.result;
       else
@@ -130,7 +167,7 @@ export class SolicitudVisitaComponent implements OnInit {
   }
 
   getListAuxiliary() {
-    this.commonService.getListAuxiliary().subscribe(res => {
+    this.generalService.getListAuxiliary().subscribe(res => {
       let response: any = res;
       if (response.result.length > 0)
         this.listAuxiliary = response.result;
@@ -139,6 +176,36 @@ export class SolicitudVisitaComponent implements OnInit {
     }, err => {
       console.log(err)
     })
+  }
+
+  getEmployees() {
+    //const dataSend = cui ? { 'id_auxiliatura': id_auxiliatura } : {};
+    this.empleadoService.getEmployees()
+      .pipe(first())
+      .subscribe({
+        next: (data) => {
+          const response: any = data;
+          if (response.success) {
+            const personasFormateadas = response.result
+              ? response.result.map((employee) => {
+                employee.nombres_completos = [
+                  employee.nombres,
+                  employee.apellidos
+                ].filter(Boolean)
+                .join(" ");
+                return employee;
+            }) : [];
+
+            this.listEmployees = personasFormateadas;
+          } else
+            this.toastr.error(response.message)
+        },
+        error: (data) => {
+          const error: any = data;
+          this.toastr.error(error.message);
+          this.loading = false;
+        }
+      });
   }
 
   // convenience getter for easy access to form fields
@@ -172,9 +239,7 @@ export class SolicitudVisitaComponent implements OnInit {
         next: (data) => {
           const response: any = data;
           if (response.success) {
-            console.log('before', response.result);
             response.result.fecha_nacimiento = this.toApiDate(response.result.fecha_nacimiento);
-            console.log('after', response.result);
             this.visitaForm.patchValue(response.result);
             this.toastr.success(response.message)
           } else
