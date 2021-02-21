@@ -8,7 +8,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { first, map, switchMap  } from 'rxjs/operators';
 import { extractErrorMessages, FormStatus } from '../../../shared/utils';
-import { format } from 'date-fns';
+import { format, isValid, parseISO, differenceInYears } from 'date-fns';
 
 interface Reason {
   id_motivo: number,
@@ -125,6 +125,13 @@ export class SolicitudVisitaComponent implements OnInit {
 
   disableField(field: string) {
     return !this.isAddMode
+  }
+
+  calculateAge(birthDate: string) {
+    if (isValid(parseISO(birthDate)) === true) {
+      const years = differenceInYears(new Date(), parseISO(birthDate));
+      this.visitaForm.controls['edad'].setValue(years);
+    }
   }
 
   toApiDate(rawDate) {
