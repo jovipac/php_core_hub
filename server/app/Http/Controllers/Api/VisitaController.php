@@ -125,7 +125,7 @@ class VisitaController extends ApiController
             'salida' => 'nullable|date_format:H:i|after:entrada',
             'llamadas' => 'integer',
             'id_dependencia' => 'required|integer',
-            'id_funcionario' => 'integer',
+            'id_funcionario' => 'nullable|integer',
             'id_auxiliatura' => 'required|integer',
         ]);
         if ($validator->fails()) {

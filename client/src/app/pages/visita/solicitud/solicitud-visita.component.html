@@ -106,7 +106,7 @@
             </div>
           </div>
           <div class="col-md-4 mb-3">
-            <input-label [requires]="true" [label]="'Visita a'" [id]="'txtEmpleado'"></input-label>
+            <input-label [requires]="false" [label]="'Visita a'" [id]="'txtEmpleado'"></input-label>
             <ng-select [items]="listEmployees" #select bindLabel="nombres_completos" dropdownPosition="auto" bindValue="id_funcionario" labelForId="txtEmpleado"
               placeholder="Seleccionar empleado" [virtualScroll]="true" formControlName="id_funcionario" [ngClass]="displayErrorsCss('id_funcionario')">
             </ng-select>

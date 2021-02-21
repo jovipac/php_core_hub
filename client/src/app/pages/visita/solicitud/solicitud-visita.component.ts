@@ -124,7 +124,6 @@ export class SolicitudVisitaComponent implements OnInit {
   }
 
   disableField(field: string) {
-    console.log(this.isAddMode);
     return !this.isAddMode
   }
 
@@ -136,7 +135,6 @@ export class SolicitudVisitaComponent implements OnInit {
   getListGenre() {
     this.catalogoService.getListSexo().subscribe(res => {
       const response: any = res;
-      console.log(response.result);
       if (response.result.length > 0)
         this.listGenre = response.result;
       else
