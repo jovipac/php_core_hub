@@ -6,7 +6,7 @@ import { CatalogosService, FuncionariosService, VisitasService, PersonasService 
 import { Sexo, Motivo, Funcionario } from '../../../shared/models';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
-import { first } from 'rxjs/operators';
+import { first, map, switchMap  } from 'rxjs/operators';
 import { extractErrorMessages, FormStatus } from '../../../shared/utils';
 import { format } from 'date-fns';
 
@@ -100,7 +100,7 @@ export class SolicitudVisitaComponent implements OnInit {
       salida: ['', []],
       id_motivo: ['', [Validators.required, Validators.pattern("[0-9]+")]],
       id_dependencia: ['', [Validators.required, Validators.pattern("[0-9]+")]],
-      id_funcionario: ['', [Validators.required, Validators.pattern("[0-9]+")]],
+      id_funcionario: ['', [Validators.pattern("[0-9]+")]],
       llamadas: [0, [Validators.pattern("[0-9]+")]],
     }, { validators: this.dateLessThan('fecha_nacimiento') });
   }
@@ -258,29 +258,65 @@ export class SolicitudVisitaComponent implements OnInit {
   }
 
   private createVisita() {
-    const formValues = {
+    let formValues = {
       ...this.visitaForm.value,
       entrada: format(new Date(), 'HH:mm'),
       id_auxiliatura: JSON.parse(sessionStorage.getItem('validate')).id_auxiliatura,
       id_estado: 1
     };
 
-    this.visitaService.createVisit(formValues)
-        .pipe(first())
-        .subscribe( res => {
-          const response: any = res;
-          this.toastr.success(response.message, 'Visitas')
-          this.router.navigate(['../'], { relativeTo: this.route });
-        }, err =>{
-          const error: HttpErrorResponse = err;
-          const messages = extractErrorMessages(error);
-          messages.forEach(propertyErrors => {
-            for (let message in propertyErrors) {
-              this.toastr.error(propertyErrors[message], 'Visitas');
-            }
-          });
-          this.loading = false;
+    if (formValues.id_persona === null || formValues.id_persona === '') {
+      this.personaService.createPersona(formValues).pipe(
+        first(),
+        map((data: any) => {
+          formValues = {
+            ...formValues,
+            id_persona: data.result.id_persona
+          }
+          this.visitaForm.value.id_persona = data.result.id_persona;
+          return formValues;
+        }),
+        switchMap((visita: any) => {
+          return this.visitaService.createVisit(visita)
+          .pipe(first())
+        })
+      )
+        .subscribe({
+          next: (response: any) => {
+            this.toastr.success(response.message, 'Visitas')
+            this.router.navigate(['../'], { relativeTo: this.route });
+          },
+          error: (error: HttpErrorResponse) => {
+            const messages = extractErrorMessages(error);
+            messages.forEach(propertyErrors => {
+              for (let message in propertyErrors) {
+                this.toastr.error(propertyErrors[message], 'Visitas');
+              }
+            });
+            this.loading = false;
+          }
         });
+
+    } else {
+      this.visitaService.createVisit(formValues)
+        .pipe(first())
+        .subscribe({
+          next: (response: any) => {
+            this.toastr.success(response.message, 'Visitas')
+            this.router.navigate(['../'], { relativeTo: this.route });
+          },
+          error: (error: HttpErrorResponse) => {
+            const messages = extractErrorMessages(error);
+            messages.forEach(propertyErrors => {
+              for (let message in propertyErrors) {
+                this.toastr.error(propertyErrors[message], 'Visitas');
+              }
+            });
+            this.loading = false;
+          }
+        });
+    }
+
   }
 
   private updateVisita() {

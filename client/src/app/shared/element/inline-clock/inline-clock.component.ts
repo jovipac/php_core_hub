@@ -12,7 +12,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
     }
   ]
 })
-export class InlineClockComponent implements OnInit, OnDestroy {
+export class InlineClockComponent implements ControlValueAccessor, OnInit, OnDestroy {
   @Input() format: string = 'hh:mm:ss a';
   @Input() value: Date;
   @Input() id: string;
@@ -37,6 +37,11 @@ export class InlineClockComponent implements OnInit, OnDestroy {
   ngOnDestroy(){
     clearInterval(this.timer);
   }
+
+  writeValue(value: any): void { }
+  registerOnChange(fn: any): void { }
+  registerOnTouched(fn: any): void { }
+  setDisabledState(isDisabled: boolean): void { }
 
   private tick(): void {
     if (!this.isPaused) {

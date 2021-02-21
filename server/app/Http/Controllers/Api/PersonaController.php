@@ -34,7 +34,7 @@ class PersonaController extends ApiController
     public function search(Request $request)
     {
         $resSuccess = false;
-        if ($request->has('cui')) {
+        if ($request->has('cui') && $request->filled('cui')) {
             $resMessage = '';
             $persona = Persona::where('cui', 'like', '%' . $request->input('cui') . '%')->first();
             if (empty($persona) == false) {
@@ -56,7 +56,7 @@ class PersonaController extends ApiController
             return $this->apiResponse(
                 [
                     'success' => $resSuccess,
-                    'message' => "Persona no encontrada",
+                    'message' => "Debe de especificar un CUI valido a buscar.",
                     'result' => []
                 ]
             );
