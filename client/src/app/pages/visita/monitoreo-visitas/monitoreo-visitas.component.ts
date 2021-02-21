@@ -26,7 +26,11 @@ interface Visit {
   entrada: string,
   salida: string,
   llamadas: number,
-  id_dependencia: number
+  id_dependencia: number,
+  nombre_motivo: string,
+  nombres: string,
+  apellidos: string,
+  edad: number
 }
 
 @Component({
@@ -160,12 +164,12 @@ export class MonitoreoVisitasComponent implements OnInit {
   markExit(visit) {
     let VisitUpdate = {
       entrada: "15:00",
-      salida:  "22:00",    
+      salida:  "22:00",
       id_estado: 2
     };
 
     var today = new Date();
-    console.log(today.setHours(today.getHours() + 4));    
+    console.log(today.setHours(today.getHours() + 4));
 
      Swal.fire({
        title: '¿Esta seguro?',
@@ -179,7 +183,7 @@ export class MonitoreoVisitasComponent implements OnInit {
      }).then((result) => {
        if (result.isConfirmed) {
          this.service.updateVisit(visit.id_visita , VisitUpdate ).subscribe(res => {
-           let response: any = res;          
+           let response: any = res;
            this.toastr.success( "Ticket cerrado exitosamente", 'Monitor de atención')
            $(document).ready(function () { $('#listMonitor').DataTable().destroy(); })
            this.getListVisit();
