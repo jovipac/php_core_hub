@@ -81,3 +81,11 @@
     max-width: 100%;
   }
 }
+
+@media print {
+  .border-dark {
+    border-color: #343a40!important;
+    border: 2px solid;
+  }
+}
+
