@@ -18,9 +18,12 @@
             </div>
           </div>
           <div class="col-md-4 offset-md-4 mb-3">
-            <h4>Hora Entrada: <span id="txtEntrada"></span><inline-clock [format]="'hh:mm a'"></inline-clock></h4>
+            <h4>Hora Entrada:
+              <span id="txtEntrada" *ngIf="isAddMode === true" ><inline-clock [format]="'hh:mm:ss a'"></inline-clock></span>
+              <span id="txtEntrada" *ngIf="isAddMode === false" >{{f.entrada.value | date:'h:mm a'}}</span>
+            </h4>
             <div *ngIf="isAddMode === false">
-              <h4>Hora Salida: <span id="txtSalida"></span><inline-clock [format]="'hh:mm a'"></inline-clock></h4>
+              <h4>Hora Salida: <span id="txtSalida"></span><inline-clock [format]="'hh:mm:ss a'"></inline-clock></h4>
             </div>
           </div>
         </div>
