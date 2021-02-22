@@ -106,7 +106,7 @@ class AuxiliaturaController extends ApiController
 
         $auxiliatura->update($request->all());
 
-        return $this->respondSuccess([
+        return $this->apiResponse([
             'success' => true,
             'message' => "Auxiliatura actualizada con exito",
             'result' => $auxiliatura

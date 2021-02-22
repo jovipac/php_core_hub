@@ -89,7 +89,7 @@ class RolController extends ApiController
 
         $role->update($request->all());
 
-        return $this->respondSuccess([
+        return $this->apiResponse([
             'success' => true,
             'message' => "Rol actualizado con exito",
             'result' => $role

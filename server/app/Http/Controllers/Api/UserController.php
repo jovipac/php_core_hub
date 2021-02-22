@@ -91,7 +91,7 @@ class UserController extends ApiController
         $input['password'] = bcrypt($input['password']);
         $user->update($input);
 
-        return $this->respondSuccess([
+        return $this->apiResponse([
             'success' => true,
             'message' => "Usuario actualizado con exito",
             'result' => $user

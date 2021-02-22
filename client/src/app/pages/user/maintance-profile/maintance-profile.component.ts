@@ -191,7 +191,7 @@ export class MaintanceProfileComponent implements OnInit {
         let response: any = res;
         $(document).ready(function () { $('#list').DataTable().destroy(); })
         this.getListRol();
-        this.toastr.success(response.message.message, 'Funcionarios')
+        this.toastr.success(response.message, 'Funcionarios')
         this.updatingProfile.reset();
         this.getDismissReason('Close click');
       }, err => {

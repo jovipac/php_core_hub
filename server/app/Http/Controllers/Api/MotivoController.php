@@ -87,7 +87,7 @@ class MotivoController extends ApiController
 
         $motivo->update($request->all());
 
-        return $this->respondSuccess([
+        return $this->apiResponse([
             'success' => true,
             'message' => "Motivo de visita actualizado con exito",
             'result' => $motivo

@@ -116,7 +116,7 @@ class DependenciaController extends ApiController
 
         $dependencia->update($request->all());
 
-        return $this->respondSuccess([
+        return $this->apiResponse([
             'success' => true,
             'message' => "Dependencia actualizada con exito",
             'result' => $dependencia
