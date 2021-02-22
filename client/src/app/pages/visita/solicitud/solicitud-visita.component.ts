@@ -134,9 +134,9 @@ export class SolicitudVisitaComponent implements OnInit {
     }
   }
 
-  toApiDate(rawDate) {
-    const bDate: Date = new Date(rawDate);
-    return bDate.toISOString().substring(0, 10);
+  toApiDate(rawDate: string) {
+    //return format(new Date(rawDate), 'yyyy-MM-dd');
+    return (new Date(rawDate)).toISOString().substring(0, 10);
   }
 
   getListGenre() {

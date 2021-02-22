@@ -16,7 +16,11 @@ const routes: Routes = [
             {
               path: 'monitoreo-visitas',
               loadChildren: () => import('./monitoreo-visitas/monitoreo-visitas.module').then(m => m.MonitoreoVisitasModule)
-          },
+            },
+            {
+              path: 'ticket',
+              loadChildren: () => import('./ticket-visita/ticket-visita.module').then(m => m.TicketVisitaPageModule)
+            },
         ]
     }
 ];

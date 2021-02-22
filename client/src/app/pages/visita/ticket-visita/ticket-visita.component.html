@@ -1,0 +1,52 @@
+
+<div class="container-fluid">
+
+  <div class="card border-dark text-dark">
+
+    <div id="printSection" class="card-body">
+      <div class="row">
+        <div class="col-md-4">
+          <img class="image" src="assets/images/pdh_images/logo_inicio_sesion.png" alt="Logo">
+        </div>
+        <div class="col-md-8">
+          <h3 class="card-title">Ticket de visita No.&nbsp;&nbsp;{{visitaForm?.id_visita}}</h3>
+          <h5 class="card-title">Hora ingreso:&nbsp;&nbsp;{{visitaForm?.entrada | date:'shortTime'}}</h5>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-md-4">
+          <h5><span>Nombres:</span>{{visitaForm?.nombres}}</h5>
+        </div>
+        <div class="col-md-4">
+          <h5>Apellidos:&nbsp;&nbsp;{{visitaForm?.apellidos}}</h5>
+        </div>
+        <div class="col-md-2">
+          <h5><span>Edad:</span>{{visitaForm?.edad}}</h5>
+        </div>
+        <div class="col-md-3">
+          <h5><span>Telefono:</span>{{visitaForm?.telefono}}</h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <h5><span>Motivo de la visita:</span>{{visitaForm?.nombre_motivo}}</h5>
+        </div>
+        <div class="col-md-4">
+          <h5><span>Visita a:</span>{{visitaForm?.nombre_funcionario}}</h5>
+        </div>
+      </div>
+      <p class="card-text">Son las facultades y libertades fundamentales de las cuales gozan todas las personas y que se
+        derivan de su dignidad humana, indispensables para su desarrollo integral, por lo que no pueden ser
+        vulnerados. Por ello, los Estados y las leyes que los rigen tienen la obligación de reconocerlos,
+        difundirlos, protegerlos y garantizarlos</p>
+    </div>
+    <div class="card-footer">
+      <!-- Links -->
+      <button ngxPrint printSectionId="printSection" class="btn btn-outline-primary" [useExistingCss]="true"><i class="fa fa-print"></i>Imprimir</button>
+      <button class="btn btn-outline-secondary" (click)="onNew()"><i class="fa fa-plus"></i>Nuevo</button>
+    </div>
+
+  </div>
+
+</div>
