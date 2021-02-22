@@ -155,7 +155,7 @@ class VisitaController extends ApiController
             'tt_visita.entrada', 'tt_visita.salida', 'tt_visita.llamadas',
             'tt_visita.id_motivo', 'T02.nombre AS nombre_motivo',
             'tt_visita.id_dependencia', 'T03.nombre AS nombre_dependencia',
-            'tt_visita.id_funcionario', 'T04.codigo AS codigo_funcionario',
+            'tt_visita.id_funcionario', 'T04.nombres AS nombres_funcionario', 'T04.apellidos AS apellidos_funcionario',
             'tt_visita.id_estado', 'T05.nombre AS nombre_estado',
             'tt_visita.id_auxiliatura', 'T06.nombre AS nombre_auxiliatura',
             )

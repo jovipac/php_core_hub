@@ -28,7 +28,14 @@ export class TicketVisitaComponent implements OnInit {
     .pipe(first())
     .subscribe({
       next: (data:any) => {
-        const ticket = data.result;
+        const ticket = {
+          ...data.result,
+          nombre_funcionario: [
+            data.result.nombres_funcionario,
+            data.result.apellidos_funcionario
+          ].filter(Boolean)
+          .join(" ")
+        };
         this.visitaForm = <Visita>ticket;
       },
       error: (error:any) => {
