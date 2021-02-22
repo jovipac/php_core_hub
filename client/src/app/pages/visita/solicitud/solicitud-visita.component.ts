@@ -239,6 +239,11 @@ export class SolicitudVisitaComponent implements OnInit {
 
   }
 
+  onNew() {
+    this.visitaForm.reset();
+    this.router.navigate(['/visita/solicitud/agregar'], { relativeTo: this.route });
+  }
+
   public searchPersona(cui: string) {
     const dataSend = { 'cui': cui };
     this.personaService.searchPersona(dataSend)
