@@ -225,7 +225,6 @@ export class SolicitudVisitaComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-    console.log("Probando")
     // stop here if form is invalid
     if (this.visitaForm.invalid) {
       return;
@@ -288,8 +287,9 @@ export class SolicitudVisitaComponent implements OnInit {
       )
         .subscribe({
           next: (response: any) => {
-            this.toastr.success(response.message, 'Visitas')
-            this.router.navigate(['../'], { relativeTo: this.route });
+            this.toastr.success(response.message, 'Visitas');
+            const visita = response.result;
+            this.router.navigate(['../../ticket', visita.id_visita], { relativeTo: this.route });
           },
           error: (error: HttpErrorResponse) => {
             const messages = extractErrorMessages(error);
@@ -308,7 +308,8 @@ export class SolicitudVisitaComponent implements OnInit {
         .subscribe({
           next: (response: any) => {
             this.toastr.success(response.message, 'Visitas')
-            this.router.navigate(['../'], { relativeTo: this.route });
+            const visita = response.result;
+            this.router.navigate(['../../ticket', visita.id_visita], { relativeTo: this.route });
           },
           error: (error: HttpErrorResponse) => {
             const messages = extractErrorMessages(error);

@@ -125,8 +125,14 @@
             </div>
           </div>
         </div>
-
-        <button class="btn btn-primary" type="submit" id="btnSavePrint"><i class="fa fa-save"></i>Guardar</button>
+        <div class="row">
+          <div *ngIf="isAddMode === true" class="col text-center">
+            <button class="btn btn-primary" type="submit" id="btnSavePrint"><i class="fa fa-save"></i>Guardar e imprimir</button>
+          </div>
+          <div *ngIf="isAddMode === false" class="col text-center">
+            <button class="btn btn-primary" type="submit" id="btnSavePrint"><i class="fa fa-save"></i>Guardar</button>
+          </div>
+        </div>
       </form>
     </app-card>
 

@@ -31,8 +31,8 @@ export class TicketVisitaComponent implements OnInit {
         const ticket = {
           ...data.result,
           nombre_funcionario: [
-            data.result.nombres_funcionario,
-            data.result.apellidos_funcionario
+            data.result?.nombres_funcionario,
+            data.result?.apellidos_funcionario
           ].filter(Boolean)
           .join(" ")
         };
