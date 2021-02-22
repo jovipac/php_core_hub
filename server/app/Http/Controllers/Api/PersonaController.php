@@ -131,7 +131,7 @@ class PersonaController extends ApiController
 
         $persona->update($request->all());
 
-        return $this->respondSuccess([
+        return $this->apiResponse([
             'success' => true,
             'message' => "Persona actualizada con exito",
             'result' => $persona

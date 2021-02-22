@@ -335,13 +335,11 @@ export class SolicitudVisitaComponent implements OnInit {
       this.visitaService.updateVisit(this.id, formValues)
           .pipe(first())
           .subscribe({
-              next: (data) => {
-                  const response: any = data;
-                  this.toastr.success(response.message, 'Visitas')
-                  this.router.navigate(['../../'], { relativeTo: this.route });
+              next: (response: any) => {
+                this.toastr.success(response.message, 'Visitas')
+                this.router.navigate(['../../'], { relativeTo: this.route });
               },
-              error: (data) => {
-                  const error: HttpErrorResponse = data;
+              error: (error: HttpErrorResponse) => {
                   const messages = extractErrorMessages(error);
                   messages.forEach(propertyErrors => {
                     for (let message in propertyErrors) {

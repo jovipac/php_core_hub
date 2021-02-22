@@ -218,7 +218,7 @@ class VisitaController extends ApiController
 
         $visita->update($request->all());
 
-        return $this->respondSuccess([
+        return $this->apiResponse([
             'success' => true,
             'message' => "Registro de visita actualizado con exito",
             'result' => $visita

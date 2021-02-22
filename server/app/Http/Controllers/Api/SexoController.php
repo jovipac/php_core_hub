@@ -87,7 +87,7 @@ class SexoController extends ApiController
 
         $sexo->update($request->all());
 
-        return $this->respondSuccess([
+        return $this->apiResponse([
             'success' => true,
             'message' => "Clasificación del sexo actualizado con exito",
             'result' => $sexo
