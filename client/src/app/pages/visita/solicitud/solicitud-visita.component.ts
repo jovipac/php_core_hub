@@ -52,7 +52,7 @@ export class SolicitudVisitaComponent implements OnInit {
     private visitaService: VisitasService,
     private personaService: PersonasService,
   ) {
-    this.buildForm();
+    //this.buildForm();
   }
 
   ngOnInit() {
@@ -72,6 +72,8 @@ export class SolicitudVisitaComponent implements OnInit {
             return this.visitaForm.patchValue(data.result);
           });
     }
+    // Se llama la construccion del formulario
+    this.buildForm();
   }
 
   dateLessThan(from: string) {
@@ -87,23 +89,62 @@ export class SolicitudVisitaComponent implements OnInit {
   }
 
   private buildForm() {
-    this.visitaForm = this.fb.group({
-      id_persona: ['', [Validators.pattern("[0-9]+")]],
-      cui: ['', [Validators.required, Validators.pattern("[0-9]{12,14}")]],
-      nombres: ['', [Validators.required, Validators.minLength(2)]],
-      apellidos: ['', [Validators.required, Validators.minLength(2)]],
-      telefono: ['', [Validators.pattern("[0-9]{8,10}")]],
-      fecha_nacimiento: ['', []],
-      edad: ['', [Validators.pattern("[0-9]+")]],
-      id_sexo: ['', [Validators.pattern("[0-9]+")]],
-      entrada: ['', []],
-      salida: ['', []],
-      id_motivo: ['', [Validators.required, Validators.pattern("[0-9]+")]],
-      id_dependencia: ['', [Validators.required, Validators.pattern("[0-9]+")]],
-      id_funcionario: ['', [Validators.pattern("[0-9]+")]],
-      llamadas: [0, [Validators.pattern("[0-9]+")]],
+    this.visitaForm = new FormGroup({
+      id_persona: new FormControl('', [Validators.pattern("[0-9]+")]),
+      cui: new FormControl({
+        value: '',
+        disabled: !this.isAddMode,
+      }, [Validators.required,
+        Validators.pattern("[0-9]+"),
+        Validators.minLength(12),
+        Validators.maxLength(15)]),
+      nombres: new FormControl({
+        value: '',
+        disabled: !this.isAddMode,
+      }, [Validators.required,
+      Validators.minLength(2)]),
+      apellidos: new FormControl({
+        value: '',
+        disabled: !this.isAddMode,
+      }, [Validators.required,
+      Validators.minLength(2)]),
+      telefono: new FormControl({
+        value: '',
+        disabled: !this.isAddMode,
+      }, [Validators.pattern("[0-9]{8,10}")]),
+      fecha_nacimiento: new FormControl({
+        value: '',
+        disabled: !this.isAddMode,
+      }, []),
+      edad: new FormControl({
+        value: '',
+        disabled: !this.isAddMode,
+      }, [Validators.pattern("[0-9]+")]),
+      id_sexo: new FormControl({
+        value: '',
+        disabled: !this.isAddMode,
+      }, [Validators.pattern("[0-9]+")]),
+      entrada: new FormControl('', []),
+      salida: new FormControl('', []),
+      id_motivo: new FormControl({
+        value: '',
+        disabled: !this.isAddMode,
+      }, [Validators.required, Validators.pattern("[0-9]+")]),
+      id_dependencia: new FormControl({
+        value: '',
+        disabled: !this.isAddMode,
+      }, [Validators.required, Validators.pattern("[0-9]+")]),
+      id_funcionario: new FormControl({
+        value: '',
+        disabled: !this.isAddMode,
+      }, [Validators.pattern("[0-9]+")]),
+      llamadas: new FormControl({
+        value: 0,
+        disabled: !this.isAddMode,
+      }, [Validators.pattern("[0-9]+")]),
     }, { validators: this.dateLessThan('fecha_nacimiento') });
   }
+
 
   isFieldValid(field: string) {
     return (this.visitaForm.get(field).dirty || this.visitaForm.get(field).touched || this.submitted) && this.visitaForm.get(field).errors
