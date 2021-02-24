@@ -156,11 +156,11 @@ export class SolicitudVisitaComponent implements OnInit {
       id_prioridad: new FormControl({
         value: '',
         disabled: !this.isAddMode,
+      }, []),
       observaciones: new FormControl({
-          value: '',
-          disabled: !this.isAddMode,
-        }, []),
-      }, [Validators.required, Validators.pattern("[0-9]+")]),
+        value: '',
+        disabled: !this.isAddMode,
+      }, []),
     }, { validators: this.dateLessThan('fecha_nacimiento') });
   }
 
@@ -390,13 +390,17 @@ export class SolicitudVisitaComponent implements OnInit {
             const visita = response.result;
             this.router.navigate(['../../ticket', visita.id_visita], { relativeTo: this.route });
           },
-          error: (error: HttpErrorResponse) => {
-            const messages = extractErrorMessages(error);
-            messages.forEach(propertyErrors => {
-              for (let message in propertyErrors) {
-                this.toastr.error(propertyErrors[message], 'Visitas');
-              }
-            });
+          error: (response: HttpErrorResponse) => {
+            if (Object.prototype.toString.call(response.error.message) === '[object Object]') {
+              const messages = extractErrorMessages(response);
+              messages.forEach(propertyErrors => {
+                for (let message in propertyErrors) {
+                  this.toastr.error(propertyErrors[message], 'Visitas');
+                }
+              });
+            } else {
+              this.toastr.error(response.error.message)
+            }
             this.loading = false;
           }
         });
@@ -411,7 +415,7 @@ export class SolicitudVisitaComponent implements OnInit {
             this.router.navigate(['../../ticket', visita.id_visita], { relativeTo: this.route });
           },
           error: (response: HttpErrorResponse) => {
-            if (response.error.success) {
+            if (Object.prototype.toString.call(response.error.message) === '[object Object]') {
               const messages = extractErrorMessages(response);
               messages.forEach(propertyErrors => {
                 for (let message in propertyErrors) {
