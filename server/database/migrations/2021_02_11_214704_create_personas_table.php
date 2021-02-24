@@ -20,6 +20,7 @@ class CreatePersonasTable extends Migration
             $table->string('apellidos');
             $table->date('fecha_nacimiento')->nullable();
             $table->integer('id_sexo')->unsigned();
+            $table->integer('id_genero')->unsigned();
             $table->string('telefono')->nullable();
             $table->boolean('borrado')->default(0)->index();
             $table->timestamps();
@@ -27,6 +28,10 @@ class CreatePersonasTable extends Migration
 
             $table->foreign('id_sexo')->references('id_sexo')
                 ->on('tc_sexo')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+            $table->foreign('id_genero')->references('id_genero')->on('tc_genero')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
         });

@@ -17,6 +17,7 @@ class CreateVisitasTable extends Migration
             $table->increments('id_visita');
             $table->integer('id_persona')->unsigned();
             $table->integer('id_motivo')->unsigned();
+            $table->integer('edad')->nullable();
             $table->datetime('entrada')->nullable();
             $table->datetime('salida')->nullable();
             $table->integer('llamadas')->default(0)->unsigned();
@@ -24,6 +25,8 @@ class CreateVisitasTable extends Migration
             $table->integer('id_funcionario')->nullable()->unsigned();
             $table->integer('id_estado')->unsigned();
             $table->integer('id_auxiliatura')->unsigned();
+            $table->string('observaciones')->nullable();
+            $table->integer('id_prioridad')->unsigned();
             $table->boolean('borrado')->default(0)->index();
             $table->timestamps();
             $table->softDeletes();
@@ -52,6 +55,11 @@ class CreateVisitasTable extends Migration
             $table->foreign('id_estado')->references('id_estado')->on('tc_estado')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
+
+            $table->foreign('id_prioridad')->references('id_prioridad')->on('tc_prioridad')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
         });
     }
 

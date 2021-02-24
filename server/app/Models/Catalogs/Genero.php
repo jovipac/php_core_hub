@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Http\Traits\SoftDeletesBoolean;
 use App\Http\Traits\DateTimeMutator;
 
-class Funcionario extends Model
+class Genero extends Model
 {
     use SoftDeletesBoolean, DateTimeMutator;
 
@@ -17,8 +17,8 @@ class Funcionario extends Model
      *
      * @var array
      */
-    protected $table = 'tc_funcionario';
-    protected $primaryKey = 'id_funcionario';
+    protected $table = 'tc_genero';
+    protected $primaryKey = 'id_genero';
 
     /**
      * The attributes that are mass assignable.
@@ -26,7 +26,7 @@ class Funcionario extends Model
      * @var array
      */
     protected $fillable = [
-        'codigo', 'nombres', 'apellidos', 'email', 'id_puesto', 'borrado'
+        'nombre', 'slug', 'borrado'
     ];
 
     /**
@@ -37,5 +37,4 @@ class Funcionario extends Model
     protected $hidden = [
         'borrado',
     ];
-
 }

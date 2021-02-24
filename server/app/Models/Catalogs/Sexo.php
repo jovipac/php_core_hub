@@ -4,10 +4,11 @@ namespace App\Models\Catalogs;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Traits\SoftDeletesBoolean;
+use App\Http\Traits\DateTimeMutator;
 
 class Sexo extends Model
 {
-    use SoftDeletesBoolean;
+    use SoftDeletesBoolean, DateTimeMutator;
 
     const IS_DELETED = 'borrado';
 

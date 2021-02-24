@@ -121,6 +121,7 @@ class VisitaController extends ApiController
         $validator = Validator::make($input, [
             'id_persona' => 'required|integer',
             'id_motivo' => 'required|integer',
+            'edad' => 'nullable|integer',
             'entrada' => 'date_format:H:i|before:tomorrow',
             'salida' => 'nullable|date_format:H:i|after:entrada',
             'llamadas' => 'integer',
@@ -206,6 +207,7 @@ class VisitaController extends ApiController
         $validator = Validator::make($request->all(), [
             'id_persona' => 'integer',
             'id_motivo' => 'integer',
+            'edad' => 'nullable|integer',
             'entrada' => 'date_format:H:i|before:tomorrow',
             'salida' => 'nullable|date_format:H:i|after:entrada',
             'llamadas' => 'integer',

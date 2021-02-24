@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
-use App\Models\Catalogs\Sexo;
+use App\Models\Catalogs\Resultado;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class SexoController extends ApiController
+class ResultadoController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -16,12 +16,12 @@ class SexoController extends ApiController
      */
     public function index()
     {
-        $sexos = Sexo::all();
+        $resultados = Resultado::all();
         return $this->apiResponse(
             [
                 'success' => true,
-                'message' => "Listado de clasificación del sexo",
-                'result' => $sexos
+                'message' => "Listado de clasificación del resultado",
+                'result' => $resultados
             ]
         );
     }
@@ -36,34 +36,34 @@ class SexoController extends ApiController
     {
         $validator = Validator::make($request->all(), [
             'nombre' => 'required|string',
-            'slug' => 'string|unique:tc_sexo',
+            'slug' => 'nullable|string|unique:tc_resultado',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
         }
         $input = $request->all();
-        $sexo = Sexo::create($input);
+        $resultado = Resultado::create($input);
 
         return $this->respondCreated([
             'success' => true,
-            'message' => "Clasificación del sexo creado con exito",
-            'result' => $sexo
+            'message' => "Clasificación del resultado creado con exito",
+            'result' => $resultado
         ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Sexo  $sexo
+     * @param  \App\Resultado  $resultado
      * @return \Illuminate\Http\Response
      */
-    public function show(Sexo $sexo)
+    public function show(Resultado $resultado)
     {
         return $this->apiResponse(
             [
                 'success' => true,
-                'message' => "Clasificación del sexo encontrado",
-                'result' => $sexo
+                'message' => "Clasificación del resultado encontrado",
+                'result' => $resultado
             ]
         );
     }
@@ -72,53 +72,53 @@ class SexoController extends ApiController
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Sexo  $sexo
+     * @param  \App\Resultado  $resultado
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Sexo $sexo)
+    public function update(Request $request, Resultado $resultado)
     {
         $validator = Validator::make($request->all(), [
             'nombre' => 'required|string',
-            'slug' => 'string',
+            'slug' => 'nullable|string',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
         }
 
-        $sexo->update($request->all());
+        $resultado->update($request->all());
 
         return $this->apiResponse([
             'success' => true,
-            'message' => "Clasificación del sexo actualizado con exito",
-            'result' => $sexo
+            'message' => "Clasificación del resultado actualizado con exito",
+            'result' => $resultado
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Sexo  $sexo
+     * @param  \App\Resultado  $resultado
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Sexo $sexo)
+    public function destroy(Resultado $resultado)
     {
-        $sexo->delete();
+        $resultado->delete();
 
-        return $this->respondSuccess('Clasificación del sexo eliminado con exito');
+        return $this->respondSuccess('Clasificación del resultado eliminado con exito');
+
     }
 
     /**
      * Restore the specified resource from storage.
      *
-     * @param  \App\Sexo  $estado
+     * @param  \App\Resultado  $estado
      * @return \Illuminate\Http\Response
      */
     public function restore($id)
     {
-        $sexo = Sexo::withTrashed()->findorfail($id);
-        $sexo->restore();
+        $resultado = Resultado::withTrashed()->findorfail($id);
+        $resultado->restore();
 
-        return $this->respondSuccess('Clasificación del sexo restaurado con exito');
+        return $this->respondSuccess('Clasificación del resultado restaurado con exito');
     }
-
 }

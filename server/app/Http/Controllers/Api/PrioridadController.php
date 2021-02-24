@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
-use App\Models\Catalogs\Sexo;
+use App\Models\Catalogs\Prioridad;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class SexoController extends ApiController
+class PrioridadController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -16,12 +16,12 @@ class SexoController extends ApiController
      */
     public function index()
     {
-        $sexos = Sexo::all();
+        $prioridades = Prioridad::all();
         return $this->apiResponse(
             [
                 'success' => true,
-                'message' => "Listado de clasificación del sexo",
-                'result' => $sexos
+                'message' => "Listado de clasificación de la prioridad",
+                'result' => $prioridades
             ]
         );
     }
@@ -36,34 +36,34 @@ class SexoController extends ApiController
     {
         $validator = Validator::make($request->all(), [
             'nombre' => 'required|string',
-            'slug' => 'string|unique:tc_sexo',
+            'slug' => 'string|unique:tc_prioridad',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
         }
         $input = $request->all();
-        $sexo = Sexo::create($input);
+        $prioridad = Prioridad::create($input);
 
         return $this->respondCreated([
             'success' => true,
-            'message' => "Clasificación del sexo creado con exito",
-            'result' => $sexo
+            'message' => "Clasificación de la prioridad creado con exito",
+            'result' => $prioridad
         ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Sexo  $sexo
+     * @param  \App\Prioridad  $prioridad
      * @return \Illuminate\Http\Response
      */
-    public function show(Sexo $sexo)
+    public function show(Prioridad $prioridad)
     {
         return $this->apiResponse(
             [
                 'success' => true,
-                'message' => "Clasificación del sexo encontrado",
-                'result' => $sexo
+                'message' => "Clasificación de la prioridad encontrada",
+                'result' => $prioridad
             ]
         );
     }
@@ -72,10 +72,10 @@ class SexoController extends ApiController
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Sexo  $sexo
+     * @param  \App\Prioridad  $prioridad
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Sexo $sexo)
+    public function update(Request $request, Prioridad $prioridad)
     {
         $validator = Validator::make($request->all(), [
             'nombre' => 'required|string',
@@ -85,40 +85,40 @@ class SexoController extends ApiController
             return $this->respondError($validator->errors(), 422);
         }
 
-        $sexo->update($request->all());
+        $prioridad->update($request->all());
 
         return $this->apiResponse([
             'success' => true,
-            'message' => "Clasificación del sexo actualizado con exito",
-            'result' => $sexo
+            'message' => "Clasificación de la prioridad actualizada con exito",
+            'result' => $prioridad
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Sexo  $sexo
+     * @param  \App\Prioridad  $prioridad
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Sexo $sexo)
+    public function destroy(Prioridad $prioridad)
     {
-        $sexo->delete();
+        $prioridad->delete();
 
-        return $this->respondSuccess('Clasificación del sexo eliminado con exito');
+        return $this->respondSuccess('Clasificación de la prioridad eliminada con exito');
+
     }
 
     /**
      * Restore the specified resource from storage.
      *
-     * @param  \App\Sexo  $estado
+     * @param  \App\Prioridad  $estado
      * @return \Illuminate\Http\Response
      */
     public function restore($id)
     {
-        $sexo = Sexo::withTrashed()->findorfail($id);
-        $sexo->restore();
+        $prioridad = Prioridad::withTrashed()->findorfail($id);
+        $prioridad->restore();
 
-        return $this->respondSuccess('Clasificación del sexo restaurado con exito');
+        return $this->respondSuccess('Clasificación del prioridad restaurada con exito');
     }
-
 }
