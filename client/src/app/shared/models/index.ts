@@ -1,3 +1,4 @@
+export * from './prioridad.interface';
 export * from './sexo.interface';
 export * from './motivo.interface';
 export * from './visita.interface';

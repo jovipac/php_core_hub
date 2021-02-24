@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl, Validators } from "@angular/forms";
 import { ServicesService } from "../../../service/services.service";
-import { SexoService } from '../../../service/catalogos';
+import { PrioridadService, SexoService, GeneroService } from '../../../service/catalogos';
 import { FuncionariosService, VisitasService, PersonasService } from '../../../service';
-import { Sexo, Motivo, Funcionario } from '../../../shared/models';
+import { Prioridad, Sexo, Genero, Motivo, Funcionario } from '../../../shared/models';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { first, map, switchMap  } from 'rxjs/operators';
@@ -36,11 +36,13 @@ export class SolicitudVisitaComponent implements OnInit {
   isAddMode: boolean;
   loading = false;
   submitted = false;
+  public listPriority: Array<Prioridad>;
   public listReason: Array<Motivo>;
   public listDependency: Array<dependency>;
   public listEmployees: Array<Funcionario>;
   public listAuxiliary: Array<auxiliary>;
-  public listGenre: Array<Sexo>;
+  public listSex: Array<Sexo>;
+  public listGenre: Array<Genero>;
 
   constructor(
     private fb: FormBuilder,
@@ -48,7 +50,9 @@ export class SolicitudVisitaComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService,
     private generalService: ServicesService,
+    private prioridadService: PrioridadService,
     private sexoService: SexoService,
+    private generoService: GeneroService,
     private empleadoService: FuncionariosService,
     private visitaService: VisitasService,
     private personaService: PersonasService,
@@ -59,6 +63,8 @@ export class SolicitudVisitaComponent implements OnInit {
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
     this.isAddMode = !this.id;
+    this.getListPriority()
+    this.getListSex()
     this.getListGenre()
     this.getListReason()
     this.getListDependecy();
@@ -125,6 +131,10 @@ export class SolicitudVisitaComponent implements OnInit {
         value: '',
         disabled: !this.isAddMode,
       }, [Validators.pattern("[0-9]+")]),
+      id_genero: new FormControl({
+        value: '',
+        disabled: !this.isAddMode,
+      }, [Validators.pattern("[0-9]+")]),
       entrada: new FormControl('', []),
       salida: new FormControl('', []),
       id_motivo: new FormControl({
@@ -143,6 +153,14 @@ export class SolicitudVisitaComponent implements OnInit {
         value: 0,
         disabled: !this.isAddMode,
       }, [Validators.pattern("[0-9]+")]),
+      id_prioridad: new FormControl({
+        value: '',
+        disabled: !this.isAddMode,
+      observaciones: new FormControl({
+          value: '',
+          disabled: !this.isAddMode,
+        }, []),
+      }, [Validators.required, Validators.pattern("[0-9]+")]),
     }, { validators: this.dateLessThan('fecha_nacimiento') });
   }
 
@@ -181,8 +199,38 @@ export class SolicitudVisitaComponent implements OnInit {
     return (new Date(rawDate)).toISOString().substring(0, 10);
   }
 
-  getListGenre() {
+  getListPriority() {
+    this.prioridadService.getListPrioridad()
+      .pipe(first())
+      .subscribe({
+        next: (response: any) => {
+          if (response.success) {
+            this.listPriority = response.result;
+          } else
+            this.toastr.error(response.message)
+        },
+        error: (data) => {
+          const error: HttpErrorResponse = data;
+          this.toastr.error(error.message);
+        }
+      });
+  }
+
+  getListSex() {
     this.sexoService.getListSexo().subscribe(res => {
+      const response: any = res;
+      if (response.result.length > 0)
+        this.listSex = response.result;
+      else
+        this.listSex.length = 0
+    }, err => {
+      const error: HttpErrorResponse = err;
+      this.toastr.error(error.message);
+    })
+  }
+
+  getListGenre() {
+    this.generoService.getListGenero().subscribe(res => {
       const response: any = res;
       if (response.result.length > 0)
         this.listGenre = response.result;

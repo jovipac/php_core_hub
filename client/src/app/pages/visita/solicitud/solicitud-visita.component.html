@@ -75,16 +75,35 @@
             <input type="number" class="form-control" id="txtEdad" formControlName="edad" placeholder=""
               [ngClass]="displayErrorsCss('edad')" >
             <div *ngIf="isHasErrors('edad')" class="invalid-feedback">
-              Please provide a valid zip.
+              Please provide a valid edad.
             </div>
           </div>
           <div class="col-md-4 mb-3">
             <input-label [requires]="true" [label]="'Sexo'" [id]="'txtSexo'"></input-label>
             <select class="form-control" id="txtSexo" formControlName="id_sexo"
               [ngClass]="displayErrorsCss('id_sexo')" required>
-              <option *ngFor="let genre of listGenre" value="{{genre.id_sexo}}">{{genre.nombre}}</option>
+              <option *ngFor="let sexo of listSex" value="{{sexo.id_sexo}}">{{sexo.nombre}}</option>
             </select>
             <div *ngIf="isHasErrors('id_sexo')" class="invalid-feedback">Seleccione un valor</div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="col-md-4 mb-3">
+            <input-label [requires]="false" [label]="'Genero'" [id]="'txtGenero'"></input-label>
+            <select class="form-control" id="txtGenero" formControlName="id_genero"
+              [ngClass]="displayErrorsCss('id_genero')" required>
+              <option *ngFor="let genre of listGenre" value="{{genre.id_genero}}">{{genre.nombre}}</option>
+            </select>
+            <div *ngIf="isHasErrors('id_genero')" class="invalid-feedback">Seleccione un valor</div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <input-label [requires]="true" [label]="'Prioridad'" [id]="'txtPrioridad'"></input-label>
+            <select class="form-control" id="txtPrioridad" formControlName="id_prioridad"
+              [ngClass]="displayErrorsCss('id_prioridad')" required>
+              <option *ngFor="let prioridad of listPriority" value="{{prioridad.id_prioridad}}">{{prioridad.nombre}}</option>
+            </select>
+            <div *ngIf="isHasErrors('id_prioridad')" class="invalid-feedback">Seleccione un valor</div>
           </div>
         </div>
 
