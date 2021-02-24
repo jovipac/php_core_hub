@@ -410,13 +410,18 @@ export class SolicitudVisitaComponent implements OnInit {
             const visita = response.result;
             this.router.navigate(['../../ticket', visita.id_visita], { relativeTo: this.route });
           },
-          error: (error: HttpErrorResponse) => {
-            const messages = extractErrorMessages(error);
-            messages.forEach(propertyErrors => {
-              for (let message in propertyErrors) {
-                this.toastr.error(propertyErrors[message], 'Visitas');
-              }
-            });
+          error: (response: HttpErrorResponse) => {
+            if (response.error.success) {
+              const messages = extractErrorMessages(response);
+              messages.forEach(propertyErrors => {
+                for (let message in propertyErrors) {
+                  this.toastr.error(propertyErrors[message], 'Visitas');
+                }
+              });
+
+            } else {
+              this.toastr.error(response.error.message)
+            }
             this.loading = false;
           }
         });
