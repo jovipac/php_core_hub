@@ -128,6 +128,7 @@ class VisitaController extends ApiController
             'id_dependencia' => 'required|integer',
             'id_funcionario' => 'nullable|integer',
             'id_auxiliatura' => 'required|integer',
+            'id_prioridad' => 'required|integer',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
@@ -213,6 +214,7 @@ class VisitaController extends ApiController
             'llamadas' => 'integer',
             'id_dependencia' => 'integer',
             'id_funcionario' => 'integer',
+            'id_prioridad' => 'integer',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
