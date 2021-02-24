@@ -17,5 +17,6 @@ class DatabaseSeeder extends Seeder
         $this->call(EstadoCatalogSeeder::class);
         $this->call(SexoCatalogSeeder::class);
         $this->call(GeneroCatalogSeeder::class);
+        $this->call(MotivoCatalogSeeder::class);
     }
 }

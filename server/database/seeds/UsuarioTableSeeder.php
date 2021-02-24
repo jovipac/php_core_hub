@@ -13,7 +13,7 @@ class UsuarioTableSeeder extends Seeder
     {
         \App\Models\Entities\User::firstOrCreate([
             'username' => 'superadmin',
-            'password' => 'secret'
+            'password' => bcrypt('BigSecret')
         ]);
 
         \App\Models\Entities\UsuarioRol::firstOrCreate([
