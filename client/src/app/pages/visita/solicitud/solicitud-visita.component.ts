@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl, Validators } from "@angular/forms";
 import { ServicesService } from "../../../service/services.service";
-import { CatalogosService, FuncionariosService, VisitasService, PersonasService } from '../../../service';
+import { SexoService } from '../../../service/catalogos';
+import { FuncionariosService, VisitasService, PersonasService } from '../../../service';
 import { Sexo, Motivo, Funcionario } from '../../../shared/models';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
@@ -47,7 +48,7 @@ export class SolicitudVisitaComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService,
     private generalService: ServicesService,
-    private catalogoService: CatalogosService,
+    private sexoService: SexoService,
     private empleadoService: FuncionariosService,
     private visitaService: VisitasService,
     private personaService: PersonasService,
@@ -181,7 +182,7 @@ export class SolicitudVisitaComponent implements OnInit {
   }
 
   getListGenre() {
-    this.catalogoService.getListSexo().subscribe(res => {
+    this.sexoService.getListSexo().subscribe(res => {
       const response: any = res;
       if (response.result.length > 0)
         this.listGenre = response.result;
@@ -233,7 +234,7 @@ export class SolicitudVisitaComponent implements OnInit {
   }
 
   getEmployees() {
-    //const dataSend = cui ? { 'id_auxiliatura': id_auxiliatura } : {};
+    //const dataSend = id_unidad ? { 'id_dependencia': id_unidad } : {};
     this.empleadoService.getEmployees()
       .pipe(first())
       .subscribe({
@@ -259,6 +260,10 @@ export class SolicitudVisitaComponent implements OnInit {
           this.toastr.error(error.message);
         }
       });
+  }
+
+  selectedDependency(event) {
+    console.log(event.reference);
   }
 
   // convenience getter for easy access to form fields
