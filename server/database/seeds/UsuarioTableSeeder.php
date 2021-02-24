@@ -15,5 +15,10 @@ class UsuarioTableSeeder extends Seeder
             'username' => 'superadmin',
             'password' => 'secret'
         ]);
+
+        \App\Models\Entities\UsuarioRol::firstOrCreate([
+            'id_usuario' => 1,
+            'id_rol' => 1
+        ]);
     }
 }

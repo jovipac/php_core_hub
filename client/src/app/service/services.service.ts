@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { environment } from '../../environments/environment.prod';
+import { environment } from '../../environments/environment';
 import { ConditionalExpr } from '@angular/compiler';
 import { env } from 'process';
 @Injectable({
@@ -147,22 +147,22 @@ export class ServicesService {
   /* SERVICE OF MONITOR REASON */
   getListReason() {
     return this.httpClient.get(`${environment.host}motivos`, this.createHeaders())
-  } 
-  
+  }
+
   getListVisit(data) {
     return this.httpClient.post(`${environment.host}visitas/search`, data , this.createHeaders())
-  }   
+  }
 
   updateVisit(codeRol, data) {
     return this.httpClient.put(`${environment.host}visitas/${codeRol}`, data, this.createHeaders());
-  }  
+  }
 
 
   /*start module of user */
   /* user assigned */
   UserAssigned(codeRol) {
     return this.httpClient.get(`${environment.host}usuario-modulos/assigned/${codeRol}`, this.createHeaders())
-  }  
+  }
 
   /* user unassigned filter ID*/
   UserUnassigned(codeRol) {
@@ -177,7 +177,7 @@ export class ServicesService {
   /* create user delete module */
   deleteUserModule(id, data) {
     return this.httpClient.post(`${environment.host}usuario-modulos/delete/${id}`, data, this.createHeaders());
-  }  
+  }
 
 
 
