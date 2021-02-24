@@ -11,10 +11,10 @@ class GeneroCatalogSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Models\Catalogs\Genero::class)->create([
+        \App\Models\Catalogs\Genero::firstOrCreate([
             'nombre' => 'Hombre'
         ]);
-        factory(\App\Models\Catalogs\Genero::class)->create([
+        \App\Models\Catalogs\Genero::firstOrCreate([
             'nombre' => 'Mujer'
         ]);
     }
