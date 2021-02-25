@@ -19,5 +19,7 @@ export interface Visita {
   nombre_funcionario: string,
   id_auxiliatura: number,
   nombre_auxiliatura: string,
-  llamadas: number
+  llamadas: number,
+  id_prioridad: number,
+  nombre_prioridad: string,
 }

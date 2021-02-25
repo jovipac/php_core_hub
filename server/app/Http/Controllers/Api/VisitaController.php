@@ -160,7 +160,7 @@ class VisitaController extends ApiController
             'tt_visita.id_funcionario', 'T04.nombres AS nombres_funcionario', 'T04.apellidos AS apellidos_funcionario',
             'tt_visita.id_estado', 'T05.nombre AS nombre_estado',
             'tt_visita.id_auxiliatura', 'T06.nombre AS nombre_auxiliatura',
-            'tt_visita.id_prioridad', 'T06.nombre AS nombre_prioridad',
+            'tt_visita.id_prioridad', 'T07.nombre AS nombre_prioridad',
             )
             ->join('tc_persona AS T01', 'tt_visita.id_persona', 'T01.id_persona')
             ->join('tc_motivo AS T02', 'tt_visita.id_motivo', 'T02.id_motivo')
