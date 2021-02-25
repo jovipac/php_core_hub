@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAuxiliaturasTable extends Migration
+class CreateDocumentosIdentidadTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateAuxiliaturasTable extends Migration
      */
     public function up()
     {
-        Schema::create('tc_auxiliatura', function (Blueprint $table) {
-            $table->increments('id_auxiliatura');
-            $table->string('nombre');
-            $table->string('direccion', 255)->nullable();
-            $table->string('telefono', 100)->nullable();
-            $table->string('email', 80)->nullable();
+        Schema::create('tc_documento_identidad', function (Blueprint $table) {
+            $table->increments('id_documento_identidad');
+            $table->string('nombre', 50);
+            $table->string('descripcion')->nullable();
             $table->boolean('borrado')->default(0)->index();
             $table->timestamps();
             $table->softDeletes();
@@ -32,6 +30,6 @@ class CreateAuxiliaturasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tc_auxiliatura');
+        Schema::dropIfExists('tc_documento_identidad');
     }
 }
