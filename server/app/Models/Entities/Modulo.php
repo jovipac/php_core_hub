@@ -63,19 +63,7 @@ class Modulo extends Model
     {
         $this->setParentIdAttribute($value);
     }
-/*
-    public function parent()
-    {
 
-        return $this->hasOne('App\Models\Entities\Modulo', 'id_modulo', 'id_parent');
-    }
-
-    public function children()
-    {
-
-        return $this->hasMany('App\Models\Entities\Modulo', 'id_parent', 'id_modulo');
-    }
-*/
     public function menu()
     {
         return $this->belongsTo(Menu::class, 'id_menu', 'id_menu');

@@ -120,6 +120,8 @@ class MenuController extends ApiController
     public function show(Menu $menu)
     {
         $menu_id = $menu->id_menu;
+        // Funcion para correccion del calculo de la jerarquia de los itemas del menu
+        Modulo::scoped(['id_menu' => $menu_id])->fixTree();
         //Funcion de formateo de la data resultado del filtrado
         $transform = function ($menu) use ($menu_id) {
             $responseStructure = [
