@@ -40,6 +40,7 @@ export class SolicitudVisitaComponent implements OnInit {
   public listReason: Array<Motivo>;
   public listDependency: Array<dependency>;
   public listEmployees: Array<Funcionario>;
+  public listDependencyEmployees: Array<Funcionario>;
   public listAuxiliary: Array<auxiliary>;
   public listSex: Array<Sexo>;
   public listGenre: Array<Genero>;
@@ -310,8 +311,9 @@ export class SolicitudVisitaComponent implements OnInit {
       });
   }
 
-  selectedDependency(event) {
-    console.log(event.reference);
+  selectedDependency() {
+    const id_dependencia = this.visitaForm.get('id_dependencia').value;
+    this.listDependencyEmployees = this.listEmployees.filter((employee: any) => employee.id_dependencia == id_dependencia);
   }
 
   // convenience getter for easy access to form fields

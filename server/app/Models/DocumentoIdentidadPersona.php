@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Models\Catalogs;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Traits\SoftDeletesBoolean;
 use App\Http\Traits\DateTimeMutator;
+use App\Models\Catalogs\DocumentoIdentidad;
 
-class DocumentoIdentidad extends Model
+class DocumentoIdentidadPersona extends Model
 {
     use SoftDeletesBoolean, DateTimeMutator;
 
@@ -17,8 +18,7 @@ class DocumentoIdentidad extends Model
      *
      * @var array
      */
-    protected $table = 'tc_documento_identidad';
-    protected $primaryKey = 'id_documento_identidad';
+    protected $table = 'tt_documento_identidad_persona';
 
     /**
      * The attributes that are mass assignable.
@@ -26,7 +26,7 @@ class DocumentoIdentidad extends Model
      * @var array
      */
     protected $fillable = [
-        'id_documento_identidad', 'nombre', 'descripcion'
+        'id_persona', 'id_documento_identidad', 'borrado'
     ];
 
     /**
@@ -38,10 +38,14 @@ class DocumentoIdentidad extends Model
         'borrado',
     ];
 
-    /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = ['entrada', 'salida'];
+    public function personas()
+    {
+        return $this->hasMany(Persona::class, 'id_persona', 'id_persona');
+    }
+
+    public function documentos_identidad()
+    {
+        return $this->hasMany(DocumentoIdentidad::class, 'id_documento_identidad', 'id_documento_identidad');
+    }
+
 }

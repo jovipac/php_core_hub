@@ -122,7 +122,7 @@
             <input-label [requires]="true" [label]="'Visita a unidad'" [id]="'txtDependencia'"></input-label>
             <ng-select id="txtDependencia" [items]="listDependency" #select bindLabel="nombre" dropdownPosition="auto"
               bindValue="id_dependencia" labelForId="txtDependencia" placeholder="Seleccionar a unidad" [virtualScroll]="true"
-              formControlName="id_dependencia" [ngClass]="displayErrorsCss('id_dependencia')">
+              formControlName="id_dependencia" [ngClass]="displayErrorsCss('id_dependencia')" (blur)="selectedDependency()" >
             </ng-select>
             <div *ngIf="isHasErrors('id_dependencia')" class="invalid-feedback">
               <div *ngIf="f.id_dependencia.errors?.required">El campo es requerido</div>
@@ -131,7 +131,7 @@
           </div>
           <div class="col-md-4 mb-3">
             <input-label [requires]="false" [label]="'Visita a'" [id]="'txtEmpleado'"></input-label>
-            <ng-select [items]="listEmployees" #select bindLabel="nombres_completos" dropdownPosition="auto" bindValue="id_funcionario" labelForId="txtEmpleado"
+            <ng-select [items]="listDependencyEmployees" #select bindLabel="nombres_completos" dropdownPosition="auto" bindValue="id_funcionario" labelForId="txtEmpleado"
               placeholder="Seleccionar empleado" [virtualScroll]="true" formControlName="id_funcionario" [ngClass]="displayErrorsCss('id_funcionario')">
             </ng-select>
 
