@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, Validators, FormBuilder } from "@angular/forms";
+import { FormBuilder, FormGroup, FormControl, Validators  } from "@angular/forms";
+
 import { ToastrService } from 'ngx-toastr';
 import { ServicesService } from "../../../service/services.service";
 import * as $ from 'jquery';
 import 'datatables.net';
 import 'datatables.net-dt';
 import Swal from 'sweetalert2'
-
+import { extractErrorMessages, FormStatus } from '../../../shared/utils';
 import "datatables.net-buttons/js/buttons.html5.js";
 
 interface auxiliary {
@@ -40,10 +41,19 @@ interface Visit {
 })
 export class MonitoreoVisitasComponent implements OnInit {
   MonitorVisitas: FormGroup;
+  formStatus = new FormStatus();
+  id: string;
+  isAddMode: boolean;
+  loading = false;
+  submitted = false;
+
   public listAuxiliary: Array<auxiliary>;
   public listReason: Array<Reason>;
   public listVisit: Array<Visit>;
   public rol = JSON.parse(sessionStorage.getItem('validate')).rol;
+  public auxiliatura = JSON.parse(sessionStorage.getItem('validate')).id_auxiliatura;
+  public MostrarDiv : boolean = false;
+  public  ChangeAux : boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -54,35 +64,60 @@ export class MonitoreoVisitasComponent implements OnInit {
   }
 
   private buildForm() {
-    this.MonitorVisitas = this.formBuilder.group({
 
-    });
+
+
+
+    this.MonitorVisitas = new FormGroup({
+      id_auxiliatura: new FormControl({
+        value: '',
+        disabled: !this.ChangeAux,
+      }, [Validators.required, Validators.pattern("[0-9]+")]),
+      id_motivo: new FormControl({
+        value: '',
+
+      }, [Validators.required, Validators.pattern("[0-9]+")]),
+    },);
   }
 
   ngOnInit() {
-    console.log( this.rol);
-    this.getListVisit()
     this.getListAuxiliary()
     this.getListReason()
+
+    if (this.rol == 1){
+      this.ChangeAux = true;
+    }else{
+      this.ChangeAux = false;
+    }
+
+    // Se llama la construccion del formulario
+    this.buildForm();
   }
 
-  onSubmit(event: Event) {
+  onSubmit() {
 
 
   }
-
-
-
 
   getListVisit() {
+    let Auxiliatura ;
+    if (this.rol == 1){
+      Auxiliatura = this.MonitorVisitas.value.id_auxiliatura;
+    }else{
+      Auxiliatura = this.auxiliatura;
+    }
+
+
     let data = {
-      id_auxiliatura: 2,
-      id_motivo: 1
+      id_auxiliatura: Auxiliatura,
+      id_motivo: this.MonitorVisitas.value.id_motivo
     }
     this.service.getListVisit(data).subscribe(res => {
       let response: any = res;
       console.log(response)
       if (response.result.length > 0) {
+        this.toastr.success("Resultado de Tickets");
+        this.MostrarDiv = true;
         this.listVisit = response.result;
         $(document).ready(function () {
           $('#listMonitor').DataTable({
@@ -129,6 +164,8 @@ export class MonitoreoVisitasComponent implements OnInit {
 
       } else {
         this.listVisit = [];
+        this.MostrarDiv = false;
+        this.toastr.error("Sin resultado de Tickets")
       }
     }, err => {
       console.log(err)
@@ -193,6 +230,10 @@ export class MonitoreoVisitasComponent implements OnInit {
          })
        }
      })
+  }
+
+  demo(){
+    this.getListVisit()
   }
 
 

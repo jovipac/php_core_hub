@@ -81,6 +81,7 @@ export class MaintanceProfileComponent implements OnInit {
   }
   /* manager modals */
   open(content, code) {
+    this.errorState = false;
     this.modalService
       .open(content, { size: "xl", centered: false })
       .result.then(
@@ -184,6 +185,7 @@ export class MaintanceProfileComponent implements OnInit {
   }
 
   updateProfiles(event: Event) {
+    this.errorState = false;
     event.preventDefault();
     if (this.updatingProfile.valid) {
       this.errorState = false;
@@ -206,7 +208,7 @@ export class MaintanceProfileComponent implements OnInit {
   deleteProfile(codeOficial) {
     Swal.fire({
       title: '¿Esta seguro?',
-      text: "Despues de eliminar el perfil, no se podra revertir la acción!",
+      text: "Despues de inhabilitar el perfil, no se podra revertir la acción!",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -222,7 +224,7 @@ export class MaintanceProfileComponent implements OnInit {
           this.getListRol();
 
         }, err => {
-          this.toastr.error('Error al eliminar al funcionario', 'Error')
+          this.toastr.error('Error al inhabilitar al funcionario', 'Error')
         })
       }
     })

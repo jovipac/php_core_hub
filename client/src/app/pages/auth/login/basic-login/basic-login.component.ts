@@ -50,7 +50,8 @@ export class BasicLoginComponent implements OnInit {
         this.router.navigate(['dashboard'])
       }, err => {
         let error = err.error;
-        this.message = { error: `Usuario o contraseña invalido.` }
+        this.errorLogin = true;
+        this.message = { error: "Credenciales incorrectas." }
       })
     } else {
       this.errorLogin = true;

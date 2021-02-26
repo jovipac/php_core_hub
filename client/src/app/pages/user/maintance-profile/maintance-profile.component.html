@@ -1,53 +1,56 @@
 <div class="row">
-  <div class="maintance">
-    <div class="col-md-12 buttoms">
-      <!-- Button trigger modal -->
-      <button (click)="open(addProfile,0)" class="btn btn-primary float-right btn-md button-separate"><i
+  <!-- <div class="maintance"> -->
+  <div class="col-lg-12">
+    <app-card [classHeader]="true" [blockClass]="'table-border-style'">
+      <div class="col-lg-12 buttoms">
+        <!-- Button trigger modal -->
+        <button (click)="open(addProfile,0)" class="btn btn-primary float-right btn-md button-separate"><i
           class="icofont icofont-plus-circle">
-        </i>Nuevo Perfil</button>
-    </div>
-
-    <div class="col-md-12 container-table">
-      <div class="table-responsive">
-        <table class="table" id="list">
-          <thead>
-            <tr>
-              <th>Código</th>
-              <th>Nombre</th>
-              <th>Descripción</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let profile of listRol">
-              <td>{{profile.slug}}</td>
-              <td>{{profile.nombre}}</td>
-              <td>{{profile.descripcion}}</td>
-              <td>
-                <div class="row">
-                  <div class="col">
-                    <div ngbDropdown class="d-inline-block">
-                      <button class="btn btn-outline-primary btn-mini" id="dropdownBasic1"
-                        ngbDropdownToggle>Acciones</button>
-                      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                        <button class="btn-mini" (click)="open(updateProfile,profile.id_rol); getRol(profile.id_rol)"
-                          ngbDropdownItem>Actualizar</button>
-                        <button class="btn-mini"
-                          (click)="open(addPermit, profile.id_rol); loadModuleAssigned(profile.id_rol)"
-                          ngbDropdownItem>Asignar
-                          herramientas</button>
-                        <button class="btn-mini" (click)="deleteProfile(profile.id_rol)"
-                          ngbDropdownItem>Eliminar</button>
+          </i>Nuevo Perfil</button>
+          <br>
+      </div>
+      <div class="table-responsive" >
+        <div class="col-md-12" style="margin-bottom: 50px;">
+          <table class="table  table-striped" id="list">
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let profile of listRol">
+                <td>{{profile.slug}}</td>
+                <td>{{profile.nombre}}</td>
+                <td>{{profile.descripcion}}</td>
+                <td>
+                  <div class="row">
+                    <div class="col">
+                      <div ngbDropdown class="d-inline-block">
+                        <button class="btn btn-outline-primary btn-mini" id="dropdownBasic1"
+                          ngbDropdownToggle>Acciones</button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                          <button class="btn-mini" (click)="open(updateProfile,profile.id_rol); getRol(profile.id_rol)"
+                            ngbDropdownItem>Actualizar</button>
+                          <button class="btn-mini"
+                            (click)="open(addPermit, profile.id_rol); loadModuleAssigned(profile.id_rol)"
+                            ngbDropdownItem>Asignar
+                            permisos</button>
+                          <button class="btn-mini" (click)="deleteProfile(profile.id_rol)"
+                            ngbDropdownItem>Inhabilitar</button>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
+    </app-card>
   </div>
 </div>
 
@@ -127,7 +130,7 @@
 <ng-template #updateProfile let-c="close" let-d="dismiss">
   <div class="modal-content">
     <div class="modal-header">
-      <h6 class="modal-title" id="modal-title-default">Administración de usuarios</h6>
+      <h6 class="modal-title" id="modal-title-default">Administración de Perfiles</h6>
       <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="d('Cross click')">
         <span aria-hidden="true">×</span>
       </button>
@@ -196,7 +199,7 @@
   <ngx-spinner></ngx-spinner>
   <div class="modal-content">
     <div class="modal-header">
-      <h6 class="modal-title" id="modal-title-default">Administración de usuarios</h6>
+      <h6 class="modal-title" id="modal-title-default">Administración de Perfiles</h6>
       <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="d('Cross click')">
         <span aria-hidden="true">×</span>
       </button>
@@ -232,11 +235,11 @@
           <div class="row align-middle">
             <div class="col-md-12 ">
               <button
-                class="{{(!assignedOne) ? 'btn btn-success btn-sm size' : 'btn btn-disabled disabled btn-sm size' }}"
+                class="{{(!assignedOne) ? 'btn btn-primary btn-sm size' : 'btn btn-disabled disabled btn-sm size' }}"
                 (click)="rolAssignedOne()" [disabled]="assignedOne"> > </button>
             </div>
             <div class="col-md-12" style="margin-top: 1.5%;">
-              <button class="btn btn-success btn-sm size" (click)="rollAssignedAll()"> >> </button>
+              <button class="btn btn-danger btn-sm size" (click)="rollAssignedAll()"> >> </button>
             </div>
             <div class="col-md-12" style="margin-top: 20px;">
               <button class="btn btn-danger btn-sm size" (click)="rollUnassignedAll()">
@@ -244,7 +247,7 @@
             </div>
             <div class="col-md-12" style="margin-top: 1%;">
               <button
-                class="{{(!unassignedOne) ? 'btn btn-success btn-sm size' : 'btn btn-disabled disabled btn-sm size' }}"
+                class="{{(!unassignedOne) ? 'btn btn-primary btn-sm size' : 'btn btn-disabled disabled btn-sm size' }}"
                 (click)="rolUnassignedOne()" [disabled]="unassignedOne">
                 < </button>
             </div>
@@ -262,12 +265,12 @@
           </ul>
         </div>
       </div>
-      <div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="errorState">
+      <!-- <div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="errorState">
         <span class="alert-inner--text">{{message.error}}</span>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
-      </div>
+      </div> -->
       <br><br>
       <div class="row">
         <div class="col-md-12">

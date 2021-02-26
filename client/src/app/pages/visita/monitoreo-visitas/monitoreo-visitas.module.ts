@@ -5,6 +5,7 @@ import { MonitoreoVisitasRoutingModule } from './monitoreo-visitas-routing.modul
 import { MonitoreoVisitasComponent } from './monitoreo-visitas.component';
 import { SharedModule } from '../../../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [MonitoreoVisitasComponent],
@@ -13,7 +14,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MonitoreoVisitasRoutingModule,
     SharedModule,
     FormsModule,
-    ReactiveFormsModule,    
+    ReactiveFormsModule,
+    NgSelectModule
   ]
 })
 export class MonitoreoVisitasModule { }
