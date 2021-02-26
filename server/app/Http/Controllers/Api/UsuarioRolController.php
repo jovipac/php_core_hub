@@ -85,7 +85,7 @@ class UsuarioRolController extends ApiController
 
         $usuario_role->update($request->all());
 
-        return $this->respondSuccess([
+        return $this->apiResponse([
             'success' => true,
             'message' => "Rol del usuario actualizado con exito",
             'result' => $usuario_role

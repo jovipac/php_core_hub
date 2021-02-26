@@ -87,7 +87,7 @@ class PuestoController extends ApiController
 
         $puesto->update($request->all());
 
-        return $this->respondSuccess([
+        return $this->apiResponse([
             'success' => true,
             'message' => "Puesto actualizado con exito",
             'result' => $puesto

@@ -232,7 +232,7 @@ class RolModuloController extends ApiController
         $rol_modulo = Rol::where('id_rol',$id)->first();
         $rol_modulo->modulos()->syncWithoutDetaching([$request->id_modulo]);
 
-        return $this->respondSuccess([
+        return $this->apiResponse([
             'success' => true,
             'message' => "Modulo del rol actualizado con exito",
             'result' => $rol_modulo->modulos()->get()

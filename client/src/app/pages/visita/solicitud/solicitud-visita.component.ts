@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl, Validators } from "@angular/forms";
 import { ServicesService } from "../../../service/services.service";
-import { CatalogosService, FuncionariosService, VisitasService, PersonasService } from '../../../service';
-import { Sexo, Motivo, Funcionario } from '../../../shared/models';
+import { PrioridadService, SexoService, GeneroService } from '../../../service/catalogos';
+import { FuncionariosService, VisitasService, PersonasService } from '../../../service';
+import { Prioridad, Sexo, Genero, Motivo, Funcionario } from '../../../shared/models';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { first, map, switchMap  } from 'rxjs/operators';
@@ -35,11 +36,13 @@ export class SolicitudVisitaComponent implements OnInit {
   isAddMode: boolean;
   loading = false;
   submitted = false;
+  public listPriority: Array<Prioridad>;
   public listReason: Array<Motivo>;
   public listDependency: Array<dependency>;
   public listEmployees: Array<Funcionario>;
   public listAuxiliary: Array<auxiliary>;
-  public listGenre: Array<Sexo>;
+  public listSex: Array<Sexo>;
+  public listGenre: Array<Genero>;
 
   constructor(
     private fb: FormBuilder,
@@ -47,17 +50,21 @@ export class SolicitudVisitaComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService,
     private generalService: ServicesService,
-    private catalogoService: CatalogosService,
+    private prioridadService: PrioridadService,
+    private sexoService: SexoService,
+    private generoService: GeneroService,
     private empleadoService: FuncionariosService,
     private visitaService: VisitasService,
     private personaService: PersonasService,
   ) {
-    this.buildForm();
+    //this.buildForm();
   }
 
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
     this.isAddMode = !this.id;
+    this.getListPriority()
+    this.getListSex()
     this.getListGenre()
     this.getListReason()
     this.getListDependecy();
@@ -72,6 +79,8 @@ export class SolicitudVisitaComponent implements OnInit {
             return this.visitaForm.patchValue(data.result);
           });
     }
+    // Se llama la construccion del formulario
+    this.buildForm();
   }
 
   dateLessThan(from: string) {
@@ -87,23 +96,74 @@ export class SolicitudVisitaComponent implements OnInit {
   }
 
   private buildForm() {
-    this.visitaForm = this.fb.group({
-      id_persona: ['', [Validators.pattern("[0-9]+")]],
-      cui: ['', [Validators.required, Validators.pattern("[0-9]{12,14}")]],
-      nombres: ['', [Validators.required, Validators.minLength(2)]],
-      apellidos: ['', [Validators.required, Validators.minLength(2)]],
-      telefono: ['', [Validators.pattern("[0-9]{8,10}")]],
-      fecha_nacimiento: ['', []],
-      edad: ['', [Validators.pattern("[0-9]+")]],
-      id_sexo: ['', [Validators.pattern("[0-9]+")]],
-      entrada: ['', []],
-      salida: ['', []],
-      id_motivo: ['', [Validators.required, Validators.pattern("[0-9]+")]],
-      id_dependencia: ['', [Validators.required, Validators.pattern("[0-9]+")]],
-      id_funcionario: ['', [Validators.pattern("[0-9]+")]],
-      llamadas: [0, [Validators.pattern("[0-9]+")]],
+    this.visitaForm = new FormGroup({
+      id_persona: new FormControl('', [Validators.pattern("[0-9]+")]),
+      cui: new FormControl({
+        value: '',
+        disabled: !this.isAddMode,
+      }, [Validators.required,
+        Validators.pattern("[0-9]+"),
+        Validators.minLength(12),
+        Validators.maxLength(15)]),
+      nombres: new FormControl({
+        value: '',
+        disabled: !this.isAddMode,
+      }, [Validators.required,
+      Validators.minLength(2)]),
+      apellidos: new FormControl({
+        value: '',
+        disabled: !this.isAddMode,
+      }, [Validators.required,
+      Validators.minLength(2)]),
+      telefono: new FormControl({
+        value: '',
+        disabled: !this.isAddMode,
+      }, [Validators.pattern("[0-9]{8,10}")]),
+      fecha_nacimiento: new FormControl({
+        value: '',
+        disabled: !this.isAddMode,
+      }, []),
+      edad: new FormControl({
+        value: '',
+        disabled: !this.isAddMode,
+      }, [Validators.pattern("[0-9]+")]),
+      id_sexo: new FormControl({
+        value: '',
+        disabled: !this.isAddMode,
+      }, [Validators.pattern("[0-9]+")]),
+      id_genero: new FormControl({
+        value: '',
+        disabled: !this.isAddMode,
+      }, [Validators.pattern("[0-9]+")]),
+      entrada: new FormControl('', []),
+      salida: new FormControl('', []),
+      id_motivo: new FormControl({
+        value: '',
+        disabled: !this.isAddMode,
+      }, [Validators.required, Validators.pattern("[0-9]+")]),
+      id_dependencia: new FormControl({
+        value: '',
+        disabled: !this.isAddMode,
+      }, [Validators.required, Validators.pattern("[0-9]+")]),
+      id_funcionario: new FormControl({
+        value: '',
+        disabled: !this.isAddMode,
+      }, [Validators.pattern("[0-9]+")]),
+      llamadas: new FormControl({
+        value: 0,
+        disabled: !this.isAddMode,
+      }, [Validators.pattern("[0-9]+")]),
+      id_prioridad: new FormControl({
+        value: '',
+        disabled: !this.isAddMode,
+      }, []),
+      observaciones: new FormControl({
+        value: '',
+        disabled: !this.isAddMode,
+      }, []),
     }, { validators: this.dateLessThan('fecha_nacimiento') });
   }
+
 
   isFieldValid(field: string) {
     return (this.visitaForm.get(field).dirty || this.visitaForm.get(field).touched || this.submitted) && this.visitaForm.get(field).errors
@@ -134,13 +194,43 @@ export class SolicitudVisitaComponent implements OnInit {
     }
   }
 
-  toApiDate(rawDate) {
-    const bDate: Date = new Date(rawDate);
-    return bDate.toISOString().substring(0, 10);
+  toApiDate(rawDate: string) {
+    //return format(new Date(rawDate), 'yyyy-MM-dd');
+    return (new Date(rawDate)).toISOString().substring(0, 10);
+  }
+
+  getListPriority() {
+    this.prioridadService.getListPrioridad()
+      .pipe(first())
+      .subscribe({
+        next: (response: any) => {
+          if (response.success) {
+            this.listPriority = response.result;
+          } else
+            this.toastr.error(response.message)
+        },
+        error: (data) => {
+          const error: HttpErrorResponse = data;
+          this.toastr.error(error.message);
+        }
+      });
+  }
+
+  getListSex() {
+    this.sexoService.getListSexo().subscribe(res => {
+      const response: any = res;
+      if (response.result.length > 0)
+        this.listSex = response.result;
+      else
+        this.listSex.length = 0
+    }, err => {
+      const error: HttpErrorResponse = err;
+      this.toastr.error(error.message);
+    })
   }
 
   getListGenre() {
-    this.catalogoService.getListSexo().subscribe(res => {
+    this.generoService.getListGenero().subscribe(res => {
       const response: any = res;
       if (response.result.length > 0)
         this.listGenre = response.result;
@@ -192,7 +282,7 @@ export class SolicitudVisitaComponent implements OnInit {
   }
 
   getEmployees() {
-    //const dataSend = cui ? { 'id_auxiliatura': id_auxiliatura } : {};
+    //const dataSend = id_unidad ? { 'id_dependencia': id_unidad } : {};
     this.empleadoService.getEmployees()
       .pipe(first())
       .subscribe({
@@ -220,12 +310,15 @@ export class SolicitudVisitaComponent implements OnInit {
       });
   }
 
+  selectedDependency(event) {
+    console.log(event.reference);
+  }
+
   // convenience getter for easy access to form fields
   get f() { return this.visitaForm.controls; }
 
   onSubmit() {
     this.submitted = true;
-    console.log("Probando")
     // stop here if form is invalid
     if (this.visitaForm.invalid) {
       return;
@@ -238,6 +331,11 @@ export class SolicitudVisitaComponent implements OnInit {
         this.updateVisita();
     }
 
+  }
+
+  onNew() {
+    this.visitaForm.reset();
+    this.router.navigate(['/visita/solicitud/agregar'], { relativeTo: this.route });
   }
 
   public searchPersona(cui: string) {
@@ -288,16 +386,21 @@ export class SolicitudVisitaComponent implements OnInit {
       )
         .subscribe({
           next: (response: any) => {
-            this.toastr.success(response.message, 'Visitas')
-            this.router.navigate(['../'], { relativeTo: this.route });
+            this.toastr.success(response.message, 'Visitas');
+            const visita = response.result;
+            this.router.navigate(['../../ticket', visita.id_visita], { relativeTo: this.route });
           },
-          error: (error: HttpErrorResponse) => {
-            const messages = extractErrorMessages(error);
-            messages.forEach(propertyErrors => {
-              for (let message in propertyErrors) {
-                this.toastr.error(propertyErrors[message], 'Visitas');
-              }
-            });
+          error: (response: HttpErrorResponse) => {
+            if (Object.prototype.toString.call(response.error.message) === '[object Object]') {
+              const messages = extractErrorMessages(response);
+              messages.forEach(propertyErrors => {
+                for (let message in propertyErrors) {
+                  this.toastr.error(propertyErrors[message], 'Visitas');
+                }
+              });
+            } else {
+              this.toastr.error(response.error.message)
+            }
             this.loading = false;
           }
         });
@@ -308,15 +411,21 @@ export class SolicitudVisitaComponent implements OnInit {
         .subscribe({
           next: (response: any) => {
             this.toastr.success(response.message, 'Visitas')
-            this.router.navigate(['../'], { relativeTo: this.route });
+            const visita = response.result;
+            this.router.navigate(['../../ticket', visita.id_visita], { relativeTo: this.route });
           },
-          error: (error: HttpErrorResponse) => {
-            const messages = extractErrorMessages(error);
-            messages.forEach(propertyErrors => {
-              for (let message in propertyErrors) {
-                this.toastr.error(propertyErrors[message], 'Visitas');
-              }
-            });
+          error: (response: HttpErrorResponse) => {
+            if (Object.prototype.toString.call(response.error.message) === '[object Object]') {
+              const messages = extractErrorMessages(response);
+              messages.forEach(propertyErrors => {
+                for (let message in propertyErrors) {
+                  this.toastr.error(propertyErrors[message], 'Visitas');
+                }
+              });
+
+            } else {
+              this.toastr.error(response.error.message)
+            }
             this.loading = false;
           }
         });
@@ -334,13 +443,11 @@ export class SolicitudVisitaComponent implements OnInit {
       this.visitaService.updateVisit(this.id, formValues)
           .pipe(first())
           .subscribe({
-              next: (data) => {
-                  const response: any = data;
-                  this.toastr.success(response.message, 'Visitas')
-                  this.router.navigate(['../../'], { relativeTo: this.route });
+              next: (response: any) => {
+                this.toastr.success(response.message, 'Visitas')
+                this.router.navigate(['../../'], { relativeTo: this.route });
               },
-              error: (data) => {
-                  const error: HttpErrorResponse = data;
+              error: (error: HttpErrorResponse) => {
                   const messages = extractErrorMessages(error);
                   messages.forEach(propertyErrors => {
                     for (let message in propertyErrors) {

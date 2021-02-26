@@ -1,0 +1,64 @@
+<div class="container-fluid">
+
+  <div class="card text-dark">
+
+    <div id="printSection" class="card-body border-dark">
+      <div class="border-dark mb-4">
+        <div class="row">
+          <div class="col-4">
+            <img class="image" src="assets/images/pdh_images/logo_inicio_sesion.png" alt="Logo">
+          </div>
+          <div class="col-8">
+            <h3 class="card-title">Ticket de visita No.&nbsp;&nbsp;{{visitaForm?.id_visita}}</h3>
+            <h5 class="card-title">Hora ingreso:&nbsp;&nbsp;{{visitaForm?.entrada | date:'shortTime'}}</h5>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-9">
+          </div>
+          <div class="col-3">
+            <h5>Prioridad No.&nbsp;&nbsp;{{visitaForm?.nombre_prioridad}}</h5>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-4">
+            <h5>Nombres:&nbsp;&nbsp;{{visitaForm?.nombres}}</h5>
+          </div>
+          <div class="col-4">
+            <h5>Apellidos:&nbsp;&nbsp;{{visitaForm?.apellidos}}</h5>
+          </div>
+          <div class="col-1">
+            <h5>Edad:&nbsp;&nbsp;{{visitaForm?.edad}}</h5>
+          </div>
+          <div class="col-3">
+            <h5>Telefono:&nbsp;&nbsp;{{visitaForm?.telefono}}</h5>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <h5>Motivo de la visita:&nbsp;&nbsp;{{visitaForm?.nombre_motivo}}</h5>
+          </div>
+          <div class="col-6">
+            <h5>Visita a:&nbsp;&nbsp;{{visitaForm?.nombre_funcionario}}</h5>
+          </div>
+        </div>
+        <br>
+        <p class="card-text"><b>¿Qué Son los derechos Humanos?</b></p>
+        <p>Son las facultades y libertades fundamentales de las cuales gozan todas las personas y que se
+          derivan de su dignidad humana, indispensables para su desarrollo integral, por lo que no pueden ser
+          vulnerados. Por ello, los Estados y las leyes que los rigen tienen la obligación de reconocerlos,
+          difundirlos, protegerlos y garantizarlos</p>
+      </div>
+
+    </div>
+    <div class="card-footer">
+      <!-- Links -->
+      <button ngxPrint printSectionId="printSection" class="btn btn-outline-primary" [useExistingCss]="true"><i
+          class="fa fa-print"></i>Imprimir</button>
+      <button class="btn btn-outline-secondary" (click)="onNew()"><i class="fa fa-plus"></i>Nuevo</button>
+    </div>
+
+  </div>
+
+</div>

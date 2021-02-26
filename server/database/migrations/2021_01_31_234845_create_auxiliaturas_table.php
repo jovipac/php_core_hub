@@ -16,6 +16,9 @@ class CreateAuxiliaturasTable extends Migration
         Schema::create('tc_auxiliatura', function (Blueprint $table) {
             $table->increments('id_auxiliatura');
             $table->string('nombre');
+            $table->string('direccion', 255)->nullable();
+            $table->string('telefono', 100)->nullable();
+            $table->string('email', 80)->nullable();
             $table->boolean('borrado')->default(0)->index();
             $table->timestamps();
             $table->softDeletes();

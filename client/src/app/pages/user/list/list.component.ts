@@ -306,7 +306,7 @@ export class ListComponent implements OnInit {
     if (this.updateOficial.valid) {
       this.service.updateOficial(this.codeOficial, this.updateOficial.value).subscribe(res => {
         let response: any = res;
-        this.toastr.success(response.message.message, 'Funcionarios')
+        this.toastr.success(response.message, 'Funcionarios')
         $(document).ready(function () { $('#list').DataTable().destroy(); })
         this.getListOficial();
         this.updateOficial.reset();

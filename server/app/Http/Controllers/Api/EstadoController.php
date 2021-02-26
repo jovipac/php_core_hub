@@ -87,7 +87,7 @@ class EstadoController extends ApiController
 
         $estado->update($request->all());
 
-        return $this->respondSuccess([
+        return $this->apiResponse([
             'success' => true,
             'message' => "Clasificación del estado actualizado con exito",
             'result' => $estado

@@ -87,7 +87,7 @@ class SexoController extends ApiController
 
         $sexo->update($request->all());
 
-        return $this->respondSuccess([
+        return $this->apiResponse([
             'success' => true,
             'message' => "Clasificación del sexo actualizado con exito",
             'result' => $sexo
@@ -106,4 +106,19 @@ class SexoController extends ApiController
 
         return $this->respondSuccess('Clasificación del sexo eliminado con exito');
     }
+
+    /**
+     * Restore the specified resource from storage.
+     *
+     * @param  \App\Sexo  $estado
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id)
+    {
+        $sexo = Sexo::withTrashed()->findorfail($id);
+        $sexo->restore();
+
+        return $this->respondSuccess('Clasificación del sexo restaurado con exito');
+    }
+
 }

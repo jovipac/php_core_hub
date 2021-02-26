@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from "@angular/forms";
 import { Router } from '@angular/router';
 import { ServicesService } from '../../../../service/services.service'
-//import CryptoJS  from 'crypto-es';
+import head from 'ramda/src/head';
 
 @Component({
   selector: 'app-basic-login',
@@ -31,21 +31,21 @@ export class BasicLoginComponent implements OnInit {
   signin(event: Event) {
     event.preventDefault();
     if (this.login.valid) {
-      this.service.signIn(this.login.value).subscribe(res => {
-        let response: any = res;
-        let dataMenu = {
+      this.service.signIn(this.login.value).subscribe((response:any) => {
+        const defaultRol = head(response.result.user.rol);
+        const dataMenu = {
           id_usuario: response.result.user.id_usuario,
-          id_rol: response.result.user.rol[0].id_rol
+          id_rol: defaultRol?.id_rol
         }
-        let user = {
+        const user = {
           access_token: response.result.access_token,
           token_type: response.result.token_type,
           username: response.result.user.username,
-          rol: response.result.user.rol[0].id_rol,
+          rol: defaultRol?.id_rol,
           id_auxiliatura: response.result.user.id_auxiliatura,
           codes: JSON.stringify(dataMenu)
         }
-        console.log(user);
+
         sessionStorage.setItem("validate", JSON.stringify(user));
         this.router.navigate(['dashboard'])
       }, err => {

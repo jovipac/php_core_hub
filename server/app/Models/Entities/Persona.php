@@ -4,10 +4,11 @@ namespace App\Models\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Traits\SoftDeletesBoolean;
+use App\Http\Traits\DateTimeMutator;
 
 class Persona extends Model
 {
-    use SoftDeletesBoolean;
+    use SoftDeletesBoolean, DateTimeMutator;
 
     const IS_DELETED = 'borrado';
 
@@ -25,7 +26,7 @@ class Persona extends Model
      * @var array
      */
     protected $fillable = [
-        'id_persona', 'cui', 'nombres', 'apellidos', 'fecha_nacimiento', 'id_sexo', 'telefono'
+        'id_persona', 'cui', 'nombres', 'apellidos', 'fecha_nacimiento', 'id_sexo', 'id_genero', 'telefono'
     ];
 
     /**

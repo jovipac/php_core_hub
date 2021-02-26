@@ -248,7 +248,7 @@ class UsuarioModuloController extends ApiController
         $usuario_modulo = User::where('id_usuario',$id)->first();
         $usuario_modulo->modulos()->syncWithoutDetaching([$request->id_modulo]);
 
-        return $this->respondSuccess([
+        return $this->apiResponse([
             'success' => true,
             'message' => "Modulo del rol actualizado con exito",
             'result' => $usuario_modulo->modulos()->get()

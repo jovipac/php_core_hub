@@ -161,7 +161,7 @@ class FuncionarioController extends ApiController
         $findUser = User::where("id_funcionario",'=', $request->id_funcionario)->first()
             ->update($request->all());
 
-        return $this->respondSuccess([
+        return $this->apiResponse([
             'success' => true,
             'message' => "Funcionario actualizado con exito",
             'result' => $funcionario

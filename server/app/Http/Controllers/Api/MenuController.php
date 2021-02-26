@@ -161,7 +161,7 @@ class MenuController extends ApiController
 
         $menu->update($request->all());
 
-        return $this->respondSuccess([
+        return $this->apiResponse([
             'success' => true,
             'message' => "Menu actualizado con exito",
             'result' => $menu

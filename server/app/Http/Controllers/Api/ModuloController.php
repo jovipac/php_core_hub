@@ -98,7 +98,7 @@ class ModuloController extends ApiController
 
         $modulo->update($request->all());
 
-        return $this->respondSuccess([
+        return $this->apiResponse([
             'success' => true,
             'message' => "Modulo actualizado con exito",
             'result' => $modulo

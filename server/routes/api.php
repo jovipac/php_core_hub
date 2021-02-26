@@ -59,7 +59,13 @@ Route::group([
     Route::resource('auxiliaturas', 'Api\AuxiliaturaController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
+    Route::resource('prioridad', 'Api\PrioridadController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
     Route::resource('sexo', 'Api\SexoController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+    Route::resource('genero', 'Api\GeneroController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
     Route::resource('personas', 'Api\PersonaController', ['only' => [
@@ -71,10 +77,12 @@ Route::group([
     Route::resource('visitas', 'Api\VisitaController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
-
     Route::get('estados/restore/{estado}', 'Api\EstadoController@restore')->name('estados.restore');
+    Route::get('prioridad/restore/{prioridad}', 'Api\PrioridadController@restore')->name('prioridad.restore');
     Route::get('motivos/restore/{motivo}', 'Api\MotivoController@restore')->name('motivos.restore');
     Route::get('users/restore/{user}', 'Api\UserController@restore')->name('users.restore');
+    Route::get('sexo/restore/{sexo}', 'Api\SexoController@restore')->name('sexo.restore');
+    Route::get('genero/restore/{genero}', 'Api\GeneroController@restore')->name('genero.restore');
     Route::post('personas/search', 'Api\PersonaController@search')->name('personas.search');
     Route::get('personas/restore/{persona}', 'Api\PersonaController@restore')->name('personas.restore');
     Route::post('visitas/search', 'Api\VisitaController@search')->name('visitas.search');
