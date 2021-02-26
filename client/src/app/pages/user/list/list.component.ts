@@ -138,6 +138,7 @@ export class ListComponent implements OnInit {
 
   /* manager modals */
   open(content, code) {
+    this.errorState = false;
     this.modalService
       .open(content, { size: "xl", centered: false })
       .result.then(
@@ -325,7 +326,7 @@ export class ListComponent implements OnInit {
   deleteOficial(codeOficial) {
     Swal.fire({
       title: '¿Esta seguro?',
-      text: "Despues de eliminar al funcionario, no se puede revertir la accion!",
+      text: "Despues de inhabilitar al funcionario, no se puede revertir la accion!",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -341,7 +342,7 @@ export class ListComponent implements OnInit {
           this.getListOficial();
 
         }, err => {
-          this.toastr.error('Error al eliminar al funcionario', 'Error')
+          this.toastr.error('Error al inhabilitar al funcionario', 'Error')
         })
       }
     })

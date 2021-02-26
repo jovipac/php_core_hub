@@ -71,11 +71,11 @@ class FuncionarioController extends ApiController
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'codigo' => 'required',
+            'codigo' => 'required|unique:tc_funcionario',
             'nombres' => 'required',
             'apellidos' => 'required',
             'username' => 'required|unique:ts_usuario',
-            'email' => 'email',
+            'email' => 'email|required|unique:tc_funcionario',
             'id_puesto' => 'required|integer',
             'id_auxiliatura' => 'required|integer',
             'id_rol' => 'required|integer',

@@ -8,7 +8,7 @@ const routes: Routes = [
         component: MaintanceProfileComponent,
         data: {
             breadcrumb: 'Mantenimiento de perfiles',
-            icon: 'icofont-justify-all bg-c-green',
+            icon: 'icofont-justify-all bg-c-blue',
             breadcrumb_caption: 'Mantenimiento de perfiles',
             status: true
         }

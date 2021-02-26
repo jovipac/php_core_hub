@@ -36,7 +36,7 @@
                 <td>{{user.nombre_puesto}}</td>
                 <td>{{user.nombre_rol}}</td>
                 <td>{{user.email}}</td>
-                <td><span class="badge bg-success">Activo</span></td>
+                <td><span class="badge bg-primary">Activo</span></td>
                 <td>{{user.nombre_auxiliatura}}</td>
                 <td>
                   <div class="row">
@@ -359,11 +359,11 @@
           <div class="row align-middle">
             <div class="col-md-12 ">
               <button
-                class="{{(!assignedOne) ? 'btn btn-success btn-sm size' : 'btn btn-disabled disabled btn-sm size' }}"
+                class="{{(!assignedOne) ? 'btn btn-primary btn-sm size' : 'btn btn-disabled disabled btn-sm size' }}"
                 (click)="UserAssignedOne()" [disabled]="assignedOne"> > </button>
             </div>
             <div class="col-md-12" style="margin-top: 1.5%;">
-              <button class="btn btn-success btn-sm size" (click)="UserAssignedAll()"> >> </button>
+              <button class="btn btn-danger btn-sm size" (click)="UserAssignedAll()"> >> </button>
             </div>
             <div class="col-md-12" style="margin-top: 20px;">
               <button class="btn btn-danger btn-sm size" (click)="UserlUnassignedAll()">
@@ -371,7 +371,7 @@
             </div>
             <div class="col-md-12" style="margin-top: 1%;">
               <button
-                class="{{(!unassignedOne) ? 'btn btn-success btn-sm size' : 'btn btn-disabled disabled btn-sm size' }}"
+                class="{{(!unassignedOne) ? 'btn btn-primary btn-sm size' : 'btn btn-disabled disabled btn-sm size' }}"
                 (click)="UserUnassignedOne()" [disabled]="unassignedOne">
                 < </button>
             </div>
@@ -389,12 +389,12 @@
           </ul>
         </div>
       </div>
-      <div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="errorState">
+      <!-- <div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="errorState">
         <span class="alert-inner--text">{{message.error}}</span>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
-      </div>
+      </div> -->
       <br><br>
       <div class="row">
         <div class="col-md-12">
