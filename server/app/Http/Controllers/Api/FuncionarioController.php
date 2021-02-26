@@ -98,14 +98,7 @@ class FuncionarioController extends ApiController
         ]);
         $newUser->save();
         $newUser->roles()->attach($input['id_rol']);
-        /*
-        $newRolUser = new UsuarioRol([
-            'id_usuario' => $newUser['id_usuario'],
-            'id_rol' => $input['id_rol'],
-        ]);
-        $user = User::find($newUser->id_usuario);
-        $newRolUser->save();
-        */
+
         $funcionario['username'] = $input['username'];
         $funcionario['password'] = $random_password;
         $funcionario['id_auxiliatura'] = $input['id_auxiliatura'];
@@ -158,8 +151,10 @@ class FuncionarioController extends ApiController
 
         $funcionario->update($request->all());
 
-        $findUser = User::where("id_funcionario",'=', $request->id_funcionario)->first()
-            ->update($request->all());
+        $findUser = User::where("id_funcionario", $request->id_funcionario)->first();
+
+        $findUser->roles()->sync([$request->id_rol]);
+        $findUser->update($request->all());
 
         return $this->apiResponse([
             'success' => true,
