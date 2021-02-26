@@ -283,6 +283,10 @@ export class ListComponent implements OnInit {
         $(document).ready(function () { $('#list').DataTable().destroy(); })
         this.getListOficial();
         this.toastr.success(response.message, 'Funcionarios')
+        this.toastr.success(response.result.password, 'Password asignado')
+
+
+
         this.createOficial.reset();
         this.getDismissReason('Close click');
 
@@ -357,7 +361,7 @@ export class ListComponent implements OnInit {
     setTimeout(() => {
       /** spinner ends after 5 seconds */
       this.spinner.hide();
-    }, 1000);    
+    }, 1000);
   }
 
 
@@ -391,7 +395,7 @@ export class ListComponent implements OnInit {
     }, err => {
       console.log(err)
     })
-  }  
+  }
 
   selectAsignatureAccess(codeModule) {
     this.codeModule = codeModule;
@@ -421,7 +425,7 @@ export class ListComponent implements OnInit {
         this.assigned[positionActive].active = false;
       }
     }
-  }  
+  }
 
 
   UserAssignedOne() {
@@ -510,6 +514,6 @@ export class ListComponent implements OnInit {
       this.UserAssigned(this.codeOficial);
       this.spinner.hide();
     }, 2000);
-  }  
+  }
 
 }

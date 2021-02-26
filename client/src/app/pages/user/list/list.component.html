@@ -48,8 +48,8 @@
                           <button class="btn-mini"
                             (click)="open(updateUser,user.id_funcionario); getOficial(user.id_funcionario)"
                             ngbDropdownItem>Actualizar</button>
-                          <button class="btn-mini" (click)="open(addPermit , user.id_usuario); loadModuleAssigned(user.id_usuario)" ngbDropdownItem>Asignar Herramientas</button>  
-                          <button class="btn-mini" (click)="deleteOficial(user.id_funcionario)" ngbDropdownItem>Eliminar</button>
+                          <button class="btn-mini" (click)="open(addPermit , user.id_usuario); loadModuleAssigned(user.id_usuario)" ngbDropdownItem>Asignar permisos</button>
+                          <button class="btn-mini" (click)="deleteOficial(user.id_funcionario)" ngbDropdownItem>Inhabilitar</button>
                         </div>
                       </div>
                     </div>
@@ -139,7 +139,7 @@
               <label for="">* Perfil inicial:</label>
               <select class="form-control" formControlName="id_rol" required >
                 <option value="">Seleccionar</option>
-                <option *ngFor="let rol of listRol" value="{{rol.id_rol}}">{{rol.nombre}}</option>                
+                <option *ngFor="let rol of listRol" value="{{rol.id_rol}}">{{rol.nombre}}</option>
               </select>
             </div>
           </div>
