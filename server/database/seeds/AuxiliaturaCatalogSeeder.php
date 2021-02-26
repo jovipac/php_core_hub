@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class RolTableSeeder extends Seeder
+class AuxiliaturaCatalogSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,8 +11,8 @@ class RolTableSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Entities\Rol::firstOrCreate([
-            'nombre' => 'Perfil inicial'
+        \App\Models\Catalogs\Auxiliatura::firstOrCreate([
+            'nombre' => 'Sede central'
         ]);
     }
 }
