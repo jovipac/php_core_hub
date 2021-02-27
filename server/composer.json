@@ -15,8 +15,7 @@
         "kalnoy/nestedset": "^5.0",
         "laravel/framework": "^7.29",
         "laravel/passport": "^9.4",
-        "laravel/tinker": "^2.5",
-        "tenantcloud/laravel-boolean-softdeletes": "^2.0"
+        "laravel/tinker": "^2.5"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

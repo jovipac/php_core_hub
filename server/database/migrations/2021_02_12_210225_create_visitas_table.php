@@ -28,6 +28,9 @@ class CreateVisitasTable extends Migration
             $table->string('observaciones')->nullable();
             $table->integer('id_prioridad')->unsigned();
             $table->boolean('borrado')->default(0)->index();
+            $table->integer('created_by')->nullable()->unsigned();
+            $table->integer('updated_by')->nullable()->unsigned();
+            $table->integer('deleted_by')->nullable()->unsigned();
             $table->timestamps();
             $table->softDeletes();
 
