@@ -51,7 +51,16 @@ class FuncionarioController extends ApiController
      */
     public function index()
     {
-        $funcionarios = Funcionario::all();
+        $funcionarios = Funcionario::select(
+            'tc_funcionario.*',
+            'T02.id_dependencia',
+            'T03.nombre AS nombre_dependencia',
+            'T02.id_puesto',
+            'T02.nombre AS nombre_puesto'
+        )
+        ->leftJoin('tc_puesto as T02', 'T02.id_puesto', '=', 'tc_funcionario.id_puesto')
+        ->leftJoin('tc_dependencia as T03', 'T02.id_dependencia', '=', 'T03.id_dependencia')
+        ->get();
 
         return $this->apiResponse(
             [
