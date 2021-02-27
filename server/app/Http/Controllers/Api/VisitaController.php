@@ -225,6 +225,7 @@ class VisitaController extends ApiController
             'id_dependencia' => 'integer',
             'id_funcionario' => 'integer',
             'id_prioridad' => 'integer',
+            'id_estado' => 'integer',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
