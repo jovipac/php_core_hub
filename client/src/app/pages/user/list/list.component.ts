@@ -85,6 +85,10 @@ export class ListComponent implements OnInit {
   public assignedOne: boolean = true;
   public unassignedOne: boolean = true;
 
+  public SentUsername: boolean = false;
+  public SentEmail: boolean = false;
+  public SentPdhCode: boolean = false;
+
   constructor(
     private modalService: NgbModal,
     private service: ServicesService,
@@ -139,6 +143,7 @@ export class ListComponent implements OnInit {
   /* manager modals */
   open(content, code) {
     this.errorState = false;
+    this.ResetSenti();
     this.modalService
       .open(content, { size: "xl", centered: false })
       .result.then(
@@ -278,7 +283,9 @@ export class ListComponent implements OnInit {
 
   createNewOficial(event: Event) {
     event.preventDefault();
+    this.ResetSenti();
     if (this.createOficial.valid) {
+
       this.service.createOficial(this.createOficial.value).subscribe(res => {
         let response: any = res;
         $(document).ready(function () { $('#list').DataTable().destroy(); })
@@ -293,8 +300,18 @@ export class ListComponent implements OnInit {
 
       }, err => {
         let error: any = err;
-        if (error.error.message.username)
-          this.toastr.error(error.error.message.username[0], 'Error')
+        if (error.error.message.username){
+          this.toastr.warning( error.error.message.username[0], 'Nombre de usuario')
+          this.SentUsername = true
+        }
+        if (error.error.message.codigo){
+          this.toastr.warning(error.error.message.codigo[0], 'Código PDH') ;
+          this.SentPdhCode = true
+        }
+        if (error.error.message.email) {
+          this.toastr.warning(error.error.message.email[0], 'Email') ;
+          this.SentEmail = true
+        }
       })
     } else {
       this.errorState = true;
@@ -304,6 +321,7 @@ export class ListComponent implements OnInit {
 
   updateNewOficial(event: Event) {
     event.preventDefault();
+    this.ResetSenti();
     if (this.updateOficial.valid) {
       this.service.updateOficial(this.codeOficial, this.updateOficial.value).subscribe(res => {
         let response: any = res;
@@ -314,7 +332,21 @@ export class ListComponent implements OnInit {
         this.getDismissReason('Close click');
       }, err => {
         let error: any = err;
-        this.toastr.success('Error al actualizar los funcionarios', 'Funcionarios')
+        if (error.error.message.username){
+          this.toastr.warning( error.error.message.username[0], 'Nombre de usuario')
+          this.SentUsername = true
+        }
+        if (error.error.message.codigo){
+          this.toastr.warning(error.error.message.codigo[0], 'Código PDH') ;
+          this.SentPdhCode = true
+        }
+        if (error.error.message.email) {
+          this.toastr.warning(error.error.message.email[0], 'Email') ;
+          this.SentEmail = true
+        }
+
+
+        this.toastr.warning('Error al actualizar los funcionarios', 'Funcionarios')
       })
     } else {
       this.errorState = true;
@@ -515,6 +547,12 @@ export class ListComponent implements OnInit {
       this.UserAssigned(this.codeOficial);
       this.spinner.hide();
     }, 2000);
+  }
+
+  ResetSenti(){
+    this.SentUsername = false;
+    this.SentEmail = false;
+    this.SentPdhCode = false;
   }
 
 }

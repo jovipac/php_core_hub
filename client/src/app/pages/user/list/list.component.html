@@ -80,21 +80,22 @@
           <div class="col-md-3">
             <div class="form-group">
               <label for="">* Código:</label>
-              <input type="text" class="form-control" formControlName="codigo" placeholder="Código" required>
+              <input type="text" class="form-control" formControlName="codigo" placeholder="Código"
+               [ngClass]="{ 'is-invalid': SentPdhCode }" required>
             </div>
           </div>
 
           <div class="col-md-3">
             <div class="form-group">
               <label for="">* Usuario:</label>
-              <input type="text" class="form-control" formControlName="username" placeholder="Usuario" required>
+              <input type="text" class="form-control" formControlName="username" placeholder="Usuario" [ngClass]="{ 'is-invalid': SentUsername }" required>
             </div>
           </div>
 
           <div class="col-md-6">
             <div class="form-group">
               <label for="">* Correo electrónico:</label>
-              <input type="text" class="form-control" formControlName="email" placeholder="Correo electrónico" required>
+              <input type="text" class="form-control" formControlName="email" placeholder="Correo electrónico" [ngClass]="{ 'is-invalid': SentEmail }" required>
             </div>
           </div>
 
@@ -207,21 +208,24 @@
           <div class="col-md-3">
             <div class="form-group">
               <label for="">Código:</label>
-              <input type="text" class="form-control" formControlName="codigo" placeholder="Código" required>
+              <input type="text" class="form-control" formControlName="codigo" placeholder="Código"
+               [ngClass]="{ 'is-invalid': SentPdhCode }" required>
             </div>
           </div>
 
           <div class="col-md-3">
             <div class="form-group">
               <label for="">Usuario:</label>
-              <input type="text" class="form-control" formControlName="username" placeholder="Usuario" required>
+              <input type="text" class="form-control" formControlName="username" placeholder="Usuario"
+              [ngClass]="{ 'is-invalid': SentPdhCode }" required>
             </div>
           </div>
 
           <div class="col-md-6">
             <div class="form-group">
               <label for="">Correo electrónico:</label>
-              <input type="text" class="form-control" formControlName="email" placeholder="Correo electrónico" required>
+              <input type="text" class="form-control" formControlName="email" placeholder="Correo electrónico"
+              [ngClass]="{ 'is-invalid': SentPdhCode }" required>
             </div>
           </div>
 

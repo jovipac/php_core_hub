@@ -110,7 +110,8 @@ export class MonitoreoVisitasComponent implements OnInit {
 
     let data = {
       id_auxiliatura: Auxiliatura,
-      id_motivo: this.MonitorVisitas.value.id_motivo
+      id_motivo: this.MonitorVisitas.value.id_motivo,
+      id_estado: 1
     }
     this.service.getListVisit(data).subscribe(res => {
       let response: any = res;
