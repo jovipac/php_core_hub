@@ -4,25 +4,13 @@ import { FormBuilder, FormGroup, FormControl, Validators } from "@angular/forms"
 import { ServicesService } from "../../../service/services.service";
 import { PrioridadService, SexoService, GeneroService } from '../../../service/catalogos';
 import { FuncionariosService, VisitasService, PersonasService } from '../../../service';
-import { Prioridad, Sexo, Genero, Motivo, Funcionario } from '../../../shared/models';
+import { Prioridad, Sexo, Genero, Auxiliatura, Dependencia, Motivo, Funcionario } from '../../../shared/models';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { first, map, switchMap  } from 'rxjs/operators';
 import { extractErrorMessages, FormStatus } from '../../../shared/utils';
 import { format, isValid, parseISO, differenceInYears } from 'date-fns';
 
-interface Reason {
-  id_motivo: number,
-  nombre: string
-}
-interface dependency {
-  id_dependencia: number,
-  nombre: String
-}
-interface auxiliary {
-  id_auxiliatura: number,
-  nombre: string
-}
 @Component({
   selector: 'app-solicitud-visita',
   templateUrl: './solicitud-visita.component.html',
@@ -38,10 +26,10 @@ export class SolicitudVisitaComponent implements OnInit {
   submitted = false;
   public listPriority: Array<Prioridad>;
   public listReason: Array<Motivo>;
-  public listDependency: Array<dependency>;
+  public listDependency: Array<Dependencia>;
   public listEmployees: Array<Funcionario>;
   public listDependencyEmployees: Array<Funcionario>;
-  public listAuxiliary: Array<auxiliary>;
+  public listAuxiliary: Array<Auxiliatura>;
   public listSex: Array<Sexo>;
   public listGenre: Array<Genero>;
 
@@ -129,25 +117,25 @@ export class SolicitudVisitaComponent implements OnInit {
         disabled: !this.isAddMode,
       }, [Validators.pattern("[0-9]+")]),
       id_sexo: new FormControl({
-        value: '',
+        value: null,
         disabled: !this.isAddMode,
       }, [Validators.pattern("[0-9]+")]),
       id_genero: new FormControl({
-        value: '',
+        value: null,
         disabled: !this.isAddMode,
       }, [Validators.pattern("[0-9]+")]),
       entrada: new FormControl('', []),
       salida: new FormControl('', []),
       id_motivo: new FormControl({
-        value: '',
+        value: null,
         disabled: !this.isAddMode,
       }, [Validators.required, Validators.pattern("[0-9]+")]),
       id_dependencia: new FormControl({
-        value: '',
+        value: null,
         disabled: !this.isAddMode,
       }, [Validators.required, Validators.pattern("[0-9]+")]),
       id_funcionario: new FormControl({
-        value: '',
+        value: null,
         disabled: !this.isAddMode,
       }, [Validators.pattern("[0-9]+")]),
       llamadas: new FormControl({
@@ -155,7 +143,7 @@ export class SolicitudVisitaComponent implements OnInit {
         disabled: !this.isAddMode,
       }, [Validators.pattern("[0-9]+")]),
       id_prioridad: new FormControl({
-        value: '',
+        value: null,
         disabled: !this.isAddMode,
       }, []),
       observaciones: new FormControl({

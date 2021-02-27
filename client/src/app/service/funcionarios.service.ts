@@ -11,6 +11,10 @@ export class FuncionariosService {
   constructor(private httpClient: HttpClient) { }
 
   getEmployees() {
+    return this.httpClient.get(`${environment.host}funcionarios`, getHeaders())
+  }
+
+  getListEmployees() {
     return this.httpClient.get(`${environment.host}funcionario/list`, getHeaders())
   }
 
