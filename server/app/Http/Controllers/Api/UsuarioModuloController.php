@@ -94,7 +94,7 @@ class UsuarioModuloController extends ApiController
         foreach ($usuario_modulos as $usuario_modulo) {
             array_push($usuarioModulos, $usuario_modulo->id_modulo);
         }
-        //Se procede a hacer una consulta SQL para obtener los campos adicionales a mostrar
+        //Se procede a hacer una consulta SQL para obtener los campos adicionales a mostrar: nombre modulo padre
         $modulos =  Modulo::select(
             'ts_modulo.id_modulo',
             'ts_modulo.nombre AS nombre_modulo',
