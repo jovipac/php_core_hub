@@ -353,9 +353,10 @@ export class SolicitudVisitaComponent implements OnInit {
   }
 
   private createVisita() {
+    const dtNow = new Date();
     let formValues = {
       ...this.visitaForm.value,
-      entrada: format(new Date(), 'HH:mm'),
+      entrada: dtNow.getHours() + ":" + dtNow.getMinutes() ,
       id_auxiliatura: JSON.parse(sessionStorage.getItem('validate')).id_auxiliatura,
       id_estado: 1
     };
