@@ -299,8 +299,10 @@ export class SolicitudVisitaComponent implements OnInit {
                 .join(" ");
                 return employee;
             }) : [];
-
-            this.listEmployees = personasFormateadas;
+            if (!this.isAddMode)
+              this.listDependencyEmployees = personasFormateadas;
+            else
+              this.listEmployees = personasFormateadas;
           } else
             this.toastr.error(response.message)
         },
