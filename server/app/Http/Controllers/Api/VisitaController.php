@@ -34,7 +34,7 @@ class VisitaController extends ApiController
      */
     public function search(Request $request)
     {
-        if ($request->has('id_auxiliatura') || $request->has('id_motivo')) {
+        if ($request->has('id_auxiliatura') || $request->has('id_motivo') || $request->has('id_estado') ) {
             $list = Visita::query()
                 ->select('tt_visita.id_visita', 'tt_visita.id_persona',
                 'T01.cui', 'T01.nombres', 'T01.apellidos', 'T01.fecha_nacimiento', 'T01.telefono',
@@ -56,6 +56,9 @@ class VisitaController extends ApiController
 
             if ($request->has('id_motivo'))
                 $list = $list->where('tt_visita.id_motivo', $request->input('id_motivo'));
+
+            if ($request->has('id_estado'))
+                $list = $list->where('tt_visita.id_estado', $request->input('id_estado'));
 
             $visitas = $list->get()->each(function ($query) {
                 if (!is_null($query->fecha_nacimiento ?? null))
