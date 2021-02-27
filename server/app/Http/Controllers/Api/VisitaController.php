@@ -49,7 +49,7 @@ class VisitaController extends ApiController
                 ->join('tc_funcionario AS T04', 'tt_visita.id_funcionario', 'T04.id_funcionario')
                 ->join('tc_estado AS T05', 'tt_visita.id_estado', 'T05.id_estado')
                 ->join('tc_auxiliatura AS T06', 'tt_visita.id_auxiliatura', 'T06.id_auxiliatura')
-                ->join('tc_prioridad AS T07', 'tt_visita.id_prioridad', 'T07.prioridad') ;
+                ->join('tc_prioridad AS T07', 'tt_visita.id_prioridad', 'T07.id_prioridad') ;
 
             if ($request->has('id_auxiliatura'))
                 $list = $list->where('tt_visita.id_auxiliatura', $request->input('id_auxiliatura'));
@@ -88,7 +88,7 @@ class VisitaController extends ApiController
                 ->join('tc_funcionario AS T04', 'tt_visita.id_funcionario', 'T04.id_funcionario')
                 ->join('tc_estado AS T05', 'tt_visita.id_estado', 'T05.id_estado')
                 ->join('tc_auxiliatura AS T06', 'tt_visita.id_auxiliatura', 'T06.id_auxiliatura')
-                ->join('tc_prioridad AS T07', 'tt_visita.id_prioridad', 'T07.prioridad') ;
+                ->join('tc_prioridad AS T07', 'tt_visita.id_prioridad', 'T07.id_prioridad') ;
 
             $visitas = $list->get()->each(function ($query) {
                 if (!is_null($query->fecha_nacimiento ?? null))
