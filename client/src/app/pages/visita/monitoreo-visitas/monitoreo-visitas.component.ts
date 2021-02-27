@@ -200,18 +200,22 @@ export class MonitoreoVisitasComponent implements OnInit {
 
 
   markExit(visit) {
+    let d = new Date();
+    let hour = d.getHours() + ":" + d.getMinutes() ;
+
+
     let VisitUpdate = {
-      entrada: "15:00",
-      salida:  "22:00",
-      id_estado: 2
+      salida:  hour,
+      entrada: visit.entrada,
+      id_estado: 3
     };
 
-    var today = new Date();
-    console.log(today.setHours(today.getHours() + 4));
+
+
 
      Swal.fire({
        title: '¿Esta seguro?',
-       text: "Despues de dar salida a la persona, no se puede revertir la accion!",
+       text: "Despues de marcar como retirada a la persona, no se puede revertir la accion!",
        icon: 'warning',
        showCancelButton: true,
        confirmButtonColor: '#3085d6',
@@ -222,7 +226,7 @@ export class MonitoreoVisitasComponent implements OnInit {
        if (result.isConfirmed) {
          this.service.updateVisit(visit.id_visita , VisitUpdate ).subscribe(res => {
            let response: any = res;
-           this.toastr.success( "Ticket cerrado exitosamente", 'Monitor de atención')
+           this.toastr.success( "Ticket retirado exitosamente", 'Monitor de atención')
            $(document).ready(function () { $('#listMonitor').DataTable().destroy(); })
            this.getListVisit();
 
