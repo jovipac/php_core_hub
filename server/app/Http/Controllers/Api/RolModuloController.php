@@ -74,11 +74,11 @@ class RolModuloController extends ApiController
             })
             ->whereIsLeaf()
             ->get();
-
+        //Se extrae los ID de los modulos resultantes de la consulta SQL anterior
         foreach ($rol_modulos as $rol_modulo) {
             array_push($rolModulos, $rol_modulo->id_modulo);
         }
-
+        //Se procede a hacer una consulta SQL para obtener los campos adicionales a mostrar: nombre modulo padre
         $modulos =  Modulo::select(
             'ts_modulo.id_modulo',
             'ts_modulo.nombre AS nombre_modulo',

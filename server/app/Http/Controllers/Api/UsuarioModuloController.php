@@ -69,16 +69,15 @@ class UsuarioModuloController extends ApiController
      */
     public function unassigned($id)
     {
+        $usuarioModulos = [];
         //Empezamos a buscar el primer Rol del usuario asignado
         $usuario_rol = UsuarioRol::where('id_usuario', $id)->first();
         //Procedemos a hacer una busqueda de modulos que no esten asociados con su rol y ni asocaidos al usuario
-        $usuario_modulo = Modulo::select(
+        //y que tambien no tengan hijos asociados (nodos hojas)
+        $usuario_modulos = Modulo::select(
                 'ts_modulo.id_modulo',
-                'ts_modulo.nombre AS nombre_modulo',
-                'T02.nombre AS nombre_modulo_padre'
+                'ts_modulo.nombre AS nombre_modulo'
             )
-            ->leftJoin('ts_modulo AS T02', 'T02.id_modulo', '=', 'ts_modulo.id_parent')
-            ->whereNotNull('ts_modulo.id_parent')
             ->whereNotIn('ts_modulo.id_modulo', function ($query) use ($usuario_rol) {
                 $query->select('id_modulo')
                     ->from(with(new UsuarioModulo)->getTable())
@@ -89,13 +88,27 @@ class UsuarioModuloController extends ApiController
                     ->from(with(new RolModulo)->getTable())
                     ->where('id_rol', $usuario_rol->id_rol);
             })
+            ->whereIsLeaf()
             ->get();
+        //Se extrae los ID de los modulos resultantes de la consulta SQL anterior
+        foreach ($usuario_modulos as $usuario_modulo) {
+            array_push($usuarioModulos, $usuario_modulo->id_modulo);
+        }
+        //Se procede a hacer una consulta SQL para obtener los campos adicionales a mostrar
+        $modulos =  Modulo::select(
+            'ts_modulo.id_modulo',
+            'ts_modulo.nombre AS nombre_modulo',
+            'T02.nombre AS nombre_modulo_padre'
+        )
+        ->leftJoin('ts_modulo AS T02', 'T02.id_modulo', 'ts_modulo.id_parent')
+        ->whereIn('ts_modulo.id_modulo', $usuarioModulos)
+        ->get();
 
         return $this->apiResponse(
             [
                 'success' => true,
                 'message' => "Listado de modulos no asociados al rol",
-                'result' => $usuario_modulo
+                'result' => $modulos
             ]
         );
     }
