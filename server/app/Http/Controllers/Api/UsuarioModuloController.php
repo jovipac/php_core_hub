@@ -121,27 +121,23 @@ class UsuarioModuloController extends ApiController
         $usuario_rol = UsuarioRol::where('id_usuario', $request->id_usuario)->first();
 
         $rol_modulos = UsuarioRol::query()
-        ->select('tt_usuario_rol.id_usuario', 'T02.id_modulo',
-            'T03.nombre AS nombre_modulo',
+            ->select('tt_usuario_rol.id_usuario', 'T02.id_modulo', 'T03.nombre AS nombre_modulo',
             'T03.id_parent','T04.nombre AS nombre_modulo_padre')
             ->join('tt_rol_modulo AS T02', 'tt_usuario_rol.id_rol', '=', 'T02.id_rol')
             ->join('ts_modulo AS T03', 'T02.id_modulo', '=', 'T03.id_modulo')
             ->leftJoin('ts_modulo AS T04', 'T04.id_modulo', '=', 'T03.id_parent')
             ->where('tt_usuario_rol.id_usuario', $usuario_rol->id_usuario)
             ->where('tt_usuario_rol.id_rol', $usuario_rol->id_rol);
-            //->get();
 
         $usuario_modulos = UsuarioModulo::query()
             ->select('tt_usuario_modulo.id_usuario', 'tt_usuario_modulo.id_modulo',
-                'T03.nombre AS nombre_modulo',
-                'T03.id_parent','T04.nombre AS nombre_modulo_padre')
-                ->leftJoin('ts_modulo AS T03', 'tt_usuario_modulo.id_modulo', '=', 'T03.id_modulo')
-                ->leftJoin('ts_modulo AS T04', 'T04.id_modulo', '=', 'T03.id_parent')
-                ->where('tt_usuario_modulo.id_usuario', $usuario_rol->id_usuario)
-                ->union($rol_modulos)
-                ->get();
-
-        //$usuario_modulos = $rol_modulos->merge($usuario_modulos);
+            'T03.nombre AS nombre_modulo',
+            'T03.id_parent','T04.nombre AS nombre_modulo_padre')
+            ->leftJoin('ts_modulo AS T03', 'tt_usuario_modulo.id_modulo', '=', 'T03.id_modulo')
+            ->leftJoin('ts_modulo AS T04', 'T04.id_modulo', '=', 'T03.id_parent')
+            ->where('tt_usuario_modulo.id_usuario', $usuario_rol->id_usuario)
+            ->union($rol_modulos)  // Se realiza la union del resultado: rol-modulos y usuario-modulos
+            ->get();
 
         //Se instancia una collection nueva para ir fusionando los modulos y submodulos asociados al rol
         $modulos = new Collection();

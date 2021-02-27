@@ -16,7 +16,6 @@ class ModuloController extends ApiController
      */
     public function index()
     {
-        Modulo::fixTree();
         $modulos = Modulo::all();
 
         return $this->apiResponse(
