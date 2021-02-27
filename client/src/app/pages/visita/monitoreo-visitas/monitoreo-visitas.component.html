@@ -1,63 +1,73 @@
 <div class="row">
-    <div class="col-sm-12">
-        <app-card>
-          <form action="javascript:" class="needs-validation" novalidate [formGroup]="MonitorVisitas" (ngSubmit)="onSubmit()" autocomplete="off" >
-                <!-- PRIMER FILA -->
-                <div class="form-row">
-                  <div class="col-md-3 mb-3"  *ngIf="ChangeAux">
-                    <label for="validationCustom03">Auxiliatura:</label>
-                    <ng-select  (change) ="demo()"  id="id_auxiliatura" [items]="listAuxiliary" #select bindLabel="nombre" dropdownPosition="auto" bindValue="id_auxiliatura" labelForId="nombre"
-                      placeholder="Seleccionar Auxiliatura" [virtualScroll]="true" formControlName="id_auxiliatura" >
-                    </ng-select>
-                  </div>
+  <div class="col-sm-12">
+    <app-card>
+      <form action="javascript:" class="needs-validation" novalidate [formGroup]="MonitorVisitas"
+        (ngSubmit)="onSubmit()" autocomplete="off">
+        <!-- PRIMER FILA -->
+        <div class="form-row">
+          <div class="col-md-3 mb-3" *ngIf="ChangeAux">
+            <label for="validationCustom03">Auxiliatura:</label>
+            <ng-select (change)="demo()" id="id_auxiliatura" [items]="listAuxiliary" #select bindLabel="nombre"
+              dropdownPosition="auto" bindValue="id_auxiliatura" labelForId="nombre"
+              placeholder="Seleccionar Auxiliatura" [virtualScroll]="true" formControlName="id_auxiliatura">
+            </ng-select>
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label for="validationCustom03">Motivo de la visita:</label>
+            <ng-select (change)="demo()" id="id_motivo" [items]="listReason" #select bindLabel="nombre"
+              dropdownPosition="auto" bindValue="id_motivo" labelForId="nombre" placeholder="Seleccionar Razón"
+              [virtualScroll]="true" formControlName="id_motivo">
+            </ng-select>
 
 
+          </div>
+        </div>
+        <!-- / PRIMER FILA -->
 
+        <!-- SEGUNDA FILA -->
+        <div class="form-row" *ngIf="MostrarDiv">
+          <div class="col-md-12 mb-12">
+            <table class="table  table-striped" id="listMonitor">
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Prioridad</th>
+                  <th>Motivo Visita</th>
+                  <th>Nombres</th>
+                  <th>Apellidos</th>
+                  <th>Edad</th>
+                  <th>Teléfono</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let visit of listVisit">
+                  <td>{{visit.entrada | date:'medium' }}</td>
+                  <td>{{visit.prioridad}}</td>
+                  <td>{{visit.nombre_motivo}}</td>
+                  <td>{{visit.nombres}}</td>
+                  <td>{{visit.apellidos}}</td>
+                  <td>{{visit.edad}}</td>
+                  <td>{{visit.telefono}}</td>
+                  <td>
+                    <button class="btn btn-primary btn-icon" (click)="markExit(visit)"><i
+                        class="icofont icofont-arrow-up"></i></button>
 
-                    <div class="col-md-3 mb-3">
-                        <label for="validationCustom03">Motivo de la visita:</label>
-                        <ng-select  (change) ="demo()" id="id_motivo" [items]="listReason" #select bindLabel="nombre" dropdownPosition="auto" bindValue="id_motivo" labelForId="nombre"
-                        placeholder="Seleccionar Razón" [virtualScroll]="true" formControlName="id_motivo" >
-                      </ng-select>
+                    <button class="btn btn-warning btn-icon" (click)="markExit(visit)"><i
+                        class="icofont icofont-ui-edit"></i></button>
 
+                        <button class="btn btn-danger btn-icon" (click)="markExit(visit)"><i
+                          class="icofont icofont-delete-alt"></i></button>
 
-                    </div>
-                </div>
-                <!-- / PRIMER FILA -->
-
-                <!-- SEGUNDA FILA -->
-                <div class="form-row" *ngIf="MostrarDiv">
-                    <div class="col-md-12 mb-12">
-                        <table class="table  table-striped" id="listMonitor">
-                            <thead>
-                                <tr>
-                                    <th>Fecha</th>
-                                    <th>Motivo Visita</th>
-                                    <th>Nombres</th>
-                                    <th>Apellidos</th>
-                                    <th>Edad</th>
-                                    <th>Teléfono</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let visit of listVisit">
-                                    <td>{{visit.entrada | date:'medium' }}</td>
-                                    <td>{{visit.nombre_motivo}}</td>
-                                    <td>{{visit.nombres}}</td>
-                                    <td>{{visit.apellidos}}</td>
-                                    <td>{{visit.edad}}</td>
-                                    <td>{{visit.llamadas}}</td>
-                                    <td>
-                                        <button  class="btn btn-primary btn-icon"  (click)="markExit(visit)"><i  class="icofont icofont-check-circled" ></i></button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <!-- / SEGUNDA FILA -->
-            </form>
-        </app-card>
-    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- / SEGUNDA FILA -->
+      </form>
+    </app-card>
+  </div>
 </div>
