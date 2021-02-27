@@ -64,25 +64,35 @@ class RolModuloController extends ApiController
      */
     public function unassigned($rol_id)
     {
-        $rol_modulo = Modulo::select(
-                'ts_modulo.id_modulo',
-                'ts_modulo.nombre AS nombre_modulo',
-                'T02.nombre AS nombre_modulo_padre'
-            )
-            ->leftJoin('ts_modulo AS T02', 'T02.id_modulo', '=', 'ts_modulo.id_parent')
+        $rolModulos = [];
+
+        $rol_modulos = Modulo::select('id_modulo')
             ->whereNotIn('ts_modulo.id_modulo', function ($query) use ($rol_id) {
                 $query->select('id_modulo')
                 ->from(with(new RolModulo)->getTable())
                     ->where('id_rol', $rol_id);
             })
-            ->whereNotNull('ts_modulo.id_parent')
+            ->whereIsLeaf()
             ->get();
+
+        foreach ($rol_modulos as $rol_modulo) {
+            array_push($rolModulos, $rol_modulo->id_modulo);
+        }
+
+        $modulos =  Modulo::select(
+            'ts_modulo.id_modulo',
+            'ts_modulo.nombre AS nombre_modulo',
+            'T02.nombre AS nombre_modulo_padre'
+        )
+        ->leftJoin('ts_modulo AS T02', 'T02.id_modulo', 'ts_modulo.id_parent')
+        ->whereIn('ts_modulo.id_modulo', $rolModulos)
+        ->get();
 
         return $this->apiResponse(
             [
                 'success' => true,
                 'message' => "Listado de modulos no asociados al rol",
-                'result' => $rol_modulo
+                'result' => $modulos
             ]
         );
     }
