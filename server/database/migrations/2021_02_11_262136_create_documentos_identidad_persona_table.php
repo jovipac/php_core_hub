@@ -16,6 +16,7 @@ class CreateDocumentosIdentidadPersonaTable extends Migration
         Schema::create('tt_documento_identidad_persona', function (Blueprint $table) {
             $table->integer('id_persona')->unsigned();
             $table->integer('id_documento_identidad')->unsigned();
+            $table->string('identificador', 100);
             $table->boolean('borrado')->default(0)->index();
             $table->timestamps();
             $table->softDeletes();
@@ -29,7 +30,7 @@ class CreateDocumentosIdentidadPersonaTable extends Migration
                 ->onDelete('cascade');
 
             //SETTING THE PRIMARY KEYS
-            $table->primary(['id_persona', 'id_documento_identidad']);
+            $table->primary(['id_persona', 'id_documento_identidad'], 'tt_documento_identidad_persona_id_documento_personal_primary');
 
         });
     }
