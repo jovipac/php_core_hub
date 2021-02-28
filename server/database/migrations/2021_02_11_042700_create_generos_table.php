@@ -15,8 +15,8 @@ class CreateGenerosTable extends Migration
     {
         Schema::create('tc_genero', function (Blueprint $table) {
             $table->increments('id_genero');
-            $table->string('nombre');
-            $table->string('slug', 10)->nullable();
+            $table->string('nombre', 80);
+            $table->string('descripcion')->nullable();
             $table->boolean('borrado')->default(0)->index();
             $table->timestamps();
             $table->softDeletes();
