@@ -108,4 +108,19 @@ class DocumentoIdentidadController extends ApiController
 
         return $this->respondSuccess('Documento de identidad eliminado con exito');
     }
+
+    /**
+     * Restore the specified resource from storage.
+     *
+     * @param  \App\DocumentoIdentidad  $documentoIdentidad
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id)
+    {
+        $user = DocumentoIdentidad::withTrashed()->findorfail($id);
+        $user->restore();
+
+        return $this->respondSuccess('Documento de identidad restaurado con exito');
+    }
+
 }

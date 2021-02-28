@@ -32,6 +32,9 @@ Route::group([
 Route::group([
     'middleware' => 'auth:api'
 ], function () {
+    Route::resource('documento-identidad', 'Api\DocumentoIdentidadController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
     Route::resource('estados', 'Api\EstadoController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
