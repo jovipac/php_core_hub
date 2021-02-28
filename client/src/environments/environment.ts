@@ -5,5 +5,5 @@
 
 export const environment = {
   production: false,
-  host: 'http://142.93.253.177/backend/api/'
+  host: 'http://134.122.14.31/backend/api/'
 };

@@ -246,7 +246,7 @@ export class MonitoreoVisitasComponent implements OnInit {
 
 
   GoEdit(visit){
-    this.router.navigate(['../../solicitud/editar', visit.id_visita], { relativeTo: this.route });
+    // this.router.navigate(['../../solicitud/editar', visit.id_visita], { relativeTo: this.route });
 
   }
 
