@@ -7,7 +7,7 @@
         <div class="form-row">
           <div class="col-md-3 mb-3" *ngIf="ChangeAux">
             <label for="validationCustom03">Auxiliatura:</label>
-            <ng-select (change)="demo()" id="id_auxiliatura" [items]="listAuxiliary" #select bindLabel="nombre"
+            <ng-select (change)="getListVisit()" id="id_auxiliatura" [items]="listAuxiliary" #select bindLabel="nombre"
               dropdownPosition="auto" bindValue="id_auxiliatura" labelForId="nombre"
               placeholder="Seleccionar Auxiliatura" [virtualScroll]="true" formControlName="id_auxiliatura">
             </ng-select>
@@ -15,7 +15,7 @@
 
           <div class="col-md-3 mb-3">
             <label for="validationCustom03">Motivo de la visita:</label>
-            <ng-select (change)="demo()" id="id_motivo" [items]="listReason" #select bindLabel="nombre"
+            <ng-select (change)="getListVisit()" id="id_motivo" [items]="listReason" #select bindLabel="nombre"
               dropdownPosition="auto" bindValue="id_motivo" labelForId="nombre" placeholder="Seleccionar Razón"
               [virtualScroll]="true" formControlName="id_motivo">
             </ng-select>
@@ -51,13 +51,13 @@
                   <td>{{visit.edad}}</td>
                   <td>{{visit.telefono}}</td>
                   <td>
-                    <button class="btn btn-primary btn-icon" (click)="markExit(visit)"><i
+                    <button class="btn btn-primary btn-icon" (click)="markExit(visit, 2)"><i
                         class="icofont icofont-arrow-up"></i></button>
 
-                    <button class="btn btn-warning btn-icon" (click)="markExit(visit)"><i
+                    <button class="btn btn-warning btn-icon" (click)="GoEdit(visit)"><i
                         class="icofont icofont-ui-edit"></i></button>
 
-                        <button class="btn btn-danger btn-icon" (click)="markExit(visit)"><i
+                        <button class="btn btn-danger btn-icon" (click)="markExit(visit , 3)"><i
                           class="icofont icofont-delete-alt"></i></button>
 
                   </td>

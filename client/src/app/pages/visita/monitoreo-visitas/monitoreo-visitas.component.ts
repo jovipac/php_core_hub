@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators  } from "@angular/forms";
-
+import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ServicesService } from "../../../service/services.service";
 import * as $ from 'jquery';
@@ -58,7 +58,9 @@ export class MonitoreoVisitasComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private service: ServicesService,
-    private toastr: ToastrService) {
+    private toastr: ToastrService,
+    private router: Router,
+    private route: ActivatedRoute) {
     this.buildForm();
 
   }
@@ -199,23 +201,27 @@ export class MonitoreoVisitasComponent implements OnInit {
   }
 
 
-  markExit(visit) {
+  markExit(visit , estado) {
     let d = new Date();
     let hour = d.getHours() + ":" + d.getMinutes() ;
+    let msj = "";
 
+    if (estado == 2){
+      msj = "Despues de marcar como atendido, no se puede revertir la accion!"
+    }else{
+      msj = "Despues de marcar como retirada a la persona, no se puede revertir la accion!"
+    }
 
     let VisitUpdate = {
       salida:  hour,
       entrada: visit.entrada,
-      id_estado: 3
+      id_estado: estado
     };
-
-
 
 
      Swal.fire({
        title: '¿Esta seguro?',
-       text: "Despues de marcar como retirada a la persona, no se puede revertir la accion!",
+       text: msj,
        icon: 'warning',
        showCancelButton: true,
        confirmButtonColor: '#3085d6',
@@ -237,8 +243,11 @@ export class MonitoreoVisitasComponent implements OnInit {
      })
   }
 
-  demo(){
-    this.getListVisit()
+
+
+  GoEdit(visit){
+    this.router.navigate(['../../solicitud/editar', visit.id_visita], { relativeTo: this.route });
+
   }
 
 
