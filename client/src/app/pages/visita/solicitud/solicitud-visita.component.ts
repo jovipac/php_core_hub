@@ -106,60 +106,60 @@ export class SolicitudVisitaComponent implements OnInit {
         Validators.minLength(12),
         Validators.maxLength(15)]),
       nombres: new FormControl({
-        value: '',
-        disabled: !this.isAddMode,
+        value: null,
+        disabled: false,
       }, [Validators.required,
       Validators.minLength(2)]),
       apellidos: new FormControl({
-        value: '',
-        disabled: !this.isAddMode,
+        value: null,
+        disabled: false,
       }, [Validators.required,
       Validators.minLength(2)]),
       telefono: new FormControl({
-        value: '',
-        disabled: !this.isAddMode,
+        value: null,
+        disabled: false,
       }, [Validators.pattern("[0-9]{8,10}")]),
       fecha_nacimiento: new FormControl({
-        value: '',
-        disabled: !this.isAddMode,
+        value: null,
+        disabled: false,
       }, []),
       edad: new FormControl({
-        value: '',
-        disabled: !this.isAddMode,
+        value: null,
+        disabled: false,
       }, [Validators.pattern("[0-9]+")]),
       id_sexo: new FormControl({
         value: null,
-        disabled: !this.isAddMode,
+        disabled: false,
       }, [Validators.pattern("[0-9]+")]),
       id_genero: new FormControl({
         value: null,
-        disabled: !this.isAddMode,
+        disabled: false,
       }, [Validators.pattern("[0-9]+")]),
       entrada: new FormControl('', []),
       salida: new FormControl('', []),
       id_motivo: new FormControl({
         value: null,
-        disabled: !this.isAddMode,
+        disabled: false,
       }, [Validators.required, Validators.pattern("[0-9]+")]),
       id_dependencia: new FormControl({
         value: null,
-        disabled: !this.isAddMode,
+        disabled: false,
       }, [Validators.required, Validators.pattern("[0-9]+")]),
       id_funcionario: new FormControl({
         value: null,
-        disabled: !this.isAddMode,
+        disabled: false,
       }, [Validators.pattern("[0-9]+")]),
       llamadas: new FormControl({
         value: 0,
-        disabled: !this.isAddMode,
+        disabled: false,
       }, [Validators.pattern("[0-9]+")]),
       id_prioridad: new FormControl({
         value: null,
-        disabled: !this.isAddMode,
+        disabled: false,
       }, []),
       observaciones: new FormControl({
         value: '',
-        disabled: !this.isAddMode,
+        disabled: false,
       }, []),
     }, { validators: this.dateLessThan('fecha_nacimiento') });
   }
