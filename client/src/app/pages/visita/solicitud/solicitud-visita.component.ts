@@ -366,9 +366,9 @@ export class SolicitudVisitaComponent implements OnInit {
   }
 
   public searchPersona(id_documento_identidad: number, identificador: string) {
-    const dataSend = { 
+    const dataSend = {
       'id_documento_identidad': id_documento_identidad,
-      'identificador': identificador 
+      'identificador': identificador
     };
 
     this.personaService.searchPersona(dataSend)
@@ -395,7 +395,7 @@ export class SolicitudVisitaComponent implements OnInit {
     const dtNow = new Date();
     let formValues = {
       ...this.visitaForm.value,
-      entrada: dtNow.getHours() + ":" + dtNow.getMinutes() ,
+      entrada: format(parseISO(new Date().toISOString()), 'yyyy-MM-dd HH:mm'),
       id_auxiliatura: JSON.parse(sessionStorage.getItem('validate')).id_auxiliatura,
       id_estado: 1
     };
@@ -468,8 +468,8 @@ export class SolicitudVisitaComponent implements OnInit {
   private updateVisita() {
       const formValues = {
         ...this.visitaForm.value,
-        entrada: format(new Date(this.visitaForm.value.entrada), 'HH:mm'),
-        salida: format(new Date(), 'HH:mm'),
+        entrada: format(new Date(this.visitaForm.value.entrada), 'yyyy-MM-dd HH:mm'),
+        salida: format(new Date(), 'yyyy-MM-dd HH:mm'),
         id_estado: 2
       };
       this.visitaService.updateVisit(this.id, formValues)
