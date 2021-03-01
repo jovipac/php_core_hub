@@ -71,6 +71,9 @@ Route::group([
     Route::resource('genero', 'Api\GeneroController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
+    Route::resource('documento-identidad-persona', 'Api\DocumentoIdentidadPersonaController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
     Route::resource('personas', 'Api\PersonaController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy',
     ]]);
@@ -89,6 +92,7 @@ Route::group([
     Route::post('personas/search', 'Api\PersonaController@search')->name('personas.search');
     Route::get('personas/restore/{persona}', 'Api\PersonaController@restore')->name('personas.restore');
     Route::post('visitas/search', 'Api\VisitaController@search')->name('visitas.search');
+    Route::post('documento-identidad-persona/search', 'Api\DocumentoIdentidadPersonaController@search')->name('documento-identidad-persona.search');
 
     Route::get('rol-modulos', 'Api\RolModuloController@index')->name('menu.index');
     Route::get('rol-modulos/assigned/{id}', 'Api\RolModuloController@assigned');

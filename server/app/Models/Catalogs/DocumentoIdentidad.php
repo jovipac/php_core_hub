@@ -44,4 +44,10 @@ class DocumentoIdentidad extends Model
      * @var array
      */
     protected $dates = ['entrada', 'salida'];
+
+    public function personas()
+    {
+        return $this->belongsTo(DocumentoIdentidad::class, 'id_documento_identidad', 'id_documento_identidad');
+    }
+
 }
