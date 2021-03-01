@@ -92,9 +92,9 @@ class PersonaController extends ApiController
 
         if (
             ($request->has('id_documento_identidad') && $request->filled('id_documento_identidad')) &&
-            ($request->has('identificador') && $request->filled('identificador') =>) 
+            ($request->has('identificador') && $request->filled('identificador')) 
         ) {
-            $persona->documentos_identidad()->attach($request->id_documento_identidad, ['identificador'=>$request->identificador]);
+            $persona->documentos_identidad()->attach($request->id_documento_identidad, ['identificador' => $request->identificador]);
         }
 
         return $this->respondCreated([
