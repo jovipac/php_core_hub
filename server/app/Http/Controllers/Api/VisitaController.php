@@ -127,7 +127,7 @@ class VisitaController extends ApiController
             'id_persona' => 'required|integer',
             'id_motivo' => 'required|integer',
             'edad' => 'nullable|integer',
-            'entrada' => 'date_format:H:i|before:tomorrow',
+            'entrada' => 'required',
             'salida' => 'nullable|date_format:H:i|after:entrada',
             'llamadas' => 'integer',
             'id_dependencia' => 'required|integer',
