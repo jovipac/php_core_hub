@@ -178,8 +178,8 @@ class VisitaController extends ApiController
             ->join('tc_estado AS T05', 'tt_visita.id_estado', 'T05.id_estado')
             ->join('tc_auxiliatura AS T06', 'tt_visita.id_auxiliatura', 'T06.id_auxiliatura')
             ->join('tc_prioridad AS T07', 'tt_visita.id_prioridad', 'T07.id_prioridad')
-            ->join('tt_documento_identidad_persona AS T08', 'T01.id_persona', 'T08.id_persona')
-            ->join('tc_documento_identidad AS T09', 'T08.id_documento_identidad', 'T09.id_documento_identidad')
+            ->leftJoin('tt_documento_identidad_persona AS T08', 'tt_visita.id_persona', 'T08.id_persona')
+            ->leftJoin('tc_documento_identidad AS T09', 'T08.id_documento_identidad', 'T09.id_documento_identidad')
             ->where('tt_visita.id_visita', $visita->id_visita);
         /*
         $visita = $item->get()->each(function ($query) {
