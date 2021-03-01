@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl, Validators } from "@angular/forms";
 import { ServicesService } from "../../../service/services.service";
-import { PrioridadService, SexoService, GeneroService } from '../../../service/catalogos';
+import { DocumentoIdentidadService, PrioridadService, SexoService, GeneroService } from '../../../service/catalogos';
 import { FuncionariosService, VisitasService, PersonasService } from '../../../service';
-import { Prioridad, Sexo, Genero, Auxiliatura, Dependencia, Motivo, Funcionario } from '../../../shared/models';
+import { DocumentoIdentidad, Prioridad, Sexo, Genero, Auxiliatura, Dependencia, Motivo, Funcionario } from '../../../shared/models';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { first, map, switchMap  } from 'rxjs/operators';
@@ -24,6 +24,8 @@ export class SolicitudVisitaComponent implements OnInit {
   isAddMode: boolean;
   loading = false;
   submitted = false;
+
+  public listDocumentoIdentidad: Array<DocumentoIdentidad>;
   public listPriority: Array<Prioridad>;
   public listReason: Array<Motivo>;
   public listDependency: Array<Dependencia>;
@@ -39,6 +41,7 @@ export class SolicitudVisitaComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService,
     private generalService: ServicesService,
+    private documentoIdentidadService: DocumentoIdentidadService,
     private prioridadService: PrioridadService,
     private sexoService: SexoService,
     private generoService: GeneroService,
@@ -52,6 +55,7 @@ export class SolicitudVisitaComponent implements OnInit {
   ngOnInit() {
     this.id = this.route.snapshot.params['id'];
     this.isAddMode = !this.id;
+    this.getListDocumentoIdentidad()
     this.getListPriority()
     this.getListSex()
     this.getListGenre()
@@ -87,7 +91,11 @@ export class SolicitudVisitaComponent implements OnInit {
   private buildForm() {
     this.visitaForm = new FormGroup({
       id_persona: new FormControl('', [Validators.pattern("[0-9]+")]),
-      cui: new FormControl({
+      id_documento_identidad: new FormControl({
+        value: null,
+        disabled: !this.isAddMode,
+      }, [Validators.pattern("[0-9]+")]),
+      identificador: new FormControl({
         value: '',
         disabled: !this.isAddMode,
       }, [Validators.required,
@@ -188,6 +196,23 @@ export class SolicitudVisitaComponent implements OnInit {
     return (new Date(rawDate)).toISOString().substring(0, 10);
   }
 
+  getListDocumentoIdentidad() {
+    this.documentoIdentidadService.getListDocumentoIdentidad()
+      .pipe(first())
+      .subscribe({
+        next: (response: any) => {
+          if (response.success) {
+            this.listDocumentoIdentidad = response.result;
+          } else
+            this.toastr.error(response.message)
+        },
+        error: (data) => {
+          const error: HttpErrorResponse = data;
+          this.toastr.error(error.message);
+        }
+      });
+  }
+
   getListPriority() {
     this.prioridadService.getListPrioridad()
       .pipe(first())
@@ -219,16 +244,21 @@ export class SolicitudVisitaComponent implements OnInit {
   }
 
   getListGenre() {
-    this.generoService.getListGenero().subscribe(res => {
-      const response: any = res;
-      if (response.result.length > 0)
-        this.listGenre = response.result;
-      else
-        this.listGenre.length = 0
-    }, err => {
-      const error: HttpErrorResponse = err;
-      this.toastr.error(error.message);
-    })
+    this.generoService.getListGenero()
+    .pipe(first())
+    .subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.listGenre = response.result;
+        } else
+          this.toastr.error(response.message)
+      },
+      error: (data) => {
+        const error: HttpErrorResponse = data;
+        this.toastr.error(error.message);
+      }
+    });
+
   }
 
   getListReason() {
@@ -245,16 +275,21 @@ export class SolicitudVisitaComponent implements OnInit {
   }
 
   getListDependecy() {
-    this.generalService.getListDependency().subscribe(res => {
-      const response: any = res;
-      if (response.result.length > 0)
-        this.listDependency = response.result;
-      else
-        this.listDependency.length = 0
-    }, err => {
-      const error: HttpErrorResponse = err;
-      this.toastr.error(error.message);
-    })
+    this.generalService.getListDependency()
+    .pipe(first())
+    .subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.listDependency = response.result;
+        } else
+          this.toastr.error(response.message)
+      },
+      error: (data) => {
+        const error: HttpErrorResponse = data;
+        this.toastr.error(error.message);
+      }
+    });
+
   }
 
   getListAuxiliary() {
@@ -330,8 +365,12 @@ export class SolicitudVisitaComponent implements OnInit {
     this.router.navigate(['/visita/solicitud/agregar'], { relativeTo: this.route });
   }
 
-  public searchPersona(cui: string) {
-    const dataSend = { 'cui': cui };
+  public searchPersona(id_documento_identidad: number, identificador: string) {
+    const dataSend = { 
+      'id_documento_identidad': id_documento_identidad,
+      'identificador': identificador 
+    };
+
     this.personaService.searchPersona(dataSend)
       .pipe(first())
       .subscribe({
