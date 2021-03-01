@@ -2,7 +2,8 @@ import { Component, Input, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'input-label',
-  template: `<label for="{{id}}">{{label}} <span *ngIf="isRequired(requires)"> *</span></label>`,
+  templateUrl: './input-label.component.html',
+  styleUrls: ['./input-label.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class LabelInputComponent {

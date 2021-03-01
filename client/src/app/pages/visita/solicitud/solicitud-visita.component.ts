@@ -90,7 +90,10 @@ export class SolicitudVisitaComponent implements OnInit {
 
   private buildForm() {
     this.visitaForm = new FormGroup({
-      id_persona: new FormControl('', [Validators.pattern("[0-9]+")]),
+      id_persona: new FormControl({
+        value: null,
+        disabled: !this.isAddMode,
+      }, [Validators.pattern("[0-9]+")]),
       id_documento_identidad: new FormControl({
         value: null,
         disabled: !this.isAddMode,
