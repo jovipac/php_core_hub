@@ -158,7 +158,7 @@ class VisitaController extends ApiController
      */
     public function show(Visita $visita)
     {
-        $item = Visita::query()
+        $query = Visita::query()
             ->select('tt_visita.id_visita', 'tt_visita.id_persona', 'T01.nombres', 'T01.apellidos',
             'T08.identificador', 'T08.id_documento_identidad', 'T09.nombre AS nombre_documento_identidad',
             'T01.telefono', 'T01.fecha_nacimiento', 'T01.id_sexo', 'T01.id_genero',
@@ -193,20 +193,9 @@ class VisitaController extends ApiController
             [
                 'success' => true,
                 'message' => "Registro de visita encontrado con exito",
-                'result' => $visita->first()
+                'result' => $query->first()
             ]
         );
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Visita  $visita
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Visita $visita)
-    {
-        //
     }
 
     /**
