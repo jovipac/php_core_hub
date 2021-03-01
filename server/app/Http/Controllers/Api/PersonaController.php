@@ -35,16 +35,32 @@ class PersonaController extends ApiController
      */
     public function search(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'id_documento_identidad' => 'required|integer',
+            'identificador' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return $this->respondError($validator->errors(), 422);
+        }
+
         $resSuccess = false;
-        if ($request->has('cui') && $request->filled('cui')) {
+        if ($request->has('identificador')) {
             $resMessage = '';
-            $persona = Persona::where('cui', 'like', '%' . $request->input('cui') . '%')->first();
+            $persona = Persona::query()
+            ->join('tt_documento_identidad_persona AS T01', 'tc_persona.id_persona', 'T01.id_persona')
+            ->join('tc_documento_identidad AS T02', 'T01.id_documento_identidad', 'T02.id_documento_identidad');
+
+            if ($request->has('identificador'))
+                $persona = $persona->where('T01.identificador', 'like', '%' . $request->input('identificador') . '%');
+
+            $persona = $persona->first();
+
             if (empty($persona) == false) {
                 $resSuccess = true;
-                $resMessage = "CUI de persona encontrada con exito.";
+                $resMessage = "Identificador de la persona encontrada con exito.";
             } else {
                 $resSuccess = false;
-                $resMessage = "CUI no registrado, debe ingresar los datos manualmente.";
+                $resMessage = "Identificador de la persona no encontrada, debe ingresar los datos manualmente.";
             }
 
             return $this->apiResponse(

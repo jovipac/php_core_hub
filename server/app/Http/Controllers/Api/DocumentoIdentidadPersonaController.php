@@ -64,10 +64,10 @@ class DocumentoIdentidadPersonaController extends ApiController
 
             if (empty($documento) == false) {
                 $resSuccess = true;
-                $resMessage = "Identificador de persona encontrada con exito.";
+                $resMessage = "Identificador de la persona encontrada con exito.";
             } else {
                 $resSuccess = false;
-                $resMessage = "Identificador no registrado, debe ingresar los datos manualmente.";
+                $resMessage = "Identificador de la persona no encontrada, debe ingresar los datos manualmente.";
             }
 
             return $this->apiResponse(
