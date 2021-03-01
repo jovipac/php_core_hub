@@ -159,9 +159,10 @@ class VisitaController extends ApiController
     public function show(Visita $visita)
     {
         $item = Visita::query()
-            ->select('tt_visita.id_visita', 'tt_visita.id_persona', 'T01.cui', 'T01.nombres', 'T01.apellidos',
+            ->select('tt_visita.id_visita', 'tt_visita.id_persona', 'T01.nombres', 'T01.apellidos',
+            'T08.identificador', 'T08.id_documento_identidad', 'T09.nombre AS nombre_documento_identidad',
             'T01.telefono', 'T01.fecha_nacimiento', 'T01.id_sexo', 'T01.id_genero',
-            'tt_visita.entrada', 'tt_visita.salida', 'tt_visita.llamadas',
+            'tt_visita.edad', 'tt_visita.entrada', 'tt_visita.salida', 'tt_visita.llamadas',
             'tt_visita.id_motivo', 'T02.nombre AS nombre_motivo',
             'tt_visita.id_dependencia', 'T03.nombre AS nombre_dependencia',
             'tt_visita.id_funcionario', 'T04.nombres AS nombres_funcionario', 'T04.apellidos AS apellidos_funcionario',
@@ -177,15 +178,17 @@ class VisitaController extends ApiController
             ->join('tc_estado AS T05', 'tt_visita.id_estado', 'T05.id_estado')
             ->join('tc_auxiliatura AS T06', 'tt_visita.id_auxiliatura', 'T06.id_auxiliatura')
             ->join('tc_prioridad AS T07', 'tt_visita.id_prioridad', 'T07.id_prioridad')
+            ->join('tt_documento_identidad_persona AS T08', 'T01.id_persona', 'T08.id_persona')
+            ->join('tc_documento_identidad AS T09', 'T08.id_documento_identidad', 'T09.id_documento_identidad')
             ->where('tt_visita.id_visita', $visita->id_visita);
-
+        /*
         $visita = $item->get()->each(function ($query) {
             if (!is_null($query->fecha_nacimiento ?? null))
                 $query->edad = Carbon::parse($query->fecha_nacimiento)->age;
             else
                 $query->edad = null;
         });
-
+        */
         return $this->apiResponse(
             [
                 'success' => true,
