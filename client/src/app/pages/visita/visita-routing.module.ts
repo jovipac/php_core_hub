@@ -6,7 +6,9 @@ const routes: Routes = [
         path: '',
         data: {
             breadcrumb: 'Visita',
-            status: false
+            icon: 'icofont icofont-users-alt-5 bg-c-blue',
+            breadcrumb_caption: 'Recepcion',
+            status: true
         },
         children: [
             {
