@@ -23,6 +23,9 @@ const routes: Routes = [
       }, {
         path: 'visita',
         loadChildren: () => import('./pages/visita/visita.module').then(m => m.VisitaModule)
+      }, {
+        path: 'expediente',
+        loadChildren: () => import('./pages/expediente/expediente.module').then(m => m.ExpedienteModule)
       },
     ],
     canActivate: [GuardGuard],

@@ -11,7 +11,7 @@ const routes: Routes = [
         children: [
             {
                 path: 'solicitud',
-                loadChildren: () => import('./solicitud/solicitud-visita.module').then(m => m.SolicitudVisitaPageModule)
+                loadChildren: () => import('./recepcion/solicitud-visita.module').then(m => m.SolicitudVisitaPageModule)
             },
             {
               path: 'monitoreo-visitas',
