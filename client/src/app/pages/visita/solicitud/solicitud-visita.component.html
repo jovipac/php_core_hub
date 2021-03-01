@@ -12,7 +12,7 @@
             <div *ngIf="isHasErrors('id_documento_identidad')" class="invalid-feedback">Seleccione un valor</div>
           </div>
           <div class="col-md-3 mb-3">
-            <input-label [requires]="true" [label]="'Numero'" [id]="'txtIdentificador'"></input-label>
+            <input-label [requires]="true" [label]="'Identificación'" [id]="'txtIdentificador'"></input-label>
             <div class="input-group">
               <input type="hidden" class="form-control" id="txtIdPersona" formControlName="id_persona" >
               <input type="text" class="form-control" id="txtIdentificador" formControlName="identificador" placeholder="Completo"
