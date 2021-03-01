@@ -16,7 +16,9 @@ class PersonaController extends ApiController
      */
     public function index()
     {
-        $personas = Persona::all();
+        //$personas = Persona::all();
+        $personas = Persona::with('documentos_identidad')->get();
+
         return $this->apiResponse(
             [
                 'success' => true,
@@ -73,7 +75,9 @@ class PersonaController extends ApiController
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'cui' => 'required|integer|unique:tc_persona',
+            //'cui' => 'required|integer|unique:tc_persona',
+            'id_documento_identidad' => 'required|integer',
+            'identificador' => 'required|integer|unique:tt_documento_identidad_persona',
             'nombres' => 'required|string',
             'apellidos' => 'required|string',
             'id_sexo' => 'required|integer',
@@ -85,6 +89,13 @@ class PersonaController extends ApiController
         }
         $input = $request->all();
         $persona = Persona::create($input);
+
+        if (
+            ($request->has('id_documento_identidad') && $request->filled('id_documento_identidad')) &&
+            ($request->has('identificador') && $request->filled('identificador') =>) 
+        ) {
+            $persona->documentos_identidad()->attach($request->id_documento_identidad, ['identificador'=>$request->identificador]);
+        }
 
         return $this->respondCreated([
             'success' => true,

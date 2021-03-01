@@ -26,7 +26,7 @@ class DocumentoIdentidadPersona extends Model
      * @var array
      */
     protected $fillable = [
-        'id_persona', 'id_documento_identidad', 'borrado'
+        'id_persona', 'id_documento_identidad', 'identificacion', 'borrado'
     ];
 
     /**

@@ -56,4 +56,11 @@ class Persona extends Model
         return $value;
     }
 
+    public function documentos_identidad()
+    {
+        return $this->belongsToMany(\App\Models\Catalogs\DocumentoIdentidad::class, 
+        'tt_documento_identidad_persona', 'id_persona', 'id_documento_identidad', 
+        'id_persona', 'id_documento_identidad')->withTimestamps();
+    }
+
 }
