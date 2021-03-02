@@ -35,18 +35,27 @@ Route::group([
     Route::resource('documento-identidad', 'Api\DocumentoIdentidadController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
-    Route::resource('estados', 'Api\EstadoController', ['only' => [
+    Route::get('documento-identidad/restore/{documento_identidad}', 'Api\DocumentoIdentidadController@restore')->name('documento-identidad.restore');
+
+    Route::resource('estado', 'Api\EstadoController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
+    Route::get('estado/restore/{estado}', 'Api\EstadoController@restore')->name('estados.restore');
+
     Route::resource('modulos', 'Api\ModuloController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
     Route::resource('users', 'Api\UserController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
+    Route::get('users/restore/{user}', 'Api\UserController@restore')->name('users.restore');
+    Route::post('personas/search', 'Api\PersonaController@search')->name('personas.search');
+
     Route::resource('roles', 'Api\RolController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
+    Route::get('roles/restore/{user}', 'Api\RolController@restore')->name('roles.restore');
+
     Route::resource('usuario-roles', 'Api\UsuarioRolController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
@@ -62,15 +71,31 @@ Route::group([
     Route::resource('auxiliaturas', 'Api\AuxiliaturaController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
+    Route::resource('via', 'Api\ViaController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+    Route::get('via/restore/{via}', 'Api\ViaController@restore')->name('via.restore');
+
+    Route::resource('tipo-vinculacion', 'Api\TipoVinculacionController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+    Route::get('tipo-vinculacion/restore/{tipo_vinculacion}', 'Api\TipoVinculacionController@restore')->name('tipo-vinculacion.restore');
+
     Route::resource('prioridad', 'Api\PrioridadController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
+    Route::get('prioridad/restore/{prioridad}', 'Api\PrioridadController@restore')->name('prioridad.restore');
+
     Route::resource('sexo', 'Api\SexoController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
+    Route::get('sexo/restore/{sexo}', 'Api\SexoController@restore')->name('sexo.restore');
+
     Route::resource('genero', 'Api\GeneroController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
+    Route::get('genero/restore/{genero}', 'Api\GeneroController@restore')->name('genero.restore');
+
     Route::resource('documento-identidad-persona', 'Api\DocumentoIdentidadPersonaController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
@@ -80,16 +105,12 @@ Route::group([
     Route::resource('motivos', 'Api\MotivoController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
+    Route::get('motivos/restore/{motivo}', 'Api\MotivoController@restore')->name('motivos.restore');
+
     Route::resource('visitas', 'Api\VisitaController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
-    Route::get('estados/restore/{estado}', 'Api\EstadoController@restore')->name('estados.restore');
-    Route::get('prioridad/restore/{prioridad}', 'Api\PrioridadController@restore')->name('prioridad.restore');
-    Route::get('motivos/restore/{motivo}', 'Api\MotivoController@restore')->name('motivos.restore');
-    Route::get('users/restore/{user}', 'Api\UserController@restore')->name('users.restore');
-    Route::get('sexo/restore/{sexo}', 'Api\SexoController@restore')->name('sexo.restore');
-    Route::get('genero/restore/{genero}', 'Api\GeneroController@restore')->name('genero.restore');
-    Route::post('personas/search', 'Api\PersonaController@search')->name('personas.search');
+
     Route::get('personas/restore/{persona}', 'Api\PersonaController@restore')->name('personas.restore');
     Route::post('visitas/search', 'Api\VisitaController@search')->name('visitas.search');
     Route::post('documento-identidad-persona/search', 'Api\DocumentoIdentidadPersonaController@search')->name('documento-identidad-persona.search');

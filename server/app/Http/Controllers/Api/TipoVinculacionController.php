@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
-use App\Models\Entities\Rol;
+use App\Models\Catalogs\TipoVinculacion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class RolController extends ApiController
+class TipoVinculacionController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -16,12 +16,12 @@ class RolController extends ApiController
      */
     public function index()
     {
-        $roles = Rol::all();
+        $tipovinculacion = TipoVinculacion::all();
         return $this->apiResponse(
             [
                 'success' => true,
-                'message' => "Listado de roles",
-                'result' => $roles
+                'message' => "Listado de tipos vinculaciones",
+                'result' => $tipovinculacion
             ]
         );
     }
@@ -36,90 +36,90 @@ class RolController extends ApiController
     {
         $validator = Validator::make($request->all(), [
             'nombre' => 'required|string',
-            'descripcion' => 'string',
-            'slug' => 'string',
+            'slug' => 'string|unique:tc_tipovinculacion',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
         }
         $input = $request->all();
-        $role = Rol::create($input);
+        $tipoVinculacion = TipoVinculacion::create($input);
 
         return $this->respondCreated([
             'success' => true,
-            'message' => "Rol creado con exito",
-            'result' => $role
+            'message' => "Tipo vinculacion creado con exito",
+            'result' => $tipoVinculacion
         ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Rol  $role
+     * @param  \App\TipoVinculacion  $tipoVinculacion
      * @return \Illuminate\Http\Response
      */
-    public function show(Rol $role)
+    public function show(TipoVinculacion $tipoVinculacion)
     {
         return $this->apiResponse(
             [
                 'success' => true,
-                'message' => "Rol encontrado",
-                'result' => $role
+                'message' => "Tipo vinculacion encontrado",
+                'result' => $tipoVinculacion
             ]
         );
     }
+
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Rol  $role
+     * @param  \App\TipoVinculacion  $tipoVinculacion
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Rol $role)
+    public function update(Request $request, TipoVinculacion $tipoVinculacion)
     {
         $validator = Validator::make($request->all(), [
             'nombre' => 'required|string',
-            'descripcion' => 'string',
             'slug' => 'string',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
         }
 
-        $role->update($request->all());
+        $tipoVinculacion->update($request->all());
 
         return $this->apiResponse([
             'success' => true,
-            'message' => "Rol actualizado con exito",
-            'result' => $role
+            'message' => "Tipo vinculacion actualizado con exito",
+            'result' => $tipoVinculacion
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Rol  $role
+     * @param  \App\TipoVinculacion  $tipoVinculacion
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Rol $role)
+    public function destroy(TipoVinculacion $tipoVinculacion)
     {
-        $role->delete();
+        $tipoVinculacion->delete();
 
-        return $this->respondSuccess('Rol eliminado con exito');
+        return $this->respondSuccess('Tipo vinculacion eliminado con exito');
     }
 
     /**
      * Restore the specified resource from storage.
      *
-     * @param  \App\Rol  $integer
+     * @param  \App\Persona  $persona
      * @return \Illuminate\Http\Response
      */
     public function restore($id)
     {
-        $user = Rol::withTrashed()->findorfail($id);
-        $user->restore();
+        $tipovinculacion = TipoVinculacion::withTrashed()->findorfail($id);
+        $tipovinculacion->restore();
 
-        return $this->respondSuccess('Rol restaurado con exito');
+        return $this->respondSuccess('Tipo vinculacion restaurada con exito');
     }
+
 }
