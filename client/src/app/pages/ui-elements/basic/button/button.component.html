@@ -1,7 +1,7 @@
 <div class="button-page">
   <div class="row">
     <div class="col-sm-12">
-      <app-card [title]="'Color States'">
+      <app-card [cardTitle]="'Color States'">
         <p>Checkout color states of all buttons on popover to buttons</p>
         <ng-template #popContent>
           <div class='color-code'>
@@ -414,7 +414,7 @@
   </div>
   <div class="row">
     <div class="col-sm-12">
-      <app-card [title]="'Basic Buttons'">
+      <app-card [cardTitle]="'Basic Buttons'">
         <!-- button Default -->
         <h4 class="sub-title">Buttons</h4>
         <p>Use the button classes on an <code>&lt;a&gt;</code>, <code>&lt;button&gt;</code>, or <code>&lt;input&gt;</code>element.</p>
@@ -464,7 +464,7 @@
   </div>
   <div class="row">
     <div class="col-sm-6">
-      <app-card [title]="'Buttons With Icon'">
+      <app-card [cardTitle]="'Buttons With Icon'">
         <!-- button Default -->
         <p>Use <code>&lt;i class="icofont icofont-star"&gt;</code> inside button to add icon.</p>
         <button class="btn btn-default"><i class="icofont icofont-star"></i>Default Button</button>
@@ -479,7 +479,7 @@
     </div>
     <!-- Border button -->
     <div class="col-sm-6">
-      <app-card [title]="'Border Buttons'">
+      <app-card [cardTitle]="'Border Buttons'">
         <!-- button Default -->
         <p>Use Class <code>btn-outline-*</code> inside button to make Border Button.</p>
         <button class="btn btn-default btn-outline-default"><i class="icofont icofont-star"></i>DefaultButton</button>
@@ -495,7 +495,7 @@
   </div>
   <div class="row">
     <div class="col-sm-6">
-      <app-card [title]="'Buttons Dropdown'">
+      <app-card [cardTitle]="'Buttons Dropdown'">
         <!-- button Default -->
         <div ngbDropdown class="dropdown-default dropdown open">
           <button ngbDropdownToggle class="btn btn-default dropdown-toggle waves-effect waves-light " type="button" id="dropdown1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">primary</button>
@@ -569,7 +569,7 @@
     </div>
     <!-- Border button -->
     <div class="col-sm-6">
-      <app-card [title]="'Buttons with split dropdown with icon'">
+      <app-card [cardTitle]="'Buttons with split dropdown with icon'">
         <!-- button Default -->
         <div ngbDropdown class="btn-group dropdown-split-default">
           <button type="button" class="btn btn-default"><i class="icofont icofont-star"></i>Default</button>
@@ -680,7 +680,7 @@
   </div>
   <div class="row">
     <div class="col-sm-6">
-      <app-card [title]="'Icon Button'" [blockClass]="'icon-btn'">
+      <app-card [cardTitle]="'Icon Button'" [blockClass]="'icon-btn'">
         <!-- button Default -->
         <p>Use <code>&lt;i class="icofont icofont-star"&gt;</code> inside button to add icon.</p>
         <div>
@@ -708,7 +708,7 @@
     </div>
     <!-- Border button -->
     <div class="col-sm-6">
-      <app-card [title]="'Icon Border Buttons'" [blockClass]="'icon-btn'">
+      <app-card [cardTitle]="'Icon Border Buttons'" [blockClass]="'icon-btn'">
         <!-- button Default -->
         <p>Use Class <code>btn-outline-*</code> inside button to make Border Button.</p>
         <div>
@@ -736,7 +736,7 @@
   </div>
   <div class="row">
     <div class="col-sm-12">
-      <app-card [title]="'Group Buttons'">
+      <app-card [cardTitle]="'Group Buttons'">
         <!-- button Default -->
         <p>Use <code>btn-xlg, btn-lg, btn-md, btn-sm, btn-mini</code> inside class to use different size button.</p>
         <div>
@@ -798,7 +798,7 @@
   </div>
   <div class="row">
     <div class="col-sm-12">
-      <app-card [title]="'Social Buttons'">
+      <app-card [cardTitle]="'Social Buttons'">
         <a href="javascript:;" class="btn btn-facebook"><i class="icofont icofont-social-facebook"></i>Facebook</a>
         <a href="javascript:;" class="btn btn-twitter"><i class="icofont icofont-social-twitter"></i>Twitter</a>
         <a href="javascript:;" class="btn btn-linkedin"><i class="icofont icofont-brand-linkedin"></i>Linkedin</a>
@@ -813,7 +813,7 @@
   </div>
   <div class="row">
     <div class="col-sm-6">
-      <app-card [title]="'Social Buttons without label'" [blockClass]="'remove-label'">
+      <app-card [cardTitle]="'Social Buttons without label'" [blockClass]="'remove-label'">
         <a href="javascript:;" class="btn btn-facebook"><i class="icofont icofont-social-facebook"></i></a>
         <a href="javascript:;" class="btn btn-twitter"><i class="icofont icofont-social-twitter"></i></a>
         <a href="javascript:;" class="btn btn-linkedin"><i class="icofont icofont-brand-linkedin"></i></a>
@@ -826,7 +826,7 @@
       </app-card>
     </div>
     <div class="col-sm-6">
-      <app-card [title]="'Link Buttons'" [blockClass]="'remove-label'">
+      <app-card [cardTitle]="'Link Buttons'" [blockClass]="'remove-label'">
         <a href="javascript:;" class="btn btn-primary">Link</a>
         <button type="button" class="btn btn-primary waves-effect waves-light">Button</button>
         <input type="button" class="btn btn-primary waves-effect waves-light" value="Input">
@@ -836,7 +836,7 @@
   </div>
   <div class="row">
     <div class="col-sm-12">
-      <app-card [title]="'Block Buttons'">
+      <app-card [cardTitle]="'Block Buttons'">
         <div class="row">
           <div class="col-lg-6 col-md-12">
             <div class="form-group">

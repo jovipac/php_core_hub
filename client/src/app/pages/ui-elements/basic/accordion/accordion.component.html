@@ -2,7 +2,7 @@
 <div class="row">
   <!-- Multiple Open Accordion start -->
   <div class="col-xl-6">
-    <app-card [title]="'Bootstrap - All Close Accordion'" [blockClass]="'accordion-block'">
+    <app-card [cardTitle]="'Bootstrap - All Close Accordion'" [blockClass]="'accordion-block'">
       <ngb-accordion [closeOthers]="true" #acc="ngbAccordion" class="ngb-accordion">
         <ngb-panel id="ngb-close-p1" title="Lorem Message 1">
           <ng-template ngbPanelContent>
@@ -37,7 +37,7 @@
   <!-- Multiple Open Accordion ends -->
   <!-- Single Open Accordion start -->
   <div class="col-xl-6">
-    <app-card [title]="'Bootstrap - All Open Accordion'" [blockClass]="'accordion-block'">
+    <app-card [cardTitle]="'Bootstrap - All Open Accordion'" [blockClass]="'accordion-block'">
       <ngb-accordion #acc="ngbAccordion" activeIds="ngb-open-p1" class="ngb-accordion">
         <ngb-panel id="ngb-open-p1" title="Lorem Message 1">
           <ng-template ngbPanelContent>
@@ -74,7 +74,7 @@
 <!-- Row end -->
 <div class="row">
   <div class="col-sm-12">
-    <app-card [title]="'Bootstrap - Color Accordion'" [blockClass]="'accordion-block'">
+    <app-card [cardTitle]="'Bootstrap - Color Accordion'" [blockClass]="'accordion-block'">
       <ngb-accordion [closeOthers]="true" #acc="ngbAccordion" activeIds="ngb-color-p1" class="ngb-accordion color-accordion">
         <ngb-panel id="ngb-color-p1" title="Lorem Message 1">
           <ng-template ngbPanelContent>
