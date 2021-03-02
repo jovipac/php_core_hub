@@ -106,6 +106,20 @@ class RolController extends ApiController
     {
         $role->delete();
 
-        return $this->respondSuccess('Eliminado con exito');
+        return $this->respondSuccess('Rol eliminado con exito');
+    }
+
+    /**
+     * Restore the specified resource from storage.
+     *
+     * @param  \App\Rol  $integer
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id)
+    {
+        $user = Rol::withTrashed()->findorfail($id);
+        $user->restore();
+
+        return $this->respondSuccess('Rol restaurado con exito');
     }
 }

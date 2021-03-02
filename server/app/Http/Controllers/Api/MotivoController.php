@@ -107,10 +107,10 @@ class MotivoController extends ApiController
         return $this->respondSuccess('Motivo de visita eliminado con exito');
     }
 
-        /**
+    /**
      * Restore the specified resource from storage.
      *
-     * @param  \App\Persona  $persona
+     * @param  \App\Motivo  $integer
      * @return \Illuminate\Http\Response
      */
     public function restore($id)

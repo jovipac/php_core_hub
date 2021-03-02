@@ -25,12 +25,8 @@ class DocumentoIdentidadCatalogSeeder extends Seeder
                 'descripcion' => 'Identificación de persona extranjera'
             ],
             [
-                'nombre' => 'Acta de nacimiento',
-                'descripcion' => 'Acta de Nacimiento emitido por RENAP'
-            ],
-            [
                 'nombre' => 'No porta',
-                'descripcion' => ''
+                'descripcion' => 'Pendiente de documento personal'
             ],
         ];
 

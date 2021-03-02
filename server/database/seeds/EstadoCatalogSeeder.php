@@ -17,5 +17,8 @@ class EstadoCatalogSeeder extends Seeder
         \App\Models\Catalogs\Estado::firstOrCreate([
             'nombre' => 'Cerrado'
         ]);
+        \App\Models\Catalogs\Estado::firstOrCreate([
+            'nombre' => 'Retirado'
+        ]);
     }
 }
