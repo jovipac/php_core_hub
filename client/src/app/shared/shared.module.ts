@@ -6,7 +6,7 @@ import { ToggleFullScreenDirective } from './fullscreen/toggle-fullscreen.direct
 import { CardRefreshDirective } from './card/card-refresh.directive';
 import { CardToggleDirective } from './card/card-toggle.directive';
 import { SpinnerComponent } from './spinner/spinner.component';
-import { CardComponent } from './card/card.component';
+import { CardModule } from './card/card.module';
 import { ModalAnimationComponent } from './modal-animation/modal-animation.component';
 import { ModalBasicComponent } from './modal-basic/modal-basic.component';
 import { LabelInputComponent } from './element/input-label/input-label.component';
@@ -26,7 +26,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     CommonModule,
     PerfectScrollbarModule,
     ClickOutsideModule,
-    NgbModule
+    NgbModule,
+    CardModule
   ],
   declarations: [
     AccordionAnchorDirective,
@@ -36,7 +37,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     CardRefreshDirective,
     CardToggleDirective,
     SpinnerComponent,
-    CardComponent,
     ModalAnimationComponent,
     ModalBasicComponent,
     LabelInputComponent,
@@ -52,7 +52,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     CardRefreshDirective,
     CardToggleDirective,
     SpinnerComponent,
-    CardComponent,
+    CardModule,
     ModalAnimationComponent,
     ModalBasicComponent,
     LabelInputComponent,
