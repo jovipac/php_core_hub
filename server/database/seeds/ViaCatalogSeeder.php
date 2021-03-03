@@ -4,6 +4,33 @@ use Illuminate\Database\Seeder;
 
 class ViaCatalogSeeder extends Seeder
 {
+    protected $vias =  [
+        [
+            'nombre' => 'Verbal',
+        ],
+        [
+            'nombre' => 'Telefónica',
+        ],
+        [
+            'nombre' => 'Escrita',
+        ],
+        [
+            'nombre' => 'Prevensión policial',
+            'borrado' => true,
+        ],
+        [
+            'nombre' => 'Conocimiento de oficio',
+            'borrado' => true,
+        ],
+        [
+            'nombre' => 'De juzgado',
+            'borrado' => true,
+        ],
+        [
+            'nombre' => 'Electrónica',
+        ],
+    ];
+
     /**
      * Run the database seeds.
      *
@@ -11,15 +38,8 @@ class ViaCatalogSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Catalogs\Via::firstOrCreate([
-            'nombre' => 'Personal',
-        ]);
-        \App\Models\Catalogs\Via::firstOrCreate([
-            'nombre' => 'Telefónica',
-        ]);
-        \App\Models\Catalogs\Via::firstOrCreate([
-            'nombre' => 'Electrónica',
-        ]);
-
+        foreach($this->vias as $via){
+            \App\Models\Catalogs\Via::firstOrCreate($via);
+        }
     }
 }
