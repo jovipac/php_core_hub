@@ -137,6 +137,12 @@ Route::group([
     Route::get('expedientes/restore/{expedientes}', 'Api\ExpedienteController@restore')->name('expedientes.restore');
     //Route::post('expedientes/search', 'Api\ExpedienteController@search')->name('expedientes.search');
 
+    Route::resource('expediente-personas', 'Api\ExpedientePersonaController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+    Route::get('expediente-personas/restore/{expediente-persona}', 'Api\ExpedientePersonaController@restore')->name('expediente-persona.restore');
+    //Route::post('expediente-personas/search', 'Api\ExpedientePersonasController@search')->name('expediente-persona.search');
+
     Route::get('rol-modulos', 'Api\RolModuloController@index')->name('menu.index');
     Route::get('rol-modulos/assigned/{id}', 'Api\RolModuloController@assigned');
     Route::get('rol-modulos/unassigned/{id}', 'Api\RolModuloController@unassigned');
