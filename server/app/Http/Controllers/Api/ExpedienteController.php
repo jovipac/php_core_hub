@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\ApiController;
 use App\Models\Expediente;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ExpedienteController extends ApiController
 {
@@ -15,17 +16,14 @@ class ExpedienteController extends ApiController
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $expedientes = Expediente::all();
+        return $this->apiResponse(
+            [
+                'success' => true,
+                'message' => "Listado de expedientes",
+                'result' => $expedientes
+            ]
+        );
     }
 
     /**
@@ -36,7 +34,21 @@ class ExpedienteController extends ApiController
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'nombre' => 'required',
+            'id_dependencia' => 'required|integer',
+        ]);
+        if ($validator->fails()) {
+            return $this->respondError($validator->errors(), 422);
+        }
+        $input = $request->all();
+        $expediente = Expediente::create($input);
+
+        return $this->respondCreated([
+            'success' => true,
+            'message' => "Expediente creado con exito",
+            'result' => $expediente
+        ]);
     }
 
     /**
@@ -47,18 +59,13 @@ class ExpedienteController extends ApiController
      */
     public function show(Expediente $expediente)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Expediente  $expediente
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Expediente $expediente)
-    {
-        //
+        return $this->apiResponse(
+            [
+                'success' => true,
+                'message' => "Expediente encontrado",
+                'result' => $expediente
+            ]
+        );
     }
 
     /**
@@ -70,7 +77,21 @@ class ExpedienteController extends ApiController
      */
     public function update(Request $request, Expediente $expediente)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'nombre' => 'required',
+            'id_dependencia' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return $this->respondError($validator->errors(), 422);
+        }
+
+        $expediente->update($request->all());
+
+        return $this->apiResponse([
+            'success' => true,
+            'message' => "Expediente actualizado con exito",
+            'result' => $expediente
+        ]);
     }
 
     /**
@@ -81,6 +102,23 @@ class ExpedienteController extends ApiController
      */
     public function destroy(Expediente $expediente)
     {
-        //
+        $expediente->delete();
+
+        return $this->respondSuccess('Expediente eliminado con exito');
     }
+
+    /**
+     * Restore the specified resource from storage.
+     *
+     * @param  \App\Expediente  $expediente
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id)
+    {
+        $via = Expediente::withTrashed()->findorfail($id);
+        $via->restore();
+
+        return $this->respondSuccess('Expediente restaurada con exito');
+    }
+
 }
