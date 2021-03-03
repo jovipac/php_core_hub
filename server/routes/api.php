@@ -86,6 +86,11 @@ Route::group([
     ]]);
     Route::get('prioridad/restore/{prioridad}', 'Api\PrioridadController@restore')->name('prioridad.restore');
 
+    Route::resource('resultado', 'Api\ResultadoController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+    Route::get('resultado/restore/{resultado}', 'Api\ResultadoController@restore')->name('resultado.restore');
+
     Route::resource('sexo', 'Api\SexoController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
@@ -95,6 +100,16 @@ Route::group([
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
     Route::get('genero/restore/{genero}', 'Api\GeneroController@restore')->name('genero.restore');
+
+    Route::resource('departamento', 'Api\DepartamentoController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+    Route::get('departamento/restore/{departamento}', 'Api\DepartamentoController@restore')->name('departamento.restore');
+
+    Route::resource('municipio', 'Api\MunicipioController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+    Route::get('municipio/restore/{municipio}', 'Api\MunicipioController@restore')->name('municipio.restore');
 
     Route::resource('documento-identidad-persona', 'Api\DocumentoIdentidadPersonaController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
