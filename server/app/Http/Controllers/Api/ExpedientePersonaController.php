@@ -14,19 +14,21 @@ class ExpedientePersonaController extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-    }
+        if ($request->has('per_page') && $request->filled('per_page')) {
+            $expedientePersonas = ExpedientePersona::query()
+                ->paginate($request->per_page);
+        } else
+            $expedientePersonas = ExpedientePersona::all();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return $this->apiResponse(
+            [
+                'success' => true,
+                'message' => "Listado de expedientes",
+                'result' => $expedientePersonas
+            ]
+        );
     }
 
     /**
@@ -37,7 +39,23 @@ class ExpedientePersonaController extends ApiController
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'id_expediente' => 'required|integer',
+            'id_persona' => 'required|integer',
+            'id_tipo_vinculacion' => 'nullable|integer',
+            'flag_confidencial' => 'integer',
+        ]);
+        if ($validator->fails()) {
+            return $this->respondError($validator->errors(), 422);
+        }
+        $input = $request->all();
+        $expedientePersona = ExpedientePersona::create($input);
+
+        return $this->respondCreated([
+            'success' => true,
+            'message' => "Expediente creado con exito",
+            'result' => $expedientePersona
+        ]);
     }
 
     /**
@@ -48,18 +66,13 @@ class ExpedientePersonaController extends ApiController
      */
     public function show(ExpedientePersona $expedientePersona)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\ExpedientePersona  $expedientePersona
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(ExpedientePersona $expedientePersona)
-    {
-        //
+        return $this->apiResponse(
+            [
+                'success' => true,
+                'message' => "Expediente encontrado",
+                'result' => $expedientePersona
+            ]
+        );
     }
 
     /**
@@ -71,7 +84,23 @@ class ExpedientePersonaController extends ApiController
      */
     public function update(Request $request, ExpedientePersona $expedientePersona)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'id_expediente' => 'required|integer',
+            'id_persona' => 'required|integer',
+            'id_tipo_vinculacion' => 'required|integer',
+            'flag_confidencial' => 'integer',
+        ]);
+        if ($validator->fails()) {
+            return $this->respondError($validator->errors(), 422);
+        }
+
+        $expedientePersona->update($request->all());
+
+        return $this->apiResponse([
+            'success' => true,
+            'message' => "Expediente actualizado con exito",
+            'result' => $expedientePersona
+        ]);
     }
 
     /**
@@ -82,6 +111,22 @@ class ExpedientePersonaController extends ApiController
      */
     public function destroy(ExpedientePersona $expedientePersona)
     {
-        //
+        $expedientePersona->delete();
+
+        return $this->respondSuccess('Expediente eliminado con exito');
+    }
+
+    /**
+     * Restore the specified resource from storage.
+     *
+     * @param  \App\ExpedientePersona  $expedientePersona
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id)
+    {
+        $via = ExpedientePersona::withTrashed()->findorfail($id);
+        $via->restore();
+
+        return $this->respondSuccess('Expediente restaurada con exito');
     }
 }

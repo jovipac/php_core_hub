@@ -17,7 +17,7 @@ class CreateExpedientePersonasTable extends Migration
             $table->increments('id_expediente_persona');
             $table->integer('id_expediente')->unsigned();
             $table->integer('id_persona')->unsigned();
-            $table->integer('id_tipo_vinculacion')->unsigned();
+            $table->integer('id_tipo_vinculacion')->nullable()->unsigned();
             $table->boolean('flag_protegido')->default(0);
             $table->boolean('borrado')->default(0)->index();
             $table->timestamps();

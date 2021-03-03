@@ -110,7 +110,7 @@ class ViaController extends ApiController
     /**
      * Restore the specified resource from storage.
      *
-     * @param  \App\Persona  $persona
+     * @param  \App\Via $via
      * @return \Illuminate\Http\Response
      */
     public function restore($id)

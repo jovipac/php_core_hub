@@ -6,10 +6,6 @@ class TiposVinculacionCatalogSeeder extends Seeder
 {
     protected $tiposVinculacion =  [
         [
-            'nombre' => 'Sin selección',
-            'slug' => '-',
-        ],
-        [
             'nombre' => 'Abogado defensor',
             'slug' => 'A',
         ],
