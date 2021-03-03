@@ -49,7 +49,6 @@ Route::group([
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
     Route::get('users/restore/{user}', 'Api\UserController@restore')->name('users.restore');
-    Route::post('personas/search', 'Api\PersonaController@search')->name('personas.search');
 
     Route::resource('roles', 'Api\RolController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
@@ -114,9 +113,14 @@ Route::group([
     Route::resource('documento-identidad-persona', 'Api\DocumentoIdentidadPersonaController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
+    Route::post('documento-identidad-persona/search', 'Api\DocumentoIdentidadPersonaController@search')->name('documento-identidad-persona.search');
+
     Route::resource('personas', 'Api\PersonaController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy',
     ]]);
+    Route::post('personas/search', 'Api\PersonaController@search')->name('personas.search');
+    Route::get('personas/restore/{persona}', 'Api\PersonaController@restore')->name('personas.restore');
+
     Route::resource('motivos', 'Api\MotivoController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
@@ -125,10 +129,13 @@ Route::group([
     Route::resource('visitas', 'Api\VisitaController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
-
-    Route::get('personas/restore/{persona}', 'Api\PersonaController@restore')->name('personas.restore');
     Route::post('visitas/search', 'Api\VisitaController@search')->name('visitas.search');
-    Route::post('documento-identidad-persona/search', 'Api\DocumentoIdentidadPersonaController@search')->name('documento-identidad-persona.search');
+
+    Route::resource('expedientes', 'Api\ExpedienteController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+    Route::get('expedientes/restore/{expedientes}', 'Api\ExpedienteController@restore')->name('expedientes.restore');
+    //Route::post('expedientes/search', 'Api\ExpedienteController@search')->name('expedientes.search');
 
     Route::get('rol-modulos', 'Api\RolModuloController@index')->name('menu.index');
     Route::get('rol-modulos/assigned/{id}', 'Api\RolModuloController@assigned');

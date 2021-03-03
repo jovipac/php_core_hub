@@ -22,7 +22,7 @@ class CreateExpedientesTable extends Migration
             $table->integer('id_prioridad')->unsigned();
             $table->integer('id_funcionario')->nullable()->unsigned();
             $table->string('observaciones')->nullable();
-            $table->integer('id_resultado')->unsigned();
+            $table->integer('id_resultado')->nullable()->unsigned();
             $table->integer('id_auxiliatura')->unsigned();
             $table->boolean('borrado')->default(0)->index();
             $table->integer('created_by')->nullable()->unsigned();

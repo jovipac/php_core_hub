@@ -14,9 +14,14 @@ class ExpedienteController extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $expedientes = Expediente::all();
+        if ($request->has('per_page') && $request->filled('per_page')) {
+            $expedientes = Expediente::query()
+                ->paginate($request->per_page);
+        } else
+            $expedientes = Expediente::all();
+
         return $this->apiResponse(
             [
                 'success' => true,
@@ -35,8 +40,15 @@ class ExpedienteController extends ApiController
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nombre' => 'required',
-            'id_dependencia' => 'required|integer',
+            'anio' => 'required|integer',
+            'folio' => 'integer',
+            'fecha_ingreso' => 'required',
+            'id_via' => 'required|integer',
+            'id_prioridad' => 'required|integer',
+            'id_funcionario' => 'required|integer',
+            'observaciones' => 'string',
+            'id_resultado' => 'nullable|integer',
+            'id_auxiliatura' => 'required|integer',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
@@ -78,8 +90,15 @@ class ExpedienteController extends ApiController
     public function update(Request $request, Expediente $expediente)
     {
         $validator = Validator::make($request->all(), [
-            'nombre' => 'required',
-            'id_dependencia' => 'required',
+            'anio' => 'required|integer',
+            'folio' => 'integer',
+            'fecha_ingreso' => 'required',
+            'id_via' => 'required|integer',
+            'id_prioridad' => 'required|integer',
+            'id_funcionario' => 'required|integer',
+            'observaciones' => 'string',
+            'id_resultado' => 'required|integer',
+            'id_auxiliatura' => 'required|integer',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);

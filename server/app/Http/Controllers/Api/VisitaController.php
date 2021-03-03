@@ -15,9 +15,14 @@ class VisitaController extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $visitas = Visita::all();
+        if ($request->has('per_page') && $request->filled('per_page')) {
+            $visitas = Visita::query()
+                ->paginate($request->per_page);
+        } else
+            $visitas = Visita::all();
+
         return $this->apiResponse(
             [
                 'success' => true,
