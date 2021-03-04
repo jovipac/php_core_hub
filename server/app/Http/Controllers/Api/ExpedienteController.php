@@ -39,7 +39,20 @@ class ExpedienteController extends ApiController
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $input = $request->all();
+
+        if ($request->has('id_via') && $request->filled('id_via')) {
+            $findVia = \App\Models\Catalogs\Via::where("slug", $request->id_via)->first();
+            if ($request->id_via == "PE") {
+                $input['id_via'] = $findVia->id_via;
+            }
+        }
+        if ($request->has('id_visita') && $request->filled('id_visita')) {
+            //$findExpediente = Expediente::where("slug", $request->id_via)->first();
+            $input['folio'] = $request->id_visita;
+        }
+
+        $validator = Validator::make($input, [
             'anio' => 'required|integer',
             'folio' => 'integer',
             'fecha_ingreso' => 'required',
@@ -50,11 +63,16 @@ class ExpedienteController extends ApiController
             'id_resultado' => 'nullable|integer',
             'id_auxiliatura' => 'required|integer',
         ]);
+
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
         }
-        $input = $request->all();
+
         $expediente = Expediente::create($input);
+
+        if ($request->has('id_persona') && $request->filled('id_persona')) {
+            $expediente->personas()->attach($input['id_persona']);
+        }
 
         return $this->respondCreated([
             'success' => true,

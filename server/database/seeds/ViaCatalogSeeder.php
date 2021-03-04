@@ -7,6 +7,7 @@ class ViaCatalogSeeder extends Seeder
     protected $vias =  [
         [
             'nombre' => 'Verbal',
+            'slug' => "PE",
         ],
         [
             'nombre' => 'Telefónica',

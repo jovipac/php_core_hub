@@ -49,4 +49,9 @@ class Expediente extends Model
      */
     protected $dates = ['fecha_ingreso'];
 
+    public function personas()
+    {
+        return $this->belongsToMany(ExpedientePersona::class, 'tt_expediente_persona', 'id_expediente', 'id_persona', 'id_expediente', 'id_persona')->withTimestamps();
+    }
+
 }

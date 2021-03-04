@@ -41,4 +41,9 @@ class ExpedientePersona extends Model
         'borrado',
     ];
 
+    public function expedientes()
+    {
+        return $this->belongsToMany(Expediente::class, 'tt_expediente','id_persona','id_expediente','id_persona','id_expediente')->withTimestamps();
+    }
+
 }

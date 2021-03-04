@@ -103,9 +103,7 @@ export class SolicitudVisitaComponent implements OnInit {
         value: '',
         disabled: !this.isAddMode,
       }, [Validators.required,
-        Validators.pattern("[0-9]+"),
-        Validators.minLength(12),
-        Validators.maxLength(15)]),
+        Validators.pattern("[0-9A-z]+")]),
       nombres: new FormControl({
         value: null,
         disabled: false,
