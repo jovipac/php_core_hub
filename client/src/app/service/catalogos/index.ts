@@ -2,6 +2,8 @@ export * from './motivo.service';
 export * from './estado.service';
 export * from './documento-identidad.service';
 export * from './prioridad.service';
+export * from './departamento.service';
+export * from './municipio.service';
 export * from './sexo.service';
 export * from './genero.service';
 export * from './tipo-vinculacion.service';
