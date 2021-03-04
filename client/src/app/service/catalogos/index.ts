@@ -1,3 +1,4 @@
+export * from './motivo.service';
 export * from './estado.service';
 export * from './documento-identidad.service';
 export * from './prioridad.service';

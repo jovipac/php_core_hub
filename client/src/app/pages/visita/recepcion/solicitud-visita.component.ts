@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl, Validators } from "@angular/forms";
 import { ServicesService } from "../../../service/services.service";
-import { DocumentoIdentidadService, PrioridadService, SexoService, GeneroService } from '../../../service/catalogos';
+import { MotivoService, DocumentoIdentidadService, PrioridadService, SexoService, GeneroService } from '../../../service/catalogos';
 import { FuncionariosService, VisitasService, PersonasService } from '../../../service';
 import { DocumentoIdentidad, Prioridad, Sexo, Genero, Auxiliatura, Dependencia, Motivo, Funcionario } from '../../../shared/models';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -42,6 +42,7 @@ export class SolicitudVisitaComponent implements OnInit {
     private toastr: ToastrService,
     private generalService: ServicesService,
     private documentoIdentidadService: DocumentoIdentidadService,
+    private motivoService: MotivoService,
     private prioridadService: PrioridadService,
     private sexoService: SexoService,
     private generoService: GeneroService,
@@ -265,7 +266,7 @@ export class SolicitudVisitaComponent implements OnInit {
   }
 
   getListReason() {
-    this.generalService.getListReason().subscribe(res => {
+    this.motivoService.getListMotivo().subscribe(res => {
       const response: any = res;
       if (response.result.length > 0)
         this.listReason = response.result;
