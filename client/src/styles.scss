@@ -1,5 +1,10 @@
-@import "~@ng-select/ng-select/themes/default.theme.css";
 /* You can add global styles to this file, and also import other style files */
+
+/* SCSS */
+@import "scss/style";
+@import "~@ng-select/ng-select/themes/default.theme.css";
+
+
 body {
   background-color: #f3f3f3;
   font-size: 0.875em;
@@ -171,147 +176,6 @@ ul {
 
 .card-block {
   padding: 1.25rem;
-}
-
-.card {
-  border-radius: 5px;
-  box-shadow: 0 1px 11px 0 rgba(0, 0, 0, 0.12);
-  border: none;
-  margin-bottom: 30px;
-  .card-footer {
-    background-color: #fff;
-    border-top: none;
-  }
-  .card-header {
-    background-color: transparent;
-    border-bottom: none;
-    padding: 25px 20px;
-    .card-header-left {
-      display: inline-block;
-    }
-    .card-header-right {
-      border-radius: 0 0 0 7px;
-      right: 10px;
-      top: 18px;
-      display: inline-block;
-      float: right;
-      padding: 7px 0;
-      position: absolute;
-      i {
-        margin: 0 8px;
-        cursor: pointer;
-        font-size: 14px;
-        color: #505458;
-        line-height: 20px;
-        &.icofont.icofont-spinner-alt-5 {
-          display: none;
-        }
-      }
-      .card-option {
-        height: 20px;
-        overflow: hidden;
-        transition: 0.3s ease-in-out;
-        li {
-          display: inline-block;
-        }
-      }
-    }
-    span {
-      color: #919aa3;
-      display: block;
-      font-size: 13px;
-      margin-top: 5px;
-    }
-    + {
-      .card-block, .card-block-big {
-        padding-top: 0;
-      }
-    }
-  }
-  h5 {
-    margin-bottom: 0;
-    color: #505458;
-    font-size: 14px;
-    font-weight: 600;
-    display: inline-block;
-    margin-right: 10px;
-    line-height: 1.4;
-  }
-  .card-block {
-    table tr {
-      padding-bottom: 20px;
-    }
-    .sub-title {
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: 1px;
-    }
-    code {
-      background-color: #eee;
-      margin: 5px;
-      display: inline-block;
-    }
-    .dropdown-menu {
-      top: 38px;
-    }
-    p {
-      line-height: 25px;
-    }
-    a.dropdown-item {
-      margin-bottom: 0;
-      font-size: 14px;
-      transition: 0.25s;
-      &:active, .active {
-        background-color: #4680ff;
-      }
-    }
-    &.remove-label i {
-      margin: 0;
-      padding: 0;
-    }
-    &.button-list span.badge {
-      margin-left: 5px;
-    }
-    .dropdown-menu {
-      background-color: #fff;
-      padding: 0;
-      .dropdown-divider {
-        background-color: #ddd;
-        margin: 3px 0;
-      }
-      > {
-        a {
-          padding: 10px 16px;
-          line-height: 1.429;
-        }
-        li {
-          > a {
-            &:focus, &:hover {
-              background-color: rgba(202, 206, 209, 0.5);
-            }
-          }
-          &:first-child > a:first-child {
-            border-top-right-radius: 4px;
-            border-top-left-radius: 4px;
-          }
-        }
-      }
-    }
-    .badge-box {
-      border: 1px solid #ccc;
-      padding: 10px;
-      margin: 12px 0;
-    }
-  }
-  .card-block-big {
-    padding: 30px 35px;
-  }
-  .card-block-small {
-    padding: 15px 20px;
-  }
-  .inner-card-block {
-    border: 1px solid #ddd;
-  }
 }
 
 .pcoded {

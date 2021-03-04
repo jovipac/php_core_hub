@@ -76,11 +76,11 @@ export class CardComponent implements OnInit {
     /*this.animator = animationService.builder();
     this.animators = animationService.builder();
     this.animator.useVisibility = true;*/
-    this.fullIcon = 'icon-maximize';
+    this.fullIcon = 'icofont-maximize';
     this.isAnimating = false;
 
-    this.collapsedCard = 'expanded';
-    this.collapsedIcon = 'icon-minus';
+    this.collapsedCard = 'icofont-resize';
+    this.collapsedIcon = 'icofont-minus';
 
     this.loadCard = false;
 
@@ -99,7 +99,7 @@ export class CardComponent implements OnInit {
 
   public fullCardToggle(element: HTMLElement, animation: string, status: boolean) {
     animation = this.cardClass === 'full-card' ? 'zoomOut' : 'zoomIn';
-    this.fullIcon = this.cardClass === 'full-card' ? 'icon-maximize' : 'icon-minimize';
+    this.fullIcon = this.cardClass === 'full-card' ? 'icofont-maximize' : 'icofont-resize';
     // const duration = this.cardClass === 'full-card' ? 300 : 600;
     this.cardClass = this.cardClass === 'full-card' ? this.cardClass : 'full-card';
     if (status) {
@@ -131,7 +131,7 @@ export class CardComponent implements OnInit {
 
   collapsedCardToggle() {
     this.collapsedCard = this.collapsedCard === 'collapsed' ? 'expanded' : 'collapsed';
-    this.collapsedIcon = this.collapsedCard === 'collapsed' ? 'icon-plus' : 'icon-minus';
+    this.collapsedIcon = this.collapsedCard === 'collapsed' ? 'icofont-plus' : 'icofont-minus';
   }
 
   cardRefresh() {

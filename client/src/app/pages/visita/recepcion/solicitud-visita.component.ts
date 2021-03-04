@@ -387,9 +387,18 @@ export class SolicitudVisitaComponent implements OnInit {
           } else
             this.toastr.error(response.message)
         },
-        error: (data) => {
-          const error: HttpErrorResponse = data;
-          this.toastr.error(error.message);
+        error: (response: HttpErrorResponse) => {
+          if (Object.prototype.toString.call(response.error.message) === '[object Object]') {
+            const messages = extractErrorMessages(response);
+            messages.forEach(propertyErrors => {
+              for (let message in propertyErrors) {
+                this.toastr.error(propertyErrors[message], 'Visitas');
+              }
+            });
+
+          } else {
+            this.toastr.error(response.error.message)
+          }
           this.loading = false;
         }
       });
