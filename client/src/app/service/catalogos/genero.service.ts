@@ -14,15 +14,20 @@ export class GeneroService {
     return this.httpClient.get(`${environment.host}genero`, getHeaders())
   }
 
-  createGenero(data) {
+  getGenero(id: number) {
+    return this.httpClient.get(`${environment.host}genero/${id}`, getHeaders())
+  }
+
+
+  createGenero(data: any) {
     return this.httpClient.post(`${environment.host}genero`, data, getHeaders())
   }
 
-  updateGenero(id, data) {
+  updateGenero(id: number, data: any) {
     return this.httpClient.put(`${environment.host}genero/${id}`, data, getHeaders())
   }
 
-  deleteGenero(id) {
+  deleteGenero(id: number) {
     return this.httpClient.delete(`${environment.host}genero/${id}`, getHeaders())
   }
 

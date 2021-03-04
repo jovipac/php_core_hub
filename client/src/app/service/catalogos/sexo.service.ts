@@ -15,15 +15,19 @@ export class SexoService {
     return this.httpClient.get(`${environment.host}sexo`, getHeaders())
   }
 
-  createSexo(data) {
+  getSexo(id: number) {
+    return this.httpClient.get(`${environment.host}sexo/${id}`, getHeaders())
+  }
+
+  createSexo(data: any) {
     return this.httpClient.post(`${environment.host}sexo`, data, getHeaders())
   }
 
-  updateSexo(id, data) {
+  updateSexo(id: number, data: any) {
     return this.httpClient.put(`${environment.host}sexo/${id}`, data, getHeaders())
   }
 
-  deleteSexo(id) {
+  deleteSexo(id: number) {
     return this.httpClient.delete(`${environment.host}sexo/${id}`, getHeaders())
   }
 

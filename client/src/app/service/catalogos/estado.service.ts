@@ -14,6 +14,10 @@ export class EstadoService {
     return this.httpClient.get(`${environment.host}estado`, getHeaders())
   }
 
+  getEstado(id: number) {
+    return this.httpClient.get(`${environment.host}estado/${id}`, getHeaders())
+  }
+
   createEstado(data) {
     return this.httpClient.post(`${environment.host}estado`, data, getHeaders())
   }

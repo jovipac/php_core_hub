@@ -14,6 +14,10 @@ export class DocumentoIdentidadService {
     return this.httpClient.get(`${environment.host}documento-identidad`, getHeaders())
   }
 
+  getDocumentoIdentidad(id: number) {
+    return this.httpClient.get(`${environment.host}documento-identidad/${id}`, getHeaders())
+  }
+
   createDocumentoIdentidad(data: any) {
     return this.httpClient.post(`${environment.host}documento-identidad`, data, getHeaders())
   }
