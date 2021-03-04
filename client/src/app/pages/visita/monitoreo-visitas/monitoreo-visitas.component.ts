@@ -3,12 +3,14 @@ import { FormBuilder, FormGroup, FormControl, Validators  } from "@angular/forms
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ServicesService } from "../../../service/services.service";
+import { ExpedienteService} from '../../../service';
 import * as $ from 'jquery';
 import 'datatables.net';
 import 'datatables.net-dt';
 import Swal from 'sweetalert2'
 import { extractErrorMessages, FormStatus } from '../../../shared/utils';
 import "datatables.net-buttons/js/buttons.html5.js";
+import { format } from 'date-fns';
 
 interface auxiliary {
   id_auxiliatura: number,
@@ -58,6 +60,7 @@ export class MonitoreoVisitasComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private service: ServicesService,
+    private Expservice: ExpedienteService,
     private toastr: ToastrService,
     private router: Router,
     private route: ActivatedRoute) {
@@ -203,7 +206,8 @@ export class MonitoreoVisitasComponent implements OnInit {
 
   markExit(visit , estado) {
     let d = new Date();
-    let hour = d.getHours() + ":" + d.getMinutes() ;
+    let mes =  d.getMonth() + 1 ;
+    let hour =  d.getFullYear() + "-" + mes  + "-" +   d.getDay()   + " "  +  d.getHours() + ":" + d.getMinutes() ;
     let msj = "";
 
     if (estado == 2){
@@ -213,8 +217,8 @@ export class MonitoreoVisitasComponent implements OnInit {
     }
 
     let VisitUpdate = {
-      salida:  hour,
-      entrada: visit.entrada,
+      salida:  format(new Date(), 'yyyy-MM-dd HH:mm'),
+      entrada: visit.entrada ,
       id_estado: estado
     };
 
@@ -229,16 +233,38 @@ export class MonitoreoVisitasComponent implements OnInit {
        confirmButtonText: 'Si. Estoy seguro',
        cancelButtonText: 'Cancelar'
      }).then((result) => {
-       if (result.isConfirmed) {
-         this.service.updateVisit(visit.id_visita , VisitUpdate ).subscribe(res => {
-           let response: any = res;
+      if (result.isConfirmed) {
+
+        this.service.updateVisit(visit.id_visita , VisitUpdate ).subscribe(res => {
+          let response: any = res;
+
+          if(estado == 2) {
+            let dataExpe = {
+              "id_visita": visit.id_visita,
+              "anio": d.getFullYear(),
+              "fecha_ingreso": format(new Date(), 'yyyy-MM-dd HH:mm'),
+              "id_via": "PE",
+              "id_prioridad": visit.id_prioridad,
+              "id_funcionario": visit.id_funcionario,
+              "id_persona": visit.id_persona,
+              "id_auxiliatura": this.auxiliatura
+            }
+            this.Expservice.createExpediente( dataExpe ).subscribe(res => {
+              let response: any = res;
+              const exp = response.result;
+              this.router.navigate(['../../../expediente/solicitud/editar', exp.id_expediente], { relativeTo: this.route });
+
+            }, err => {
+              this.toastr.error('Error al actualizar el estado de la visita', 'Error')
+            })
+          }else{
            this.toastr.success( "Ticket retirado exitosamente", 'Monitor de atención')
            $(document).ready(function () { $('#listMonitor').DataTable().destroy(); })
            this.getListVisit();
-
-         }, err => {
-           this.toastr.error('Error al actualizar el estado de la visita', 'Error')
-         })
+          }
+        }, err => {
+          this.toastr.error('Error al actualizar el estado de la visita', 'Error')
+        })
        }
      })
   }
