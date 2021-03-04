@@ -12,9 +12,19 @@ const routes: Routes = [
     path: 'nuevo',
     component: SolicitudComponent,
     data: {
-      breadcrumb: 'Recepción solicitud',
+      breadcrumb: 'Nueva',
       icon: 'icofont icofont-folder-open bg-c-blue',
-      breadcrumb_caption: 'Visita',
+      breadcrumb_caption: 'Solicitud',
+      status: true
+    }
+  },
+  {
+    path: 'editar/:id',
+    component: SolicitudComponent,
+    data: {
+      breadcrumb: 'Actualizar',
+      icon: 'icofont icofont-folder-open bg-c-blue',
+      breadcrumb_caption: 'Solicitud',
       status: true
     }
   },
