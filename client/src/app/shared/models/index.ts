@@ -1,5 +1,6 @@
 export * from './auxiliatura.interface';
 export * from './dependencia.interface';
+export * from './via.interface';
 export * from './prioridad.interface';
 export * from './sexo.interface';
 export * from './genero.interface';

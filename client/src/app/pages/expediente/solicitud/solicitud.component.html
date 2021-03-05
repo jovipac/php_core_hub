@@ -1,7 +1,7 @@
 <div class="col-xl-12">
-  <app-ui-modal #myPersistenceModal [containerClick]="false">
+  <app-ui-modal #myPersistenceModal [containerClick]="false" [dialogClass]="'modal-lg'" [hideFooter]="true" >
     <div class="app-modal-header">
-      <h5 class="modal-title">Modal Title</h5>
+      <h5 class="modal-title">Paso 1: Solicitud</h5>
       <button type="button" class="close basic-close" data-dismiss="modal" aria-label="Close" (click)="myPersistenceModal.hide()"><span aria-hidden="true">&times;</span></button>
     </div>
     <div class="app-modal-body">

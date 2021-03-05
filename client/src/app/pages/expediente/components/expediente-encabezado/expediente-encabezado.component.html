@@ -1,1 +1,58 @@
-<h5>Paso 1: Solicitud</h5>
+<form action="javascript:" class="needs-validation" novalidate [formGroup]="expedienteForm" autocomplete="off" >
+  <div class="form-row">
+    <div class="col-md-3 mb-3">
+      <input-label [requires]="true" [label]="'No. Solicitud'" [id]="'txtCorrelativo'"></input-label>
+      <input type="text" class="form-control" id="txtCorrelativo" formControlName="correlativo" placeholder=""
+        [ngClass]="displayErrorsCss('correlativo')">
+      <div *ngIf="isHasErrors('correlativo')" class="invalid-feedback">
+        <div *ngIf="f.correlativo.errors?.pattern">El correlativo solo se aceptan digitos</div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-3">
+      <input-label [requires]="true" [label]="'Fecha Ingreso'" [id]="'txtFechaIngreso'"></input-label>
+      <input type="date" class="form-control" id="txtFechaIngreso" formControlName="fecha_ingreso"
+        placeholder="" >
+      <div *ngIf="isHasErrors('fecha_ingreso')" class="invalid-feedback">
+        Please provide a valid state.
+      </div>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="col mb-3">
+      <input-label [label]="'Observaciones'" [id]="'txtObservaciones'"></input-label>
+      <input type="text" class="form-control" id="txtObservaciones" formControlName="observaciones">
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="col-md-4 mb-3">
+      <input-label [requires]="true" [label]="'Via'" [id]="'txtVia'"></input-label>
+      <select class="form-control" id="txtVia" formControlName="id_via"
+        [ngClass]="displayErrorsCss('id_via')" required>
+        <option *ngFor="let via of listVia" value="{{via.id_via}}">{{via.nombre}}</option>
+      </select>
+      <div *ngIf="isHasErrors('id_via')" class="invalid-feedback">Seleccione un valor</div>
+    </div>
+    <div class="col-md-4 mb-3">
+      <input-label [requires]="true" [label]="'Prioridad'" [id]="'txtPrioridad'"></input-label>
+      <select class="form-control" id="txtPrioridad" formControlName="id_prioridad"
+        [ngClass]="displayErrorsCss('id_prioridad')" required>
+        <option *ngFor="let prioridad of listPriority" value="{{prioridad.id_prioridad}}">{{prioridad.nombre}}</option>
+      </select>
+      <div *ngIf="isHasErrors('id_prioridad')" class="invalid-feedback">Seleccione un valor</div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col"></div>
+    <div *ngIf="isAddMode === true" class="col text-center">
+      <button class="btn btn-primary" type="submit" id="btnSavePrint"><i class="fa fa-save"></i>Guardar e imprimir</button>
+    </div>
+    <div *ngIf="isAddMode === false" class="col text-center">
+      <button class="btn btn-primary" type="submit" id="btnSavePrint"><i class="fa fa-save"></i>Guardar</button>
+    </div>
+    <div class="col"></div>
+  </div>
+</form>
+
