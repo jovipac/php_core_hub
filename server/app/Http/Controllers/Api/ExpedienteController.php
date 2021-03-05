@@ -89,11 +89,26 @@ class ExpedienteController extends ApiController
      */
     public function show(Expediente $expediente)
     {
+        $query = Expediente::query()->select('tt_expediente.id_expediente', 'tt_expediente.anio', 'tt_expediente.folio',
+            'tt_expediente.fecha_ingreso', 'tt_expediente.observaciones',
+            'tt_expediente.id_funcionario', 'T01.nombres AS nombres_funcionario', 'T01.apellidos AS apellidos_funcionario',
+            'tt_expediente.id_via', 'T02.nombre AS nombre_via',
+            'tt_expediente.id_auxiliatura', 'T03.nombre AS nombre_auxiliatura',
+            'tt_expediente.id_prioridad', 'T04.nombre AS nombre_prioridad',
+            'tt_expediente.id_resultado', 'T05.nombre AS nombre_resultado',
+            )
+            ->leftJoin('tc_funcionario AS T01', 'tt_expediente.id_funcionario', 'T01.id_funcionario')
+            ->leftJoin('tc_via AS T02', 'tt_expediente.id_via', 'T02.id_via')
+            ->join('tc_auxiliatura AS T03', 'tt_expediente.id_auxiliatura', 'T03.id_auxiliatura')
+            ->join('tc_prioridad AS T04', 'tt_expediente.id_prioridad', 'T04.id_prioridad')
+            ->leftJoin('tc_resultado AS T05', 'tt_expediente.id_resultado', 'T05.id_resultado')
+            ->where('tt_expediente.id_expediente', $expediente->id_expediente);
+
         return $this->apiResponse(
             [
                 'success' => true,
                 'message' => "Expediente encontrado",
-                'result' => $expediente
+                'result' => $query->first()
             ]
         );
     }
