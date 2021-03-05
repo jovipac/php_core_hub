@@ -11,4 +11,5 @@ export * from './documento-identidad-persona.interface';
 export * from './resultado.interface';
 export * from './visita.interface';
 export * from './expediente.interface';
+export * from './expedientePersona.interface';
 
