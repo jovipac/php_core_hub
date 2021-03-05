@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
 use App\Models\ExpedientePersona;
+use App\Models\Entities\Persona;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -25,7 +26,7 @@ class ExpedientePersonaController extends ApiController
         return $this->apiResponse(
             [
                 'success' => true,
-                'message' => "Listado de expedientes",
+                'message' => "Listado de expediente personas",
                 'result' => $expedientePersonas
             ]
         );
@@ -53,7 +54,7 @@ class ExpedientePersonaController extends ApiController
 
         return $this->respondCreated([
             'success' => true,
-            'message' => "Expediente creado con exito",
+            'message' => "Expediente Persona creado con exito",
             'result' => $expedientePersona
         ]);
     }
@@ -66,11 +67,41 @@ class ExpedientePersonaController extends ApiController
      */
     public function show(ExpedientePersona $expedientePersona)
     {
+        $persona = ExpedientePersona::query()
+            ->join('tc_persona AS T01', 'tt_expediente_persona.id_persona', 'T01.id_persona');
+
+        return $this->apiResponse(
+            [
+                'success' => true,
+                'message' => "Expediente Persona encontrado",
+                'result' => $persona->first()
+            ]
+        );
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\ExpedientePersona  $expedientePersona
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        $persona = Persona::query()
+            ->join('tt_expediente_persona AS T01', 'tc_persona.id_persona', 'T01.id_persona');
+
+        if ( $request->has('id_expediente') && $request->filled('id_expediente') ) {
+            $persona->where('T01.id_expediente', $request->id_expediente);
+        }
+        if ( $request->has('id_persona') && $request->filled('id_persona') ) {
+            $persona->where('T01.id_persona', $request->id_persona);
+        }
+
         return $this->apiResponse(
             [
                 'success' => true,
                 'message' => "Expediente encontrado",
-                'result' => $expedientePersona
+                'result' => $persona->get()
             ]
         );
     }
@@ -98,7 +129,7 @@ class ExpedientePersonaController extends ApiController
 
         return $this->apiResponse([
             'success' => true,
-            'message' => "Expediente actualizado con exito",
+            'message' => "Expediente Persona actualizado con exito",
             'result' => $expedientePersona
         ]);
     }
@@ -113,7 +144,7 @@ class ExpedientePersonaController extends ApiController
     {
         $expedientePersona->delete();
 
-        return $this->respondSuccess('Expediente eliminado con exito');
+        return $this->respondSuccess('Expediente Persona eliminado con exito');
     }
 
     /**
@@ -127,6 +158,6 @@ class ExpedientePersonaController extends ApiController
         $via = ExpedientePersona::withTrashed()->findorfail($id);
         $via->restore();
 
-        return $this->respondSuccess('Expediente restaurada con exito');
+        return $this->respondSuccess('Expediente Persona restaurada con exito');
     }
 }
