@@ -7,17 +7,19 @@
     <div class="app-modal-body">
       <app-expediente-encabezado></app-expediente-encabezado>
     </div>
-    <div class="app-modal-footer">
-      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="myPersistenceModal.hide()">Close</button>
-      <button type="button" class="btn btn-primary">Guardar cambios</button>
-    </div>
   </app-ui-modal>
 
   <div class="card-deck">
     <div class="card">
       <div class="card-body">
         <h5 class="card-title">Paso 1:</h5>
-        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+          <p class="card-text">No: &nbsp;&nbsp;{{solicitudForm?.correlativo}}</p>
+          <p class="card-text">Prioridad: &nbsp;&nbsp;{{solicitudForm?.nombre_prioridad}}</p>
+          <p class="card-text">Fecha: &nbsp;&nbsp;{{solicitudForm?.fecha_ingreso | date:'medium'}}</p>
+          <p class="card-text">Via: &nbsp;&nbsp;{{solicitudForm?.nombre_resultado}}</p>
+          <p class="card-text">Auxiliatura: &nbsp;&nbsp;{{solicitudForm?.nombre_auxiliatura}}</p>
+          <p class="card-text">Resultado: &nbsp;&nbsp;{{solicitudForm?.nombre_resultado}}</p>
+          <p class="card-text">Oficial: &nbsp;&nbsp;{{solicitudForm?.nombre_funcionario}}</p>
       </div>
       <div class="card-footer" class="text-center">
         <a href="javascript:" class="btn btn-sm btn-primary" (click)="myPersistenceModal.show()">Editar</a>
@@ -67,7 +69,8 @@
     <div class="card">
       <div class="card-body">
         <h5 class="card-title">Paso 3:</h5>
-        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+        <p class="card-text">Hechos: This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+        <p class="card-text">Petición: This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
       </div>
       <div class="card-footer" class="text-center">
         <a href="javascript:" class="btn btn-sm btn-primary">Editar</a>

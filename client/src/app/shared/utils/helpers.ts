@@ -43,3 +43,66 @@ export const extractErrorMessages = (errorResponse: HttpErrorResponse) => {
 
   return errors;
 };
+
+
+/**
+ * Formatear el correlativo del expediente
+ * @param  {string}  auxiliatura  :codigo de la auxiliatura
+ * @param  {string}  anio  : año en cuatro digitos
+ * @param  {string}  folio  : numero de folio
+ * @param  {string} sep  :separador que se utiliza por defecto se usa el guion
+ * @return {string}
+ */
+export const formatearCorrelativo = (auxiliatura = "", anio, folio, sep = "-") => {
+  return folio
+    ? [
+      String(auxiliatura).padStart(3, "0"),
+      sep,
+      anio,
+      sep,
+      String(folio).padStart(6, "0")
+    ]
+      .filter(Boolean)
+      .join("")
+    : "";
+};
+
+/**
+ * Esto devolverá verdadero para los siguientes casos:
+ * {}, [], "", indefinido, nulo, objeto en el fragmento anterior (sin propiedad enumerable)
+ * @param  {any} value: Indica que valor se va evaluar
+ * @return {Boolean}
+ */
+export function isEmptyValue(value) {
+  return (
+    value === undefined ||
+    value === null ||
+    (typeof value === "object" && Object.keys(value).length === 0) ||
+    (typeof value === "string" && value.trim().length === 0) ||
+    (typeof value === "string" && value.trim() === "undefined") ||
+    (typeof value === "number" && isNaN(value))
+  );
+}
+
+/**
+ * Función de formato de cadena creada para combinar valores variables intercaladas en la cadena original
+ * @param {string} str la cadena de texto original que se utilizará
+ * @param {Array} params listado de valores numericos o cadenas
+ * @returns {string} cadena creada combinada con valores de variables dentro de la misma
+ */
+export const sprintf = (str, params) => {
+  str = str.toString();
+  if (params.length) {
+    const t = typeof params[0];
+    const args =
+      "string" === t || "number" === t
+        ? Array.prototype.slice.call(params)
+        : params[0];
+
+    for (const key in args) {
+      str = str.replace(new RegExp("\\{" + key + "\\}", "gi"), args[key]);
+    }
+  }
+
+  return str;
+};

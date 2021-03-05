@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ExpedienteService} from '../../../service';
-import { Visita } from '../../../shared/models';
+import { Expediente } from '../../../shared/models';
 import { first } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
+import { formatearCorrelativo } from '../../../shared/utils/helpers';
 
 @Component({
   selector: 'app-solicitud',
@@ -13,7 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 export class SolicitudComponent implements OnInit {
   private id: string;
   isAddMode: boolean;
-  public solicitudForm: Visita;
+  public solicitudForm: Expediente;
 
   constructor(
     private solicitudService: ExpedienteService,
@@ -33,13 +34,16 @@ export class SolicitudComponent implements OnInit {
         next: (data:any) => {
           const solicitud = {
             ...data.result,
+            correlativo: formatearCorrelativo(
+              data.result.id_auxiliatura,
+              data.result.anio, data.result.folio),
             nombre_funcionario: [
               data.result?.nombres_funcionario,
               data.result?.apellidos_funcionario
             ].filter(Boolean)
-            .join(" ")
+              .join(" ")
           };
-          this.solicitudForm = <Visita>solicitud;
+          this.solicitudForm = <Expediente>solicitud;
         },
         error: (error:any) => {
           this.toastr.error(error.message);
