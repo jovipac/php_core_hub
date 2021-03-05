@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../../shared/shared.module';
 
 import { SolicitudRoutingModule } from './solicitud-routing.module';
+import { ExpedienteEncabezadoComponent } from '../components/expediente-encabezado/expediente-encabezado.component';
 import { SolicitudComponent } from './solicitud.component';
 
 @NgModule({
@@ -11,6 +12,6 @@ import { SolicitudComponent } from './solicitud.component';
     SharedModule,
     SolicitudRoutingModule
   ],
-  declarations: [SolicitudComponent]
+  declarations: [ExpedienteEncabezadoComponent, SolicitudComponent]
 })
 export class SolicitudModule { }

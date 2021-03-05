@@ -7,8 +7,8 @@ import { CardRefreshDirective } from './card/card-refresh.directive';
 import { CardToggleDirective } from './card/card-toggle.directive';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { CardModule } from './card/card.module';
+import { ModalModule } from './modal/modal.module';
 import { ModalAnimationComponent } from './modal-animation/modal-animation.component';
-import { ModalBasicComponent } from './modal-basic/modal-basic.component';
 import { LabelInputComponent } from './element/input-label/input-label.component';
 import { DataFilterPipe } from './element/data-filter.pipe';
 import { MenuItems } from './menu-items/menu-items';
@@ -27,7 +27,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     PerfectScrollbarModule,
     ClickOutsideModule,
     NgbModule,
-    CardModule
+    CardModule,
+    ModalModule
   ],
   declarations: [
     AccordionAnchorDirective,
@@ -38,7 +39,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     CardToggleDirective,
     SpinnerComponent,
     ModalAnimationComponent,
-    ModalBasicComponent,
     LabelInputComponent,
     InlineClockComponent,
     DataFilterPipe,
@@ -53,8 +53,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     CardToggleDirective,
     SpinnerComponent,
     CardModule,
+    ModalModule,
     ModalAnimationComponent,
-    ModalBasicComponent,
     LabelInputComponent,
     InlineClockComponent,
     DataFilterPipe,
