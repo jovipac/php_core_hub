@@ -16,6 +16,25 @@
         Please provide a valid state.
       </div>
     </div>
+    <div class="col-md-3 mb-3">
+      <input-label [requires]="true" [label]="'Prioridad'" [id]="'txtPrioridad'"></input-label>
+      <select class="form-control" id="txtPrioridad" formControlName="id_prioridad"
+        [ngClass]="displayErrorsCss('id_prioridad')" required>
+        <option *ngFor="let prioridad of listPriority" value="{{prioridad.id_prioridad}}">{{prioridad.nombre}}</option>
+      </select>
+      <div *ngIf="isHasErrors('id_prioridad')" class="invalid-feedback">Seleccione un valor</div>
+    </div>
+    <div class="col-md-3 mb-3">
+      <input-label [requires]="true" [label]="'Oficial'" [id]="'txtFuncionario'"></input-label>
+      <ng-select [items]="listFuncionarios" #select bindLabel="nombres_completos" dropdownPosition="auto" bindValue="id_funcionario" labelForId="txtFuncionario"
+        placeholder="Seleccionar funcionario" [virtualScroll]="true" formControlName="id_funcionario" [ngClass]="displayErrorsCss('id_funcionario')">
+      </ng-select>
+
+      <div *ngIf="isHasErrors('id_funcionario')" class="invalid-feedback">
+        <div *ngIf="f.id_funcionario.errors?.required">El campo es requerido</div>
+        <div *ngIf="f.id_funcionario.errors?.pattern">Solo se aceptan digitos</div>
+      </div>
+    </div>
   </div>
 
   <div class="form-row">
@@ -35,21 +54,18 @@
       <div *ngIf="isHasErrors('id_via')" class="invalid-feedback">Seleccione un valor</div>
     </div>
     <div class="col-md-4 mb-3">
-      <input-label [requires]="true" [label]="'Prioridad'" [id]="'txtPrioridad'"></input-label>
-      <select class="form-control" id="txtPrioridad" formControlName="id_prioridad"
-        [ngClass]="displayErrorsCss('id_prioridad')" required>
-        <option *ngFor="let prioridad of listPriority" value="{{prioridad.id_prioridad}}">{{prioridad.nombre}}</option>
+      <input-label [requires]="false" [label]="'Resultado'" [id]="'txtResultado'"></input-label>
+      <select class="form-control" id="txtResultado" formControlName="id_resultado"
+        [ngClass]="displayErrorsCss('id_resultado')">
+        <option *ngFor="let resultado of listResultado" value="{{resultado.id_resultado}}">{{resultado.nombre}}</option>
       </select>
-      <div *ngIf="isHasErrors('id_prioridad')" class="invalid-feedback">Seleccione un valor</div>
+      <div *ngIf="isHasErrors('id_resultado')" class="invalid-feedback">Seleccione un valor</div>
     </div>
   </div>
 
   <div class="row">
     <div class="col"></div>
-    <div *ngIf="isAddMode === true" class="col text-center">
-      <button class="btn btn-primary" type="submit" id="btnSavePrint"><i class="fa fa-save"></i>Guardar e imprimir</button>
-    </div>
-    <div *ngIf="isAddMode === false" class="col text-center">
+    <div class="col text-center">
       <button class="btn btn-primary" type="submit" id="btnSavePrint"><i class="fa fa-save"></i>Guardar</button>
     </div>
     <div class="col"></div>

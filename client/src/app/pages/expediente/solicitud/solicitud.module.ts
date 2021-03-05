@@ -4,6 +4,7 @@ import { SharedModule } from '../../../shared/shared.module';
 
 import { SolicitudRoutingModule } from './solicitud-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { ExpedienteEncabezadoComponent } from '../components/expediente-encabezado/expediente-encabezado.component';
 import { SolicitudComponent } from './solicitud.component';
 
@@ -11,6 +12,7 @@ import { SolicitudComponent } from './solicitud.component';
   imports: [
     CommonModule,
     SharedModule,
+    NgSelectModule,
     SolicitudRoutingModule,
     ReactiveFormsModule,
   ],

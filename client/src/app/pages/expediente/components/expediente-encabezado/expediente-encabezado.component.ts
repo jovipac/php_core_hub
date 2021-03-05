@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { MotivoService, PrioridadService,ViaService } from '../../../../service/catalogos';
-import { ExpedienteService} from '../../../../service';
+import { PrioridadService,ViaService, ResultadoService } from '../../../../service/catalogos';
+import { ExpedienteService, FuncionariosService} from '../../../../service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
-import { Expediente, Prioridad, Via, Motivo, Funcionario } from '../../../../shared/models';
+import { Expediente, Prioridad, Via, Resultado, Funcionario } from '../../../../shared/models';
 import { first, map, switchMap  } from 'rxjs/operators';
 import { formatearCorrelativo } from '../../../../shared/utils/helpers';
 import { format, isValid } from 'date-fns';
@@ -23,6 +23,8 @@ export class ExpedienteEncabezadoComponent implements OnInit {
 
   public listPriority: Array<Prioridad>;
   public listVia: Array<Via>;
+  public listFuncionarios: Array<Funcionario>;
+  public listResultado: Array<Resultado>;
 
   constructor(
     private route: ActivatedRoute,
@@ -30,14 +32,18 @@ export class ExpedienteEncabezadoComponent implements OnInit {
     private solicitudService: ExpedienteService,
     private prioridadService: PrioridadService,
     private viaService: ViaService,
+    private funcionarioService: FuncionariosService,
+    private resultadoService: ResultadoService,
   ) { }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
     this.isAddMode = !this.id;
 
-    this.getListPriority()
-    this.getListVia()
+    this.getListPriority();
+    this.getListVia();
+    this.getFuncionarios();
+    this.getListResultado();
 
     if (!this.isAddMode) {
       this.solicitudService.getExpediente(this.id)
@@ -81,7 +87,7 @@ export class ExpedienteEncabezadoComponent implements OnInit {
       id_prioridad: new FormControl({
         value: null,
         disabled: false,
-      }, []),
+      }, [Validators.pattern("[0-9]+")]),
       id_via: new FormControl({
         value: null,
         disabled: false,
@@ -90,6 +96,10 @@ export class ExpedienteEncabezadoComponent implements OnInit {
         value: null,
         disabled: false,
       }, [Validators.pattern("[0-9]+")]),
+      id_resultado: new FormControl({
+        value: null,
+        disabled: false,
+      }, []),
       observaciones: new FormControl({
           value: '',
           disabled: false,
@@ -125,8 +135,7 @@ export class ExpedienteEncabezadoComponent implements OnInit {
           } else
             this.toastr.error(response.message)
         },
-        error: (data) => {
-          const error: HttpErrorResponse = data;
+        error: (error: HttpErrorResponse) => {
           this.toastr.error(error.message);
         }
       });
@@ -142,12 +151,57 @@ export class ExpedienteEncabezadoComponent implements OnInit {
         } else
           this.toastr.error(response.message)
       },
-      error: (data) => {
-        const error: HttpErrorResponse = data;
+      error: (error: HttpErrorResponse) => {
         this.toastr.error(error.message);
       }
     });
 
   }
+
+    getFuncionarios() {
+    //const dataSend = id_unidad ? { 'id_dependencia': id_unidad } : {};
+    this.funcionarioService.getEmployees()
+      .pipe(first())
+      .subscribe({
+        next: (data) => {
+          const response: any = data;
+          if (response.success) {
+            const personasFormateadas = response.result
+              ? response.result.map((employee) => {
+                employee.nombres_completos = [
+                  employee.nombres,
+                  employee.apellidos
+                ].filter(Boolean)
+                .join(" ");
+                return employee;
+            }) : [];
+
+            this.listFuncionarios = personasFormateadas;
+          } else
+            this.toastr.error(response.message)
+        },
+        error: (error: HttpErrorResponse) => {
+          this.toastr.error(error.message);
+        }
+      });
+  }
+
+  getListResultado() {
+    this.resultadoService.getListResultado()
+    .pipe(first())
+    .subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.listResultado = response.result;
+        } else
+          this.toastr.error(response.message)
+      },
+      error: (error: HttpErrorResponse) => {
+        this.toastr.error(error.message);
+      }
+    });
+
+  }
+
 
 }

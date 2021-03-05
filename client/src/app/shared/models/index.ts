@@ -8,5 +8,7 @@ export * from './motivo.interface';
 export * from './funcionario.interface';
 export * from './documento-identidad.interface';
 export * from './documento-identidad-persona.interface';
+export * from './resultado.interface';
 export * from './visita.interface';
 export * from './expediente.interface';
+
