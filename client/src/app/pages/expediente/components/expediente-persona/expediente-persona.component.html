@@ -1,1 +1,73 @@
-<p>expediente-persona works!</p>
+<form action="javascript:" class="needs-validation" novalidate [formGroup]="expedienteForm" autocomplete="off" >
+  <div class="form-row">
+    <div class="col-md-4 mb-3">
+      <input-label [requires]="true" [label]="'Tipo vinculación'" [id]="'txtVia'"></input-label>
+      <select class="form-control" id="txtVia" formControlName="id_via"
+        [ngClass]="displayErrorsCss('id_via')" required>
+        <option *ngFor="let via of listVia" value="{{via.id_via}}">{{via.nombre}}</option>
+      </select>
+      <div *ngIf="isHasErrors('id_via')" class="invalid-feedback">Seleccione un valor</div>
+    </div>
+  </div>
+
+  <nav ngbNav #nav="ngbNav" class="nav-tabs">
+    <ng-container ngbNavItem>
+      <a ngbNavLink>Información general</a>
+      <ng-template ngbNavContent>
+
+        <div class="form-row">
+          <div class="col-md-3 mb-3">
+            <input-label [requires]="true" [label]="'Tipo documento'" [id]="'txtDocumentoIdentidad'"></input-label>
+            <select class="form-control" id="txtDocumentoIdentidad" formControlName="id_documento_identidad"
+              [ngClass]="displayErrorsCss('id_documento_identidad')" required>
+              <option *ngFor="let documentoIdentidad of listDocumentoIdentidad" value="{{documentoIdentidad.id_documento_identidad}}">{{documentoIdentidad.nombre}}</option>
+            </select>
+            <div *ngIf="isHasErrors('id_documento_identidad')" class="invalid-feedback">Seleccione un valor</div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <input-label [requires]="true" [label]="'Identificación'" [id]="'txtIdentificador'"></input-label>
+            <div class="input-group">
+              <input type="hidden" class="form-control" id="txtIdPersona" formControlName="id_persona" >
+              <input type="text" class="form-control" id="txtIdentificador" formControlName="identificador" placeholder="Completo"
+                aria-describedby="inputGroupPrepend"
+                [ngClass]="{ 'is-invalid': (f.identificador.dirty || f.identificador.touched || submitted)  && f.identificador.errors }" required>
+              <button class="btn btn-sm btn-outline-primary" type="button" id="btnBuscarByIdentificador" (click)="searchPersona(f.id_documento_identidad.value, f.identificador.value)">Buscar</button>
+              <div *ngIf="isHasErrors('identificador')" class="invalid-feedback">
+                <div *ngIf="f.identificador.errors?.required">El identificador es requerido</div>
+                <div *ngIf="f.identificador.errors?.pattern">Digite un identificador valido</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </ng-template>
+    </ng-container>
+    <ng-container ngbNavItem>
+      <a ngbNavLink>Dirección</a>
+      <ng-template ngbNavContent>
+        <p>Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko
+          farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts
+          ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar
+          helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson
+          8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester
+          stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.</p>
+      </ng-template>
+    </ng-container>
+    <ng-container ngbNavItem>
+      <a ngbNavLink>Otra Información</a>
+      <ng-template ngbNavContent>
+        <p>Sed commodo, leo at suscipit dictum, quam est porttitor sapien, eget sodales nibh elit id diam. Nulla facilisi.
+          Donec egestas ligula vitae odio interdum aliquet. Duis lectus turpis, luctus eget tincidunt eu, congue et odio.
+          Duis pharetra et nisl at faucibus. Quisque luctus pulvinar arcu, et molestie lectus ultrices et. Sed diam urna,
+          egestas ut ipsum vel, volutpat volutpat neque. Praesent fringilla tortor arcu. Vivamus faucibus nisl enim, nec
+          tristique ipsum euismod facilisis. Morbi ut bibendum est, eu tincidunt odio. Orci varius natoque penatibus et
+          magnis dis parturient montes, nascetur ridiculus mus. Mauris aliquet odio ac lorem aliquet ultricies in eget
+          neque. Phasellus nec tortor vel tellus pulvinar feugiat.</p>
+      </ng-template>
+    </ng-container>
+  </nav>
+  <div [ngbNavOutlet]="nav" class="mt-2"></div>
+</form>
+
+
