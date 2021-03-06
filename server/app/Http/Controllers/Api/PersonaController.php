@@ -74,7 +74,7 @@ class PersonaController extends ApiController
             return $this->apiResponse(
                 [
                     'success' => $resSuccess,
-                    'message' => "Debe de especificar un CUI valido a buscar.",
+                    'message' => "Debe de especificar una identificación valida a buscar.",
                     'result' => []
                 ]
             );
