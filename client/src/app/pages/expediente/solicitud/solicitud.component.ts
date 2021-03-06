@@ -14,8 +14,8 @@ import { formatearCorrelativo } from '../../../shared/utils/helpers';
 export class SolicitudComponent implements OnInit {
   private id: string;
   isAddMode: boolean;
-  public solicitudForm: Expediente;
-  public solicitudPersonaForm: ExpedientePersona;
+  public solicitud: Expediente;
+  public solicitudPersonas: Array<ExpedientePersona>;
 
   constructor(
     private solicitudService: ExpedienteService,
@@ -34,7 +34,7 @@ export class SolicitudComponent implements OnInit {
       .pipe(first())
       .subscribe({
         next: (data:any) => {
-          const solicitud = {
+          const expediente = {
             ...data.result,
             correlativo: formatearCorrelativo(
               data.result.id_auxiliatura,
@@ -45,26 +45,29 @@ export class SolicitudComponent implements OnInit {
             ].filter(Boolean)
               .join(" ")
           };
-          this.solicitudForm = <Expediente>solicitud;
+          this.solicitud = <Expediente>expediente;
         },
         error: (error:any) => {
           this.toastr.error(error.message);
         }
       });
 
-      this.solicitudPersonaService.getExpedientePersona(this.id)
+      const dataSend = this.id ? { 'id_expediente': this.id } : {};
+      this.solicitudPersonaService.searchExpedientePersona(dataSend)
       .pipe(first())
       .subscribe({
         next: (data:any) => {
-          const solicitud = {
-            ...data.result,
-            nombre_completo: [
-              data.result?.nombres,
-              data.result?.apellidos
+          const personasFormateadas = data.result
+          ? data.result.map((employee) => {
+            employee.nombres_completos = [
+              employee.nombres,
+              employee.apellidos
             ].filter(Boolean)
-              .join(" ")
-          };
-          this.solicitudPersonaForm = <ExpedientePersona>solicitud;
+            .join(" ");
+            return employee;
+        }) : [];
+
+          this.solicitudPersonas = personasFormateadas;
         },
         error: (error:any) => {
           this.toastr.error(error.message);

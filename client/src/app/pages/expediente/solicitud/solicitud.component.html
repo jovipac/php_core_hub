@@ -13,57 +13,47 @@
     <div class="card">
       <div class="card-body">
         <h5 class="card-title">Paso 1:</h5>
-          <p class="card-text">No: &nbsp;&nbsp;{{solicitudForm?.correlativo}}</p>
-          <p class="card-text">Prioridad: &nbsp;&nbsp;{{solicitudForm?.nombre_prioridad}}</p>
-          <p class="card-text">Fecha: &nbsp;&nbsp;{{solicitudForm?.fecha_ingreso | date:'mediumDate'}}</p>
-          <p class="card-text">Via: &nbsp;&nbsp;{{solicitudForm?.nombre_via}}</p>
-          <p class="card-text">Auxiliatura: &nbsp;&nbsp;{{solicitudForm?.nombre_auxiliatura}}</p>
-          <p class="card-text">Resultado: &nbsp;&nbsp;{{solicitudForm?.nombre_resultado}}</p>
-          <p class="card-text">Oficial: &nbsp;&nbsp;{{solicitudForm?.nombre_funcionario}}</p>
+          <p class="card-text">No: &nbsp;&nbsp;{{solicitud?.correlativo}}</p>
+          <p class="card-text">Prioridad: &nbsp;&nbsp;{{solicitud?.nombre_prioridad}}</p>
+          <p class="card-text">Fecha: &nbsp;&nbsp;{{solicitud?.fecha_ingreso | date:'mediumDate'}}</p>
+          <p class="card-text">Via: &nbsp;&nbsp;{{solicitud?.nombre_via}}</p>
+          <p class="card-text">Auxiliatura: &nbsp;&nbsp;{{solicitud?.nombre_auxiliatura}}</p>
+          <p class="card-text">Resultado: &nbsp;&nbsp;{{solicitud?.nombre_resultado}}</p>
+          <p class="card-text">Oficial: &nbsp;&nbsp;{{solicitud?.nombre_funcionario}}</p>
       </div>
       <div class="card-footer" class="text-center">
         <a href="javascript:" class="btn btn-sm btn-primary" (click)="myPersistenceModal.show()">Editar</a>
       </div>
     </div>
-    <div class="card">
+    <div class="card" blockClass="table-border-style">
       <div class="card-body">
         <h5 class="card-title">Paso 2:</h5>
         <div class="table-responsive">
           <table class="table table-hover">
             <thead>
             <tr>
-              <th>#</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Username</th>
+              <th>Acción</th>
+              <th>Tipo Sujeto</th>
+              <th>Nombre</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-              <td>1</td>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td>@fat</td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>Larry</td>
-              <td>the Bird</td>
-              <td>@twitter</td>
-            </tr>
+              <tr *ngFor="let persona of solicitudPersonas; index as idx">
+                <td scope="row">
+                    <button type="button" class="btn btn-outline-primary btn-mini btn-icon-round"><i class="icofont icofont-ui-edit"></i></button>
+                </td>
+                <td>
+                  {{ persona.nombre_tipo_vinculacion }}
+                </td>
+                <td>{{ persona.nombres_completos}}</td>
+              </tr>
             </tbody>
           </table>
         </div>
 
       </div>
       <div class="card-footer" class="text-center">
-        <a href="javascript:" class="btn btn-sm btn-primary">Editar</a>
+        <a href="javascript:" class="btn btn-sm btn-primary">Agregar</a>
       </div>
     </div>
     <div class="card">
