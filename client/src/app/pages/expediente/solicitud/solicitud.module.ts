@@ -6,6 +6,7 @@ import { SolicitudRoutingModule } from './solicitud-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ExpedienteEncabezadoComponent } from '../components/expediente-encabezado/expediente-encabezado.component';
+import { ExpedientePersonaComponent } from '../components/expediente-persona/expediente-persona.component';
 import { SolicitudComponent } from './solicitud.component';
 
 @NgModule({
@@ -16,6 +17,10 @@ import { SolicitudComponent } from './solicitud.component';
     SolicitudRoutingModule,
     ReactiveFormsModule,
   ],
-  declarations: [ExpedienteEncabezadoComponent, SolicitudComponent]
+  declarations: [
+    ExpedienteEncabezadoComponent,
+    ExpedientePersonaComponent,
+    SolicitudComponent
+  ]
 })
 export class SolicitudModule { }
