@@ -88,7 +88,8 @@ class ExpedientePersonaController extends ApiController
     public function search(Request $request)
     {
         $persona = Persona::query()
-            ->join('tt_expediente_persona AS T01', 'tc_persona.id_persona', 'T01.id_persona');
+            ->join('tt_expediente_persona AS T01', 'tc_persona.id_persona', 'T01.id_persona')
+            ->leftJoin('tc_tipo_vinculacion AS T02', 'T01.id_tipo_vinculacion', 'T02.id_tipo_vinculacion');
 
         if ( $request->has('id_expediente') && $request->filled('id_expediente') ) {
             $persona->where('T01.id_expediente', $request->id_expediente);

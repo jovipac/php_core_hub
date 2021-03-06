@@ -9,11 +9,11 @@ import { environment } from '../../environments/environment';
 export class ExpedientePersonaService {
 
   constructor(private httpClient: HttpClient) { }
-/*
+
   searchExpedientePersona(data) {
     return this.httpClient.post(`${environment.host}expediente-personas/search`, data , getHeaders())
   }
-*/
+
   getExpedientePersona(id) {
     return this.httpClient.get(`${environment.host}expediente-personas/${id}`, getHeaders())
   }

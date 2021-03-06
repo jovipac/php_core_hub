@@ -6,7 +6,7 @@ export interface ExpedientePersona {
   flag_confidencial: boolean,
   nombres: string
   apellidos: string,
-  nombre_completo: string,
+  nombres_completos: string,
   telefono: string,
   fecha_nacimiento: Date,
   edad: number,
