@@ -1,4 +1,4 @@
-<form action="javascript:" class="needs-validation" novalidate [formGroup]="expedienteForm" autocomplete="off" >
+<form action="javascript:" class="needs-validation" novalidate [formGroup]="expedienteForm" (ngSubmit)="onSubmit()" autocomplete="off" >
   <div class="form-row">
     <div class="col-md-3 mb-3">
       <input-label [requires]="true" [label]="'No. Solicitud'" [id]="'txtCorrelativo'"></input-label>

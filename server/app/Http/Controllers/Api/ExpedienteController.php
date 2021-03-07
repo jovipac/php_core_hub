@@ -123,15 +123,15 @@ class ExpedienteController extends ApiController
     public function update(Request $request, Expediente $expediente)
     {
         $validator = Validator::make($request->all(), [
-            'anio' => 'required|integer',
+            'anio' => 'integer',
             'folio' => 'integer',
             'fecha_ingreso' => 'required',
             'id_via' => 'required|integer',
             'id_prioridad' => 'required|integer',
             'id_funcionario' => 'required|integer',
             'observaciones' => 'string',
-            'id_resultado' => 'required|integer',
-            'id_auxiliatura' => 'required|integer',
+            'id_resultado' => 'nullable|integer',
+            'id_auxiliatura' => 'integer',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);

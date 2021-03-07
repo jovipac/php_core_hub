@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Expediente, Prioridad, Via, Resultado, Funcionario } from '../../../../shared/models';
 import { first, map, switchMap  } from 'rxjs/operators';
 import { formatearCorrelativo } from '../../../../shared/utils/helpers';
+import { extractErrorMessages } from '../../../../shared/utils';
 import { format, isValid } from 'date-fns';
 
 @Component({
@@ -20,6 +21,7 @@ export class ExpedienteEncabezadoComponent implements OnInit {
   id: string;
   isAddMode: boolean;
   submitted = false;
+  loading = false;
 
   public listPriority: Array<Prioridad>;
   public listVia: Array<Via>;
@@ -125,6 +127,22 @@ export class ExpedienteEncabezadoComponent implements OnInit {
     return this.expedienteForm.get(field).errors.required || false;
   }
 
+  onSubmit() {
+    this.submitted = true;
+    // stop here if form is invalid
+    if (this.expedienteForm.invalid) {
+      return;
+    }
+
+    this.loading = true;
+    if (this.isAddMode) {
+        this.updateSolicitud();
+    } else {
+        this.updateSolicitud();
+    }
+
+  }
+
   getListPriority() {
     this.prioridadService.getListPrioridad()
       .pipe(first())
@@ -203,5 +221,27 @@ export class ExpedienteEncabezadoComponent implements OnInit {
 
   }
 
+  private updateSolicitud() {
+    const formValues = {
+      ...this.expedienteForm.value,
+    };
+    this.solicitudService.updateExpediente(this.id, formValues)
+        .pipe(first())
+        .subscribe({
+            next: (response: any) => {
+              this.toastr.success(response.message, 'Expediente')
+              //step03Modal.hide();
+            },
+            error: (error: HttpErrorResponse) => {
+                const messages = extractErrorMessages(error);
+                messages.forEach(propertyErrors => {
+                  for (let message in propertyErrors) {
+                    this.toastr.error(propertyErrors[message], 'Expediente');
+                  }
+                });
+                this.loading = false;
+            }
+        });
+  }
 
 }
