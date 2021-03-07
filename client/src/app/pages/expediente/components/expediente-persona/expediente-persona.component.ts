@@ -8,6 +8,7 @@ import { ExpedientePersona, DocumentoIdentidad, Sexo, Genero, TipoVinculacion, P
 import { HttpErrorResponse } from '@angular/common/http';
 import { first } from 'rxjs/operators';
 import { isEmptyValue } from '../../../../shared/utils';
+import { isValid, parseISO, differenceInYears } from 'date-fns';
 
 @Component({
   selector: 'app-expediente-persona',
@@ -15,7 +16,7 @@ import { isEmptyValue } from '../../../../shared/utils';
   styleUrls: ['./expediente-persona.component.scss']
 })
 export class ExpedientePersonaComponent implements OnInit {
-  public expedienteForm: FormGroup;
+  public personaForm: FormGroup;
   id_expediente: string;
   id_persona: string;
   isAddMode: boolean;
@@ -66,7 +67,7 @@ export class ExpedientePersonaComponent implements OnInit {
                   return <ExpedientePersona>employee;
                 }) : [];
 
-              this.expedienteForm.patchValue(personasFormateadas);
+              this.personaForm.patchValue(personasFormateadas);
             },
             error: (error: any) => {
               this.toastr.error(error.message);
@@ -80,7 +81,7 @@ export class ExpedientePersonaComponent implements OnInit {
   }
 
   private buildForm() {
-    this.expedienteForm = new FormGroup({
+    this.personaForm = new FormGroup({
       id_expediente: new FormControl({
         value: null,
         disabled: !this.isAddMode,
@@ -156,11 +157,11 @@ export class ExpedientePersonaComponent implements OnInit {
   }
 
   isFieldValid(field: string) {
-    return (this.expedienteForm.get(field).dirty || this.expedienteForm.get(field).touched || this.submitted) && this.expedienteForm.get(field).errors
+    return (this.personaForm.get(field).dirty || this.personaForm.get(field).touched || this.submitted) && this.personaForm.get(field).errors
   }
 
   isHasErrors(field: string) {
-    return (this.submitted || this.expedienteForm.get(field).invalid || this.expedienteForm.get(field).errors);
+    return (this.submitted || this.personaForm.get(field).invalid || this.personaForm.get(field).errors);
   }
 
   displayErrorsCss(field: string) {
@@ -169,8 +170,15 @@ export class ExpedientePersonaComponent implements OnInit {
     };
   }
 
+  calculateAge(birthDate: string) {
+    if (isValid(parseISO(birthDate)) === true) {
+      const years = differenceInYears(new Date(), parseISO(birthDate));
+      this.personaForm.controls['edad'].setValue(years);
+    }
+  }
+
   // convenience getter for easy access to form fields
-  get f() { return this.expedienteForm.controls; }
+  get f() { return this.personaForm.controls; }
 
   getListDocumentoIdentidad() {
     this.documentoIdentidadService.getListDocumentoIdentidad()
