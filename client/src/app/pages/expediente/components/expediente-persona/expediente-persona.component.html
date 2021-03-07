@@ -112,14 +112,15 @@
             </select>
             <div *ngIf="isHasErrors('id_genero')" class="invalid-feedback">Seleccione un valor</div>
           </div>
-          <div class="col-md-4 mb-3">
-            <input-label [requires]="true" [label]="'Prioridad'" [id]="'txtPrioridad'"></input-label>
-            <select class="form-control" id="txtPrioridad" formControlName="id_prioridad"
-              [ngClass]="displayErrorsCss('id_prioridad')" required>
-              <option *ngFor="let prioridad of listPrioridad" value="{{prioridad.id_prioridad}}">{{prioridad.nombre}}</option>
-            </select>
-            <div *ngIf="isHasErrors('id_prioridad')" class="invalid-feedback">Seleccione un valor</div>
+          <div class="col-md-3 mb-3">
+            <input-label [label]="'Numero casillero'" [id]="'txtCodigoCasillero'"></input-label>
+            <input type="text" class="form-control" id="txtCodigoCasillero" formControlName="codigo_casillero" placeholder=""
+              [ngClass]="displayErrorsCss('codigo_casillero')">
+            <div *ngIf="isHasErrors('codigo_casillero')" class="invalid-feedback">
+              <div *ngIf="f.codigo_casillero.errors?.pattern">El numero de casillero solo se aceptan digitos</div>
+            </div>
           </div>
+
         </div>
 
       </ng-template>
