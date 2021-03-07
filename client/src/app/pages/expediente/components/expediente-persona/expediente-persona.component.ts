@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { TipoVinculacionService, DocumentoIdentidadService, SexoService, GeneroService } from '../../../../service/catalogos';
+import { TipoVinculacionService, DocumentoIdentidadService, SexoService, GeneroService, PrioridadService } from '../../../../service/catalogos';
+import { ExpedientePersonaService } from '../../../../service';
 import { ToastrService } from 'ngx-toastr';
-import { ExpedientePersona, DocumentoIdentidad, Sexo, Genero, TipoVinculacion } from '../../../../shared/models';
+import { ExpedientePersona, DocumentoIdentidad, Sexo, Genero, TipoVinculacion, Prioridad } from '../../../../shared/models';
 import { HttpErrorResponse } from '@angular/common/http';
 import { first } from 'rxjs/operators';
+import { isEmptyValue } from '../../../../shared/utils';
 
 @Component({
   selector: 'app-expediente-persona',
@@ -14,33 +16,64 @@ import { first } from 'rxjs/operators';
 })
 export class ExpedientePersonaComponent implements OnInit {
   public expedienteForm: FormGroup;
-  id: string;
+  id_expediente: string;
+  id_persona: string;
   isAddMode: boolean;
   submitted = false;
 
   public listDocumentoIdentidad: Array<DocumentoIdentidad>;
   public listTipoVinculacion: Array<TipoVinculacion>;
-  public listSex: Array<Sexo>;
-  public listGenre: Array<Genero>;
+  public listSexo: Array<Sexo>;
+  public listGenero: Array<Genero>;
+  public listPrioridad: Array<Prioridad>;
 
   constructor(
     private route: ActivatedRoute,
     private toastr: ToastrService,
+    private solicitudPersonaService: ExpedientePersonaService,
+    private tipoVinculacionService: TipoVinculacionService,
     private documentoIdentidadService: DocumentoIdentidadService,
     private sexoService: SexoService,
     private generoService: GeneroService,
-    private tipoVinculacionService: TipoVinculacionService,
+    private prioridadService: PrioridadService,
 
   ) { }
 
   ngOnInit(): void {
-    this.id = this.route.snapshot.params['id'];
-    this.isAddMode = !this.id;
+    this.id_expediente = this.route.snapshot.params['id'];
+    this.isAddMode = !this.id_expediente;
 
     this.getListDocumentoIdentidad();
     this.getListTipoVinculacion();
     this.getListSexo();
     this.getListGenero();
+    this.getlistPrioridad();
+
+    if (!this.isAddMode) {
+      if (!isEmptyValue(this.id_expediente) && !isEmptyValue(this.id_persona)) {
+        const dataSend = { 'id_expediente': this.id_expediente, 'id_persona': this.id_persona };
+        this.solicitudPersonaService.searchExpedientePersona(dataSend)
+          .pipe(first())
+          .subscribe({
+            next: (data: any) => {
+              const personasFormateadas = data.result
+                ? data.result.map((employee) => {
+                  employee.nombres_completos = [
+                    employee.nombres,
+                    employee.apellidos
+                  ].filter(Boolean)
+                    .join(" ");
+                  return <ExpedientePersona>employee;
+                }) : [];
+
+              this.expedienteForm.patchValue(personasFormateadas);
+            },
+            error: (error: any) => {
+              this.toastr.error(error.message);
+            }
+          });
+      }
+    }
 
     // Se llama la construccion del formulario
     this.buildForm();
@@ -64,7 +97,7 @@ export class ExpedientePersonaComponent implements OnInit {
         value: '',
         disabled: false,
       }, [Validators.required,
-        Validators.pattern("[0-9A-z]+")]),
+      Validators.pattern("[0-9A-z]+")]),
       nombres: new FormControl({
         value: null,
         disabled: false,
@@ -75,6 +108,10 @@ export class ExpedientePersonaComponent implements OnInit {
         disabled: false,
       }, [Validators.required,
       Validators.minLength(2)]),
+      email: new FormControl({
+        value: null,
+        disabled: false,
+      }, [Validators.pattern("[A-Za-z0-9._%-]+@[A-Za-z0-9._%-]+\\.[a-z]{2,3}")]),
       telefono: new FormControl({
         value: null,
         disabled: false,
@@ -112,11 +149,11 @@ export class ExpedientePersonaComponent implements OnInit {
         disabled: false,
       }, []),
       observaciones: new FormControl({
-          value: '',
-          disabled: false,
-        }, []),
-      }, { });
-    }
+        value: '',
+        disabled: false,
+      }, []),
+    }, {});
+  }
 
   isFieldValid(field: string) {
     return (this.expedienteForm.get(field).dirty || this.expedienteForm.get(field).touched || this.submitted) && this.expedienteForm.get(field).errors
@@ -153,50 +190,66 @@ export class ExpedientePersonaComponent implements OnInit {
 
   getListSexo() {
     this.sexoService.getListSexo()
-    .pipe(first())
-    .subscribe({
-      next: (response: any) => {
-        if (response.success) {
-          this.listSex = response.result;
-        } else
-          this.toastr.error(response.message)
-      },
-      error: (error: HttpErrorResponse) => {
-        this.toastr.error(error.message);
-      }
-    });
+      .pipe(first())
+      .subscribe({
+        next: (response: any) => {
+          if (response.success) {
+            this.listSexo = response.result;
+          } else
+            this.toastr.error(response.message)
+        },
+        error: (error: HttpErrorResponse) => {
+          this.toastr.error(error.message);
+        }
+      });
   }
 
   getListGenero() {
     this.generoService.getListGenero()
-    .pipe(first())
-    .subscribe({
-      next: (response: any) => {
-        if (response.success) {
-          this.listGenre = response.result;
-        } else
-          this.toastr.error(response.message)
-      },
-      error: (error: HttpErrorResponse) => {
-        this.toastr.error(error.message);
-      }
-    });
+      .pipe(first())
+      .subscribe({
+        next: (response: any) => {
+          if (response.success) {
+            this.listGenero = response.result;
+          } else
+            this.toastr.error(response.message)
+        },
+        error: (error: HttpErrorResponse) => {
+          this.toastr.error(error.message);
+        }
+      });
   }
 
   getListTipoVinculacion() {
     this.tipoVinculacionService.getListTipoVinculacion()
-    .pipe(first())
-    .subscribe({
-      next: (response: any) => {
-        if (response.success) {
-          this.listTipoVinculacion = response.result;
-        } else
-          this.toastr.error(response.message)
-      },
-      error: (error: HttpErrorResponse) => {
-        this.toastr.error(error.message);
-      }
-    });
+      .pipe(first())
+      .subscribe({
+        next: (response: any) => {
+          if (response.success) {
+            this.listTipoVinculacion = response.result;
+          } else
+            this.toastr.error(response.message)
+        },
+        error: (error: HttpErrorResponse) => {
+          this.toastr.error(error.message);
+        }
+      });
+  }
+
+  getlistPrioridad() {
+    this.prioridadService.getListPrioridad()
+      .pipe(first())
+      .subscribe({
+        next: (response: any) => {
+          if (response.success) {
+            this.listPrioridad = response.result;
+          } else
+            this.toastr.error(response.message)
+        },
+        error: (error: HttpErrorResponse) => {
+          this.toastr.error(error.message);
+        }
+      });
   }
 
 }

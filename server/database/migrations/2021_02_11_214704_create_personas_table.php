@@ -20,6 +20,7 @@ class CreatePersonasTable extends Migration
             $table->date('fecha_nacimiento')->nullable();
             $table->integer('id_sexo')->unsigned();
             $table->integer('id_genero')->unsigned();
+            $table->string('email')->nullable();
             $table->string('telefono')->nullable();
             $table->boolean('borrado')->default(0)->index();
             $table->timestamps();

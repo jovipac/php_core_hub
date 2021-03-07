@@ -8,6 +8,7 @@ export interface ExpedientePersona {
   nombres: string
   apellidos: string,
   nombres_completos: string,
+  email?: string,
   telefono: string,
   fecha_nacimiento: Date,
   edad: number,

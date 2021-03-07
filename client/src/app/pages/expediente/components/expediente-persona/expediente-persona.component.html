@@ -38,7 +38,88 @@
               </div>
             </div>
           </div>
-
+        </div>
+        <div class="form-row">
+          <div class="col-md-6 mb-3">
+            <input-label [requires]="true" [label]="'Nombres'" [id]="'txtNombres'"></input-label>
+            <input type="text" class="form-control" id="txtNombres" formControlName="nombres" placeholder="Completos"
+              [ngClass]="{ 'is-invalid': submitted && f.nombres.errors }"
+              required>
+            <div *ngIf="isHasErrors('nombres')" class="invalid-feedback">
+              <div *ngIf="f.nombres.errors?.required">Los nombres son requeridos</div>
+              <div *ngIf="f.nombres.errors?.minlength">El nombre es demasiado corto</div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <input-label [requires]="true" [label]="'Apellidos'" [id]="'txtApellidos'"></input-label>
+            <input type="text" class="form-control" id="txtApellidos" formControlName="apellidos"
+              placeholder="Completos" [ngClass]="{ 'is-invalid': submitted && f.apellidos.errors }"
+              required>
+            <div *ngIf="isHasErrors('apellidos')" class="invalid-feedback">
+              <div *ngIf="f.apellidos.errors?.required">Los apellidos son requeridos</div>
+              <div *ngIf="f.nombres.errors?.minlength">El apellido es demasiado corto</div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-md-4 mb-3">
+            <input-label [label]="'Correo electrónico'" [id]="'txtEmail'"></input-label>
+            <input type="text" class="form-control" id="txtEmail" formControlName="email" placeholder=""
+              [ngClass]="displayErrorsCss('email')">
+            <div *ngIf="isHasErrors('email')" class="invalid-feedback">
+              <div *ngIf="f.email.errors?.pattern">El correo electrónico no es valido</div>
+            </div>
+          </div>
+          <div class="col-md-3 mb-3">
+            <input-label [label]="'Teléfono'" [id]="'txtTelefono'"></input-label>
+            <input type="text" class="form-control" id="txtTelefono" formControlName="telefono" placeholder=""
+              [ngClass]="displayErrorsCss('telefono')">
+            <div *ngIf="isHasErrors('telefono')" class="invalid-feedback">
+              <div *ngIf="f.telefono.errors?.pattern">El telefono solo se aceptan digitos</div>
+            </div>
+          </div>
+          <div class="col-md-3 mb-3">
+            <input-label [label]="'Fecha Nacimiento'" [id]="'txtFechaNacimiento'"></input-label>
+            <input type="date" class="form-control" id="txtFechaNacimiento" formControlName="fecha_nacimiento"
+              placeholder="" (blur)="calculateAge(f.fecha_nacimiento.value)">
+            <div *ngIf="isHasErrors('fecha_nacimiento')" class="invalid-feedback">
+              Please provide a valid state.
+            </div>
+          </div>
+          <div class="col-md-2 mb-3">
+            <input-label [label]="'Edad'" [id]="'txtEdad'"></input-label>
+            <input type="number" class="form-control" id="txtEdad" formControlName="edad" placeholder=""
+              [ngClass]="displayErrorsCss('edad')" >
+            <div *ngIf="isHasErrors('edad')" class="invalid-feedback">
+              Please provide a valid edad.
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-md-4 mb-3">
+            <input-label [requires]="true" [label]="'Sexo'" [id]="'txtSexo'"></input-label>
+            <select class="form-control" id="txtSexo" formControlName="id_sexo"
+              [ngClass]="displayErrorsCss('id_sexo')" required>
+              <option *ngFor="let sexo of listSexo" value="{{sexo.id_sexo}}">{{sexo.nombre}}</option>
+            </select>
+            <div *ngIf="isHasErrors('id_sexo')" class="invalid-feedback">Seleccione un valor</div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <input-label [requires]="false" [label]="'Genero'" [id]="'txtGenero'"></input-label>
+            <select class="form-control" id="txtGenero" formControlName="id_genero"
+              [ngClass]="displayErrorsCss('id_genero')" required>
+              <option *ngFor="let genre of listGenero" value="{{genre.id_genero}}">{{genre.nombre}}</option>
+            </select>
+            <div *ngIf="isHasErrors('id_genero')" class="invalid-feedback">Seleccione un valor</div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <input-label [requires]="true" [label]="'Prioridad'" [id]="'txtPrioridad'"></input-label>
+            <select class="form-control" id="txtPrioridad" formControlName="id_prioridad"
+              [ngClass]="displayErrorsCss('id_prioridad')" required>
+              <option *ngFor="let prioridad of listPrioridad" value="{{prioridad.id_prioridad}}">{{prioridad.nombre}}</option>
+            </select>
+            <div *ngIf="isHasErrors('id_prioridad')" class="invalid-feedback">Seleccione un valor</div>
+          </div>
         </div>
 
       </ng-template>

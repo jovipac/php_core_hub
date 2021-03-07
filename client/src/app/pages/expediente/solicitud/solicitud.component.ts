@@ -64,7 +64,7 @@ export class SolicitudComponent implements OnInit {
               employee.apellidos
             ].filter(Boolean)
             .join(" ");
-            return employee;
+            return <ExpedientePersona>employee;
         }) : [];
 
           this.solicitudPersonas = personasFormateadas;

@@ -73,7 +73,7 @@ export const formatearCorrelativo = (auxiliatura = "", anio, folio, sep = "-") =
  * @param  {any} value: Indica que valor se va evaluar
  * @return {Boolean}
  */
-export function isEmptyValue(value) {
+export function isEmptyValue(value: any) {
   return (
     value === undefined ||
     value === null ||
