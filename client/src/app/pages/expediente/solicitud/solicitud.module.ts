@@ -5,9 +5,10 @@ import { SharedModule } from '../../../shared/shared.module';
 import { SolicitudRoutingModule } from './solicitud-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { SolicitudComponent } from './solicitud.component';
 import { ExpedienteEncabezadoComponent } from '../components/expediente-encabezado/expediente-encabezado.component';
 import { ExpedientePersonaComponent } from '../components/expediente-persona/expediente-persona.component';
-import { SolicitudComponent } from './solicitud.component';
+import { ExpedienteHechoComponent } from '../components/expediente-hecho/expediente-hecho.component';
 
 @NgModule({
   imports: [
@@ -18,9 +19,10 @@ import { SolicitudComponent } from './solicitud.component';
     ReactiveFormsModule,
   ],
   declarations: [
+    SolicitudComponent,
     ExpedienteEncabezadoComponent,
     ExpedientePersonaComponent,
-    SolicitudComponent
+    ExpedienteHechoComponent
   ]
 })
 export class SolicitudModule { }

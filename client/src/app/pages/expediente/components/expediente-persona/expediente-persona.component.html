@@ -1,12 +1,12 @@
 <form action="javascript:" class="needs-validation" novalidate [formGroup]="expedienteForm" autocomplete="off" >
   <div class="form-row">
     <div class="col-md-4 mb-3">
-      <input-label [requires]="true" [label]="'Tipo vinculación'" [id]="'txtVia'"></input-label>
-      <select class="form-control" id="txtVia" formControlName="id_via"
-        [ngClass]="displayErrorsCss('id_via')" required>
-        <option *ngFor="let via of listVia" value="{{via.id_via}}">{{via.nombre}}</option>
+      <input-label [requires]="true" [label]="'Tipo vinculación'" [id]="'txtTipoVinculacion'"></input-label>
+      <select class="form-control" id="txtTipoVinculacion" formControlName="id_tipo_vinculacion"
+        [ngClass]="displayErrorsCss('id_tipo_vinculacion')" required>
+        <option *ngFor="let tipoVinculacion of listTipoVinculacion" value="{{tipoVinculacion.id_tipo_vinculacion}}">{{tipoVinculacion.nombre}}</option>
       </select>
-      <div *ngIf="isHasErrors('id_via')" class="invalid-feedback">Seleccione un valor</div>
+      <div *ngIf="isHasErrors('id_tipo_vinculacion')" class="invalid-feedback">Seleccione un valor</div>
     </div>
   </div>
 

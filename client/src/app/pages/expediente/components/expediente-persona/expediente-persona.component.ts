@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { ViaService, DocumentoIdentidadService, SexoService, GeneroService } from '../../../../service/catalogos';
+import { TipoVinculacionService, DocumentoIdentidadService, SexoService, GeneroService } from '../../../../service/catalogos';
 import { ToastrService } from 'ngx-toastr';
-import { ExpedientePersona, DocumentoIdentidad, Sexo, Genero, Via } from '../../../../shared/models';
+import { ExpedientePersona, DocumentoIdentidad, Sexo, Genero, TipoVinculacion } from '../../../../shared/models';
 import { HttpErrorResponse } from '@angular/common/http';
 import { first } from 'rxjs/operators';
 
@@ -19,7 +19,7 @@ export class ExpedientePersonaComponent implements OnInit {
   submitted = false;
 
   public listDocumentoIdentidad: Array<DocumentoIdentidad>;
-  public listVia: Array<Via>;
+  public listTipoVinculacion: Array<TipoVinculacion>;
   public listSex: Array<Sexo>;
   public listGenre: Array<Genero>;
 
@@ -29,7 +29,7 @@ export class ExpedientePersonaComponent implements OnInit {
     private documentoIdentidadService: DocumentoIdentidadService,
     private sexoService: SexoService,
     private generoService: GeneroService,
-    private viaService: ViaService,
+    private tipoVinculacionService: TipoVinculacionService,
 
   ) { }
 
@@ -38,7 +38,7 @@ export class ExpedientePersonaComponent implements OnInit {
     this.isAddMode = !this.id;
 
     this.getListDocumentoIdentidad();
-    this.getListVia();
+    this.getListTipoVinculacion();
     this.getListSexo();
     this.getListGenero();
 
@@ -99,7 +99,7 @@ export class ExpedientePersonaComponent implements OnInit {
         value: null,
         disabled: false,
       }, [Validators.pattern("[0-9]+")]),
-      id_via: new FormControl({
+      id_tipo_vinculacion: new FormControl({
         value: null,
         disabled: false,
       }, [Validators.pattern("[0-9]+")]),
@@ -183,13 +183,13 @@ export class ExpedientePersonaComponent implements OnInit {
     });
   }
 
-  getListVia() {
-    this.viaService.getListVia()
+  getListTipoVinculacion() {
+    this.tipoVinculacionService.getListTipoVinculacion()
     .pipe(first())
     .subscribe({
       next: (response: any) => {
         if (response.success) {
-          this.listVia = response.result;
+          this.listTipoVinculacion = response.result;
         } else
           this.toastr.error(response.message)
       },
