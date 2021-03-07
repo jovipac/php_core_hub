@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl, Validators } from "@angular/forms";
 import { ServicesService } from "../../../service/services.service";
-import { MotivoService, DocumentoIdentidadService, PrioridadService, SexoService, GeneroService } from '../../../service/catalogos';
+import { AuxiliaturaService, DependenciaService, MotivoService, DocumentoIdentidadService, PrioridadService, SexoService, GeneroService } from '../../../service/catalogos';
 import { FuncionariosService, VisitasService, PersonasService } from '../../../service';
 import { DocumentoIdentidad, Prioridad, Sexo, Genero, Auxiliatura, Dependencia, Motivo, Funcionario } from '../../../shared/models';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -41,6 +41,8 @@ export class SolicitudVisitaComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService,
     private generalService: ServicesService,
+    private auxiliaturaService: AuxiliaturaService,
+    private dependenciaService: DependenciaService,
     private documentoIdentidadService: DocumentoIdentidadService,
     private motivoService: MotivoService,
     private prioridadService: PrioridadService,
@@ -255,8 +257,7 @@ export class SolicitudVisitaComponent implements OnInit {
         } else
           this.toastr.error(response.message)
       },
-      error: (data) => {
-        const error: HttpErrorResponse = data;
+      error: (error: HttpErrorResponse) => {
         this.toastr.error(error.message);
       }
     });
@@ -277,7 +278,7 @@ export class SolicitudVisitaComponent implements OnInit {
   }
 
   getListDependecy() {
-    this.generalService.getListDependency()
+    this.dependenciaService.getListDependencia()
     .pipe(first())
     .subscribe({
       next: (response: any) => {
@@ -286,8 +287,7 @@ export class SolicitudVisitaComponent implements OnInit {
         } else
           this.toastr.error(response.message)
       },
-      error: (data) => {
-        const error: HttpErrorResponse = data;
+      error: (error: HttpErrorResponse) => {
         this.toastr.error(error.message);
       }
     });
@@ -295,16 +295,20 @@ export class SolicitudVisitaComponent implements OnInit {
   }
 
   getListAuxiliary() {
-    this.generalService.getListAuxiliary().subscribe(res => {
-      let response: any = res;
-      if (response.result.length > 0)
-        this.listAuxiliary = response.result;
-      else
-        this.listAuxiliary.length = 0
-    }, err => {
-      const error: HttpErrorResponse = err;
-      this.toastr.error(error.message);
-    })
+    this.auxiliaturaService.getListAuxiliatura()
+    .pipe(first())
+    .subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.listAuxiliary = response.result;
+        } else
+          this.toastr.error(response.message)
+      },
+      error: (error: HttpErrorResponse) => {
+        this.toastr.error(error.message);
+      }
+    });
+
   }
 
   getEmployees() {
@@ -331,8 +335,7 @@ export class SolicitudVisitaComponent implements OnInit {
           } else
             this.toastr.error(response.message)
         },
-        error: (data) => {
-          const error: HttpErrorResponse = data;
+        error: (error: HttpErrorResponse) => {
           this.toastr.error(error.message);
         }
       });

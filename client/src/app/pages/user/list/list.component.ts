@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ServicesService } from "../../../service/services.service";
+import { AuxiliaturaService, DependenciaService } from '../../../service/catalogos';
 import { FormGroup, Validators, FormBuilder } from "@angular/forms";
 import { ToastrService } from 'ngx-toastr';
 import * as $ from 'jquery';
@@ -92,6 +93,8 @@ export class ListComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private service: ServicesService,
+    private auxiliaturaService: AuxiliaturaService,
+    private dependenciaService: DependenciaService,
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
     private spinner: NgxSpinnerService) {
@@ -189,7 +192,7 @@ export class ListComponent implements OnInit {
   }
   /* function get list dependency */
   getListDependecy() {
-    this.service.getListDependency().subscribe(res => {
+    this.dependenciaService.getListDependencia().subscribe(res => {
       let response: any = res;
       if (response.result.length > 0)
         this.listDependency = response.result;
@@ -201,7 +204,7 @@ export class ListComponent implements OnInit {
   }
 
   getListAuxiliary() {
-    this.service.getListAuxiliary().subscribe(res => {
+    this.auxiliaturaService.getListAuxiliatura().subscribe(res => {
       let response: any = res;
       if (response.result.length > 0)
         this.listAuxiliary = response.result;

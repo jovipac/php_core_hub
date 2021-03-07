@@ -1,3 +1,5 @@
+export * from './auxiliatura.service';
+export * from './dependencia.service';
 export * from './motivo.service';
 export * from './estado.service';
 export * from './documento-identidad.service';

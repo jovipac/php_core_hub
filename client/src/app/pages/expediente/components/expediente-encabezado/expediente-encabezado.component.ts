@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { PrioridadService,ViaService, ResultadoService } from '../../../../service/catalogos';
+import { PrioridadService, ViaService, ResultadoService } from '../../../../service/catalogos';
 import { ExpedienteService, FuncionariosService} from '../../../../service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
