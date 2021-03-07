@@ -4,17 +4,13 @@
       <input-label [requires]="true" [label]="'No. Solicitud'" [id]="'txtCorrelativo'"></input-label>
       <input type="text" class="form-control" id="txtCorrelativo" formControlName="correlativo" placeholder=""
         [ngClass]="displayErrorsCss('correlativo')">
-      <div *ngIf="isHasErrors('correlativo')" class="invalid-feedback">
-        <div *ngIf="f.correlativo.errors?.pattern">El correlativo solo se aceptan digitos</div>
-      </div>
+      <div *ngIf="isHasErrors('correlativo')" class="invalid-feedback"></div>
     </div>
     <div class="col-md-3 mb-3">
       <input-label [requires]="true" [label]="'Fecha Ingreso'" [id]="'txtFechaIngreso'"></input-label>
       <input type="date" class="form-control" id="txtFechaIngreso" formControlName="fecha_ingreso"
         placeholder="" >
-      <div *ngIf="isHasErrors('fecha_ingreso')" class="invalid-feedback">
-        Please provide a valid state.
-      </div>
+      <div *ngIf="isHasErrors('fecha_ingreso')" class="invalid-feedback">Ingrese una fecha valida</div>
     </div>
     <div class="col-md-3 mb-3">
       <input-label [requires]="true" [label]="'Prioridad'" [id]="'txtPrioridad'"></input-label>
@@ -27,13 +23,10 @@
     <div class="col-md-3 mb-3">
       <input-label [requires]="true" [label]="'Oficial'" [id]="'txtFuncionario'"></input-label>
       <ng-select [items]="listFuncionarios" #select bindLabel="nombres_completos" dropdownPosition="auto" bindValue="id_funcionario" labelForId="txtFuncionario"
-        placeholder="Seleccionar funcionario" [virtualScroll]="true" formControlName="id_funcionario" [ngClass]="displayErrorsCss('id_funcionario')">
+        placeholder="Seleccionar funcionario" [virtualScroll]="true" formControlName="id_funcionario" [ngClass]="displayErrorsCss('id_funcionario')" required>
       </ng-select>
 
-      <div *ngIf="isHasErrors('id_funcionario')" class="invalid-feedback">
-        <div *ngIf="f.id_funcionario.errors?.required">El campo es requerido</div>
-        <div *ngIf="f.id_funcionario.errors?.pattern">Solo se aceptan digitos</div>
-      </div>
+      <div *ngIf="isHasErrors('id_funcionario')" class="invalid-feedback">Seleccione un valor</div>
     </div>
   </div>
 

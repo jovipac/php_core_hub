@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
-
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-ui-modal',
   templateUrl: './ui-modal.component.html',
@@ -13,8 +13,9 @@ export class UiModalComponent implements OnInit {
   @Input() containerClick = true;
   public visible = false;
   public visibleAnimate = false;
+  dialogRef: NgbModalRef;
 
-  constructor() { }
+  constructor(private modalService: NgbModal) { }
 
   ngOnInit() {
   }
@@ -35,6 +36,10 @@ export class UiModalComponent implements OnInit {
     if ((event.target as HTMLElement).classList.contains('modal') && this.containerClick === true) {
       this.hide();
     }
+  }
+
+  public close() {
+    this.dialogRef.close();
   }
 
 }

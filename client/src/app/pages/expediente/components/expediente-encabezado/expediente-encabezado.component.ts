@@ -78,6 +78,14 @@ export class ExpedienteEncabezadoComponent implements OnInit {
         value: null,
         disabled: !this.isAddMode,
       }, [Validators.pattern("[0-9]+")]),
+      anio: new FormControl({
+        value: null,
+        disabled: false,
+      }, []),
+      folio: new FormControl({
+        value: null,
+        disabled: false,
+      }, []),
       correlativo: new FormControl({
         value: null,
         disabled: false,
@@ -126,6 +134,9 @@ export class ExpedienteEncabezadoComponent implements OnInit {
   isFieldRequired(field: string) {
     return this.expedienteForm.get(field).errors.required || false;
   }
+
+  // convenience getter for easy access to form fields
+  get f() { return this.expedienteForm.controls; }
 
   onSubmit() {
     this.submitted = true;
