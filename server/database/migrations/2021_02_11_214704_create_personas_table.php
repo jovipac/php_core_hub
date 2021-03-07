@@ -22,6 +22,7 @@ class CreatePersonasTable extends Migration
             $table->integer('id_genero')->unsigned();
             $table->string('email')->nullable();
             $table->string('telefono')->nullable();
+            $table->string('codigo_casillero, 50')->nullable();
             $table->boolean('borrado')->default(0)->index();
             $table->timestamps();
             $table->softDeletes();

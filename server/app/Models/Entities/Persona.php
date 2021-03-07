@@ -26,7 +26,8 @@ class Persona extends Model
      * @var array
      */
     protected $fillable = [
-        'id_persona', 'nombres', 'apellidos', 'fecha_nacimiento', 'id_sexo', 'id_genero', 'telefono',
+        'id_persona', 'nombres', 'apellidos', 'fecha_nacimiento',
+        'id_sexo', 'id_genero', 'telefono', 'codigo_casillero'
     ];
 
     /**
@@ -58,9 +59,13 @@ class Persona extends Model
 
     public function documentos_identidad()
     {
-        return $this->belongsToMany(\App\Models\Catalogs\DocumentoIdentidad::class, 
-        'tt_documento_identidad_persona', 'id_persona', 'id_documento_identidad', 
-        'id_persona', 'id_documento_identidad')->withTimestamps();
+        return $this->belongsToMany(
+            \App\Models\Catalogs\DocumentoIdentidad::class,
+            'tt_documento_identidad_persona',
+            'id_persona',
+            'id_documento_identidad',
+            'id_persona',
+            'id_documento_identidad'
+        )->withTimestamps();
     }
-
 }

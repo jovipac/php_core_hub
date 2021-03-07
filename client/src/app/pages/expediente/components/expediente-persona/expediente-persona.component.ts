@@ -140,15 +140,11 @@ export class ExpedientePersonaComponent implements OnInit {
       id_tipo_vinculacion: new FormControl({
         value: null,
         disabled: false,
-      }, [Validators.pattern("[0-9]+")]),
-      id_funcionario: new FormControl({
+      }, [Validators.pattern("[0-9]*")]),
+      codigo_casillero: new FormControl({
         value: null,
         disabled: false,
-      }, [Validators.pattern("[0-9]+")]),
-      id_resultado: new FormControl({
-        value: null,
-        disabled: false,
-      }, []),
+      }, [Validators.pattern("[0-9]*")]),
       observaciones: new FormControl({
         value: '',
         disabled: false,

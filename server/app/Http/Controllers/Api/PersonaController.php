@@ -127,11 +127,13 @@ class PersonaController extends ApiController
      */
     public function show(Persona $persona)
     {
+        $query = Persona::query()->with('documentos_identidad');
+
         return $this->apiResponse(
             [
                 'success' => true,
                 'message' => "Persona encontrada con exito",
-                'result' => $persona
+                'result' => $query->first()
             ]
         );
     }
