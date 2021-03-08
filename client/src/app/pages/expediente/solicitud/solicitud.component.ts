@@ -78,6 +78,13 @@ export class SolicitudComponent implements OnInit {
 
   }
 
+  goEditExpedientePerson(expediente) {
+    this.router.navigate(['../../editar',
+      expediente.id_expediente_persona],
+      { relativeTo: this.route }
+    );
+  }
+
   onBack() {
     this.router.navigate(['../../'], { relativeTo: this.route });
   }
