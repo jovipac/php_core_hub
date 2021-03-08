@@ -134,12 +134,35 @@
     <ng-container ngbNavItem>
       <a ngbNavLink>Dirección</a>
       <ng-template ngbNavContent>
-        <p>Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko
-          farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts
-          ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar
-          helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson
-          8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester
-          stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.</p>
+        <div class="form-row">
+          <div class="col-md-3 mb-3">
+            <input-label [requires]="false" [label]="'Departamento'" [id]="'txtDepartamento'"></input-label>
+            <ng-select id="txtDepartamento" [items]="listDepartamento" #select bindLabel="nombre" dropdownPosition="auto"
+              bindValue="id_departamento" labelForId="txtDepartamento" placeholder="Seleccionar o buscar" [virtualScroll]="true"
+              formControlName="id_departamento" [ngClass]="displayErrorsCss('id_departamento')" (blur)="selectedDepartamento()" >
+            </ng-select>
+            <div *ngIf="isHasErrors('id_departamento')" class="invalid-feedback">
+              <div *ngIf="f.id_departamento.errors?.required">El campo es requerido</div>
+              <div *ngIf="f.id_departamento.errors?.pattern">Solo se aceptan digitos</div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <input-label [requires]="false" [label]="'Municipio'" [id]="'txtMunicipio'"></input-label>
+            <ng-select [items]="listDepartamentoMunicipio" #select bindLabel="nombres_completos" dropdownPosition="auto" bindValue="id_municipio" labelForId="txtMunicipio"
+              placeholder="Seleccionar o buscar" [virtualScroll]="true" formControlName="id_municipio" [ngClass]="displayErrorsCss('id_municipio')">
+            </ng-select>
+            <div *ngIf="isHasErrors('id_municipio')" class="invalid-feedback">
+              <div *ngIf="f.id_municipio.errors?.required">El campo es requerido</div>
+              <div *ngIf="f.id_municipio.errors?.pattern">Solo se aceptan digitos</div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col mb-3">
+            <input-label [label]="'Comentarios'" [id]="'txtComentarios'"></input-label>
+            <input type="text" class="form-control" id="txtComentarios" formControlName="comentarios">
+          </div>
+        </div>
       </ng-template>
     </ng-container>
     <ng-container ngbNavItem>
@@ -156,6 +179,13 @@
     </ng-container>
   </nav>
   <div [ngbNavOutlet]="nav" class="mt-2"></div>
+  <div class="row">
+    <div class="col"></div>
+    <div class="col text-center">
+      <button class="btn btn-primary" type="submit" id="btnSave"><i class="fa fa-save"></i>Guardar</button>
+    </div>
+    <div class="col"></div>
+  </div>
 </form>
 
 

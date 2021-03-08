@@ -3,6 +3,8 @@ export * from './dependencia.interface';
 export * from './tipo-vinculacion.interface';
 export * from './via.interface';
 export * from './prioridad.interface';
+export * from './departamento.interface';
+export * from './municipio.interface';
 export * from './sexo.interface';
 export * from './genero.interface';
 export * from './motivo.interface';

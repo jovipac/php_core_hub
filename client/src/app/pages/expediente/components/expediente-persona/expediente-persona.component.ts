@@ -2,13 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { TipoVinculacionService, DocumentoIdentidadService, SexoService, GeneroService, PrioridadService } from '../../../../service/catalogos';
-import { ExpedientePersonaService } from '../../../../service';
+import { DepartamentoService, MunicipioService } from '../../../../service/catalogos';
+import { ExpedientePersonaService, PersonasService } from '../../../../service';
 import { ToastrService } from 'ngx-toastr';
 import { ExpedientePersona, DocumentoIdentidad, Sexo, Genero, TipoVinculacion, Prioridad } from '../../../../shared/models';
+import { Departamento, Municipio } from '../../../../shared/models';
 import { HttpErrorResponse } from '@angular/common/http';
 import { first } from 'rxjs/operators';
 import { isEmptyValue } from '../../../../shared/utils';
-import { isValid, parseISO, differenceInYears } from 'date-fns';
+import { format, isValid, parseISO, differenceInYears } from 'date-fns';
 import { extractErrorMessages } from '../../../../shared/utils';
 @Component({
   selector: 'app-expediente-persona',
@@ -28,6 +30,9 @@ export class ExpedientePersonaComponent implements OnInit {
   public listSexo: Array<Sexo>;
   public listGenero: Array<Genero>;
   public listPrioridad: Array<Prioridad>;
+  public listDepartamento: Array<Departamento>;
+  public listMunicipio: Array<Municipio>;
+  public listDepartamentoMunicipio: Array<Municipio>;
 
   constructor(
     private route: ActivatedRoute,
@@ -38,7 +43,9 @@ export class ExpedientePersonaComponent implements OnInit {
     private sexoService: SexoService,
     private generoService: GeneroService,
     private prioridadService: PrioridadService,
-
+    private personaService: PersonasService,
+    private departamentoService: DepartamentoService,
+    private municipioService: MunicipioService,
   ) { }
 
   ngOnInit(): void {
@@ -49,7 +56,9 @@ export class ExpedientePersonaComponent implements OnInit {
     this.getListTipoVinculacion();
     this.getListSexo();
     this.getListGenero();
-    this.getlistPrioridad();
+    this.getListPrioridad();
+    this.getListDepartamento();
+    this.getListMunicipio();
 
     if (!this.isAddMode) {
       if (!isEmptyValue(this.id_expediente) && !isEmptyValue(this.id_persona)) {
@@ -154,7 +163,15 @@ export class ExpedientePersonaComponent implements OnInit {
         value: null,
         disabled: false,
       }, [Validators.pattern("[0-9]*")]),
-      observaciones: new FormControl({
+      id_departamento: new FormControl({
+        value: null,
+        disabled: false,
+      }, [Validators.pattern("[0-9]+")]),
+      id_municipio: new FormControl({
+        value: null,
+        disabled: false,
+      }, [Validators.pattern("[0-9]+")]),
+      comentarios: new FormControl({
         value: '',
         disabled: false,
       }, []),
@@ -265,7 +282,7 @@ export class ExpedientePersonaComponent implements OnInit {
       });
   }
 
-  getlistPrioridad() {
+  getListPrioridad() {
     this.prioridadService.getListPrioridad()
       .pipe(first())
       .subscribe({
@@ -277,6 +294,79 @@ export class ExpedientePersonaComponent implements OnInit {
         },
         error: (error: HttpErrorResponse) => {
           this.toastr.error(error.message);
+        }
+      });
+  }
+
+  getListDepartamento() {
+    this.departamentoService.getListDepartamento()
+      .pipe(first())
+      .subscribe({
+        next: (response: any) => {
+          if (response.success) {
+            this.listDepartamento = response.result;
+          } else
+            this.toastr.error(response.message)
+        },
+        error: (error: HttpErrorResponse) => {
+          this.toastr.error(error.message);
+        }
+      });
+  }
+
+  getListMunicipio() {
+    this.municipioService.getListMunicipio()
+      .pipe(first())
+      .subscribe({
+        next: (response: any) => {
+          if (response.success) {
+            this.listMunicipio = response.result;
+          } else
+            this.toastr.error(response.message)
+        },
+        error: (error: HttpErrorResponse) => {
+          this.toastr.error(error.message);
+        }
+      });
+  }
+
+  selectedDepartamento() {
+    const id_departamento = this.personaForm.get('id_departamento').value;
+    this.listDepartamentoMunicipio = this.listMunicipio
+      .filter((departamento: any) => departamento.id_departamento == id_departamento);
+  }
+
+  public searchPersona(id_documento_identidad: number, identificador: string) {
+    const dataSend = {
+      'id_documento_identidad': id_documento_identidad,
+      'identificador': identificador
+    };
+
+    this.personaService.searchPersona(dataSend)
+      .pipe(first())
+      .subscribe({
+        next: (data) => {
+          const response: any = data;
+          if (response.success) {
+            response.result.fecha_nacimiento = format(parseISO(new Date(response.result.fecha_nacimiento).toISOString()), 'yyyy-MM-dd');
+            this.personaForm.patchValue(response.result);
+            this.toastr.success(response.message)
+          } else
+            this.toastr.error(response.message)
+        },
+        error: (response: HttpErrorResponse) => {
+          if (Object.prototype.toString.call(response.error.message) === '[object Object]') {
+            const messages = extractErrorMessages(response);
+            messages.forEach(propertyErrors => {
+              for (let message in propertyErrors) {
+                this.toastr.error(propertyErrors[message], 'Visitas');
+              }
+            });
+
+          } else {
+            this.toastr.error(response.error.message)
+          }
+          this.loading = false;
         }
       });
   }
