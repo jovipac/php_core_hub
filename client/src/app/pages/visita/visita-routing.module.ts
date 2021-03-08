@@ -13,7 +13,7 @@ const routes: Routes = [
         children: [
             {
                 path: 'solicitud',
-                loadChildren: () => import('./recepcion/solicitud-visita.module').then(m => m.SolicitudVisitaPageModule)
+                loadChildren: () => import('./recepcion/recepcion-visita.module').then(m => m.RecepcionVisitaPageModule)
             },
             {
               path: 'monitoreo-visitas',

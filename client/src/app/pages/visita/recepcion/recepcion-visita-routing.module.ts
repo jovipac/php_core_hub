@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {SolicitudVisitaComponent} from './solicitud-visita.component';
+import {RecepcionVisitaComponent} from './recepcion-visita.component';
 
 const routes: Routes = [
   {
@@ -10,7 +10,7 @@ const routes: Routes = [
   },
   {
     path: 'agregar',
-    component: SolicitudVisitaComponent,
+    component: RecepcionVisitaComponent,
     data: {
       breadcrumb: 'Recepción solicitud',
       icon: 'icofont icofont-file-document bg-c-blue',
@@ -19,7 +19,7 @@ const routes: Routes = [
     }
   },
   { path: 'editar/:id',
-    component: SolicitudVisitaComponent,
+    component: RecepcionVisitaComponent,
     data: {
       breadcrumb: 'Recepción solicitud',
       icon: 'icofont icofont-file-document bg-c-blue',

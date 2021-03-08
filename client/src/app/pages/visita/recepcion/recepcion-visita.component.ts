@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, FormControl, Validators } from "@angular/forms";
-import { ServicesService } from "../../../service/services.service";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { AuxiliaturaService, DependenciaService, MotivoService, DocumentoIdentidadService, PrioridadService, SexoService, GeneroService } from '../../../service/catalogos';
 import { FuncionariosService, VisitasService, PersonasService } from '../../../service';
 import { DocumentoIdentidad, Prioridad, Sexo, Genero, Auxiliatura, Dependencia, Motivo, Funcionario } from '../../../shared/models';
@@ -13,11 +12,11 @@ import { format, isValid, parseISO, differenceInYears } from 'date-fns';
 
 @Component({
   selector: 'app-solicitud-visita',
-  templateUrl: './solicitud-visita.component.html',
-  styleUrls: ['./solicitud-visita.component.scss']
+  templateUrl: './recepcion-visita.component.html',
+  styleUrls: ['./recepcion-visita.component.scss']
 })
 
-export class SolicitudVisitaComponent implements OnInit {
+export class RecepcionVisitaComponent implements OnInit {
   public visitaForm: FormGroup;
   formStatus = new FormStatus();
   id: string;
@@ -36,11 +35,9 @@ export class SolicitudVisitaComponent implements OnInit {
   public listGenre: Array<Genero>;
 
   constructor(
-    private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
-    private generalService: ServicesService,
     private auxiliaturaService: AuxiliaturaService,
     private dependenciaService: DependenciaService,
     private documentoIdentidadService: DocumentoIdentidadService,
@@ -52,7 +49,7 @@ export class SolicitudVisitaComponent implements OnInit {
     private visitaService: VisitasService,
     private personaService: PersonasService,
   ) {
-    //this.buildForm();
+
   }
 
   ngOnInit() {
@@ -70,9 +67,13 @@ export class SolicitudVisitaComponent implements OnInit {
     if (!this.isAddMode) {
       this.visitaService.getVisit(this.id)
           .pipe(first())
-          .subscribe(res => {
-            const data: any = res;
-            return this.visitaForm.patchValue(data.result);
+          .subscribe({
+            next: (data: any) => {
+              return this.visitaForm.patchValue(data.result);
+            },
+            error: (error:any) => {
+              this.toastr.error(error.message);
+            }
           });
     }
     // Se llama la construccion del formulario

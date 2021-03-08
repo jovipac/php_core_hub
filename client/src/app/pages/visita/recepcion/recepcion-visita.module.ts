@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { SolicitudVisitaRoutingModule } from './solicitud-visita-routing.module';
-import { SolicitudVisitaComponent } from './solicitud-visita.component';
+import { SolicitudVisitaRoutingModule } from './recepcion-visita-routing.module';
+import { RecepcionVisitaComponent } from './recepcion-visita.component';
 import { SharedModule } from '../../../shared/shared.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -16,6 +16,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
     NgSelectModule
   ],
-  declarations: [SolicitudVisitaComponent]
+  declarations: [RecepcionVisitaComponent]
 })
-export class SolicitudVisitaPageModule { }
+export class RecepcionVisitaPageModule { }
