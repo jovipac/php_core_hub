@@ -83,6 +83,10 @@ export class ExpedientePersonaComponent implements OnInit {
 
   private buildForm() {
     this.personaForm = new FormGroup({
+      id_expediente_persona: new FormControl({
+        value: null,
+        disabled: !this.isAddMode,
+      }, [Validators.pattern("[0-9]+")]),
       id_expediente: new FormControl({
         value: null,
         disabled: !this.isAddMode,
@@ -91,6 +95,10 @@ export class ExpedientePersonaComponent implements OnInit {
         value: null,
         disabled: !this.isAddMode,
       }, [Validators.pattern("[0-9]+")]),
+      flag_confidencial: new FormControl({
+        value: null,
+        disabled: false,
+      }, []),
       id_documento_identidad: new FormControl({
         value: null,
         disabled: false,
