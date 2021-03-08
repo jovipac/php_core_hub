@@ -9,7 +9,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { first } from 'rxjs/operators';
 import { isEmptyValue } from '../../../../shared/utils';
 import { isValid, parseISO, differenceInYears } from 'date-fns';
-
+import { extractErrorMessages } from '../../../../shared/utils';
 @Component({
   selector: 'app-expediente-persona',
   templateUrl: './expediente-persona.component.html',
@@ -21,6 +21,7 @@ export class ExpedientePersonaComponent implements OnInit {
   id_persona: string;
   isAddMode: boolean;
   submitted = false;
+  loading = false;
 
   public listDocumentoIdentidad: Array<DocumentoIdentidad>;
   public listTipoVinculacion: Array<TipoVinculacion>;
@@ -176,6 +177,22 @@ export class ExpedientePersonaComponent implements OnInit {
   // convenience getter for easy access to form fields
   get f() { return this.personaForm.controls; }
 
+  onSubmit() {
+    this.submitted = true;
+    // stop here if form is invalid
+    if (this.personaForm.invalid) {
+      return;
+    }
+
+    this.loading = true;
+    if (this.isAddMode) {
+        this.updatePersonaSolicitud();
+    } else {
+        this.updatePersonaSolicitud();
+    }
+
+  }
+
   getListDocumentoIdentidad() {
     this.documentoIdentidadService.getListDocumentoIdentidad()
       .pipe(first())
@@ -254,6 +271,29 @@ export class ExpedientePersonaComponent implements OnInit {
           this.toastr.error(error.message);
         }
       });
+  }
+
+  private updatePersonaSolicitud() {
+    const formValues = {
+      ...this.personaForm.value,
+    };
+    this.solicitudPersonaService.updateExpedientePersona(this.id_expediente, formValues)
+        .pipe(first())
+        .subscribe({
+            next: (response: any) => {
+              this.toastr.success(response.message, 'Expediente')
+              //step02Modal.hide();
+            },
+            error: (error: HttpErrorResponse) => {
+                const messages = extractErrorMessages(error);
+                messages.forEach(propertyErrors => {
+                  for (let message in propertyErrors) {
+                    this.toastr.error(propertyErrors[message], 'Expediente');
+                  }
+                });
+                this.loading = false;
+            }
+        });
   }
 
 }

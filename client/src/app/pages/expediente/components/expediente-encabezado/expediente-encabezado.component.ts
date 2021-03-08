@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { PrioridadService, ViaService, ResultadoService } from '../../../../service/catalogos';
+import { AuxiliaturaService, PrioridadService, ViaService, ResultadoService } from '../../../../service/catalogos';
 import { ExpedienteService, FuncionariosService} from '../../../../service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
-import { Expediente, Prioridad, Via, Resultado, Funcionario } from '../../../../shared/models';
+import { Auxiliatura, Expediente, Prioridad, Via, Resultado, Funcionario } from '../../../../shared/models';
 import { first, map, switchMap  } from 'rxjs/operators';
 import { formatearCorrelativo } from '../../../../shared/utils/helpers';
 import { extractErrorMessages } from '../../../../shared/utils';
@@ -23,6 +23,7 @@ export class ExpedienteEncabezadoComponent implements OnInit {
   submitted = false;
   loading = false;
 
+  public listAuxiliatura: Array<Auxiliatura>;
   public listPriority: Array<Prioridad>;
   public listVia: Array<Via>;
   public listFuncionarios: Array<Funcionario>;
@@ -31,6 +32,7 @@ export class ExpedienteEncabezadoComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private toastr: ToastrService,
+    private auxiliaturaService: AuxiliaturaService,
     private solicitudService: ExpedienteService,
     private prioridadService: PrioridadService,
     private viaService: ViaService,
@@ -42,6 +44,7 @@ export class ExpedienteEncabezadoComponent implements OnInit {
     this.id = this.route.snapshot.params['id'];
     this.isAddMode = !this.id;
 
+    this.getListAuxiliatura();
     this.getListPriority();
     this.getListVia();
     this.getFuncionarios();
@@ -77,7 +80,7 @@ export class ExpedienteEncabezadoComponent implements OnInit {
       id_expediente: new FormControl({
         value: null,
         disabled: !this.isAddMode,
-      }, [Validators.pattern("[0-9]+")]),
+      }, [Validators.required]),
       anio: new FormControl({
         value: null,
         disabled: false,
@@ -97,15 +100,19 @@ export class ExpedienteEncabezadoComponent implements OnInit {
       id_prioridad: new FormControl({
         value: null,
         disabled: false,
-      }, [Validators.pattern("[0-9]+")]),
+      }, [Validators.required]),
       id_via: new FormControl({
         value: null,
         disabled: false,
-      }, [Validators.pattern("[0-9]+")]),
+      }, [Validators.required]),
       id_funcionario: new FormControl({
         value: null,
         disabled: false,
-      }, [Validators.pattern("[0-9]+")]),
+      }, [Validators.required]),
+      id_auxiliatura: new FormControl({
+        value: null,
+        disabled: false,
+      }, [Validators.required]),
       id_resultado: new FormControl({
         value: null,
         disabled: false,
@@ -152,6 +159,22 @@ export class ExpedienteEncabezadoComponent implements OnInit {
         this.updateSolicitud();
     }
 
+  }
+
+  getListAuxiliatura() {
+    this.auxiliaturaService.getListAuxiliatura()
+      .pipe(first())
+      .subscribe({
+        next: (response: any) => {
+          if (response.success) {
+            this.listAuxiliatura = response.result;
+          } else
+            this.toastr.error(response.message)
+        },
+        error: (error: HttpErrorResponse) => {
+          this.toastr.error(error.message);
+        }
+      });
   }
 
   getListPriority() {
@@ -241,7 +264,7 @@ export class ExpedienteEncabezadoComponent implements OnInit {
         .subscribe({
             next: (response: any) => {
               this.toastr.success(response.message, 'Expediente')
-              //step03Modal.hide();
+              //step01Modal.hide();
             },
             error: (error: HttpErrorResponse) => {
                 const messages = extractErrorMessages(error);

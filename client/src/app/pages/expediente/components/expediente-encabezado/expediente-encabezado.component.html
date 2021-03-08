@@ -4,7 +4,9 @@
       <input-label [requires]="true" [label]="'No. Solicitud'" [id]="'txtCorrelativo'"></input-label>
       <input type="text" class="form-control" id="txtCorrelativo" formControlName="correlativo" placeholder=""
         [ngClass]="displayErrorsCss('correlativo')">
-      <div *ngIf="isHasErrors('correlativo')" class="invalid-feedback"></div>
+      <div *ngIf="isHasErrors('correlativo')" class="invalid-feedback">
+        <div *ngIf="f.id_auxiliatura.errors?.required">El campo es requerido</div>
+      </div>
     </div>
     <div class="col-md-3 mb-3">
       <input-label [requires]="true" [label]="'Fecha Ingreso'" [id]="'txtFechaIngreso'"></input-label>
@@ -18,7 +20,9 @@
         [ngClass]="displayErrorsCss('id_prioridad')" required>
         <option *ngFor="let prioridad of listPriority" value="{{prioridad.id_prioridad}}">{{prioridad.nombre}}</option>
       </select>
-      <div *ngIf="isHasErrors('id_prioridad')" class="invalid-feedback">Seleccione un valor</div>
+      <div *ngIf="isHasErrors('id_prioridad')" class="invalid-feedback">
+        <div *ngIf="f.id_auxiliatura.errors?.required">El campo es requerido</div>
+      </div>
     </div>
     <div class="col-md-3 mb-3">
       <input-label [requires]="true" [label]="'Oficial'" [id]="'txtFuncionario'"></input-label>
@@ -26,7 +30,9 @@
         placeholder="Seleccionar funcionario" [virtualScroll]="true" formControlName="id_funcionario" [ngClass]="displayErrorsCss('id_funcionario')" required>
       </ng-select>
 
-      <div *ngIf="isHasErrors('id_funcionario')" class="invalid-feedback">Seleccione un valor</div>
+      <div *ngIf="isHasErrors('id_funcionario')" class="invalid-feedback">
+        <div *ngIf="f.id_auxiliatura.errors?.required">El campo es requerido</div>
+      </div>
     </div>
   </div>
 
@@ -38,13 +44,26 @@
   </div>
 
   <div class="form-row">
-    <div class="col-md-4 mb-3">
+    <div class="col-md-6 mb-3">
+      <input-label [requires]="true" [label]="'Visita a unidad'" [id]="'txtAuxiliatura'"></input-label>
+      <ng-select id="txtAuxiliatura" [items]="listAuxiliatura" #select bindLabel="nombre" dropdownPosition="auto"
+        bindValue="id_auxiliatura" labelForId="txtAuxiliatura" placeholder="Seleccionar a unidad" [virtualScroll]="true"
+        formControlName="id_auxiliatura" [ngClass]="displayErrorsCss('id_auxiliatura')"  >
+      </ng-select>
+      <div *ngIf="isHasErrors('id_auxiliatura')" class="invalid-feedback">
+        <div *ngIf="f.id_auxiliatura.errors?.required">El campo es requerido</div>
+        <div *ngIf="f.id_auxiliatura.errors?.pattern">Solo se aceptan digitos</div>
+      </div>
+    </div>
+    <div class="col-md-2 mb-3">
       <input-label [requires]="true" [label]="'Via'" [id]="'txtVia'"></input-label>
       <select class="form-control" id="txtVia" formControlName="id_via"
         [ngClass]="displayErrorsCss('id_via')" required>
         <option *ngFor="let via of listVia" value="{{via.id_via}}">{{via.nombre}}</option>
       </select>
-      <div *ngIf="isHasErrors('id_via')" class="invalid-feedback">Seleccione un valor</div>
+      <div *ngIf="isHasErrors('id_via')" class="invalid-feedback">
+        <div *ngIf="f.id_auxiliatura.errors?.required">El campo es requerido</div>
+      </div>
     </div>
     <div class="col-md-4 mb-3">
       <input-label [requires]="false" [label]="'Resultado'" [id]="'txtResultado'"></input-label>
@@ -52,7 +71,9 @@
         [ngClass]="displayErrorsCss('id_resultado')">
         <option *ngFor="let resultado of listResultado" value="{{resultado.id_resultado}}">{{resultado.nombre}}</option>
       </select>
-      <div *ngIf="isHasErrors('id_resultado')" class="invalid-feedback">Seleccione un valor</div>
+      <div *ngIf="isHasErrors('id_resultado')" class="invalid-feedback">
+        <div *ngIf="f.id_auxiliatura.errors?.required">El campo es requerido</div>
+      </div>
     </div>
   </div>
 
