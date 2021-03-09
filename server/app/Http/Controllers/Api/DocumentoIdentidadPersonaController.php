@@ -36,7 +36,7 @@ class DocumentoIdentidadPersonaController extends ApiController
     {
         $validator = Validator::make($request->all(), [
             'id_persona' => 'integer',
-            'id_documento_identidad' => 'required|integer',
+            'id_documento_identidad' => 'integer',
             'identificador' => 'required',
         ]);
         if ($validator->fails()) {
@@ -54,13 +54,16 @@ class DocumentoIdentidadPersonaController extends ApiController
             )
             ->join('tt_documento_identidad_persona AS T01', 'tc_documento_identidad.id_documento_identidad', 'T01.id_documento_identidad');
 
+            if ($request->has('id_documento_identidad'))
+                $documento = $documento->where('id_documento_identidad', $request->input('id_documento_identidad'));
+
             if ($request->has('id_persona'))
                 $documento = $documento->where('id_persona', $request->input('id_persona'));
 
             if ($request->has('identificador'))
                 $documento = $documento->where('identificador', 'like', '%' . $request->input('identificador') . '%');
 
-            $documento = $documento->first();
+            $documento = $documento->get();
 
             if (empty($documento) == false) {
                 $resSuccess = true;
