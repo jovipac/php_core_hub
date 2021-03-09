@@ -148,7 +148,7 @@
           </div>
           <div class="col-md-4 mb-3">
             <input-label [requires]="false" [label]="'Municipio'" [id]="'txtMunicipio'"></input-label>
-            <ng-select [items]="listDepartamentoMunicipio" #select bindLabel="nombres_completos" dropdownPosition="auto" bindValue="id_municipio" labelForId="txtMunicipio"
+            <ng-select [items]="listDepartamentoMunicipio" #select bindLabel="nombre" dropdownPosition="auto" bindValue="id_municipio" labelForId="txtMunicipio"
               placeholder="Seleccionar o buscar" [virtualScroll]="true" formControlName="id_municipio" [ngClass]="displayErrorsCss('id_municipio')">
             </ng-select>
             <div *ngIf="isHasErrors('id_municipio')" class="invalid-feedback">

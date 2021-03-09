@@ -51,11 +51,10 @@ $ng-select-marked: $dropdown-link-active-bg !default;
               }
           }
       }
-/*
       &.ng-select-focused {
-          @extend .form-control:focus;
+        color: $input-color;
+        background-color: $input-bg;
       }
-*/
       &.ng-select-disabled {
           > .ng-select-container {
               background-color: $ng-select-disabled-text;
@@ -70,11 +69,10 @@ $ng-select-marked: $dropdown-link-active-bg !default;
 
           .ng-value-container {
               align-items: center;
-/*
+
               .ng-placeholder {
-                  @extend .form-control::placeholder;
+                color: $input-placeholder-color;
               }
-*/
           }
       }
 
@@ -272,7 +270,7 @@ $ng-select-marked: $dropdown-link-active-bg !default;
   .ng-dropdown-panel {
       background-color: $ng-select-bg;
       border: $dropdown-border-width solid $ng-select-border;
-      @include box-shadow($dropdown-box-shadow);
+      box-shadow: $dropdown-box-shadow;
       left: 0;
 
 
@@ -380,5 +378,4 @@ $ng-select-marked: $dropdown-link-active-bg !default;
   .form-control-lg .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
     padding: $input-padding-y-lg $input-padding-x-lg;
   }
-
 }
