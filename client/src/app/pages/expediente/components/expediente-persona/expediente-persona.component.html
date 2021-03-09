@@ -6,7 +6,9 @@
         [ngClass]="displayErrorsCss('id_tipo_vinculacion')" required>
         <option *ngFor="let tipoVinculacion of listTipoVinculacion" value="{{tipoVinculacion.id_tipo_vinculacion}}">{{tipoVinculacion.nombre}}</option>
       </select>
-      <div *ngIf="isHasErrors('id_tipo_vinculacion')" class="invalid-feedback">Seleccione un valor</div>
+      <div *ngIf="isHasErrors('id_tipo_vinculacion')" class="invalid-feedback">
+        <div *ngIf="f.id_tipo_vinculacion.errors?.required">El campo es requerido</div>
+      </div>
     </div>
   </div>
 
@@ -22,7 +24,9 @@
               [ngClass]="displayErrorsCss('id_documento_identidad')" required>
               <option *ngFor="let documentoIdentidad of listDocumentoIdentidad" value="{{documentoIdentidad.id_documento_identidad}}">{{documentoIdentidad.nombre}}</option>
             </select>
-            <div *ngIf="isHasErrors('id_documento_identidad')" class="invalid-feedback">Seleccione un valor</div>
+            <div *ngIf="isHasErrors('id_documento_identidad')" class="invalid-feedback">
+              <div *ngIf="f.id_documento_identidad.errors?.required">El campo es requerido</div>
+            </div>
           </div>
           <div class="col-md-4 mb-3">
             <input-label [requires]="true" [label]="'Identificación'" [id]="'txtIdentificador'"></input-label>
@@ -33,7 +37,7 @@
                 [ngClass]="{ 'is-invalid': (f.identificador.dirty || f.identificador.touched || submitted)  && f.identificador.errors }" required>
               <button class="btn btn-sm btn-outline-primary" type="button" id="btnBuscarByIdentificador" (click)="searchPersona(f.id_documento_identidad.value, f.identificador.value)">Buscar</button>
               <div *ngIf="isHasErrors('identificador')" class="invalid-feedback">
-                <div *ngIf="f.identificador.errors?.required">El identificador es requerido</div>
+                <div *ngIf="f.identificador.errors?.required">El campo es requerido</div>
                 <div *ngIf="f.identificador.errors?.pattern">Digite un identificador valido</div>
               </div>
             </div>
@@ -108,7 +112,9 @@
               [ngClass]="displayErrorsCss('id_sexo')" required>
               <option *ngFor="let sexo of listSexo" value="{{sexo.id_sexo}}">{{sexo.nombre}}</option>
             </select>
-            <div *ngIf="isHasErrors('id_sexo')" class="invalid-feedback">Seleccione un valor</div>
+            <div *ngIf="isHasErrors('id_sexo')" class="invalid-feedback">
+              <div *ngIf="f.id_sexo.errors?.required">El campo es requerido</div>
+            </div>
           </div>
           <div class="col-md-4 mb-3">
             <input-label [requires]="false" [label]="'Genero'" [id]="'txtGenero'"></input-label>
@@ -116,7 +122,9 @@
               [ngClass]="displayErrorsCss('id_genero')" required>
               <option *ngFor="let genre of listGenero" value="{{genre.id_genero}}">{{genre.nombre}}</option>
             </select>
-            <div *ngIf="isHasErrors('id_genero')" class="invalid-feedback">Seleccione un valor</div>
+            <div *ngIf="isHasErrors('id_genero')" class="invalid-feedback">
+              <div *ngIf="f.id_genero.errors?.required">El campo es requerido</div>
+            </div>
           </div>
           <div class="col-md-3 mb-3">
             <input-label [label]="'Numero casillero'" [id]="'txtCodigoCasillero'"></input-label>

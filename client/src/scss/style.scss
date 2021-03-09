@@ -10,15 +10,17 @@ File: style.css
 // main framework
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
-@import "scss/settings/custom-variables";
+
+// theme colors
 @import "scss/settings/theme-variables";
 
 // ng module
 @import "ng-module/ng-module";
 
-// bootstrap
-// @import "~bootstrap/scss/bootstrap";
-
 // bootstrap css
 @import "themes/bootstrap-overlay/card";
 @import "themes/bootstrap-overlay/button";
+@import "themes/bootstrap-overlay/ng-select";
+
+// overrides
+@import "scss/settings/custom-variables";

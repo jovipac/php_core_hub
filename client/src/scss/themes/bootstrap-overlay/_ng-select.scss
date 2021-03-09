@@ -2,13 +2,13 @@
 @import "~@ng-select/ng-select/scss/mixins";
 
 $ng-select-highlight: #007bff !default;
-$ng-select-primary-text: #333 !default;
-$ng-select-disabled-text: #f9f9f9 !default;
-$ng-select-border: #ccc !default;
+$ng-select-primary-text: $input-color !default;
+$ng-select-disabled-text: $text-muted !default;
+$ng-select-border: $input-border-color !default;
 $ng-select-border-radius: 4px !default;
-$ng-select-bg: #ffffff !default;
+$ng-select-bg: $input-bg !default;
 $ng-select-selected: lighten($ng-select-highlight, 46) !default;
-$ng-select-marked: $ng-select-highlight !default;
+$ng-select-marked: $dropdown-link-active-bg !default;
 $ng-select-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 3px rgba(0, 126, 255, 0.1) !default;
 $ng-select-placeholder: lighten($ng-select-primary-text, 40) !default;
 $ng-select-height: 36px !default;
@@ -211,6 +211,26 @@ $ng-select-value-font-size: 0.9em !default;
             border-width: 5px 5px 2.5px;
         }
     }
+    &.is-invalid {
+      .ng-select-container {
+        padding-right: calc(1.5em + .75rem);
+        background-image: escape-svg($form-feedback-icon-invalid);
+        background-repeat: no-repeat;
+        background-position: right $input-height-inner-quarter center;
+        background-size: $input-height-inner-half $input-height-inner-half;
+        border-color: $form-feedback-invalid-color;
+      }
+    }
+    &.is-valid {
+      .ng-select-container {
+        padding-right: calc(1.5em + .75rem);
+        background-image: escape-svg($form-feedback-icon-valid);
+        background-repeat: no-repeat;
+        background-position: right $input-height-inner-quarter center;
+        background-size: $input-height-inner-half $input-height-inner-half;
+        border-color: $form-feedback-valid-color;
+      }
+    }
 }
 
 .ng-dropdown-panel {
@@ -276,8 +296,8 @@ $ng-select-value-font-size: 0.9em !default;
         }
         .ng-option {
             background-color: $ng-select-bg;
-            color: rgba(0, 0, 0, .87);
             padding: 8px 10px;
+
             &.ng-option-selected, &.ng-option-selected.ng-option-marked {
                 color: $ng-select-primary-text;
                 background-color: $ng-select-selected;
@@ -286,11 +306,11 @@ $ng-select-value-font-size: 0.9em !default;
                 }
             }
             &.ng-option-marked {
+                color: $dropdown-link-active-color;
                 background-color: $ng-select-marked;
-                color: $ng-select-primary-text;
             }
             &.ng-option-disabled {
-                color: lighten($ng-select-primary-text, 60);
+                color: $dropdown-link-disabled-color;
             }
             &.ng-option-child {
                 padding-left: 22px;
