@@ -3,12 +3,13 @@ import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { TipoVinculacionService, DocumentoIdentidadService, SexoService, GeneroService, PrioridadService } from '../../../../service/catalogos';
 import { DepartamentoService, MunicipioService } from '../../../../service/catalogos';
-import { ExpedientePersonaService, PersonasService } from '../../../../service';
+import { DocumentoIdentidadPersonaService, ExpedientePersonaService, PersonasService } from '../../../../service';
 import { ToastrService } from 'ngx-toastr';
-import { ExpedientePersona, DocumentoIdentidad, Sexo, Genero, TipoVinculacion, Prioridad } from '../../../../shared/models';
-import { Departamento, Municipio } from '../../../../shared/models';
+import { ExpedientePersona, DocumentoIdentidad, Sexo, Genero, Prioridad } from '../../../../shared/models';
+import { TipoVinculacion, Departamento, Municipio } from '../../../../shared/models';
 import { HttpErrorResponse } from '@angular/common/http';
-import { first } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { first, debounceTime, distinctUntilChanged, filter, switchMap, map, catchError } from 'rxjs/operators';
 import { isEmptyValue } from '../../../../shared/utils';
 import { format, isValid, parseISO, differenceInYears } from 'date-fns';
 import { extractErrorMessages } from '../../../../shared/utils';
@@ -18,7 +19,7 @@ import { extractErrorMessages } from '../../../../shared/utils';
   styleUrls: ['./expediente-persona.component.scss']
 })
 export class ExpedientePersonaComponent implements OnInit {
-  public personaForm: FormGroup;
+  personaForm: FormGroup;
   id_expediente: string;
   id_persona: string;
   isAddMode: boolean;
@@ -26,6 +27,7 @@ export class ExpedientePersonaComponent implements OnInit {
   loading = false;
 
   public listDocumentoIdentidad: Array<DocumentoIdentidad>;
+  public listFoundPersona: Array<ExpedientePersona>;
   public listTipoVinculacion: Array<TipoVinculacion>;
   public listSexo: Array<Sexo>;
   public listGenero: Array<Genero>;
@@ -40,6 +42,7 @@ export class ExpedientePersonaComponent implements OnInit {
     private solicitudPersonaService: ExpedientePersonaService,
     private tipoVinculacionService: TipoVinculacionService,
     private documentoIdentidadService: DocumentoIdentidadService,
+    private documentoIdentidadPersonaService: DocumentoIdentidadPersonaService,
     private sexoService: SexoService,
     private generoService: GeneroService,
     private prioridadService: PrioridadService,
@@ -115,8 +118,7 @@ export class ExpedientePersonaComponent implements OnInit {
       identificador: new FormControl({
         value: '',
         disabled: false,
-      }, [Validators.required,
-      Validators.pattern("[0-9A-z]+")]),
+      }, [Validators.required]),
       nombres: new FormControl({
         value: null,
         disabled: false,
@@ -336,12 +338,59 @@ export class ExpedientePersonaComponent implements OnInit {
       .filter((departamento: any) => departamento.id_departamento == id_departamento);
   }
 
-  public searchPersona(id_documento_identidad: number, identificador: string) {
-    const dataSend = {
-      'id_documento_identidad': id_documento_identidad,
-      'identificador': identificador
-    };
+  public search = (text$: Observable<string>) => {
+    return text$.pipe(
+      debounceTime(200),
+      distinctUntilChanged(),
+      filter(term => term.length >= 3),
+      switchMap((searchText) => {
+        const dataSend = {
+          'identificador': searchText
+        };
+        return this.documentoIdentidadPersonaService.searchDocumentoIdentidadPersona(dataSend)
+      }),
+      catchError((response: HttpErrorResponse) => {
+        if (Object.prototype.toString.call(response.error.message) === '[object Object]') {
+          const messages = extractErrorMessages(response);
+          messages.forEach(propertyErrors => {
+            for (let message in propertyErrors) {
+              this.toastr.error(propertyErrors[message], 'Visitas');
+            }
+          });
+        } else
+          this.toastr.error(response.error.message);
 
+        return [];
+      }),
+      map((response: any) => { return response.result })
+    );
+  }
+
+  protected blurDocumentoIdentidadPersona(data: any) {
+    if (isEmptyValue(this.personaForm.get('identificador').value))
+      this.personaForm.patchValue({ id_persona: '' });
+  }
+  protected resultFormatDocumentoIdentidadPersona(data: any) {
+    return data.identificador;
+  }
+  protected inputFormatocumentoIdentidadPersona(data: any) {
+    if (data.identificador)
+      return data.identificador
+    return data;
+  }
+  protected setDocumentoIdentidadPersona(data: any) {
+    const selected = {
+      'id_documento_identidad': data.item.id_documento_identidad,
+      'id_persona': data.item.id_persona
+    };
+    this.personaForm.patchValue(selected);
+    this.searchPersona({
+      ...selected,
+      'identificador': data.item.identificador
+    });
+  }
+
+  public searchPersona(dataSend: object) {
     this.personaService.searchPersona(dataSend)
       .pipe(first())
       .subscribe({

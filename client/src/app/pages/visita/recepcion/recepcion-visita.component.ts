@@ -7,7 +7,7 @@ import { DocumentoIdentidad, Prioridad, Sexo, Genero, Auxiliatura, Dependencia, 
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { first, map, switchMap  } from 'rxjs/operators';
-import { extractErrorMessages, FormStatus } from '../../../shared/utils';
+import { extractErrorMessages, FormStatus, isEmptyValue } from '../../../shared/utils';
 import { format, isValid, parseISO, differenceInYears } from 'date-fns';
 
 @Component({
@@ -369,6 +369,11 @@ export class RecepcionVisitaComponent implements OnInit {
   onNew() {
     this.visitaForm.reset();
     this.router.navigate(['/visita/solicitud/agregar'], { relativeTo: this.route });
+  }
+
+  blurDocumentoIdentidadPersona(data: any) {
+    if (isEmptyValue(this.visitaForm.get('identificador').value))
+      this.visitaForm.patchValue({ id_persona: '' });
   }
 
   public searchPersona(id_documento_identidad: number, identificador: string) {

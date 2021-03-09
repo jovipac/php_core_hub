@@ -32,10 +32,10 @@
             <input-label [requires]="true" [label]="'Identificación'" [id]="'txtIdentificador'"></input-label>
             <div class="input-group">
               <input type="hidden" class="form-control" id="txtIdPersona" formControlName="id_persona" >
-              <input type="text" class="form-control" id="txtIdentificador" formControlName="identificador" placeholder="Completo"
-                aria-describedby="inputGroupPrepend"
-                [ngClass]="{ 'is-invalid': (f.identificador.dirty || f.identificador.touched || submitted)  && f.identificador.errors }" required>
-              <button class="btn btn-sm btn-outline-primary" type="button" id="btnBuscarByIdentificador" (click)="searchPersona(f.id_documento_identidad.value, f.identificador.value)">Buscar</button>
+              <input type="text" class="form-control" id="txtIdentificador" formControlName="identificador" placeholder="Completo" #instance="ngbTypeahead" [ngbTypeahead]="search"
+                [editable]='false' [resultFormatter]="resultFormatDocumentoIdentidadPersona" [inputFormatter]="inputFormatocumentoIdentidadPersona"
+                (selectItem)="setDocumentoIdentidadPersona($event)" (blur)="blurDocumentoIdentidadPersona($event)" required
+                [ngClass]="{ 'is-invalid': (f.identificador.dirty || f.identificador.touched || submitted)  && f.identificador.errors }" >
               <div *ngIf="isHasErrors('identificador')" class="invalid-feedback">
                 <div *ngIf="f.identificador.errors?.required">El campo es requerido</div>
                 <div *ngIf="f.identificador.errors?.pattern">Digite un identificador valido</div>
