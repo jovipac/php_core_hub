@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { TipoVinculacionService, DocumentoIdentidadService, SexoService, GeneroService, PrioridadService } from '../../../../service/catalogos';
@@ -7,6 +7,7 @@ import { DocumentoIdentidadPersonaService, ExpedientePersonaService, PersonasSer
 import { ToastrService } from 'ngx-toastr';
 import { ExpedientePersona, DocumentoIdentidad, Sexo, Genero, Prioridad } from '../../../../shared/models';
 import { TipoVinculacion, Departamento, Municipio } from '../../../../shared/models';
+import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { first, debounceTime, distinctUntilChanged, filter, switchMap, map, catchError } from 'rxjs/operators';
@@ -19,15 +20,17 @@ import { extractErrorMessages } from '../../../../shared/utils';
   styleUrls: ['./expediente-persona.component.scss']
 })
 export class ExpedientePersonaComponent implements OnInit {
+  @ViewChild('instance') instance: NgbTypeahead;
+
   personaForm: FormGroup;
   id_expediente: string;
   id_persona: string;
   isAddMode: boolean;
-  submitted = false;
-  loading = false;
+  submitted: boolean = false;
+  loading: boolean = false;
+  isSelectedID: boolean = false;
 
   public listDocumentoIdentidad: Array<DocumentoIdentidad>;
-  public listFoundPersona: Array<ExpedientePersona>;
   public listTipoVinculacion: Array<TipoVinculacion>;
   public listSexo: Array<Sexo>;
   public listGenero: Array<Genero>;
@@ -50,6 +53,7 @@ export class ExpedientePersonaComponent implements OnInit {
     private departamentoService: DepartamentoService,
     private municipioService: MunicipioService,
   ) { }
+
 
   ngOnInit(): void {
     this.id_expediente = this.route.snapshot.params['id'];
@@ -213,7 +217,7 @@ export class ExpedientePersonaComponent implements OnInit {
 
     this.loading = true;
     if (this.isAddMode) {
-        this.updatePersonaSolicitud();
+        this.createPersonaSolicitud();
     } else {
         this.updatePersonaSolicitud();
     }
@@ -338,13 +342,14 @@ export class ExpedientePersonaComponent implements OnInit {
       .filter((departamento: any) => departamento.id_departamento == id_departamento);
   }
 
-  public search = (text$: Observable<string>) => {
+  public searchByIdentificacion = (text$: Observable<string>) => {
     return text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
       filter(term => term.length >= 3),
       switchMap((searchText) => {
         const dataSend = {
+          'id_documento_identidad': this.personaForm.get('id_documento_identidad').value,
           'identificador': searchText
         };
         return this.documentoIdentidadPersonaService.searchDocumentoIdentidadPersona(dataSend)
@@ -354,7 +359,7 @@ export class ExpedientePersonaComponent implements OnInit {
           const messages = extractErrorMessages(response);
           messages.forEach(propertyErrors => {
             for (let message in propertyErrors) {
-              this.toastr.error(propertyErrors[message], 'Visitas');
+              this.toastr.error(propertyErrors[message], 'Solicitud');
             }
           });
         } else
@@ -366,9 +371,10 @@ export class ExpedientePersonaComponent implements OnInit {
     );
   }
 
-  protected blurDocumentoIdentidadPersona(data: any) {
-    if (isEmptyValue(this.personaForm.get('identificador').value))
+  protected changeDocumentoIdentidadPersona(data: any) {
+    if (isEmptyValue(this.personaForm.get('identificador').value) || !this.isSelectedID)
       this.personaForm.patchValue({ id_persona: '' });
+    this.isSelectedID = Boolean(this.instance.dismissPopup());
   }
   protected resultFormatDocumentoIdentidadPersona(data: any) {
     return data.identificador;
@@ -379,6 +385,7 @@ export class ExpedientePersonaComponent implements OnInit {
     return data;
   }
   protected setDocumentoIdentidadPersona(data: any) {
+    this.isSelectedID = this.instance.isPopupOpen();
     const selected = {
       'id_documento_identidad': data.item.id_documento_identidad,
       'id_persona': data.item.id_persona
@@ -408,7 +415,7 @@ export class ExpedientePersonaComponent implements OnInit {
             const messages = extractErrorMessages(response);
             messages.forEach(propertyErrors => {
               for (let message in propertyErrors) {
-                this.toastr.error(propertyErrors[message], 'Visitas');
+                this.toastr.error(propertyErrors[message], 'Solicitud');
               }
             });
 
@@ -418,6 +425,78 @@ export class ExpedientePersonaComponent implements OnInit {
           this.loading = false;
         }
       });
+  }
+
+  private createPersonaSolicitud() {
+
+    let formValues = {
+      ...this.personaForm.value,
+      id_expediente: this.id_expediente,
+    };
+
+    if (isEmptyValue(formValues.id_persona)) {
+      this.personaService.createPersona(formValues).pipe(
+        first(),
+        map((data: any) => {
+          formValues = {
+            ...formValues,
+            id_persona: data.result.id_persona
+          }
+          this.personaForm.value.id_persona = data.result.id_persona;
+          return formValues;
+        }),
+        switchMap((solicitud: any) => {
+          return this.solicitudPersonaService.createExpedientePersona(solicitud)
+          .pipe(first())
+        })
+      )
+        .subscribe({
+          next: (response: any) => {
+            this.toastr.success(response.message, 'Solicitud');
+            const solicitud = response.result;
+
+          },
+          error: (response: HttpErrorResponse) => {
+            if (Object.prototype.toString.call(response.error.message) === '[object Object]') {
+              const messages = extractErrorMessages(response);
+              messages.forEach(propertyErrors => {
+                for (let message in propertyErrors) {
+                  this.toastr.error(propertyErrors[message], 'Solicitud');
+                }
+              });
+            } else {
+              this.toastr.error(response.error.message)
+            }
+            this.loading = false;
+          }
+        });
+
+    } else {
+      this.solicitudPersonaService.createExpedientePersona(formValues)
+        .pipe(first())
+        .subscribe({
+          next: (response: any) => {
+            this.toastr.success(response.message, 'Solicitud')
+            const solicitud = response.result;
+
+          },
+          error: (response: HttpErrorResponse) => {
+            if (Object.prototype.toString.call(response.error.message) === '[object Object]') {
+              const messages = extractErrorMessages(response);
+              messages.forEach(propertyErrors => {
+                for (let message in propertyErrors) {
+                  this.toastr.error(propertyErrors[message], 'Solicitud');
+                }
+              });
+
+            } else {
+              this.toastr.error(response.error.message)
+            }
+            this.loading = false;
+          }
+        });
+    }
+
   }
 
   private updatePersonaSolicitud() {

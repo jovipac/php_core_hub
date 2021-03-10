@@ -412,7 +412,7 @@ export class RecepcionVisitaComponent implements OnInit {
   }
 
   private createVisita() {
-    const dtNow = new Date();
+
     let formValues = {
       ...this.visitaForm.value,
       entrada: format(parseISO(new Date().toISOString()), 'yyyy-MM-dd HH:mm'),
