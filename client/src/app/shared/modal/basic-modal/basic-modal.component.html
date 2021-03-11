@@ -1,0 +1,5 @@
+    <div class="modal-content">
+      <ng-content *ngIf="!hideHeader" select=".app-modal-header"></ng-content>
+      <ng-content select=".app-modal-body"></ng-content>
+      <ng-content *ngIf="!hideFooter" select=".app-modal-footer"></ng-content>
+    </div>

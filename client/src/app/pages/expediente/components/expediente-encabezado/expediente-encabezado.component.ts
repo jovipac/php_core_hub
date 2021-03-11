@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { AuxiliaturaService, PrioridadService, ViaService, ResultadoService } from '../../../../service/catalogos';
@@ -17,11 +17,13 @@ import { format, isValid } from 'date-fns';
   styleUrls: ['./expediente-encabezado.component.scss']
 })
 export class ExpedienteEncabezadoComponent implements OnInit {
+  @Output() submittedEvent = new EventEmitter();
+
   public expedienteForm: FormGroup;
   id: string;
   isAddMode: boolean;
-  submitted = false;
-  loading = false;
+  submitted: boolean = false;
+  loading: boolean = false;
 
   public listAuxiliatura: Array<Auxiliatura>;
   public listPriority: Array<Prioridad>;
@@ -145,7 +147,7 @@ export class ExpedienteEncabezadoComponent implements OnInit {
   // convenience getter for easy access to form fields
   get f() { return this.expedienteForm.controls; }
 
-  onSubmit() {
+  public onSubmit() {
     this.submitted = true;
     // stop here if form is invalid
     if (this.expedienteForm.invalid) {
@@ -154,9 +156,9 @@ export class ExpedienteEncabezadoComponent implements OnInit {
 
     this.loading = true;
     if (this.isAddMode) {
-        this.updateSolicitud();
+      this.updateSolicitud();
     } else {
-        this.updateSolicitud();
+      this.updateSolicitud();
     }
 
   }
@@ -264,7 +266,7 @@ export class ExpedienteEncabezadoComponent implements OnInit {
         .subscribe({
             next: (response: any) => {
               this.toastr.success(response.message, 'Expediente')
-              //step01Modal.hide();
+              this.submittedEvent.emit(true);
             },
             error: (error: HttpErrorResponse) => {
                 const messages = extractErrorMessages(error);
@@ -273,7 +275,7 @@ export class ExpedienteEncabezadoComponent implements OnInit {
                     this.toastr.error(propertyErrors[message], 'Expediente');
                   }
                 });
-                this.loading = false;
+                this.submittedEvent.emit(false);
             }
         });
   }

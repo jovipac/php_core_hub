@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ExpedienteService, ExpedientePersonaService } from '../../../service';
 import { Expediente, ExpedientePersona } from '../../../shared/models';
 import { first } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { formatearCorrelativo } from '../../../shared/utils/helpers';
+import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-solicitud',
   templateUrl: './solicitud.component.html',
-  styleUrls: ['./solicitud.component.scss']
+  styleUrls: ['./solicitud.component.scss'],
+  providers: [ NgbModalConfig, NgbModal ]
 })
 export class SolicitudComponent implements OnInit {
   private id: string;
@@ -23,7 +25,13 @@ export class SolicitudComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
-  ) { }
+
+    configNgbModal: NgbModalConfig,
+    private modalService: NgbModal,
+  ) {
+    configNgbModal.backdrop = 'static';
+    configNgbModal.keyboard = true;
+  }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
@@ -87,6 +95,20 @@ export class SolicitudComponent implements OnInit {
 
   onBack() {
     this.router.navigate(['../../'], { relativeTo: this.route });
+  }
+
+  showModalStep(content: any) {
+    this.modalService.open(content, { size: "xl" });
+  }
+  dismissModalStep() {
+    console.log('Try dismiss', this.modalService);
+    this.modalService.dismissAll();
+  }
+  submitModalStep(isSubmitCompleted:any) {
+    console.log('Catch submit', isSubmitCompleted);
+    if(isSubmitCompleted){
+      this.modalService.dismissAll("success");
+    }
   }
 
 }
