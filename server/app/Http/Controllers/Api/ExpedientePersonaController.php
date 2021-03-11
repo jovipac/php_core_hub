@@ -67,8 +67,12 @@ class ExpedientePersonaController extends ApiController
      */
     public function show(ExpedientePersona $expedientePersona)
     {
-        $persona = ExpedientePersona::query()
-            ->join('tc_persona AS T01', 'tt_expediente_persona.id_persona', 'T01.id_persona');
+        $persona = Persona::query()
+            ->select('tc_persona.*', 'T01.*', 'T02.nombre AS nombre_tipo_vinculacion')
+            ->join('tt_expediente_persona AS T01', 'tc_persona.id_persona', 'T01.id_persona')
+            ->leftJoin('tc_tipo_vinculacion AS T02', 'T01.id_tipo_vinculacion', 'T02.id_tipo_vinculacion');
+
+        $persona->where('T01.id_expediente_persona', $expedientePersona->id_expediente_persona);
 
         return $this->apiResponse(
             [
