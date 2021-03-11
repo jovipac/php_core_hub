@@ -10,11 +10,11 @@ export class ExpedientePersonaService {
 
   constructor(private httpClient: HttpClient) { }
 
-  searchExpedientePersona(data) {
+  searchExpedientePersona(data: any) {
     return this.httpClient.post(`${environment.host}expediente-personas/search`, data , getHeaders())
   }
 
-  getExpedientePersona(id) {
+  getExpedientePersona(id: number) {
     return this.httpClient.get(`${environment.host}expediente-personas/${id}`, getHeaders())
   }
 
@@ -22,11 +22,11 @@ export class ExpedientePersonaService {
     return this.httpClient.post(`${environment.host}expediente-personas`, data, getHeaders());
   }
 
-  updateExpedientePersona(id, data) {
+  updateExpedientePersona(id: number, data: any) {
     return this.httpClient.put(`${environment.host}expediente-personas/${id}`, data, getHeaders());
   }
 
-  deleteExpedientePersona(id) {
+  deleteExpedientePersona(id: number) {
     return this.httpClient.delete(`${environment.host}expediente-personas/${id}`, getHeaders())
   }
 

@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { TipoVinculacionService, DocumentoIdentidadService, SexoService, GeneroService, PrioridadService } from '../../../../service/catalogos';
@@ -20,6 +20,8 @@ import { extractErrorMessages } from '../../../../shared/utils';
   styleUrls: ['./expediente-persona.component.scss']
 })
 export class ExpedientePersonaComponent implements OnInit {
+  @Input() id_expediente_persona: number;
+  @Output() submittedEvent = new EventEmitter();
   @ViewChild('instance') instance: NgbTypeahead;
 
   personaForm: FormGroup;
@@ -57,7 +59,7 @@ export class ExpedientePersonaComponent implements OnInit {
 
   ngOnInit(): void {
     this.id_expediente = this.route.snapshot.params['id'];
-    this.isAddMode = !this.id_expediente;
+    this.isAddMode = !this.id_expediente_persona;
 
     this.getListDocumentoIdentidad();
     this.getListTipoVinculacion();
@@ -68,32 +70,13 @@ export class ExpedientePersonaComponent implements OnInit {
     this.getListMunicipio();
 
     if (!this.isAddMode) {
-      if (!isEmptyValue(this.id_expediente) && !isEmptyValue(this.id_persona)) {
-        const dataSend = { 'id_expediente': this.id_expediente, 'id_persona': this.id_persona };
-        this.solicitudPersonaService.searchExpedientePersona(dataSend)
-          .pipe(first())
-          .subscribe({
-            next: (data: any) => {
-              const personasFormateadas = data.result
-                ? data.result.map((employee) => {
-                  employee.nombres_completos = [
-                    employee.nombres,
-                    employee.apellidos
-                  ].filter(Boolean)
-                    .join(" ");
-                  return <ExpedientePersona>employee;
-                }) : [];
-
-              this.personaForm.patchValue(personasFormateadas);
-            },
-            error: (error: any) => {
-              this.toastr.error(error.message);
-            }
-          });
+      // Si existe ya un ID ya guardado, se consulta y carga la información
+      if (!isEmptyValue(this.id_expediente_persona)) {
+        this.getPersonaExpediente(this.id_expediente_persona);
       }
     }
 
-    // Se llama la construccion del formulario
+    // Finalmente se llama la construccion del formulario
     this.buildForm();
   }
 
@@ -104,7 +87,7 @@ export class ExpedientePersonaComponent implements OnInit {
         disabled: !this.isAddMode,
       }, [Validators.pattern("[0-9]+")]),
       id_expediente: new FormControl({
-        value: null,
+        value: this.id_expediente || null,
         disabled: !this.isAddMode,
       }, [Validators.pattern("[0-9]+")]),
       id_persona: new FormControl({
@@ -222,6 +205,33 @@ export class ExpedientePersonaComponent implements OnInit {
         this.updatePersonaSolicitud();
     }
 
+  }
+
+  getPersonaExpediente(id_expediente_persona) {
+    this.solicitudPersonaService.getExpedientePersona(id_expediente_persona)
+      .pipe(first())
+      .subscribe({
+        next: (response: any) => {
+          if (response.success) {
+            const persona = response.result;
+            // Se formatea la informacion para adecuarla al formulario
+            const personaFormateada = {
+              ...persona,
+              fecha_nacimiento: format(parseISO(new Date(persona.fecha_nacimiento).toISOString()), 'yyyy-MM-dd'),
+              nombres_completos: [
+                persona.nombres,
+                persona.apellidos
+              ].filter(Boolean)
+                .join(" ")
+            };
+            this.personaForm.patchValue(personaFormateada);
+          } else
+            this.toastr.error(response.message);
+        },
+        error: (error: any) => {
+          this.toastr.error(error.message);
+        }
+      });
   }
 
   getListDocumentoIdentidad() {

@@ -16,6 +16,7 @@ import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class SolicitudComponent implements OnInit {
   private id: string;
   isAddMode: boolean;
+  id_expediente_persona: number;
   public solicitud: Expediente;
   public solicitudPersonas: Array<ExpedientePersona>;
 
@@ -86,11 +87,8 @@ export class SolicitudComponent implements OnInit {
 
   }
 
-  goEditExpedientePerson(expediente) {
-    this.router.navigate(['../../editar',
-      expediente.id_expediente_persona],
-      { relativeTo: this.route }
-    );
+  goEditExpedientePerson(persona) {
+    this.id_expediente_persona = persona.id_expediente_persona;
   }
 
   onBack() {
@@ -101,11 +99,9 @@ export class SolicitudComponent implements OnInit {
     this.modalService.open(content, { size: "xl" });
   }
   dismissModalStep() {
-    console.log('Try dismiss', this.modalService);
     this.modalService.dismissAll();
   }
   submitModalStep(isSubmitCompleted:any) {
-    console.log('Catch submit', isSubmitCompleted);
     if(isSubmitCompleted){
       this.modalService.dismissAll("success");
     }

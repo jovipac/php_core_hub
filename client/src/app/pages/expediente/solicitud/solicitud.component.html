@@ -1,5 +1,5 @@
 <ng-template #step01_Modal>
-  <app-basic-modal #step01Modal [dialogClass]="'modal-lg'" [hideFooter]="true" >
+  <app-basic-modal #step01Modal [hideFooter]="true" >
     <div class="app-modal-header modal-header">
       <h5 class="modal-title" id="modal-title-default">Paso 1: Solicitud</h5>
       <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="dismissModalStep()"><span aria-hidden="true">&times;</span></button>
@@ -10,15 +10,18 @@
   </app-basic-modal>
 </ng-template>
 
-<app-ui-modal #step02Modal [containerClick]="false" [dialogClass]="'modal-lg'" [hideFooter]="true" >
-  <div class="app-modal-header">
-    <h5 class="modal-title">Paso 2: Persona</h5>
-    <button type="button" class="close basic-close" data-dismiss="modal" aria-label="Close" (click)="step02Modal.hide()"><span aria-hidden="true">&times;</span></button>
-  </div>
-  <div class="app-modal-body">
-    <app-expediente-persona></app-expediente-persona>
-  </div>
-</app-ui-modal>
+<ng-template #step02_Modal>
+  <app-basic-modal #step02Modal [hideFooter]="true" >
+    <div class="app-modal-header modal-header">
+      <h5 class="modal-title">Paso 2: Persona</h5>
+      <button type="button" class="close basic-close" data-dismiss="modal" aria-label="Close" (click)="dismissModalStep()"><span aria-hidden="true">&times;</span></button>
+    </div>
+    <div class="app-modal-body modal-body">
+      <app-expediente-persona #step02Form [id_expediente_persona]="id_expediente_persona"></app-expediente-persona>
+    </div>
+  </app-basic-modal>
+</ng-template>
+
 <app-ui-modal #step03Modal [containerClick]="false" [dialogClass]="'modal-lg'" [hideFooter]="true" >
   <div class="app-modal-header">
     <h5 class="modal-title">Paso 3: Hechos</h5>
@@ -73,7 +76,7 @@
               <tr *ngFor="let persona of solicitudPersonas; index as idx">
                 <td scope="row">
                     <button type="button" class="btn btn-outline-primary btn-mini btn-icon-round"
-                      (click)="goEditExpedientePerson(persona)">
+                      (click)="showModalStep(step02_Modal); goEditExpedientePerson(persona);">
                       <i class="icofont icofont-ui-edit"></i>
                     </button>
                 </td>
@@ -88,7 +91,7 @@
 
       </div>
       <div class="card-footer text-center">
-        <a href="javascript:" class="btn btn-sm btn-primary" (click)="step02Modal.show()">Agregar</a>
+        <a href="javascript:" class="btn btn-sm btn-primary" (click)="showModalStep(step02_Modal); id_expediente_persona=0;">Agregar</a>
       </div>
     </div>
 
