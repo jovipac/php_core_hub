@@ -35,8 +35,8 @@ class DocumentoIdentidadPersonaController extends ApiController
     public function search(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'id_persona' => 'integer',
-            'id_documento_identidad' => 'integer',
+            'id_persona' => 'nullable|integer',
+            'id_documento_identidad' => 'nullable|integer',
             'identificador' => 'required',
         ]);
         if ($validator->fails()) {
