@@ -54,13 +54,13 @@ class DocumentoIdentidadPersonaController extends ApiController
             )
             ->join('tt_documento_identidad_persona AS T01', 'tc_documento_identidad.id_documento_identidad', 'T01.id_documento_identidad');
 
-            if ($request->has('id_documento_identidad'))
+            if ($request->has('id_documento_identidad') && $request->filled('id_documento_identidad'))
                 $documento = $documento->where('T01.id_documento_identidad', $request->input('id_documento_identidad'));
 
-            if ($request->has('id_persona'))
+            if ($request->has('id_persona') && $request->filled('id_persona'))
                 $documento = $documento->where('T01.id_persona', $request->input('id_persona'));
 
-            if ($request->has('identificador'))
+            if ($request->has('identificador') && $request->filled('identificador'))
                 $documento = $documento->where('T01.identificador', 'like', '%' . $request->input('identificador') . '%');
 
             $documento = $documento->get();

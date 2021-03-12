@@ -486,8 +486,9 @@ export class RecepcionVisitaComponent implements OnInit {
   }
 
   private updateVisita() {
+      //Valor del Form, incluidos los controles deshabilitados
       const formValues = {
-        ...this.visitaForm.value,
+        ...this.visitaForm.getRawValue(),
         entrada: format(new Date(this.visitaForm.value.entrada), 'yyyy-MM-dd HH:mm'),
         salida: format(new Date(), 'yyyy-MM-dd HH:mm'),
         id_estado: 2
