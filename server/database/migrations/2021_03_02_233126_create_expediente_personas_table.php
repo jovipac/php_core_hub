@@ -20,6 +20,9 @@ class CreateExpedientePersonasTable extends Migration
             $table->integer('id_tipo_vinculacion')->nullable()->unsigned();
             $table->boolean('flag_confidencial')->default(0);
             $table->boolean('borrado')->default(0)->index();
+            $table->integer('created_by')->nullable()->unsigned();
+            $table->integer('updated_by')->nullable()->unsigned();
+            $table->integer('deleted_by')->nullable()->unsigned();
             $table->timestamps();
             $table->softDeletes();
 

@@ -469,7 +469,7 @@ export class ExpedientePersonaComponent implements OnInit {
         .subscribe({
           next: (response: any) => {
             this.toastr.success(response.message, 'Solicitud');
-            const solicitud = response.result;
+            this.submittedEvent.emit(true);
             this.loading.hide();
           },
           error: (response: HttpErrorResponse) => {
@@ -483,6 +483,7 @@ export class ExpedientePersonaComponent implements OnInit {
             } else {
               this.toastr.error(response.error.message)
             }
+            this.submittedEvent.emit(false);
             this.loading.hide();
           }
         });
@@ -494,7 +495,7 @@ export class ExpedientePersonaComponent implements OnInit {
         .subscribe({
           next: (response: any) => {
             this.toastr.success(response.message, 'Solicitud')
-            const solicitud = response.result;
+            this.submittedEvent.emit(true);
             this.loading.hide();
           },
           error: (response: HttpErrorResponse) => {
@@ -509,6 +510,7 @@ export class ExpedientePersonaComponent implements OnInit {
             } else {
               this.toastr.error(response.error.message)
             }
+            this.submittedEvent.emit(false);
             this.loading.hide();
           }
         });
@@ -525,7 +527,8 @@ export class ExpedientePersonaComponent implements OnInit {
         .pipe(first())
         .subscribe({
             next: (response: any) => {
-              this.toastr.success(response.message, 'Expediente')
+              this.toastr.success(response.message, 'Expediente');
+              this.submittedEvent.emit(true);
               this.loading.hide();
             },
             error: (error: HttpErrorResponse) => {
@@ -535,6 +538,7 @@ export class ExpedientePersonaComponent implements OnInit {
                     this.toastr.error(propertyErrors[message], 'Expediente');
                   }
                 });
+                this.submittedEvent.emit(false);
                 this.loading.hide();
             }
         });

@@ -20,7 +20,7 @@
       <button type="button" class="close basic-close" data-dismiss="modal" aria-label="Close" (click)="dismissModalStep()"><span aria-hidden="true">&times;</span></button>
     </div>
     <div class="app-modal-body modal-body">
-      <app-expediente-persona #step02Form [id_expediente_persona]="id_expediente_persona"></app-expediente-persona>
+      <app-expediente-persona #step02Form [id_expediente_persona]="id_expediente_persona" (submittedEvent)='submitModalStep($event)'></app-expediente-persona>
     </div>
   </app-basic-modal>
 </ng-template>
