@@ -43,6 +43,7 @@ class ExpedientePersonaController extends ApiController
         $validator = Validator::make($request->all(), [
             'id_expediente' => 'required|integer',
             'id_persona' => 'required|integer',
+            'id_documento_identidad' => 'nullable|integer',
             'id_tipo_vinculacion' => 'nullable|integer',
             'flag_confidencial' => 'boolean',
         ]);
@@ -68,11 +69,15 @@ class ExpedientePersonaController extends ApiController
     public function show(ExpedientePersona $expedientePersona)
     {
         $persona = Persona::query()
-            ->select('tc_persona.*', 'T01.*', 'T02.nombre AS nombre_tipo_vinculacion')
+            ->select('tc_persona.*', 'T01.*', 'T02.nombre AS nombre_tipo_vinculacion',
+                'T01.id_documento_identidad', 'T03.identificador')
             ->join('tt_expediente_persona AS T01', 'tc_persona.id_persona', 'T01.id_persona')
-            ->leftJoin('tc_tipo_vinculacion AS T02', 'T01.id_tipo_vinculacion', 'T02.id_tipo_vinculacion');
-
-        $persona->where('T01.id_expediente_persona', $expedientePersona->id_expediente_persona);
+            ->leftJoin('tc_tipo_vinculacion AS T02', 'T01.id_tipo_vinculacion', 'T02.id_tipo_vinculacion')
+            ->join('tt_documento_identidad_persona AS T03', function ($join) {
+                $join->on('T03.id_persona', '=', 'tc_persona.id_persona')
+                    ->on('T03.id_documento_identidad', '=', 'T01.id_documento_identidad');
+            })
+            ->where('T01.id_expediente_persona', $expedientePersona->id_expediente_persona);
 
         return $this->apiResponse(
             [
@@ -124,6 +129,7 @@ class ExpedientePersonaController extends ApiController
         $validator = Validator::make($request->all(), [
             'id_expediente' => 'required|integer',
             'id_persona' => 'required|integer',
+            'id_documento_identidad' => 'nullable|integer',
             'id_tipo_vinculacion' => 'required|integer',
             'flag_confidencial' => 'nullable|boolean',
         ]);

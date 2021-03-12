@@ -28,7 +28,7 @@ class ExpedientePersona extends Model
      * @var array
      */
     protected $fillable = [
-        'id_expediente', 'id_persona', 'id_tipo_vinculacion', 'flag_confidencial',
+        'id_expediente', 'id_persona', 'id_documento_identidad', 'id_tipo_vinculacion', 'flag_confidencial',
         'borrado'
     ];
 

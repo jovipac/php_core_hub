@@ -17,6 +17,7 @@ class CreateExpedientePersonasTable extends Migration
             $table->increments('id_expediente_persona');
             $table->integer('id_expediente')->unsigned();
             $table->integer('id_persona')->unsigned();
+            $table->integer('id_documento_identidad')->nullable()->unsigned();
             $table->integer('id_tipo_vinculacion')->nullable()->unsigned();
             $table->boolean('flag_confidencial')->default(0);
             $table->boolean('borrado')->default(0)->index();
@@ -33,6 +34,10 @@ class CreateExpedientePersonasTable extends Migration
                 ->onDelete('cascade');
             $table->foreign('id_persona')->references('id_persona')
                 ->on('tc_persona')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreign('id_documento_identidad')->references('id_documento_identidad')
+                ->on('tc_documento_identidad')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->foreign('id_tipo_vinculacion')->references('id_tipo_vinculacion')
