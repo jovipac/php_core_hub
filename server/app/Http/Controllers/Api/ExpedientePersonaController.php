@@ -44,7 +44,7 @@ class ExpedientePersonaController extends ApiController
             'id_expediente' => 'required|integer',
             'id_persona' => 'required|integer',
             'id_tipo_vinculacion' => 'nullable|integer',
-            'flag_confidencial' => 'integer',
+            'flag_confidencial' => 'boolean',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
@@ -125,7 +125,7 @@ class ExpedientePersonaController extends ApiController
             'id_expediente' => 'required|integer',
             'id_persona' => 'required|integer',
             'id_tipo_vinculacion' => 'required|integer',
-            'flag_confidencial' => 'integer',
+            'flag_confidencial' => 'nullable|boolean',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);

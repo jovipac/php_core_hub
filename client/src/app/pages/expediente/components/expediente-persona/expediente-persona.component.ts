@@ -446,6 +446,7 @@ export class ExpedientePersonaComponent implements OnInit {
     let formValues = {
       ...this.personaForm.value,
       id_expediente: this.id_expediente,
+      flag_confidencial: Boolean(this.personaForm.get('flag_confidencial').value)
     };
 
     if (isEmptyValue(formValues.id_persona)) {
