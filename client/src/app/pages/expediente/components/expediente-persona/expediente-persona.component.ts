@@ -216,7 +216,7 @@ export class ExpedientePersonaComponent implements OnInit {
           if (response.success) {
             const persona = response.result;
             // Se formatea la informacion para adecuarla al formulario
-            const personaFormateada = {
+            const personaFormateada = !isEmptyValue(persona) ? {
               ...persona,
               fecha_nacimiento: format(parseISO(new Date(persona.fecha_nacimiento).toISOString()), 'yyyy-MM-dd'),
               nombres_completos: [
@@ -224,7 +224,7 @@ export class ExpedientePersonaComponent implements OnInit {
                 persona.apellidos
               ].filter(Boolean)
                 .join(" ")
-            };
+            } : {};
             this.personaForm.patchValue(personaFormateada);
           } else
             this.toastr.error(response.message);
@@ -519,8 +519,9 @@ export class ExpedientePersonaComponent implements OnInit {
   }
 
   private updatePersonaSolicitud() {
+    //Valor del Form, incluidos los controles deshabilitados
     const formValues = {
-      ...this.personaForm.value,
+      ...this.personaForm.getRawValue(),
     };
     this.loading.show();
     this.solicitudPersonaService.updateExpedientePersona(this.id_expediente_persona, formValues)
