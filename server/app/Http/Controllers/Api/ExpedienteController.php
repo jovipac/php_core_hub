@@ -129,7 +129,7 @@ class ExpedienteController extends ApiController
             'id_via' => 'required|integer',
             'id_prioridad' => 'required|integer',
             'id_funcionario' => 'required|integer',
-            'observaciones' => 'string',
+            'observaciones' => 'nullable|string',
             'id_resultado' => 'nullable|integer',
             'id_auxiliatura' => 'integer',
         ]);

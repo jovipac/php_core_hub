@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../../shared/shared.module';
+import { NgxSpinnerModule } from "ngx-spinner";
 
 import { SolicitudRoutingModule } from './solicitud-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -17,6 +18,7 @@ import { ExpedienteHechoComponent } from '../components/expediente-hecho/expedie
     NgSelectModule,
     SolicitudRoutingModule,
     ReactiveFormsModule,
+    NgxSpinnerModule
   ],
   declarations: [
     SolicitudComponent,

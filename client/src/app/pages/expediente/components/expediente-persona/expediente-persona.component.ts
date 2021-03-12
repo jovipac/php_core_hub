@@ -14,6 +14,7 @@ import { first, debounceTime, distinctUntilChanged, filter, switchMap, map, catc
 import { isEmptyValue } from '../../../../shared/utils';
 import { format, isValid, parseISO, differenceInYears } from 'date-fns';
 import { extractErrorMessages } from '../../../../shared/utils';
+import { NgxSpinnerService } from "ngx-spinner";
 @Component({
   selector: 'app-expediente-persona',
   templateUrl: './expediente-persona.component.html',
@@ -25,11 +26,10 @@ export class ExpedientePersonaComponent implements OnInit {
   @ViewChild('instance') instance: NgbTypeahead;
 
   personaForm: FormGroup;
-  id_expediente: string;
+  id_expediente: number;
   id_persona: string;
   isAddMode: boolean;
   submitted: boolean = false;
-  loading: boolean = false;
   isSelectedID: boolean = false;
 
   public listDocumentoIdentidad: Array<DocumentoIdentidad>;
@@ -54,6 +54,7 @@ export class ExpedientePersonaComponent implements OnInit {
     private personaService: PersonasService,
     private departamentoService: DepartamentoService,
     private municipioService: MunicipioService,
+    private loading: NgxSpinnerService
   ) { }
 
 
@@ -198,7 +199,6 @@ export class ExpedientePersonaComponent implements OnInit {
       return;
     }
 
-    this.loading = true;
     if (this.isAddMode) {
         this.createPersonaSolicitud();
     } else {
@@ -208,6 +208,7 @@ export class ExpedientePersonaComponent implements OnInit {
   }
 
   getPersonaExpediente(id_expediente_persona) {
+    this.loading.show();
     this.solicitudPersonaService.getExpedientePersona(id_expediente_persona)
       .pipe(first())
       .subscribe({
@@ -227,9 +228,11 @@ export class ExpedientePersonaComponent implements OnInit {
             this.personaForm.patchValue(personaFormateada);
           } else
             this.toastr.error(response.message);
+          this.loading.hide();
         },
         error: (error: any) => {
           this.toastr.error(error.message);
+          this.loading.hide();
         }
       });
   }
@@ -408,6 +411,7 @@ export class ExpedientePersonaComponent implements OnInit {
   }
 
   public searchPersona(dataSend: object) {
+    this.loading.show();
     this.personaService.searchPersona(dataSend)
       .pipe(first())
       .subscribe({
@@ -418,7 +422,8 @@ export class ExpedientePersonaComponent implements OnInit {
             this.personaForm.patchValue(response.result);
             this.toastr.success(response.message)
           } else
-            this.toastr.error(response.message)
+            this.toastr.error(response.message);
+          this.loading.hide();
         },
         error: (response: HttpErrorResponse) => {
           if (Object.prototype.toString.call(response.error.message) === '[object Object]') {
@@ -432,19 +437,19 @@ export class ExpedientePersonaComponent implements OnInit {
           } else {
             this.toastr.error(response.error.message)
           }
-          this.loading = false;
+          this.loading.hide();
         }
       });
   }
 
   private createPersonaSolicitud() {
-
     let formValues = {
       ...this.personaForm.value,
       id_expediente: this.id_expediente,
     };
 
     if (isEmptyValue(formValues.id_persona)) {
+      this.loading.show();
       this.personaService.createPersona(formValues).pipe(
         first(),
         map((data: any) => {
@@ -464,7 +469,7 @@ export class ExpedientePersonaComponent implements OnInit {
           next: (response: any) => {
             this.toastr.success(response.message, 'Solicitud');
             const solicitud = response.result;
-
+            this.loading.hide();
           },
           error: (response: HttpErrorResponse) => {
             if (Object.prototype.toString.call(response.error.message) === '[object Object]') {
@@ -477,18 +482,19 @@ export class ExpedientePersonaComponent implements OnInit {
             } else {
               this.toastr.error(response.error.message)
             }
-            this.loading = false;
+            this.loading.hide();
           }
         });
 
     } else {
+      this.loading.show();
       this.solicitudPersonaService.createExpedientePersona(formValues)
         .pipe(first())
         .subscribe({
           next: (response: any) => {
             this.toastr.success(response.message, 'Solicitud')
             const solicitud = response.result;
-
+            this.loading.hide();
           },
           error: (response: HttpErrorResponse) => {
             if (Object.prototype.toString.call(response.error.message) === '[object Object]') {
@@ -502,7 +508,7 @@ export class ExpedientePersonaComponent implements OnInit {
             } else {
               this.toastr.error(response.error.message)
             }
-            this.loading = false;
+            this.loading.hide();
           }
         });
     }
@@ -513,12 +519,13 @@ export class ExpedientePersonaComponent implements OnInit {
     const formValues = {
       ...this.personaForm.value,
     };
-    this.solicitudPersonaService.updateExpedientePersona(this.id_expediente, formValues)
+    this.loading.show();
+    this.solicitudPersonaService.updateExpedientePersona(this.id_expediente_persona, formValues)
         .pipe(first())
         .subscribe({
             next: (response: any) => {
               this.toastr.success(response.message, 'Expediente')
-              //step02Modal.hide();
+              this.loading.hide();
             },
             error: (error: HttpErrorResponse) => {
                 const messages = extractErrorMessages(error);
@@ -527,7 +534,7 @@ export class ExpedientePersonaComponent implements OnInit {
                     this.toastr.error(propertyErrors[message], 'Expediente');
                   }
                 });
-                this.loading = false;
+                this.loading.hide();
             }
         });
   }

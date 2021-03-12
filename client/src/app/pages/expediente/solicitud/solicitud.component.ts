@@ -6,6 +6,7 @@ import { first } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { formatearCorrelativo } from '../../../shared/utils/helpers';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-solicitud',
@@ -26,9 +27,9 @@ export class SolicitudComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
-
-    configNgbModal: NgbModalConfig,
+    private configNgbModal: NgbModalConfig,
     private modalService: NgbModal,
+    private loading: NgxSpinnerService
   ) {
     configNgbModal.backdrop = 'static';
     configNgbModal.keyboard = true;
@@ -39,6 +40,7 @@ export class SolicitudComponent implements OnInit {
     this.isAddMode = !this.id;
 
     if (!this.isAddMode) {
+      this.loading.show();
       this.solicitudService.getExpediente(this.id)
       .pipe(first())
       .subscribe({
@@ -55,9 +57,11 @@ export class SolicitudComponent implements OnInit {
               .join(" ")
           };
           this.solicitud = <Expediente>expediente;
+          this.loading.hide();
         },
         error: (error:any) => {
           this.toastr.error(error.message);
+          this.loading.hide();
         }
       });
 

@@ -10,6 +10,7 @@ import { first, map, switchMap  } from 'rxjs/operators';
 import { formatearCorrelativo } from '../../../../shared/utils/helpers';
 import { extractErrorMessages } from '../../../../shared/utils';
 import { format, isValid } from 'date-fns';
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-expediente-encabezado',
@@ -23,7 +24,6 @@ export class ExpedienteEncabezadoComponent implements OnInit {
   id: string;
   isAddMode: boolean;
   submitted: boolean = false;
-  loading: boolean = false;
 
   public listAuxiliatura: Array<Auxiliatura>;
   public listPriority: Array<Prioridad>;
@@ -40,6 +40,7 @@ export class ExpedienteEncabezadoComponent implements OnInit {
     private viaService: ViaService,
     private funcionarioService: FuncionariosService,
     private resultadoService: ResultadoService,
+    private loading: NgxSpinnerService
   ) { }
 
   ngOnInit(): void {
@@ -53,6 +54,7 @@ export class ExpedienteEncabezadoComponent implements OnInit {
     this.getListResultado();
 
     if (!this.isAddMode) {
+      this.loading.show();
       this.solicitudService.getExpediente(this.id)
       .pipe(first())
       .subscribe({
@@ -65,9 +67,11 @@ export class ExpedienteEncabezadoComponent implements OnInit {
             fecha_ingreso: format(new Date(data.result.fecha_ingreso), 'yyyy-MM-dd'),
           };
           this.expedienteForm.patchValue(<Expediente>expediente);
+          this.loading.hide();
         },
         error: (error:any) => {
           this.toastr.error(error.message);
+          this.loading.hide();
         }
       });
 
@@ -154,7 +158,6 @@ export class ExpedienteEncabezadoComponent implements OnInit {
       return;
     }
 
-    this.loading = true;
     if (this.isAddMode) {
       this.updateSolicitud();
     } else {
@@ -258,6 +261,7 @@ export class ExpedienteEncabezadoComponent implements OnInit {
   }
 
   private updateSolicitud() {
+    this.loading.show();
     const formValues = {
       ...this.expedienteForm.value,
     };
@@ -267,6 +271,7 @@ export class ExpedienteEncabezadoComponent implements OnInit {
             next: (response: any) => {
               this.toastr.success(response.message, 'Expediente')
               this.submittedEvent.emit(true);
+              this.loading.hide();
             },
             error: (error: HttpErrorResponse) => {
                 const messages = extractErrorMessages(error);
@@ -276,6 +281,7 @@ export class ExpedienteEncabezadoComponent implements OnInit {
                   }
                 });
                 this.submittedEvent.emit(false);
+                this.loading.hide();
             }
         });
   }
