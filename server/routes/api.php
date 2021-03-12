@@ -115,11 +115,22 @@ Route::group([
     ]]);
     Route::post('documento-identidad-persona/search', 'Api\DocumentoIdentidadPersonaController@search')->name('documento-identidad-persona.search');
 
+    Route::resource('tipo-direccion', 'Api\TipoDireccionController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+    Route::get('tipo-direccion/restore/{tipo-direccion}', 'Api\TipoDireccionController@restore')->name('tipo-direccion.restore');
+
     Route::resource('personas', 'Api\PersonaController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy',
     ]]);
     Route::post('personas/search', 'Api\PersonaController@search')->name('personas.search');
     Route::get('personas/restore/{persona}', 'Api\PersonaController@restore')->name('personas.restore');
+
+    Route::resource('persona-direccion', 'Api\PersonaDireccionController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+    Route::get('persona-direccion/restore/{persona-direccion}', 'Api\PersonaDireccionController@restore')->name('persona-direccion.restore');
+    Route::post('persona-direccion/search', 'Api\PersonaDireccionController@search')->name('persona-direccion.search');
 
     Route::resource('motivos', 'Api\MotivoController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
