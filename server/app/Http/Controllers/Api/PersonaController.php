@@ -90,8 +90,9 @@ class PersonaController extends ApiController
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
+    {   //$input = $request->all();
+        $input = $request->except(['direcciones']);
+        $validator = Validator::make($input, [
             'id_documento_identidad' => 'required|integer',
             'identificador' => 'required|integer|unique:tt_documento_identidad_persona',
             'nombres' => 'required|string',
@@ -103,7 +104,7 @@ class PersonaController extends ApiController
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
         }
-        $input = $request->all();
+
         $persona = Persona::create($input);
 
         if (
