@@ -26,8 +26,7 @@ class PersonaDireccion extends Model
      * @var array
      */
     protected $fillable = [
-        'id_persona', 'id_tipo_direccion', 'id_departamento', 'id_municipio',
-        'direccion', 'comentarios'
+        'id_persona', 'id_tipo_direccion', 'id_departamento', 'id_municipio', 'direccion', 'comentarios'
     ];
 
     /**

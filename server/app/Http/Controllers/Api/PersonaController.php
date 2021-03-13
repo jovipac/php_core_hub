@@ -113,7 +113,7 @@ class PersonaController extends ApiController
             $persona->documentos_identidad()->attach($request->id_documento_identidad, ['identificador' => $request->identificador]);
         }
 
-
+/*
         if ($request->has('direcciones') && $request->filled('direcciones')) {
             foreach($request->direcciones as $direccion) {
                     $direcciones[] = new PersonaDireccion([
@@ -126,7 +126,7 @@ class PersonaController extends ApiController
             }
             $persona->direcciones()->saveMany($direcciones);
         }
-
+*/
         return $this->respondCreated([
             'success' => true,
             'message' => "Persona agregada con exito",
