@@ -167,8 +167,22 @@
         </div>
         <div class="form-row">
           <div class="col mb-3">
+            <input-label [label]="'Direccion'" [id]="'txtDireccion'"></input-label>
+            <input type="text" class="form-control" id="txtDireccion" formControlName="direccion" [ngClass]="displayErrorsCss('direccion')">
+            <div *ngIf="isHasErrors('direccion')" class="invalid-feedback">
+              <div *ngIf="f.direccion.errors?.required">El campo es requerido</div>
+              <div *ngIf="f.direccion.errors?.pattern">Solo se acepta texto sin caracteres especiales</div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col mb-3">
             <input-label [label]="'Comentarios'" [id]="'txtComentarios'"></input-label>
-            <input type="text" class="form-control" id="txtComentarios" formControlName="comentarios">
+            <input type="text" class="form-control" id="txtComentarios" formControlName="comentarios" [ngClass]="displayErrorsCss('comentarios')">
+            <div *ngIf="isHasErrors('comentarios')" class="invalid-feedback">
+              <div *ngIf="f.comentarios.errors?.required">El campo es requerido</div>
+              <div *ngIf="f.comentarios.errors?.pattern">Solo se acepta texto sin caracteres especiales</div>
+            </div>
           </div>
         </div>
       </ng-template>

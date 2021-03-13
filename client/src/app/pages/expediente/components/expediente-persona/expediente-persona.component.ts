@@ -161,10 +161,14 @@ export class ExpedientePersonaComponent implements OnInit {
         value: null,
         disabled: false,
       }, [Validators.pattern("[0-9]+")]),
+      direccion: new FormControl({
+        value: '',
+        disabled: false,
+      }, [Validators.pattern(/^\S+[a-zA-ZÀ-ÿ0-9\-\s.,]*\S+$/)]),
       comentarios: new FormControl({
         value: '',
         disabled: false,
-      }, []),
+      }, [Validators.pattern(/^\S+[a-zA-ZÀ-ÿ0-9\-\s.,]*\S+$/)]),
     }, {});
   }
 

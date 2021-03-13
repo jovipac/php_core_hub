@@ -162,7 +162,7 @@ export class RecepcionVisitaComponent implements OnInit {
       observaciones: new FormControl({
         value: '',
         disabled: false,
-      }, []),
+      }, [Validators.pattern(/^\S+[a-zA-ZÀ-ÿ0-9\-\s.,]*\S+$/)]),
     }, { validators: this.dateLessThan('fecha_nacimiento') });
   }
 
