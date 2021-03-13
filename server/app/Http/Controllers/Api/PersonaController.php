@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
 use App\Models\Entities\Persona;
+use App\Models\Entities\PersonaDireccion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -110,6 +111,20 @@ class PersonaController extends ApiController
             ($request->has('identificador') && $request->filled('identificador'))
         ) {
             $persona->documentos_identidad()->attach($request->id_documento_identidad, ['identificador' => $request->identificador]);
+        }
+
+
+        if ($request->has('direcciones') && $request->filled('direcciones')) {
+            foreach($request->direcciones as $direccion) {
+                    $direcciones[] = new PersonaDireccion([
+                        'id_persona' => $persona->id_persona,
+                        'id_departamento' => $direccion->id_departamento,
+                        'id_municipio' => $direccion->id_municipio,
+                        'direccion' => $direccion->direccion,
+                        'comentarios' => $direccion->comentarios,
+                    ]);
+            }
+            $persona->direcciones()->saveMany($direcciones);
         }
 
         return $this->respondCreated([

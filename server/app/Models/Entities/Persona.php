@@ -27,7 +27,7 @@ class Persona extends Model
      */
     protected $fillable = [
         'id_persona', 'nombres', 'apellidos', 'fecha_nacimiento',
-        'id_sexo', 'id_genero', 'telefono', 'codigo_casillero'
+        'id_sexo', 'id_genero', 'telefono', 'codigo_casillero', 'direcciones'
     ];
 
     /**
@@ -68,4 +68,10 @@ class Persona extends Model
             'id_documento_identidad'
         )->withTimestamps();
     }
+
+    public function direcciones()
+    {
+        return $this->hasMany(PersonaDireccion::class, 'id_persona', 'id_persona');
+    }
+
 }
