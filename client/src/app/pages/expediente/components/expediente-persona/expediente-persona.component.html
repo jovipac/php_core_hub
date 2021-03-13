@@ -142,50 +142,56 @@
     <ng-container ngbNavItem>
       <a ngbNavLink>Dirección</a>
       <ng-template ngbNavContent>
-        <div class="form-row">
-          <div class="col-md-3 mb-3">
-            <input-label [requires]="false" [label]="'Departamento'" [id]="'txtDepartamento'"></input-label>
-            <ng-select id="txtDepartamento" [items]="listDepartamento" #select bindLabel="nombre" dropdownPosition="auto"
-              bindValue="id_departamento" labelForId="txtDepartamento" placeholder="Seleccionar o buscar" [virtualScroll]="true"
-              formControlName="id_departamento" [ngClass]="displayErrorsCss('id_departamento')" (blur)="selectedDepartamento()" >
-            </ng-select>
-            <div *ngIf="isHasErrors('id_departamento')" class="invalid-feedback">
-              <div *ngIf="f.id_departamento.errors?.required">El campo es requerido</div>
-              <div *ngIf="f.id_departamento.errors?.pattern">Solo se aceptan digitos</div>
+        <div formArrayName="direcciones" *ngFor="let direccion of personaForm.get('direcciones')['controls']; let idx = index;">
+          <div [formGroupName]="idx">
+            <div class="form-row">
+              <div class="col-md-3 mb-3">
+                <input-label [requires]="false" [label]="'Departamento'" [id]="'txtDepartamento'"></input-label>
+                <ng-select id="txtDepartamento" [items]="listDepartamento" #select bindLabel="nombre" dropdownPosition="auto"
+                  bindValue="id_departamento" labelForId="txtDepartamento" placeholder="Seleccionar o buscar" [virtualScroll]="true"
+                  formControlName="id_departamento" (blur)="selectedDepartamento(idx)" >
+                </ng-select>
+                <!-- <div class="invalid-feedback">
+                  <div *ngIf="f.id_departamento.errors?.required">El campo es requerido</div>
+                  <div *ngIf="f.id_departamento.errors?.pattern">Solo se aceptan digitos</div>
+                </div> -->
+              </div>
+              <div class="col-md-4 mb-3">
+                <input-label [requires]="false" [label]="'Municipio'" [id]="'txtMunicipio'"></input-label>
+                <ng-select [items]="listDepartamentoMunicipio" #select bindLabel="nombre" dropdownPosition="auto" bindValue="id_municipio" labelForId="txtMunicipio"
+                  placeholder="Seleccionar o buscar" [virtualScroll]="true" formControlName="id_municipio" >
+                </ng-select>
+                <!-- <div class="invalid-feedback">
+                  <div *ngIf="f.id_municipio.errors?.required">El campo es requerido</div>
+                  <div *ngIf="f.id_municipio.errors?.pattern">Solo se aceptan digitos</div>
+                </div> -->
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col mb-3">
+                <input-label [label]="'Direccion'" [id]="'txtDireccion'"></input-label>
+                <input type="text" class="form-control" id="txtDireccion" formControlName="direccion" >
+                <!-- <div *ngIf="isHasErrors('direccion')" class="invalid-feedback">
+                  <div *ngIf="f.direccion.errors?.required">El campo es requerido</div>
+                  <div *ngIf="f.direccion.errors?.pattern">Solo se acepta texto sin caracteres especiales</div>
+                </div> -->
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col mb-3">
+                <input-label [label]="'Comentarios'" [id]="'txtComentarios'"></input-label>
+                <input type="text" class="form-control" id="txtComentarios" formControlName="comentarios" >
+                <!-- <div class="invalid-feedback">
+                  <div *ngIf="f.comentarios.errors?.required">El campo es requerido</div>
+                  <div *ngIf="f.comentarios.errors?.pattern">Solo se acepta texto sin caracteres especiales</div>
+                </div> -->
+              </div>
             </div>
           </div>
-          <div class="col-md-4 mb-3">
-            <input-label [requires]="false" [label]="'Municipio'" [id]="'txtMunicipio'"></input-label>
-            <ng-select [items]="listDepartamentoMunicipio" #select bindLabel="nombre" dropdownPosition="auto" bindValue="id_municipio" labelForId="txtMunicipio"
-              placeholder="Seleccionar o buscar" [virtualScroll]="true" formControlName="id_municipio" [ngClass]="displayErrorsCss('id_municipio')">
-            </ng-select>
-            <div *ngIf="isHasErrors('id_municipio')" class="invalid-feedback">
-              <div *ngIf="f.id_municipio.errors?.required">El campo es requerido</div>
-              <div *ngIf="f.id_municipio.errors?.pattern">Solo se aceptan digitos</div>
-            </div>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="col mb-3">
-            <input-label [label]="'Direccion'" [id]="'txtDireccion'"></input-label>
-            <input type="text" class="form-control" id="txtDireccion" formControlName="direccion" [ngClass]="displayErrorsCss('direccion')">
-            <div *ngIf="isHasErrors('direccion')" class="invalid-feedback">
-              <div *ngIf="f.direccion.errors?.required">El campo es requerido</div>
-              <div *ngIf="f.direccion.errors?.pattern">Solo se acepta texto sin caracteres especiales</div>
-            </div>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="col mb-3">
-            <input-label [label]="'Comentarios'" [id]="'txtComentarios'"></input-label>
-            <input type="text" class="form-control" id="txtComentarios" formControlName="comentarios" [ngClass]="displayErrorsCss('comentarios')">
-            <div *ngIf="isHasErrors('comentarios')" class="invalid-feedback">
-              <div *ngIf="f.comentarios.errors?.required">El campo es requerido</div>
-              <div *ngIf="f.comentarios.errors?.pattern">Solo se acepta texto sin caracteres especiales</div>
-            </div>
-          </div>
+          Exposed item name: {{ personaForm.controls.direcciones.value[idx].controls }}
         </div>
       </ng-template>
+
     </ng-container>
     <ng-container ngbNavItem>
       <a ngbNavLink>Otra Información</a>

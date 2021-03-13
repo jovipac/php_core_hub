@@ -1,6 +1,6 @@
 import { Component, ViewChild, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { FormGroup, FormControl, FormArray, Validators } from "@angular/forms";
 import { TipoVinculacionService, DocumentoIdentidadService, SexoService, GeneroService, PrioridadService } from '../../../../service/catalogos';
 import { DepartamentoService, MunicipioService } from '../../../../service/catalogos';
 import { DocumentoIdentidadPersonaService, ExpedientePersonaService, PersonasService } from '../../../../service';
@@ -26,6 +26,7 @@ export class ExpedientePersonaComponent implements OnInit {
   @ViewChild('instance') instance: NgbTypeahead;
 
   personaForm: FormGroup;
+  direcciones: FormArray;
   id_expediente: number;
   id_persona: string;
   isAddMode: boolean;
@@ -153,6 +154,17 @@ export class ExpedientePersonaComponent implements OnInit {
         value: null,
         disabled: false,
       }, [Validators.pattern("[0-9]*")]),
+      direcciones: new FormArray([this.createDireccion()])
+
+    }, {});
+  }
+
+  createDireccion(): FormGroup {
+    return new FormGroup({
+      id_persona: new FormControl({
+        value: null,
+        disabled: !this.isAddMode,
+      }, [Validators.pattern("[0-9]+")]),
       id_departamento: new FormControl({
         value: null,
         disabled: false,
@@ -195,6 +207,11 @@ export class ExpedientePersonaComponent implements OnInit {
 
   // convenience getter for easy access to form fields
   get f() { return this.personaForm.controls; }
+
+  addDireccion(): void {
+    this.direcciones = this.personaForm.get('direcciones') as FormArray;
+    this.direcciones.push(this.createDireccion());
+  }
 
   onSubmit() {
     this.submitted = true;
@@ -353,8 +370,9 @@ export class ExpedientePersonaComponent implements OnInit {
       });
   }
 
-  selectedDepartamento() {
-    const id_departamento = this.personaForm.get('id_departamento').value;
+  selectedDepartamento(idx: number) {
+    console.log(this.personaForm.controls.direcciones.value[idx].id_departamento);
+    const id_departamento = this.personaForm.get('direcciones').value[idx].id_departamento;
     this.listDepartamentoMunicipio = this.listMunicipio
       .filter((departamento: any) => departamento.id_departamento == id_departamento);
   }

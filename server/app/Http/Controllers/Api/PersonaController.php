@@ -120,14 +120,28 @@ class PersonaController extends ApiController
 
             if ($request->has('direcciones') && $request->filled('direcciones')) {
                 foreach($request->direcciones as $direccion) {
-                        $direcciones[] = new PersonaDireccion([
-                            'id_persona' => $persona['id_persona'],
-                            'id_tipo_direccion' => $direccion['id_tipo_direccion'],
-                            'id_departamento' => $direccion['id_departamento'],
-                            'id_municipio' => $direccion['id_municipio'],
-                            'direccion' => $direccion['direccion'],
-                            'comentarios' => $direccion['comentarios'],
-                        ]);
+
+                    $validate = Validator::make($direccion, [
+                        'id_persona' => 'required|integer',
+                        //'id_tipo_direccion' => 'required|integer',
+                        'id_departamento' => 'required|integer',
+                        'id_municipio' => 'required|integer',
+                        'direccion' => 'nullable|string',
+                        'comentarios' => 'nullable|string',
+                    ]);
+                    if ($validate->fails()) {
+                        DB::rollback();
+                        return $this->respondError($validate->errors(), 422);
+                    }
+
+                    $direcciones[] = new PersonaDireccion([
+                        'id_persona' => $persona['id_persona'],
+                        //'id_tipo_direccion' => $direccion['id_tipo_direccion'],
+                        'id_departamento' => $direccion['id_departamento'],
+                        'id_municipio' => $direccion['id_municipio'],
+                        'direccion' => $direccion['direccion'],
+                        'comentarios' => $direccion['comentarios'],
+                    ]);
                 }
                 $persona->direcciones()->saveMany($direcciones);
             }
@@ -137,6 +151,7 @@ class PersonaController extends ApiController
         } catch (\Exception $e) {
             // Rollback Transaction
             DB::rollback();
+            return $this->respondError($e, 422);
         }
 
         return $this->respondCreated([
