@@ -1,11 +1,11 @@
 import { Component, ViewChild, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, FormArray, Validators } from "@angular/forms";
-import { TipoVinculacionService, DocumentoIdentidadService, SexoService, GeneroService, PrioridadService } from '../../../../service/catalogos';
+import { TipoVinculacionService, DocumentoIdentidadService, SexoService, GeneroService, TipoDireccionService } from '../../../../service/catalogos';
 import { DepartamentoService, MunicipioService } from '../../../../service/catalogos';
 import { DocumentoIdentidadPersonaService, ExpedientePersonaService, PersonasService } from '../../../../service';
 import { ToastrService } from 'ngx-toastr';
-import { ExpedientePersona, DocumentoIdentidad, Sexo, Genero, Prioridad } from '../../../../shared/models';
+import { ExpedientePersona, DocumentoIdentidad, Sexo, Genero, TipoDireccion } from '../../../../shared/models';
 import { TipoVinculacion, Departamento, Municipio } from '../../../../shared/models';
 import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -37,7 +37,7 @@ export class ExpedientePersonaComponent implements OnInit {
   public listTipoVinculacion: Array<TipoVinculacion>;
   public listSexo: Array<Sexo>;
   public listGenero: Array<Genero>;
-  public listPrioridad: Array<Prioridad>;
+  public listTipoDireccion: Array<TipoDireccion>;
   public listDepartamento: Array<Departamento>;
   public listMunicipio: Array<Municipio>;
   public listDepartamentoMunicipio: Array<Municipio>;
@@ -51,7 +51,7 @@ export class ExpedientePersonaComponent implements OnInit {
     private documentoIdentidadPersonaService: DocumentoIdentidadPersonaService,
     private sexoService: SexoService,
     private generoService: GeneroService,
-    private prioridadService: PrioridadService,
+    private tipoDireccionService: TipoDireccionService,
     private personaService: PersonasService,
     private departamentoService: DepartamentoService,
     private municipioService: MunicipioService,
@@ -67,7 +67,7 @@ export class ExpedientePersonaComponent implements OnInit {
     this.getListTipoVinculacion();
     this.getListSexo();
     this.getListGenero();
-    this.getListPrioridad();
+    this.getListTipoDireccion();
     this.getListDepartamento();
     this.getListMunicipio();
 
@@ -142,10 +142,6 @@ export class ExpedientePersonaComponent implements OnInit {
         value: null,
         disabled: false,
       }, [Validators.pattern("[0-9]+")]),
-      id_prioridad: new FormControl({
-        value: null,
-        disabled: false,
-      }, [Validators.pattern("[0-9]+")]),
       id_tipo_vinculacion: new FormControl({
         value: null,
         disabled: false,
@@ -164,6 +160,10 @@ export class ExpedientePersonaComponent implements OnInit {
       id_persona: new FormControl({
         value: null,
         disabled: !this.isAddMode,
+      }, [Validators.pattern("[0-9]+")]),
+      id_tipo_direccion: new FormControl({
+        value: null,
+        disabled: false,
       }, [Validators.pattern("[0-9]+")]),
       id_departamento: new FormControl({
         value: null,
@@ -322,13 +322,13 @@ export class ExpedientePersonaComponent implements OnInit {
       });
   }
 
-  getListPrioridad() {
-    this.prioridadService.getListPrioridad()
+  getListTipoDireccion() {
+    this.tipoDireccionService.getListTipoDireccion()
       .pipe(first())
       .subscribe({
         next: (response: any) => {
           if (response.success) {
-            this.listPrioridad = response.result;
+            this.listTipoDireccion = response.result;
           } else
             this.toastr.error(response.message)
         },

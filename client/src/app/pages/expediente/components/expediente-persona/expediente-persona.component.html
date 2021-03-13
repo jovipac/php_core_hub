@@ -166,10 +166,16 @@
                   <div *ngIf="f.id_municipio.errors?.pattern">Solo se aceptan digitos</div>
                 </div> -->
               </div>
+              <div class="col-md-2 mb-3 offset-md-3">
+                <input-label [requires]="false" [label]="'Tipo dirección'" [id]="'txtTipoDireccion'"></input-label>
+                <select class="form-control" id="txtTipoDireccion" formControlName="id_tipo_direccion">
+                  <option *ngFor="let tipoDireccion of listTipoDireccion" value="{{tipoDireccion.id_tipo_direccion}}">{{tipoDireccion.nombre}}</option>
+                </select>
+              </div>
             </div>
             <div class="form-row">
               <div class="col mb-3">
-                <input-label [label]="'Direccion'" [id]="'txtDireccion'"></input-label>
+                <input-label [label]="'Dirección'" [id]="'txtDireccion'"></input-label>
                 <input type="text" class="form-control" id="txtDireccion" formControlName="direccion" >
                 <!-- <div *ngIf="isHasErrors('direccion')" class="invalid-feedback">
                   <div *ngIf="f.direccion.errors?.required">El campo es requerido</div>

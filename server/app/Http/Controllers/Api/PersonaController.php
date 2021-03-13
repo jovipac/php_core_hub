@@ -122,10 +122,10 @@ class PersonaController extends ApiController
                 foreach($request->direcciones as $direccion) {
 
                     $validate = Validator::make($direccion, [
-                        'id_persona' => 'required|integer',
-                        //'id_tipo_direccion' => 'required|integer',
-                        'id_departamento' => 'required|integer',
-                        'id_municipio' => 'required|integer',
+                        'id_persona' => 'nullable|integer',
+                        'id_tipo_direccion' => 'nullable|integer',
+                        'id_departamento' => 'nullable|integer',
+                        'id_municipio' => 'nullable|integer',
                         'direccion' => 'nullable|string',
                         'comentarios' => 'nullable|string',
                     ]);
@@ -136,7 +136,7 @@ class PersonaController extends ApiController
 
                     $direcciones[] = new PersonaDireccion([
                         'id_persona' => $persona['id_persona'],
-                        //'id_tipo_direccion' => $direccion['id_tipo_direccion'],
+                        'id_tipo_direccion' => $direccion['id_tipo_direccion'],
                         'id_departamento' => $direccion['id_departamento'],
                         'id_municipio' => $direccion['id_municipio'],
                         'direccion' => $direccion['direccion'],
