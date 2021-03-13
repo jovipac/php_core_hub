@@ -6,6 +6,7 @@ use App\Http\Controllers\ApiController;
 use App\Models\Entities\Persona;
 use App\Models\Entities\PersonaDireccion;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class PersonaController extends ApiController
@@ -90,9 +91,9 @@ class PersonaController extends ApiController
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   //$input = $request->all();
-        $input = $request->except(['direcciones']);
-        $validator = Validator::make($input, [
+    {
+        $inputs = $request->except(['direcciones']);
+        $validator = Validator::make($inputs, [
             'id_documento_identidad' => 'required|integer',
             'identificador' => 'required|integer|unique:tt_documento_identidad_persona',
             'nombres' => 'required|string',
@@ -104,28 +105,38 @@ class PersonaController extends ApiController
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
         }
+        // Begin Transaction
+        DB::beginTransaction();
 
-        $persona = Persona::create($input);
+        try{
+            $persona = Persona::create($inputs);
 
-        if (
-            ($request->has('id_documento_identidad') && $request->filled('id_documento_identidad')) &&
-            ($request->has('identificador') && $request->filled('identificador'))
-        ) {
-            $persona->documentos_identidad()->attach($request->id_documento_identidad, ['identificador' => $request->identificador]);
-        }
-
-
-        if ($request->has('direcciones') && $request->filled('direcciones')) {
-            foreach($request->direcciones as $direccion) {
-                    $direcciones[] = new PersonaDireccion([
-                        'id_persona' => $persona->id_persona,
-                        'id_departamento' => $direccion->id_departamento,
-                        'id_municipio' => $direccion->id_municipio,
-                        'direccion' => $direccion->direccion,
-                        'comentarios' => $direccion->comentarios,
-                    ]);
+            if (
+                ($request->has('id_documento_identidad') && $request->filled('id_documento_identidad')) &&
+                ($request->has('identificador') && $request->filled('identificador'))
+            ) {
+                $persona->documentos_identidad()->attach($request->id_documento_identidad, ['identificador' => $request->identificador]);
             }
-            $persona->direcciones()->saveMany($direcciones);
+
+            if ($request->has('direcciones') && $request->filled('direcciones')) {
+                foreach($request->direcciones as $direccion) {
+                        $direcciones[] = new PersonaDireccion([
+                            'id_persona' => $persona['id_persona'],
+                            'id_tipo_direccion' => $direccion['id_tipo_direccion'],
+                            'id_departamento' => $direccion['id_departamento'],
+                            'id_municipio' => $direccion['id_municipio'],
+                            'direccion' => $direccion['direccion'],
+                            'comentarios' => $direccion['comentarios'],
+                        ]);
+                }
+                $persona->direcciones()->saveMany($direcciones);
+            }
+
+            // Commit Transaction
+            DB::commit();
+        } catch (\Exception $e) {
+            // Rollback Transaction
+            DB::rollback();
         }
 
         return $this->respondCreated([
