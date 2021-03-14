@@ -13,19 +13,19 @@ export class PersonasService {
   getListPersona() {
     return this.httpClient.get(`${environment.host}personas`, getHeaders())
   }
-  searchPersona(data) {
+  searchPersona(data: any) {
     return this.httpClient.post(`${environment.host}personas/search`, data , getHeaders())
   }
 
-  createPersona(data) {
+  createPersona(data: any) {
     return this.httpClient.post(`${environment.host}personas`, data, getHeaders());
   }
 
-  updatePersona(codeRol, data) {
-    return this.httpClient.put(`${environment.host}personas/${codeRol}`, data, getHeaders());
+  updatePersona(id: number, data: any) {
+    return this.httpClient.put(`${environment.host}personas/${id}`, data, getHeaders());
   }
 
-  deletePersona(id) {
+  deletePersona(id: number) {
     return this.httpClient.delete(`${environment.host}personas/${id}`, getHeaders())
   }
 
