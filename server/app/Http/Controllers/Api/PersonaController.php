@@ -201,8 +201,8 @@ class PersonaController extends ApiController
             $validator = Validator::make($inputs, [
                 'nombres' => 'required|string',
                 'apellidos' => 'required|string',
-                'id_sexo' => 'integer',
-                'id_genero' => 'integer',
+                'id_sexo' => 'nullable|integer',
+                'id_genero' => 'nullable|integer',
                 'fecha_nacimiento' => 'date',
             ]);
             if ($validator->fails()) {
@@ -227,26 +227,19 @@ class PersonaController extends ApiController
                         return $this->respondError($validate->errors(), 422);
                     }
 
-                    $direcciones = new PersonaDireccion([
-                        'id_persona' => $persona['id_persona'],
-                        'id_tipo_direccion' => $direccion['id_tipo_direccion'],
-                        'id_departamento' => $direccion['id_departamento'],
-                        'id_municipio' => $direccion['id_municipio'],
-                        'direccion' => $direccion['direccion'],
-                        'comentarios' => $direccion['comentarios'],
-                    ]);
-                    $persona->direcciones()->updateOrCreate($direccion);
+                    $persona->direcciones()->updateOrCreate(['id_persona_direccion' => $direccion['id_persona_direccion ']], $direccion);
                 }
 
             }
+            // Commit Transaction
+            DB::commit();
 
             return $this->apiResponse([
                 'success' => true,
                 'message' => "Persona actualizada con exito",
                 'result' => $persona
             ]);
-            // Commit Transaction
-            DB::commit();
+
         } catch (\Exception $e) {
             // Rollback Transaction
             DB::rollback();

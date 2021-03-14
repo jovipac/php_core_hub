@@ -17,8 +17,8 @@ class CreatePersonaDireccionesTable extends Migration
             $table->increments('id_persona_direccion');
             $table->integer('id_persona')->unsigned();
             $table->integer('id_tipo_direccion')->nullable()->unsigned();
-            $table->integer('id_departamento')->unsigned();
-            $table->integer('id_municipio')->unsigned();
+            $table->integer('id_departamento')->nullable()->unsigned();
+            $table->integer('id_municipio')->nullable()->unsigned();
             $table->string('direccion', 255)->nullable();
             $table->string('comentarios', 100)->nullable();
             $table->boolean('borrado')->default(0)->index();

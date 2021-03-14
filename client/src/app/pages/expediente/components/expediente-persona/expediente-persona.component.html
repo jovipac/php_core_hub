@@ -142,8 +142,9 @@
     <ng-container ngbNavItem>
       <a ngbNavLink>Dirección</a>
       <ng-template ngbNavContent>
-        <div formArrayName="direcciones" *ngFor="let direccion of personaForm.get('direcciones')['controls']; let idx = index;">
-          <div [formGroupName]="idx">
+        <div class="mb-4" formArrayName="direcciones" *ngFor="let direccion of personaForm.get('direcciones')['controls']; let idx = index;">
+          <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <fieldset class="" [formGroupName]="idx">
             <div class="form-row">
               <div class="col-md-3 mb-3">
                 <input-label [requires]="false" [label]="'Departamento'" [id]="'txtDepartamento'"></input-label>
@@ -193,8 +194,7 @@
                 </div> -->
               </div>
             </div>
-          </div>
-          Exposed item name: {{ personaForm.controls.direcciones.value[idx].controls }}
+          </fieldset>
         </div>
       </ng-template>
 

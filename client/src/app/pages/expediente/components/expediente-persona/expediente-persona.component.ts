@@ -1,6 +1,6 @@
 import { Component, ViewChild, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FormGroup, FormControl, FormArray, Validators } from "@angular/forms";
+import { FormGroup, FormControl, FormArray, Validators, FormBuilder } from "@angular/forms";
 import { TipoVinculacionService, DocumentoIdentidadService, SexoService, GeneroService, TipoDireccionService } from '../../../../service/catalogos';
 import { DepartamentoService, MunicipioService } from '../../../../service/catalogos';
 import { DocumentoIdentidadPersonaService, ExpedientePersonaService, PersonasService } from '../../../../service';
@@ -28,7 +28,7 @@ export class ExpedientePersonaComponent implements OnInit {
   personaForm: FormGroup;
   direcciones: FormArray;
   id_expediente: number;
-  id_persona: string;
+  id_persona: number;
   isAddMode: boolean;
   submitted: boolean = false;
   isSelectedID: boolean = false;
@@ -45,6 +45,7 @@ export class ExpedientePersonaComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private toastr: ToastrService,
+    private fb: FormBuilder,
     private solicitudPersonaService: ExpedientePersonaService,
     private tipoVinculacionService: TipoVinculacionService,
     private documentoIdentidadService: DocumentoIdentidadService,
@@ -71,15 +72,18 @@ export class ExpedientePersonaComponent implements OnInit {
     this.getListDepartamento();
     this.getListMunicipio();
 
+    // Finalmente se llama la construccion del formulario
+    this.buildForm();
+
     if (!this.isAddMode) {
       // Si existe ya un ID ya guardado, se consulta y carga la información
       if (!isEmptyValue(this.id_expediente_persona)) {
         this.getPersonaExpediente(this.id_expediente_persona);
       }
+    } else{
+      this.addDireccion({});
     }
 
-    // Finalmente se llama la construccion del formulario
-    this.buildForm();
   }
 
   private buildForm() {
@@ -89,7 +93,7 @@ export class ExpedientePersonaComponent implements OnInit {
         disabled: !this.isAddMode,
       }, [Validators.pattern("[0-9]+")]),
       id_expediente: new FormControl({
-        value: this.id_expediente || null,
+        value: this?.id_expediente,
         disabled: !this.isAddMode,
       }, [Validators.pattern("[0-9]+")]),
       id_persona: new FormControl({
@@ -150,35 +154,39 @@ export class ExpedientePersonaComponent implements OnInit {
         value: null,
         disabled: false,
       }, [Validators.pattern("[0-9]*")]),
-      direcciones: new FormArray([this.createDireccion()])
+      direcciones: new FormArray([])
 
     }, {});
   }
 
-  createDireccion(): FormGroup {
+  buildDireccion(data: any) {
     return new FormGroup({
+      id_persona_direccion : new FormControl({
+        value: data?.id_persona_direccion,
+        disabled: !this.isAddMode,
+      }, [Validators.pattern("[0-9]+")]),
       id_persona: new FormControl({
-        value: null,
+        value: data?.id_persona,
         disabled: !this.isAddMode,
       }, [Validators.pattern("[0-9]+")]),
       id_tipo_direccion: new FormControl({
-        value: null,
+        value: data?.id_tipo_direccion,
         disabled: false,
       }, [Validators.pattern("[0-9]+")]),
       id_departamento: new FormControl({
-        value: null,
+        value: data?.id_departamento,
         disabled: false,
       }, [Validators.pattern("[0-9]+")]),
       id_municipio: new FormControl({
-        value: null,
+        value: data?.id_municipio,
         disabled: false,
       }, [Validators.pattern("[0-9]+")]),
       direccion: new FormControl({
-        value: '',
+        value: data?.direccion,
         disabled: false,
       }, [Validators.pattern(/^\S+[a-zA-ZÀ-ÿ0-9\-\s.,]*\S+$/)]),
       comentarios: new FormControl({
-        value: '',
+        value: data?.comentarios,
         disabled: false,
       }, [Validators.pattern(/^\S+[a-zA-ZÀ-ÿ0-9\-\s.,]*\S+$/)]),
     }, {});
@@ -208,9 +216,9 @@ export class ExpedientePersonaComponent implements OnInit {
   // convenience getter for easy access to form fields
   get f() { return this.personaForm.controls; }
 
-  addDireccion(): void {
+  addDireccion(data: any): void {
     this.direcciones = this.personaForm.get('direcciones') as FormArray;
-    this.direcciones.push(this.createDireccion());
+    this.direcciones.push(this.buildDireccion(data));
   }
 
   onSubmit() {
@@ -246,7 +254,18 @@ export class ExpedientePersonaComponent implements OnInit {
               ].filter(Boolean)
                 .join(" ")
             } : {};
+            this.id_persona = persona.id_persona;
             this.personaForm.patchValue(personaFormateada);
+
+            if (isEmptyValue(persona.direcciones)) {
+              this.addDireccion({});
+            } else {
+              let direcciones = this.personaForm.controls.direcciones as FormArray;
+              persona.direcciones.forEach(direccion  => {
+                direcciones.push(this.buildDireccion(direccion));
+              })
+            }
+
           } else
             this.toastr.error(response.message);
           this.loading.hide();
@@ -548,7 +567,13 @@ export class ExpedientePersonaComponent implements OnInit {
     };
     this.loading.show();
     this.solicitudPersonaService.updateExpedientePersona(this.id_expediente_persona, formValues)
-        .pipe(first())
+        .pipe(
+          first(),
+          switchMap((solicitud: any) => {
+            return this.personaService.updatePersona(this.id_persona, formValues)
+            .pipe(first())
+          })
+        )
         .subscribe({
             next: (response: any) => {
               this.toastr.success(response.message, 'Expediente');
