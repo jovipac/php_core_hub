@@ -77,6 +77,7 @@ class ExpedientePersonaController extends ApiController
                 $join->on('T03.id_persona', '=', 'tc_persona.id_persona')
                     ->on('T03.id_documento_identidad', '=', 'T01.id_documento_identidad');
             })
+            ->with('direcciones')
             ->where('T01.id_expediente_persona', $expedientePersona->id_expediente_persona);
 
         return $this->apiResponse(

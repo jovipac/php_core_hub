@@ -49,8 +49,12 @@ class PersonaController extends ApiController
         if ($request->has('identificador')) {
             $resMessage = '';
             $persona = Persona::query()
+            ->with(['direcciones'])
             ->join('tt_documento_identidad_persona AS T01', 'tc_persona.id_persona', 'T01.id_persona')
             ->join('tc_documento_identidad AS T02', 'T01.id_documento_identidad', 'T02.id_documento_identidad');
+
+            if ($request->has('id_documento_identidad'))
+                $persona = $persona->where('T01.id_documento_identidad', $request->input('id_documento_identidad'));
 
             if ($request->has('identificador'))
                 $persona = $persona->where('T01.identificador', 'like', '%' . $request->input('identificador') . '%');
@@ -169,8 +173,8 @@ class PersonaController extends ApiController
      */
     public function show(Persona $persona)
     {
-        $query = Persona::query()->with('documentos_identidad');
-
+        $query = Persona::query()->with(['documentos_identidad', 'direcciones'])
+        ->where('id_persona', $persona->id_persona);
         return $this->apiResponse(
             [
                 'success' => true,
