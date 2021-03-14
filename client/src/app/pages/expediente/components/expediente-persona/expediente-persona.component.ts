@@ -361,6 +361,7 @@ export class ExpedientePersonaComponent implements OnInit {
         next: (response: any) => {
           if (response.success) {
             this.listMunicipio = response.result;
+            this.listDepartamentoMunicipio = response.result;
           } else
             this.toastr.error(response.message)
         },

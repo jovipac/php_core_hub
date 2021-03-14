@@ -53,10 +53,10 @@ class PersonaController extends ApiController
             ->join('tt_documento_identidad_persona AS T01', 'tc_persona.id_persona', 'T01.id_persona')
             ->join('tc_documento_identidad AS T02', 'T01.id_documento_identidad', 'T02.id_documento_identidad');
 
-            if ($request->has('id_documento_identidad'))
+            if ($request->has('id_documento_identidad') && $request->filled('id_documento_identidad'))
                 $persona = $persona->where('T01.id_documento_identidad', $request->input('id_documento_identidad'));
 
-            if ($request->has('identificador'))
+            if ($request->has('identificador') && $request->filled('identificador'))
                 $persona = $persona->where('T01.identificador', 'like', '%' . $request->input('identificador') . '%');
 
             $persona = $persona->first();
@@ -193,24 +193,64 @@ class PersonaController extends ApiController
      */
     public function update(Request $request, Persona $persona)
     {
-        $validator = Validator::make($request->all(), [
-            'nombres' => 'required|string',
-            'apellidos' => 'required|string',
-            'id_sexo' => 'integer',
-            'id_genero' => 'integer',
-            'fecha_nacimiento' => 'date',
-        ]);
-        if ($validator->fails()) {
-            return $this->respondError($validator->errors(), 422);
+        try {
+            // Begin Transaction
+            DB::beginTransaction();
+
+            $inputs = $request->except(['direcciones']);
+            $validator = Validator::make($inputs, [
+                'nombres' => 'required|string',
+                'apellidos' => 'required|string',
+                'id_sexo' => 'integer',
+                'id_genero' => 'integer',
+                'fecha_nacimiento' => 'date',
+            ]);
+            if ($validator->fails()) {
+                return $this->respondError($validator->errors(), 422);
+            }
+
+            $persona->update($inputs);
+
+            if ($request->has('direcciones') && $request->filled('direcciones')) {
+                foreach($request->direcciones as $direccion) {
+
+                    $validate = Validator::make($direccion, [
+                        'id_persona' => 'nullable|integer',
+                        'id_tipo_direccion' => 'nullable|integer',
+                        'id_departamento' => 'nullable|integer',
+                        'id_municipio' => 'nullable|integer',
+                        'direccion' => 'nullable|string',
+                        'comentarios' => 'nullable|string',
+                    ]);
+                    if ($validate->fails()) {
+                        DB::rollback();
+                        return $this->respondError($validate->errors(), 422);
+                    }
+
+                    $direcciones[] = new PersonaDireccion([
+                        'id_persona' => $persona['id_persona'],
+                        'id_tipo_direccion' => $direccion['id_tipo_direccion'],
+                        'id_departamento' => $direccion['id_departamento'],
+                        'id_municipio' => $direccion['id_municipio'],
+                        'direccion' => $direccion['direccion'],
+                        'comentarios' => $direccion['comentarios'],
+                    ]);
+                }
+                $persona->direcciones()->updateOrCreate($direcciones);
+            }
+
+            return $this->apiResponse([
+                'success' => true,
+                'message' => "Persona actualizada con exito",
+                'result' => $persona
+            ]);
+            // Commit Transaction
+            DB::commit();
+        } catch (\Exception $e) {
+            // Rollback Transaction
+            DB::rollback();
+            return $this->respondError($e, 422);
         }
-
-        $persona->update($request->all());
-
-        return $this->apiResponse([
-            'success' => true,
-            'message' => "Persona actualizada con exito",
-            'result' => $persona
-        ]);
     }
 
     /**
