@@ -391,7 +391,6 @@ export class ExpedientePersonaComponent implements OnInit {
   }
 
   selectedDepartamento(idx: number) {
-    console.log(this.personaForm.controls.direcciones.value[idx].id_departamento);
     const id_departamento = this.personaForm.get('direcciones').value[idx].id_departamento;
     this.listDepartamentoMunicipio = this.listMunicipio
       .filter((departamento: any) => departamento.id_departamento == id_departamento);
@@ -533,7 +532,26 @@ export class ExpedientePersonaComponent implements OnInit {
     } else {
       this.loading.show();
       this.solicitudPersonaService.createExpedientePersona(formValues)
-        .pipe(first())
+        .pipe(
+          first(),
+          map((data: any) => {
+            formValues = {
+              ...formValues,
+              id_expediente_persona: data.result.id_expediente_persona
+            }
+            this.id_persona = data.result.id_persona;
+            return formValues;
+          }),
+          switchMap((data: any) => {
+            formValues.direcciones = formValues.direcciones.map((direccion) => {
+              direccion.id_persona_direccion = direccion.id_persona_direccion || null;
+              direccion.id_persona = data.id_persona || null;
+              return direccion;
+            });
+            return this.personaService.updatePersona(this.id_persona, formValues)
+              .pipe(first())
+          })
+        )
         .subscribe({
           next: (response: any) => {
             this.toastr.success(response.message, 'Solicitud')
