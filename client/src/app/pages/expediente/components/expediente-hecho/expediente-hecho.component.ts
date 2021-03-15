@@ -53,11 +53,15 @@ export class ExpedienteHechoComponent implements OnInit {
 
     if (!this.isAddMode) {
       // Si existe ya un ID ya guardado, se consulta y carga la información
-      if (!isEmptyValue(this.id_expediente_hecho))
-        this.getPersonaExpediente(this.id_expediente_hecho);
-      else
+      if (!isEmptyValue(this.id_expediente_hecho)) {
+        this.getExpedienteHecho(this.id_expediente_hecho);
+      }
+      else if (!isEmptyValue(this.id_expediente)) {
+        const dataSend = { 'id_expediente': this.id_expediente };
+        this.searchExpedienteHecho(dataSend);
+      } else
         this.buildForm({});
-    } else{
+    } else {
       this.buildForm({});
     }
 
@@ -120,9 +124,48 @@ export class ExpedienteHechoComponent implements OnInit {
     console.log(this.personaForm.value);
   }
 
-  getPersonaExpediente(id_expediente_hecho) {
+  getExpedienteHecho(id_expediente_hecho) {
     this.loading.show();
     this.expedienteHechoService.getExpedienteHecho(id_expediente_hecho)
+      .pipe(first())
+      .subscribe({
+        next: (response: any) => {
+          if (response.success) {
+            const hecho = response.result;
+            // Se formatea la informacion para adecuarla al formulario
+            const hechoFormateado = !isEmptyValue(hecho) ? {
+              ...hecho,
+              fecha_hora: isValid(parseISO(hecho.fecha_hora)) ?
+                  format(parseISO(new Date(hecho.fecha_hora).toISOString()), 'yyyy-MM-dd') : null,
+
+            } : {};
+            this.id_expediente_hecho = hecho.id_expediente_hecho;
+            this.personaForm.patchValue(hechoFormateado);
+          /*
+            if (isEmptyValue(persona.direcciones)) {
+              this.addArchivoAdjunto({});
+            } else {
+              let archivoAdjuntos = this.personaForm.controls.direcciones as FormArray;
+              persona.archivoAdjuntos.forEach(archivoAdjunto  => {
+                archivoAdjuntos.push(this.buildArchivoAdjunto(archivoAdjunto));
+              })
+            }
+          */
+
+          } else
+            this.toastr.error(response.message);
+          this.loading.hide();
+        },
+        error: (error: any) => {
+          this.toastr.error(error.message);
+          this.loading.hide();
+        }
+      });
+  }
+
+  searchExpedienteHecho(dataSend: any) {
+    this.loading.show();
+    this.expedienteHechoService.searchExpedienteHecho(dataSend)
       .pipe(first())
       .subscribe({
         next: (response: any) => {
