@@ -17,5 +17,8 @@ class TipoDireccionCatalogSeeder extends Seeder
         \App\Models\Catalogs\TipoDireccion::firstOrCreate([
             'nombre' => 'Laboral',
         ]);
+        \App\Models\Catalogs\TipoDireccion::firstOrCreate([
+            'nombre' => 'Via pública',
+        ]);
     }
 }
