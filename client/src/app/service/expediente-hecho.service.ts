@@ -11,27 +11,27 @@ export class ExpedienteHechoService {
   constructor(private httpClient: HttpClient) { }
 
   getListExpedienteHecho() {
-    return this.httpClient.get(`${environment.host}expediente-hecho`, getHeaders())
+    return this.httpClient.get(`${environment.host}expediente-hechos`, getHeaders())
   }
 
   searchExpedienteHecho(data: any) {
-    return this.httpClient.post(`${environment.host}expediente-hecho/search`, data , getHeaders())
+    return this.httpClient.post(`${environment.host}expediente-hechos/search`, data , getHeaders())
   }
 
   getExpedienteHecho(id: number) {
-    return this.httpClient.get(`${environment.host}expediente-hecho/${id}`, getHeaders())
+    return this.httpClient.get(`${environment.host}expediente-hechos/${id}`, getHeaders())
   }
 
   createExpedienteHecho(data: any) {
-    return this.httpClient.post(`${environment.host}expediente-hecho`, data, getHeaders())
+    return this.httpClient.post(`${environment.host}expediente-hechos`, data, getHeaders())
   }
 
   updateExpedienteHecho(id: number, data:any) {
-    return this.httpClient.put(`${environment.host}expediente-hecho/${id}`, data, getHeaders())
+    return this.httpClient.put(`${environment.host}expediente-hechos/${id}`, data, getHeaders())
   }
 
   deleteExpedienteHecho(id: number) {
-    return this.httpClient.delete(`${environment.host}expediente-hecho/${id}`, getHeaders())
+    return this.httpClient.delete(`${environment.host}expediente-hechos/${id}`, getHeaders())
   }
 
 }

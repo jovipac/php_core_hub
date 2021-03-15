@@ -50,6 +50,7 @@ export class ExpedienteHechoComponent implements OnInit {
     this.getListMunicipio();
 
     // Finalmente se llama la construccion del formulario
+    this.buildForm({});
 
     if (!this.isAddMode) {
       // Si existe ya un ID ya guardado, se consulta y carga la información
@@ -67,7 +68,7 @@ export class ExpedienteHechoComponent implements OnInit {
 
   }
 
-  buildForm(data: any) {
+  private buildForm(data: any) {
     this.personaForm = new FormGroup({
       id_expediente_hecho : new FormControl({
         value: data?.id_expediente_hecho,
@@ -113,7 +114,7 @@ export class ExpedienteHechoComponent implements OnInit {
   }
 
   // convenience getter for easy access to form fields
-  get f() { return this.personaForm.controls; }
+  // get f() { return this.personaForm.controls; }
 
   onSubmit() {
     this.submitted = true;
@@ -124,7 +125,7 @@ export class ExpedienteHechoComponent implements OnInit {
     console.log(this.personaForm.value);
   }
 
-  getExpedienteHecho(id_expediente_hecho) {
+  getExpedienteHecho(id_expediente_hecho: number) {
     this.loading.show();
     this.expedienteHechoService.getExpedienteHecho(id_expediente_hecho)
       .pipe(first())
@@ -170,26 +171,29 @@ export class ExpedienteHechoComponent implements OnInit {
       .subscribe({
         next: (response: any) => {
           if (response.success) {
-            const hecho = response.result;
+            const hechos = response.result;
             // Se formatea la informacion para adecuarla al formulario
-            const hechoFormateado = !isEmptyValue(hecho) ? {
-              ...hecho,
-              fecha_hora: isValid(parseISO(hecho.fecha_hora)) ?
-                  format(parseISO(new Date(hecho.fecha_hora).toISOString()), 'yyyy-MM-dd') : null,
+            const hechosFormateado = !isEmptyValue(hechos) ? hechos.map((hecho: any) => {
+              return {
+                ...hecho,
+                fecha_hora: isValid(parseISO(hecho.fecha_hora)) ?
+                  format(parseISO(new Date(hecho.fecha_hora).toISOString()), 'yyyy-MM-dd HH:mm') : null,
 
-            } : {};
-            this.id_expediente_hecho = hecho.id_expediente_hecho;
-            this.personaForm.patchValue(hechoFormateado);
-          /*
-            if (isEmptyValue(persona.direcciones)) {
-              this.addArchivoAdjunto({});
+              }
+            }) : [];
+
+            //this.personaForm.patchValue(hechosFormateado);
+
+            if (isEmptyValue(hechosFormateado)) {
+              this.buildForm({});
             } else {
-              let archivoAdjuntos = this.personaForm.controls.direcciones as FormArray;
-              persona.archivoAdjuntos.forEach(archivoAdjunto  => {
-                archivoAdjuntos.push(this.buildArchivoAdjunto(archivoAdjunto));
+              //let archivoAdjuntos = this.personaForm.controls.direcciones as FormArray;
+              hechosFormateado.forEach(hecho  => {
+                //this.buildForm(hecho);
+                console.log(hecho);
+                this.personaForm.patchValue(hecho);
               })
             }
-          */
 
           } else
             this.toastr.error(response.message);
