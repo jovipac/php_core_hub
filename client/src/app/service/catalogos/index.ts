@@ -12,3 +12,4 @@ export * from './tipo-vinculacion.service';
 export * from './tipo-direccion.service';
 export * from './via.service';
 export * from './resultado.service';
+export * from './tipo-area-lugar.service';

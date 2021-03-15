@@ -137,6 +137,11 @@ Route::group([
     ]]);
     Route::get('motivos/restore/{motivo}', 'Api\MotivoController@restore')->name('motivos.restore');
 
+    Route::resource('tipo-area-lugar', 'Api\TipoAreaLugarController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+    Route::get('tipo-area-lugar/restore/{tipo_area_lugar}', 'Api\TipoAreaLugarController@restore')->name('tipo-area-lugar.restore');
+
     Route::resource('visitas', 'Api\VisitaController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
@@ -153,6 +158,12 @@ Route::group([
     ]]);
     Route::get('expediente-personas/restore/{expediente-persona}', 'Api\ExpedientePersonaController@restore')->name('expediente-persona.restore');
     Route::post('expediente-personas/search', 'Api\ExpedientePersonaController@search')->name('expediente-persona.search');
+
+    Route::resource('expediente-hechos', 'Api\ExpedienteHechoController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+    Route::get('expediente-hechos/restore/{expediente_hecho}', 'Api\ExpedienteHechoController@restore')->name('expediente-hechos.restore');
+    Route::post('expediente-hechos/search', 'Api\ExpedienteHechoController@search')->name('expediente-hechos.search');
 
     Route::get('rol-modulos', 'Api\RolModuloController@index')->name('menu.index');
     Route::get('rol-modulos/assigned/{id}', 'Api\RolModuloController@assigned');

@@ -81,7 +81,7 @@ class PersonaDireccionController extends ApiController
         ->leftJoin('tc_tipo_direccion AS T01', 'tc_persona_direccion.id_tipo_direccion', 'T01.id_tipo_direccion')
         ->leftJoin('tc_departamento AS T02', 'tc_persona_direccion.id_departamento', 'T02.id_departamento')
         ->leftJoin('tc_municipio AS T03', 'tc_persona_direccion.id_municipio', 'T03.id_municipio')
-        ->where('tc_persona_direccion.id_persona', $personaDireccion->id_persona_direccion);
+        ->where('tc_persona_direccion.id_persona_direccion', $personaDireccion->id_persona_direccion);
 
         return $this->apiResponse(
             [

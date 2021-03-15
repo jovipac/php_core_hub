@@ -5,3 +5,4 @@ export * from './documento-identidad-persona.service';
 export * from './visitas.service';
 export * from './expendiente.service';
 export * from './expediente-persona.service';
+export * from './expediente-hecho.service';

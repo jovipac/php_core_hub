@@ -16,9 +16,11 @@ class CreateExpedienteHechosTable extends Migration
         Schema::create('tt_expediente_hecho', function (Blueprint $table) {
             $table->increments('id_expediente_hecho');
             $table->integer('id_expediente')->unsigned();
+            $table->datetime('fecha_hora')->nullable();
             $table->integer('id_tipo_area_lugar')->nullable()->unsigned();
             $table->integer('id_departamento')->nullable()->unsigned();
             $table->integer('id_municipio')->nullable()->unsigned();
+            $table->string('direccion', 255)->nullable();
             $table->string('hechos', 255)->nullable();
             $table->string('peticion', 200)->nullable();
             $table->string('pruebas', 255)->nullable();
