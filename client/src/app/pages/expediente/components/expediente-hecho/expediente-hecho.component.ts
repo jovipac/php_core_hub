@@ -1,4 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { FormGroup, FormControl, FormArray, Validators, FormBuilder } from "@angular/forms";
+import { ActivatedRoute } from '@angular/router';
+import { ExpedienteHechoService } from '../../../../service';
+import { TipoAreaLugarService, DepartamentoService, MunicipioService } from '../../../../service/catalogos';
+import { TipoAreaLugar, Departamento, Municipio } from '../../../../shared/models';
+import { first, debounceTime, distinctUntilChanged, filter, switchMap, map, catchError } from 'rxjs/operators';
+import { format, isValid, parseISO } from 'date-fns';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
+import { isEmptyValue } from '../../../../shared/utils';
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-expediente-hecho',
@@ -6,10 +18,200 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./expediente-hecho.component.scss']
 })
 export class ExpedienteHechoComponent implements OnInit {
+  @Input() id_expediente_hecho: number;
+  @Output() submittedEvent = new EventEmitter();
 
-  constructor() { }
+  personaForm: FormGroup;
+  id_expediente: number;
+  id_persona: number;
+  isAddMode: boolean;
+  submitted: boolean = false;
+  public listTipoAreaLugar: Array<TipoAreaLugar>;
+  public listDepartamento: Array<Departamento>;
+  public listMunicipio: Array<Municipio>;
+  public listDepartamentoMunicipio: Array<Municipio>;
+
+  constructor(
+    private route: ActivatedRoute,
+    private toastr: ToastrService,
+    private expedienteHechoService: ExpedienteHechoService,
+    private tipoAreaLugarService: TipoAreaLugarService,
+    private departamentoService: DepartamentoService,
+    private municipioService: MunicipioService,
+    private loading: NgxSpinnerService
+  ) { }
 
   ngOnInit(): void {
+    this.id_expediente = this.route.snapshot.params['id'];
+    this.isAddMode = !this.id_expediente;
+
+    this.getListTipoAreaLugar();
+    this.getListDepartamento();
+    this.getListMunicipio();
+
+    // Finalmente se llama la construccion del formulario
+
+    if (!this.isAddMode) {
+      // Si existe ya un ID ya guardado, se consulta y carga la información
+      if (!isEmptyValue(this.id_expediente_hecho))
+        this.getPersonaExpediente(this.id_expediente_hecho);
+      else
+        this.buildForm({});
+    } else{
+      this.buildForm({});
+    }
+
+  }
+
+  buildForm(data: any) {
+    this.personaForm = new FormGroup({
+      id_expediente_hecho : new FormControl({
+        value: data?.id_expediente_hecho,
+        disabled: !this.isAddMode,
+      }, [Validators.pattern("[0-9]+")]),
+      id_expediente: new FormControl({
+        value: data?.id_expediente,
+        disabled: !this.isAddMode,
+      }, [Validators.pattern("[0-9]+")]),
+      fecha_hora: new FormControl({
+        value: data?.fecha_hora,
+        disabled: false,
+      }, [Validators.required]),
+      id_tipo_area_lugar: new FormControl({
+        value: data?.id_tipo_area_lugar,
+        disabled: false,
+      }, [Validators.pattern("[0-9]+")]),
+      id_departamento: new FormControl({
+        value: data?.id_departamento,
+        disabled: false,
+      }, [Validators.pattern("[0-9]+")]),
+      id_municipio: new FormControl({
+        value: data?.id_municipio,
+        disabled: false,
+      }, [Validators.pattern("[0-9]+")]),
+      direccion: new FormControl({
+        value: data?.direccion,
+        disabled: false,
+      }, [Validators.pattern(/^\S+[a-zA-ZÀ-ÿ0-9\-\s.,]*\S+$/)]),
+      hecho: new FormControl({
+        value: data?.hecho,
+        disabled: false,
+      }, [Validators.pattern(/^\S+[a-zA-ZÀ-ÿ0-9\-\s.,]*\S+$/)]),
+      peticion: new FormControl({
+        value: data?.peticion,
+        disabled: false,
+      }, [Validators.pattern(/^\S+[a-zA-ZÀ-ÿ0-9\-\s.,]*\S+$/)]),
+      pruebas: new FormControl({
+        value: data?.pruebas,
+        disabled: false,
+      }, [Validators.pattern(/^\S+[a-zA-ZÀ-ÿ0-9\-\s.,]*\S+$/)]),
+    }, {});
+  }
+
+  // convenience getter for easy access to form fields
+  get f() { return this.personaForm.controls; }
+
+  onSubmit() {
+    this.submitted = true;
+    // stop here if form is invalid
+    if (this.personaForm.invalid) {
+      return;
+    }
+    console.log(this.personaForm.value);
+  }
+
+  getPersonaExpediente(id_expediente_hecho) {
+    this.loading.show();
+    this.expedienteHechoService.getExpedienteHecho(id_expediente_hecho)
+      .pipe(first())
+      .subscribe({
+        next: (response: any) => {
+          if (response.success) {
+            const hecho = response.result;
+            // Se formatea la informacion para adecuarla al formulario
+            const hechoFormateado = !isEmptyValue(hecho) ? {
+              ...hecho,
+              fecha_hora: isValid(parseISO(hecho.fecha_hora)) ?
+                  format(parseISO(new Date(hecho.fecha_hora).toISOString()), 'yyyy-MM-dd') : null,
+
+            } : {};
+            this.id_expediente_hecho = hecho.id_expediente_hecho;
+            this.personaForm.patchValue(hechoFormateado);
+          /*
+            if (isEmptyValue(persona.direcciones)) {
+              this.addArchivoAdjunto({});
+            } else {
+              let archivoAdjuntos = this.personaForm.controls.direcciones as FormArray;
+              persona.archivoAdjuntos.forEach(archivoAdjunto  => {
+                archivoAdjuntos.push(this.buildArchivoAdjunto(archivoAdjunto));
+              })
+            }
+          */
+
+          } else
+            this.toastr.error(response.message);
+          this.loading.hide();
+        },
+        error: (error: any) => {
+          this.toastr.error(error.message);
+          this.loading.hide();
+        }
+      });
+  }
+
+  getListTipoAreaLugar() {
+    this.tipoAreaLugarService.getListTipoAreaLugar()
+      .pipe(first())
+      .subscribe({
+        next: (response: any) => {
+          if (response.success) {
+            this.listTipoAreaLugar = response.result;
+          } else
+            this.toastr.error(response.message)
+        },
+        error: (error: HttpErrorResponse) => {
+          this.toastr.error(error.message);
+        }
+      });
+  }
+
+  getListDepartamento() {
+    this.departamentoService.getListDepartamento()
+      .pipe(first())
+      .subscribe({
+        next: (response: any) => {
+          if (response.success) {
+            this.listDepartamento = response.result;
+          } else
+            this.toastr.error(response.message)
+        },
+        error: (error: HttpErrorResponse) => {
+          this.toastr.error(error.message);
+        }
+      });
+  }
+
+  getListMunicipio() {
+    this.municipioService.getListMunicipio()
+      .pipe(first())
+      .subscribe({
+        next: (response: any) => {
+          if (response.success) {
+            this.listMunicipio = response.result;
+            this.listDepartamentoMunicipio = response.result;
+          } else
+            this.toastr.error(response.message)
+        },
+        error: (error: HttpErrorResponse) => {
+          this.toastr.error(error.message);
+        }
+      });
+  }
+
+  selectedDepartamento(data: any) {
+    const id_departamento = this.personaForm.get('id_departamento').value;
+    this.listDepartamentoMunicipio = this.listMunicipio
+      .filter((departamento: any) => departamento.id_departamento == id_departamento);
   }
 
 }

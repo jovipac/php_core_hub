@@ -20,8 +20,8 @@ class ExpedienteHecho extends Model
      *
      * @var array
      */
-    protected $table = 'tt_expediente_hechos';
-    protected $primaryKey = 'id_expediente_hechos';
+    protected $table = 'tt_expediente_hecho';
+    protected $primaryKey = 'id_expediente_hecho';
 
         /**
      * The attributes that are mass assignable.

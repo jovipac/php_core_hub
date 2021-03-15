@@ -45,7 +45,6 @@ export class ExpedientePersonaComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private toastr: ToastrService,
-    private fb: FormBuilder,
     private solicitudPersonaService: ExpedientePersonaService,
     private tipoVinculacionService: TipoVinculacionService,
     private documentoIdentidadService: DocumentoIdentidadService,

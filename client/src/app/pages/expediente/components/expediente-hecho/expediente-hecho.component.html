@@ -1,2 +1,71 @@
-<p>expediente-hecho works!</p>
-
+<form action="javascript:" class="needs-validation" novalidate [formGroup]="personaForm" (ngSubmit)="onSubmit()" autocomplete="off" >
+  <div class="form-row">
+    <div class="col-md-4 mb-3">
+      <input-label [label]="'Fecha y hora'" [id]="'txtFechaHora'"></input-label>
+      <input type="datetime-local" class="form-control" id="txtFechaHora" formControlName="fecha_hora"
+        placeholder="" >
+      <!-- <div *ngIf="isHasErrors('fecha_hora')" class="invalid-feedback">
+        Please provide a valid state.
+      </div> -->
+    </div>
+    <div class="col-md-4 mb-3">
+      <input-label [requires]="false" [label]="'Tipo área'" [id]="'txtTipoAreaLugar'"></input-label>
+      <ng-select [items]="listTipoAreaLugar" #select bindLabel="nombre" dropdownPosition="auto" bindValue="id_tipo_area_lugar" labelForId="txtTipoAreaLugar"
+        placeholder="Seleccionar" [virtualScroll]="true" formControlName="id_tipo_area_lugar" >
+      </ng-select>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="col-md-3 mb-3">
+      <input-label [requires]="false" [label]="'Departamento'" [id]="'txtDepartamento'"></input-label>
+      <ng-select id="txtDepartamento" [items]="listDepartamento" #select bindLabel="nombre" dropdownPosition="auto"
+        bindValue="id_departamento" labelForId="txtDepartamento" placeholder="Seleccionar o buscar" [virtualScroll]="true"
+        formControlName="id_departamento" (blur)="selectedDepartamento($event)" >
+      </ng-select>
+      <!-- <div class="invalid-feedback">
+        <div *ngIf="f.id_departamento.errors?.required">El campo es requerido</div>
+        <div *ngIf="f.id_departamento.errors?.pattern">Solo se aceptan digitos</div>
+      </div> -->
+    </div>
+    <div class="col-md-4 mb-3">
+      <input-label [requires]="false" [label]="'Municipio'" [id]="'txtMunicipio'"></input-label>
+      <ng-select [items]="listDepartamentoMunicipio" #select bindLabel="nombre" dropdownPosition="auto" bindValue="id_municipio" labelForId="txtMunicipio"
+        placeholder="Seleccionar o buscar" [virtualScroll]="true" formControlName="id_municipio" >
+      </ng-select>
+      <!-- <div class="invalid-feedback">
+        <div *ngIf="f.id_municipio.errors?.required">El campo es requerido</div>
+        <div *ngIf="f.id_municipio.errors?.pattern">Solo se aceptan digitos</div>
+      </div> -->
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="col mb-3">
+      <input-label [label]="'Dirección'" [id]="'txtDireccion'"></input-label>
+      <input type="text" class="form-control" id="txtDireccion" formControlName="direccion" >
+      <!-- <div *ngIf="isHasErrors('direccion')" class="invalid-feedback">
+        <div *ngIf="f.direccion.errors?.required">El campo es requerido</div>
+        <div *ngIf="f.direccion.errors?.pattern">Solo se acepta texto sin caracteres especiales</div>
+      </div> -->
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="col mb-3">
+      <input-label [label]="'Petición'" [id]="'txtPeticion'"></input-label>
+      <input type="text" class="form-control" id="txtPeticion" formControlName="peticion" >
+      <!-- <div *ngIf="isHasErrors('peticion')" class="invalid-feedback">
+        <div *ngIf="f.peticion.errors?.required">El campo es requerido</div>
+        <div *ngIf="f.peticion.errors?.pattern">Solo se acepta texto sin caracteres especiales</div>
+      </div> -->
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="col mb-3">
+      <input-label [label]="'Pruebas'" [id]="'txtPruebas'"></input-label>
+      <input type="text" class="form-control" id="txtPruebas" formControlName="pruebas" >
+      <!-- <div class="invalid-feedback">
+        <div *ngIf="f.pruebas.errors?.required">El campo es requerido</div>
+        <div *ngIf="f.pruebas.errors?.pattern">Solo se acepta texto sin caracteres especiales</div>
+      </div> -->
+    </div>
+  </div>
+</form>
