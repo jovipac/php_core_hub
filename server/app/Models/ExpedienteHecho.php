@@ -30,7 +30,7 @@ class ExpedienteHecho extends Model
      */
     protected $fillable = [
         'id_expediente_hecho', 'id_expediente', 'fecha_hora', 'id_tipo_area_lugar', 'id_departamento', 'id_municipio',
-        'direccion', 'hechos', 'peticion', 'pruebas', 'borrado'
+        'direccion', 'hecho', 'peticion', 'prueba', 'borrado'
     ];
 
     /**

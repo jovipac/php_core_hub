@@ -9,7 +9,7 @@ import { format, isValid, parseISO } from 'date-fns';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
-import { isEmptyValue } from '../../../../shared/utils';
+import { isEmptyValue, extractErrorMessages } from '../../../../shared/utils';
 import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
@@ -21,7 +21,7 @@ export class ExpedienteHechoComponent implements OnInit {
   @Input() id_expediente_hecho: number;
   @Output() submittedEvent = new EventEmitter();
 
-  personaForm: FormGroup;
+  hechoForm: FormGroup;
   id_expediente: number;
   id_persona: number;
   isAddMode: boolean;
@@ -69,7 +69,7 @@ export class ExpedienteHechoComponent implements OnInit {
   }
 
   private buildForm(data: any) {
-    this.personaForm = new FormGroup({
+    this.hechoForm = new FormGroup({
       id_expediente_hecho : new FormControl({
         value: data?.id_expediente_hecho,
         disabled: !this.isAddMode,
@@ -114,15 +114,15 @@ export class ExpedienteHechoComponent implements OnInit {
   }
 
   // convenience getter for easy access to form fields
-  // get f() { return this.personaForm.controls; }
+  // get f() { return this.hechoForm.controls; }
 
   onSubmit() {
     this.submitted = true;
     // stop here if form is invalid
-    if (this.personaForm.invalid) {
+    if (this.hechoForm.invalid) {
       return;
     }
-    console.log(this.personaForm.value);
+    console.log(this.hechoForm.value);
   }
 
   getExpedienteHecho(id_expediente_hecho: number) {
@@ -141,12 +141,12 @@ export class ExpedienteHechoComponent implements OnInit {
 
             } : {};
             this.id_expediente_hecho = hecho.id_expediente_hecho;
-            this.personaForm.patchValue(hechoFormateado);
+            this.hechoForm.patchValue(hechoFormateado);
           /*
             if (isEmptyValue(persona.direcciones)) {
               this.addArchivoAdjunto({});
             } else {
-              let archivoAdjuntos = this.personaForm.controls.direcciones as FormArray;
+              let archivoAdjuntos = this.hechoForm.controls.direcciones as FormArray;
               persona.archivoAdjuntos.forEach(archivoAdjunto  => {
                 archivoAdjuntos.push(this.buildArchivoAdjunto(archivoAdjunto));
               })
@@ -182,16 +182,16 @@ export class ExpedienteHechoComponent implements OnInit {
               }
             }) : [];
 
-            //this.personaForm.patchValue(hechosFormateado);
+            //this.hechoForm.patchValue(hechosFormateado);
 
             if (isEmptyValue(hechosFormateado)) {
               this.buildForm({});
             } else {
-              //let archivoAdjuntos = this.personaForm.controls.direcciones as FormArray;
+              //let archivoAdjuntos = this.hechoForm.controls.direcciones as FormArray;
               hechosFormateado.forEach(hecho  => {
                 //this.buildForm(hecho);
                 console.log(hecho);
-                this.personaForm.patchValue(hecho);
+                this.hechoForm.patchValue(hecho);
               })
             }
 
@@ -256,9 +256,36 @@ export class ExpedienteHechoComponent implements OnInit {
   }
 
   selectedDepartamento(data: any) {
-    const id_departamento = this.personaForm.get('id_departamento').value;
+    const id_departamento = this.hechoForm.get('id_departamento').value;
     this.listDepartamentoMunicipio = this.listMunicipio
       .filter((departamento: any) => departamento.id_departamento == id_departamento);
+  }
+
+  private updatePersonaSolicitud() {
+    //Valor del Form, incluidos los controles deshabilitados
+    const formValues = {
+      ...this.hechoForm.getRawValue(),
+    };
+    this.loading.show();
+    this.expedienteHechoService.updateExpedienteHecho(this.id_expediente_hecho, formValues)
+        .pipe(first())
+        .subscribe({
+            next: (response: any) => {
+              this.toastr.success(response.message, 'Hecho del expediente');
+              this.submittedEvent.emit(true);
+              this.loading.hide();
+            },
+            error: (error: HttpErrorResponse) => {
+                const messages = extractErrorMessages(error);
+                messages.forEach(propertyErrors => {
+                  for (let message in propertyErrors) {
+                    this.toastr.error(propertyErrors[message], 'Hecho del expediente');
+                  }
+                });
+                this.submittedEvent.emit(false);
+                this.loading.hide();
+            }
+        });
   }
 
 }

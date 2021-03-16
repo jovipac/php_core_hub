@@ -21,9 +21,9 @@ class CreateExpedienteHechosTable extends Migration
             $table->integer('id_departamento')->nullable()->unsigned();
             $table->integer('id_municipio')->nullable()->unsigned();
             $table->string('direccion', 255)->nullable();
-            $table->string('hechos', 255)->nullable();
-            $table->string('peticion', 200)->nullable();
-            $table->string('pruebas', 255)->nullable();
+            $table->text('hecho')->nullable();
+            $table->text('peticion')->nullable();
+            $table->text('prueba')->nullable();
             $table->boolean('borrado')->default(0)->index();
             $table->timestamps();
             $table->softDeletes();

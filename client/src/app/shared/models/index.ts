@@ -17,4 +17,5 @@ export * from './resultado.interface';
 export * from './visita.interface';
 export * from './expediente.interface';
 export * from './expedientePersona.interface';
+export * from './expedienteHecho.interface';
 

@@ -103,8 +103,10 @@
         <h5 class="card-title">Paso 3: Hechos</h5>
       </div>
       <div class="card-body">
-        <p class="card-text">Hechos: This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
-        <p class="card-text">Petición: This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+        <div class="mb-4" *ngFor="let hecho of solicitudHechos; let idx = index;">
+          <p class="card-text">Hechos: {{ hecho.hecho }}</p>
+          <p class="card-text">Petición: {{ hecho.peticion }}</p>
+        </div>
       </div>
       <div class="card-footer text-center">
         <div class="row align-items-center">

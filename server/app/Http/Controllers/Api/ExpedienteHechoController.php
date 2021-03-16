@@ -76,9 +76,9 @@ class ExpedienteHechoController extends ApiController
             'id_departamento' => 'required|integer',
             'id_municipio' => 'required|integer',
             'direccion' => 'nullable|string',
-            'hechos' => 'nullable|string',
+            'hecho' => 'nullable|string',
             'peticion' => 'nullable|string',
-            'pruebas' => 'nullable|string',
+            'prueba' => 'nullable|string',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
@@ -147,9 +147,9 @@ class ExpedienteHechoController extends ApiController
             'id_departamento' => 'nullable|integer',
             'id_municipio' => 'nullable|integer',
             'direccion' => 'nullable|string',
-            'hechos' => 'nullable|string',
+            'hecho' => 'nullable|string',
             'peticion' => 'nullable|string',
-            'pruebas' => 'nullable|string',
+            'prueba' => 'nullable|string',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);

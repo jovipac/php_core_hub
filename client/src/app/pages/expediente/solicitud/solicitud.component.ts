@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ExpedienteService, ExpedientePersonaService } from '../../../service';
-import { Expediente, ExpedientePersona } from '../../../shared/models';
+import { ExpedienteService, ExpedientePersonaService, ExpedienteHechoService } from '../../../service';
+import { Expediente, ExpedientePersona, ExpedienteHecho } from '../../../shared/models';
 import { first } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { formatearCorrelativo } from '../../../shared/utils/helpers';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { isEmptyValue } from '../../../shared/utils';
 import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
@@ -20,10 +21,12 @@ export class SolicitudComponent implements OnInit {
   id_expediente_persona: number;
   public solicitud: Expediente;
   public solicitudPersonas: Array<ExpedientePersona>;
+  public solicitudHechos: Array<ExpedienteHecho>;
 
   constructor(
     private solicitudService: ExpedienteService,
     private solicitudPersonaService: ExpedientePersonaService,
+    private expedienteHechoService: ExpedienteHechoService,
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
@@ -87,8 +90,40 @@ export class SolicitudComponent implements OnInit {
         }
       });
 
+      this.searchExpedienteHecho(dataSend);
     }
 
+  }
+
+  searchExpedienteHecho(dataSend: any) {
+    this.loading.show();
+    this.expedienteHechoService.searchExpedienteHecho(dataSend)
+      .pipe(first())
+      .subscribe({
+        next: (response: any) => {
+          if (response.success) {
+            const hechos = response.result;
+            // Se formatea la informacion para adecuarla al formulario
+            const hechosFormateado = !isEmptyValue(hechos) ? hechos.map((hecho: any) => {
+              return <ExpedienteHecho>hecho;
+            }) : [];
+
+            if (isEmptyValue(hechosFormateado)) {
+              this.solicitudHechos = [];
+            } else {
+              console.log(hechosFormateado);
+              this.solicitudHechos = hechosFormateado;
+            }
+
+          } else
+            this.toastr.error(response.message);
+          this.loading.hide();
+        },
+        error: (error: any) => {
+          this.toastr.error(error.message);
+          this.loading.hide();
+        }
+      });
   }
 
   goEditExpedientePerson(persona) {
