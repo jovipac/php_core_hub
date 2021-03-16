@@ -25,6 +25,9 @@ class CreateExpedienteHechosTable extends Migration
             $table->text('peticion')->nullable();
             $table->text('prueba')->nullable();
             $table->boolean('borrado')->default(0)->index();
+            $table->integer('created_by')->nullable()->unsigned();
+            $table->integer('updated_by')->nullable()->unsigned();
+            $table->integer('deleted_by')->nullable()->unsigned();
             $table->timestamps();
             $table->softDeletes();
 
@@ -42,6 +45,15 @@ class CreateExpedienteHechosTable extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
+            $table->foreign('created_by')->references('id_usuario')->on('ts_usuario')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreign('updated_by')->references('id_usuario')->on('ts_usuario')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreign('deleted_by')->references('id_usuario')->on('ts_usuario')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
         });
     }
 

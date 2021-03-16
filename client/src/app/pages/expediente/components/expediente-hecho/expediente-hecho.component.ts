@@ -138,10 +138,16 @@ export class ExpedienteHechoComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-    console.log(this.formHecho);
+
     // stop here if form is invalid
     if (this.formHecho.invalid) {
       return;
+    }
+
+    if (this.isAddMode) {
+      this.updateHechoSolicitud();
+    } else {
+      this.updateHechoSolicitud();
     }
 
   }
@@ -277,31 +283,36 @@ export class ExpedienteHechoComponent implements OnInit {
       .filter((departamento: any) => departamento.id_departamento == id_departamento);
   }
 
-  private updatePersonaSolicitud() {
+  private updateHechoSolicitud() {
     //Valor del Form, incluidos los controles deshabilitados
     const formValues = {
       ...this.formHecho.getRawValue(),
     };
     this.loading.show();
-    this.expedienteHechoService.updateExpedienteHecho(this.id_expediente_hecho, formValues)
-        .pipe(first())
-        .subscribe({
-            next: (response: any) => {
-              this.toastr.success(response.message, 'Hecho del expediente');
-              this.submittedEvent.emit(true);
+    formValues.hechos.forEach(hecho  => {
+
+      this.expedienteHechoService.updateExpedienteHecho(hecho.id_expediente_hecho, hecho)
+      .pipe(first())
+      .subscribe({
+          next: (response: any) => {
+            this.toastr.success(response.message, 'Hecho del expediente');
+            this.submittedEvent.emit(true);
+            this.loading.hide();
+          },
+          error: (error: HttpErrorResponse) => {
+              const messages = extractErrorMessages(error);
+              messages.forEach(propertyErrors => {
+                for (let message in propertyErrors) {
+                  this.toastr.error(propertyErrors[message], 'Hecho del expediente');
+                }
+              });
+              this.submittedEvent.emit(false);
               this.loading.hide();
-            },
-            error: (error: HttpErrorResponse) => {
-                const messages = extractErrorMessages(error);
-                messages.forEach(propertyErrors => {
-                  for (let message in propertyErrors) {
-                    this.toastr.error(propertyErrors[message], 'Hecho del expediente');
-                  }
-                });
-                this.submittedEvent.emit(false);
-                this.loading.hide();
-            }
-        });
+          }
+      });
+
+    })
+
   }
 
 }

@@ -45,6 +45,16 @@ class CreateExpedientePersonasTable extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
+            $table->foreign('created_by')->references('id_usuario')->on('ts_usuario')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreign('updated_by')->references('id_usuario')->on('ts_usuario')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreign('deleted_by')->references('id_usuario')->on('ts_usuario')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
         });
     }
 

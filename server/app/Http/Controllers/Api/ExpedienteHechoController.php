@@ -25,7 +25,7 @@ class ExpedienteHechoController extends ApiController
         return $this->apiResponse(
             [
                 'success' => true,
-                'message' => "Listado de expediente personas",
+                'message' => "Listado de hechos del expedientes",
                 'result' => $expedienteHechos
             ]
         );
@@ -54,7 +54,7 @@ class ExpedienteHechoController extends ApiController
         return $this->apiResponse(
             [
                 'success' => true,
-                'message' => "Expediente encontrado",
+                'message' => "Hecho del expediente encontrado",
                 'result' => $expedienteHecho->get()
             ]
         );
@@ -88,7 +88,7 @@ class ExpedienteHechoController extends ApiController
 
         return $this->respondCreated([
             'success' => true,
-            'message' => "Expediente Persona creado con exito",
+            'message' => "Hecho del expediente creado con exito",
             'result' => $expedienteHecho
         ]);
     }
@@ -159,7 +159,7 @@ class ExpedienteHechoController extends ApiController
 
         return $this->apiResponse([
             'success' => true,
-            'message' => "Expediente Persona actualizado con exito",
+            'message' => "Hecho del expediente actualizado con exito",
             'result' => $expedienteHecho
         ]);
     }
@@ -174,7 +174,7 @@ class ExpedienteHechoController extends ApiController
     {
         $expedienteHecho->delete();
 
-        return $this->respondSuccess('Expediente Persona eliminado con exito');
+        return $this->respondSuccess('Hecho del expediente eliminado con exito');
     }
 
     /**
@@ -188,6 +188,6 @@ class ExpedienteHechoController extends ApiController
         $via = ExpedienteHecho::withTrashed()->findorfail($id);
         $via->restore();
 
-        return $this->respondSuccess('Expediente Persona restaurada con exito');
+        return $this->respondSuccess('Hecho del expediente restaurado con exito');
     }
 }

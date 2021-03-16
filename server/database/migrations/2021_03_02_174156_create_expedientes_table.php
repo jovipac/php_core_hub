@@ -35,20 +35,26 @@ class CreateExpedientesTable extends Migration
             $table->foreign('id_via')->references('id_via')->on('tc_via')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-
             $table->foreign('id_prioridad')->references('id_prioridad')->on('tc_prioridad')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-
             $table->foreign('id_funcionario')->references('id_funcionario')->on('tc_funcionario')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-
             $table->foreign('id_resultado')->references('id_resultado')->on('tc_resultado')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-
             $table->foreign('id_auxiliatura')->references('id_auxiliatura')->on('tc_auxiliatura')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+            $table->foreign('created_by')->references('id_usuario')->on('ts_usuario')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreign('updated_by')->references('id_usuario')->on('ts_usuario')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreign('deleted_by')->references('id_usuario')->on('ts_usuario')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
         });
