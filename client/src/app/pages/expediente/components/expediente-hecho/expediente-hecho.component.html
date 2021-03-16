@@ -6,21 +6,21 @@
         <div class="form-row">
           <div class="col-md-4 mb-3">
             <input-label [label]="'Fecha y hora'" [id]="'txtFechaHora'"></input-label>
-            <input type="datetime" class="form-control" id="txtFechaHora" formControlName="fecha_hora" placeholder="" >
-              <!-- <div class="invalid-feedback">
+            <input type="datetime" class="form-control" id="txtFechaHora" formControlName="fecha_hora" placeholder="" [ngClass]="displayValidation(hecho.get('fecha_hora').invalid)">
+              <div [ngClass]="displayValidationMsg(hecho.get('fecha_hora').valid)">
               <div *ngIf="hecho.get('fecha_hora').errors?.required">El campo es requerido</div>
               <div *ngIf="hecho.get('fecha_hora').errors?.pattern">Solo se aceptan digitos</div>
-            </div> -->
+            </div>
           </div>
           <div class="col-md-4 mb-3">
             <input-label [requires]="false" [label]="'Tipo área'" [id]="'txtTipoAreaLugar'"></input-label>
             <ng-select [items]="listTipoAreaLugar" #select bindLabel="nombre" dropdownPosition="auto" bindValue="id_tipo_area_lugar" labelForId="txtTipoAreaLugar"
-              placeholder="Seleccionar" [virtualScroll]="true" formControlName="id_tipo_area_lugar" >
+              placeholder="Seleccionar" [virtualScroll]="true" formControlName="id_tipo_area_lugar" [ngClass]="displayValidation(hecho.get('id_tipo_area_lugar').invalid)">
             </ng-select>
-              <!-- <div class="invalid-feedback">
+              <div [ngClass]="displayValidationMsg(hecho.get('id_tipo_area_lugar').valid)">
               <div *ngIf="hecho.get('id_tipo_area_lugar').errors?.required">El campo es requerido</div>
               <div *ngIf="hecho.get('id_tipo_area_lugar').errors?.pattern">Solo se aceptan digitos</div>
-            </div> -->
+            </div>
           </div>
         </div>
         <div class="form-row">
@@ -28,62 +28,62 @@
             <input-label [requires]="false" [label]="'Departamento'" [id]="'txtDepartamento'"></input-label>
             <ng-select id="txtDepartamento" [items]="listDepartamento" #select bindLabel="nombre" dropdownPosition="auto"
               bindValue="id_departamento" labelForId="txtDepartamento" placeholder="Seleccionar o buscar" [virtualScroll]="true"
-              formControlName="id_departamento" (blur)="selectedDepartamento($event)" >
+              formControlName="id_departamento" (blur)="selectedDepartamento($event)" [ngClass]="displayValidation(hecho.get('id_departamento').invalid)" >
             </ng-select>
-            <!-- <div class="invalid-feedback">
+            <div [ngClass]="displayValidationMsg(hecho.get('id_departamento').valid)">
               <div *ngIf="hecho.get('id_departamento').errors?.required">El campo es requerido</div>
               <div *ngIf="hecho.get('id_departamento').errors?.pattern">Solo se aceptan digitos</div>
-            </div> -->
+            </div>
           </div>
           <div class="col-md-4 mb-3">
             <input-label [requires]="false" [label]="'Municipio'" [id]="'txtMunicipio'"></input-label>
             <ng-select [items]="listDepartamentoMunicipio" #select bindLabel="nombre" dropdownPosition="auto" bindValue="id_municipio" labelForId="txtMunicipio"
-              placeholder="Seleccionar o buscar" [virtualScroll]="true" formControlName="id_municipio" >
+              placeholder="Seleccionar o buscar" [virtualScroll]="true" formControlName="id_municipio" [ngClass]="displayValidation(hecho.get('id_municipio').invalid)">
             </ng-select>
-            <div class="invalid-feed">
-              <!-- <div *ngIf="hecho.get('id_municipio').errors?.required">El campo es requerido</div>
-              <div *ngIf="hecho.get('id_municipio').errors?.pattern">Solo se aceptan digitos</div> -->
+            <div [ngClass]="displayValidationMsg(hecho.get('id_municipio').valid)">
+              <div *ngIf="hecho.get('id_municipio').errors?.required">El campo es requerido</div>
+              <div *ngIf="hecho.get('id_municipio').errors?.pattern">Solo se aceptan digitos</div>
             </div>
           </div>
         </div>
         <div class="form-row">
           <div class="col mb-3">
             <input-label [label]="'Dirección'" [id]="'txtDireccion'"></input-label>
-            <input type="text" class="form-control" id="txtDireccion" formControlName="direccion" >
-            <!-- <div *ngIf="isHasErrors('direccion')" class="invalid-feedback">
+            <input type="text" class="form-control" id="txtDireccion" formControlName="direccion" [ngClass]="displayValidation(hecho.get('direccion').invalid)">
+            <div [ngClass]="displayValidationMsg(hecho.get('direccion').valid)">
               <div *ngIf="hecho.get('direccion').errors?.required">El campo es requerido</div>
               <div *ngIf="hecho.get('direccion').errors?.pattern">Solo se acepta texto sin caracteres especiales</div>
-            </div> -->
+            </div>
           </div>
         </div>
         <div class="form-row">
           <div class="col mb-3">
             <input-label [label]="'Hecho'" [id]="'txtHecho'"></input-label>
-            <textarea class="form-control" id="txtHecho" rows="3" formControlName="hecho"></textarea>
-            <!-- <div *ngIf="isHasErrors('hecho')" class="invalid-feedback">
+            <textarea class="form-control" id="txtHecho" rows="3" formControlName="hecho" [ngClass]="displayValidation(hecho.get('hecho').invalid)"></textarea>
+            <div [ngClass]="displayValidationMsg(hecho.get('hecho').valid)">
               <div *ngIf="hecho.get('hecho').errors?.required">El campo es requerido</div>
               <div *ngIf="hecho.get('hecho').errors?.pattern">Solo se acepta texto sin caracteres especiales</div>
-            </div> -->
+            </div>
           </div>
         </div>
         <div class="form-row">
           <div class="col mb-3">
             <input-label [label]="'Petición'" [id]="'txtPeticion'"></input-label>
-            <textarea class="form-control" id="txtPeticion" rows="3" formControlName="peticion"></textarea>
-            <!-- <div *ngIf="isHasErrors('peticion')" class="invalid-feedback">
+            <textarea class="form-control" id="txtPeticion" rows="3" formControlName="peticion" [ngClass]="displayValidation(hecho.get('peticion').invalid)"></textarea>
+            <div [ngClass]="displayValidationMsg(hecho.get('peticion').valid)">
               <div *ngIf="hecho.get('peticion').errors?.required">El campo es requerido</div>
               <div *ngIf="hecho.get('peticion').errors?.pattern">Solo se acepta texto sin caracteres especiales</div>
-            </div> -->
+            </div>
           </div>
         </div>
         <div class="form-row">
           <div class="col mb-3">
             <input-label [label]="'Prueba'" [id]="'txtPrueba'"></input-label>
-            <textarea class="form-control" id="txtPrueba" rows="3" formControlName="prueba"></textarea>
-            <!-- <div class="invalid-feedback">
+            <textarea class="form-control" id="txtPrueba" rows="3" formControlName="prueba" [ngClass]="displayValidation(hecho.get('prueba').invalid)"></textarea>
+            <div [ngClass]="displayValidationMsg(hecho.get('prueba').valid)">
               <div *ngIf="hecho.get('prueba').errors?.required">El campo es requerido</div>
               <div *ngIf="hecho.get('prueba').errors?.pattern">Solo se acepta texto sin caracteres especiales</div>
-            </div> -->
+            </div>
           </div>
         </div>
       </ng-container>

@@ -116,6 +116,17 @@ export class ExpedienteHechoComponent implements OnInit {
     }, {});
   }
 
+  displayValidation(value: boolean) {
+    return {
+      'is-invalid': value
+    };
+  }
+
+  displayValidationMsg(value: boolean) {
+    const cssStyle = Boolean(value) ? 'valid-feedback' : 'invalid-feedback';
+    return cssStyle;
+  }
+
   // convenience getter for easy access to form fields
   get f() {
     return this.formHecho.get('hechos')['controls'];
