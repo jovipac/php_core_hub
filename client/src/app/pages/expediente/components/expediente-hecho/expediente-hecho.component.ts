@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { FormGroup, FormControl, FormArray, Validators, FormBuilder } from "@angular/forms";
+import { FormGroup, FormControl, FormArray, Validators } from "@angular/forms";
 import { ActivatedRoute } from '@angular/router';
 import { ExpedienteHechoService } from '../../../../service';
 import { TipoAreaLugarService, DepartamentoService, MunicipioService } from '../../../../service/catalogos';
@@ -8,7 +8,6 @@ import { first, debounceTime, distinctUntilChanged, filter, switchMap, map, catc
 import { format, isValid, parseISO } from 'date-fns';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs';
 import { isEmptyValue, extractErrorMessages } from '../../../../shared/utils';
 import { NgxSpinnerService } from "ngx-spinner";
 
@@ -21,7 +20,8 @@ export class ExpedienteHechoComponent implements OnInit {
   @Input() id_expediente_hecho: number;
   @Output() submittedEvent = new EventEmitter();
 
-  hechoForm: FormGroup;
+  formHecho: FormGroup;
+  //hechos = new FormArray([]);
   id_expediente: number;
   id_persona: number;
   isAddMode: boolean;
@@ -50,7 +50,10 @@ export class ExpedienteHechoComponent implements OnInit {
     this.getListMunicipio();
 
     // Finalmente se llama la construccion del formulario
-    this.buildForm({});
+    this.formHecho =  new FormGroup({
+      hechos: new FormArray([])
+    });
+    // this.buildForm({});
 
     if (!this.isAddMode) {
       // Si existe ya un ID ya guardado, se consulta y carga la información
@@ -61,15 +64,15 @@ export class ExpedienteHechoComponent implements OnInit {
         const dataSend = { 'id_expediente': this.id_expediente };
         this.searchExpedienteHecho(dataSend);
       } else
-        this.buildForm({});
+        this.addHecho({});
     } else {
-      this.buildForm({});
+      this.addHecho({});
     }
 
   }
 
-  private buildForm(data: any) {
-    this.hechoForm = new FormGroup({
+  private buildForm(data: any): FormGroup {
+    return new FormGroup({
       id_expediente_hecho : new FormControl({
         value: data?.id_expediente_hecho,
         disabled: !this.isAddMode,
@@ -106,23 +109,30 @@ export class ExpedienteHechoComponent implements OnInit {
         value: data?.peticion,
         disabled: false,
       }, [Validators.pattern(/^\S+[a-zA-ZÀ-ÿ0-9\-\s.,]*\S+$/)]),
-      pruebas: new FormControl({
-        value: data?.pruebas,
+      prueba: new FormControl({
+        value: data?.prueba,
         disabled: false,
       }, [Validators.pattern(/^\S+[a-zA-ZÀ-ÿ0-9\-\s.,]*\S+$/)]),
     }, {});
   }
 
   // convenience getter for easy access to form fields
-  // get f() { return this.hechoForm.controls; }
+  get f() {
+    return this.formHecho.get('hechos')['controls'];
+  }
+
+  addHecho(data: any) {
+    (<FormArray>this.formHecho.get('hechos')).push(this.buildForm(data));
+  }
 
   onSubmit() {
     this.submitted = true;
+    console.log(this.formHecho);
     // stop here if form is invalid
-    if (this.hechoForm.invalid) {
+    if (this.formHecho.invalid) {
       return;
     }
-    console.log(this.hechoForm.value);
+
   }
 
   getExpedienteHecho(id_expediente_hecho: number) {
@@ -141,12 +151,12 @@ export class ExpedienteHechoComponent implements OnInit {
 
             } : {};
             this.id_expediente_hecho = hecho.id_expediente_hecho;
-            this.hechoForm.patchValue(hechoFormateado);
+          //this.formHecho.patchValue(hechoFormateado);
           /*
             if (isEmptyValue(persona.direcciones)) {
               this.addArchivoAdjunto({});
             } else {
-              let archivoAdjuntos = this.hechoForm.controls.direcciones as FormArray;
+              let archivoAdjuntos = this.formHecho.controls.direcciones as FormArray;
               persona.archivoAdjuntos.forEach(archivoAdjunto  => {
                 archivoAdjuntos.push(this.buildArchivoAdjunto(archivoAdjunto));
               })
@@ -182,16 +192,11 @@ export class ExpedienteHechoComponent implements OnInit {
               }
             }) : [];
 
-            //this.hechoForm.patchValue(hechosFormateado);
-
             if (isEmptyValue(hechosFormateado)) {
-              this.buildForm({});
+              this.addHecho({});
             } else {
-              //let archivoAdjuntos = this.hechoForm.controls.direcciones as FormArray;
               hechosFormateado.forEach(hecho  => {
-                //this.buildForm(hecho);
-                console.log(hecho);
-                this.hechoForm.patchValue(hecho);
+                this.addHecho(hecho);
               })
             }
 
@@ -256,7 +261,7 @@ export class ExpedienteHechoComponent implements OnInit {
   }
 
   selectedDepartamento(data: any) {
-    const id_departamento = this.hechoForm.get('id_departamento').value;
+    const id_departamento = this.formHecho.get('id_departamento').value;
     this.listDepartamentoMunicipio = this.listMunicipio
       .filter((departamento: any) => departamento.id_departamento == id_departamento);
   }
@@ -264,7 +269,7 @@ export class ExpedienteHechoComponent implements OnInit {
   private updatePersonaSolicitud() {
     //Valor del Form, incluidos los controles deshabilitados
     const formValues = {
-      ...this.hechoForm.getRawValue(),
+      ...this.formHecho.getRawValue(),
     };
     this.loading.show();
     this.expedienteHechoService.updateExpedienteHecho(this.id_expediente_hecho, formValues)

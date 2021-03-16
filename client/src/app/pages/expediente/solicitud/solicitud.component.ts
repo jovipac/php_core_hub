@@ -5,7 +5,7 @@ import { Expediente, ExpedientePersona, ExpedienteHecho } from '../../../shared/
 import { first } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { formatearCorrelativo } from '../../../shared/utils/helpers';
-import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCarouselConfig, NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { isEmptyValue } from '../../../shared/utils';
 import { NgxSpinnerService } from "ngx-spinner";
 
@@ -13,7 +13,7 @@ import { NgxSpinnerService } from "ngx-spinner";
   selector: 'app-solicitud',
   templateUrl: './solicitud.component.html',
   styleUrls: ['./solicitud.component.scss'],
-  providers: [ NgbModalConfig, NgbModal ]
+  providers: [ NgbCarouselConfig, NgbModalConfig, NgbModal ]
 })
 export class SolicitudComponent implements OnInit {
   private id: string;
@@ -30,12 +30,16 @@ export class SolicitudComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
+    private configNgbCarousel: NgbCarouselConfig,
     private configNgbModal: NgbModalConfig,
     private modalService: NgbModal,
     private loading: NgxSpinnerService
   ) {
     configNgbModal.backdrop = 'static';
     configNgbModal.keyboard = true;
+
+    configNgbCarousel.showNavigationArrows = true;
+    configNgbCarousel.showNavigationIndicators = false;
   }
 
   ngOnInit(): void {
@@ -111,7 +115,6 @@ export class SolicitudComponent implements OnInit {
             if (isEmptyValue(hechosFormateado)) {
               this.solicitudHechos = [];
             } else {
-              console.log(hechosFormateado);
               this.solicitudHechos = hechosFormateado;
             }
 

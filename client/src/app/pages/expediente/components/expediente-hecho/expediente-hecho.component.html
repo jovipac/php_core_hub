@@ -1,71 +1,100 @@
-<form action="javascript:" class="needs-validation" novalidate [formGroup]="hechoForm" (ngSubmit)="onSubmit()" autocomplete="off" >
-  <div class="form-row">
-    <div class="col-md-4 mb-3">
-      <input-label [label]="'Fecha y hora'" [id]="'txtFechaHora'"></input-label>
-      <input type="datetime" class="form-control" id="txtFechaHora" formControlName="fecha_hora"
-        placeholder="" >
-      <!-- <div *ngIf="isHasErrors('fecha_hora')" class="invalid-feedback">
-        Please provide a valid state.
-      </div> -->
+<form action="javascript:" class="needs-validation" novalidate [formGroup]="formHecho" (ngSubmit)="onSubmit()" autocomplete="off" >
+
+  <ng-container formArrayName="hechos">
+    <div *ngFor="let hecho of formHecho.get('hechos')['controls'];index as idx">
+      <ng-container [formGroupName]="idx">
+        <div class="form-row">
+          <div class="col-md-4 mb-3">
+            <input-label [label]="'Fecha y hora'" [id]="'txtFechaHora'"></input-label>
+            <input type="datetime" class="form-control" id="txtFechaHora" formControlName="fecha_hora" placeholder="" >
+              <!-- <div class="invalid-feedback">
+              <div *ngIf="hecho.get('fecha_hora').errors?.required">El campo es requerido</div>
+              <div *ngIf="hecho.get('fecha_hora').errors?.pattern">Solo se aceptan digitos</div>
+            </div> -->
+          </div>
+          <div class="col-md-4 mb-3">
+            <input-label [requires]="false" [label]="'Tipo área'" [id]="'txtTipoAreaLugar'"></input-label>
+            <ng-select [items]="listTipoAreaLugar" #select bindLabel="nombre" dropdownPosition="auto" bindValue="id_tipo_area_lugar" labelForId="txtTipoAreaLugar"
+              placeholder="Seleccionar" [virtualScroll]="true" formControlName="id_tipo_area_lugar" >
+            </ng-select>
+              <!-- <div class="invalid-feedback">
+              <div *ngIf="hecho.get('id_tipo_area_lugar').errors?.required">El campo es requerido</div>
+              <div *ngIf="hecho.get('id_tipo_area_lugar').errors?.pattern">Solo se aceptan digitos</div>
+            </div> -->
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-md-3 mb-3">
+            <input-label [requires]="false" [label]="'Departamento'" [id]="'txtDepartamento'"></input-label>
+            <ng-select id="txtDepartamento" [items]="listDepartamento" #select bindLabel="nombre" dropdownPosition="auto"
+              bindValue="id_departamento" labelForId="txtDepartamento" placeholder="Seleccionar o buscar" [virtualScroll]="true"
+              formControlName="id_departamento" (blur)="selectedDepartamento($event)" >
+            </ng-select>
+            <!-- <div class="invalid-feedback">
+              <div *ngIf="hecho.get('id_departamento').errors?.required">El campo es requerido</div>
+              <div *ngIf="hecho.get('id_departamento').errors?.pattern">Solo se aceptan digitos</div>
+            </div> -->
+          </div>
+          <div class="col-md-4 mb-3">
+            <input-label [requires]="false" [label]="'Municipio'" [id]="'txtMunicipio'"></input-label>
+            <ng-select [items]="listDepartamentoMunicipio" #select bindLabel="nombre" dropdownPosition="auto" bindValue="id_municipio" labelForId="txtMunicipio"
+              placeholder="Seleccionar o buscar" [virtualScroll]="true" formControlName="id_municipio" >
+            </ng-select>
+            <div class="invalid-feed">
+              <!-- <div *ngIf="hecho.get('id_municipio').errors?.required">El campo es requerido</div>
+              <div *ngIf="hecho.get('id_municipio').errors?.pattern">Solo se aceptan digitos</div> -->
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col mb-3">
+            <input-label [label]="'Dirección'" [id]="'txtDireccion'"></input-label>
+            <input type="text" class="form-control" id="txtDireccion" formControlName="direccion" >
+            <!-- <div *ngIf="isHasErrors('direccion')" class="invalid-feedback">
+              <div *ngIf="hecho.get('direccion').errors?.required">El campo es requerido</div>
+              <div *ngIf="hecho.get('direccion').errors?.pattern">Solo se acepta texto sin caracteres especiales</div>
+            </div> -->
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col mb-3">
+            <input-label [label]="'Hecho'" [id]="'txtHecho'"></input-label>
+            <textarea class="form-control" id="txtHecho" rows="3" formControlName="hecho"></textarea>
+            <!-- <div *ngIf="isHasErrors('hecho')" class="invalid-feedback">
+              <div *ngIf="hecho.get('hecho').errors?.required">El campo es requerido</div>
+              <div *ngIf="hecho.get('hecho').errors?.pattern">Solo se acepta texto sin caracteres especiales</div>
+            </div> -->
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col mb-3">
+            <input-label [label]="'Petición'" [id]="'txtPeticion'"></input-label>
+            <textarea class="form-control" id="txtPeticion" rows="3" formControlName="peticion"></textarea>
+            <!-- <div *ngIf="isHasErrors('peticion')" class="invalid-feedback">
+              <div *ngIf="hecho.get('peticion').errors?.required">El campo es requerido</div>
+              <div *ngIf="hecho.get('peticion').errors?.pattern">Solo se acepta texto sin caracteres especiales</div>
+            </div> -->
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col mb-3">
+            <input-label [label]="'Prueba'" [id]="'txtPrueba'"></input-label>
+            <textarea class="form-control" id="txtPrueba" rows="3" formControlName="prueba"></textarea>
+            <!-- <div class="invalid-feedback">
+              <div *ngIf="hecho.get('prueba').errors?.required">El campo es requerido</div>
+              <div *ngIf="hecho.get('prueba').errors?.pattern">Solo se acepta texto sin caracteres especiales</div>
+            </div> -->
+          </div>
+        </div>
+      </ng-container>
     </div>
-    <div class="col-md-4 mb-3">
-      <input-label [requires]="false" [label]="'Tipo área'" [id]="'txtTipoAreaLugar'"></input-label>
-      <ng-select [items]="listTipoAreaLugar" #select bindLabel="nombre" dropdownPosition="auto" bindValue="id_tipo_area_lugar" labelForId="txtTipoAreaLugar"
-        placeholder="Seleccionar" [virtualScroll]="true" formControlName="id_tipo_area_lugar" >
-      </ng-select>
+  </ng-container>
+  <div class="row">
+    <div class="col"></div>
+    <div class="col text-center">
+      <button class="btn btn-primary" type="submit" id="btnSave"><i class="fa fa-save"></i>Guardar</button>
     </div>
+    <div class="col"></div>
   </div>
-  <div class="form-row">
-    <div class="col-md-3 mb-3">
-      <input-label [requires]="false" [label]="'Departamento'" [id]="'txtDepartamento'"></input-label>
-      <ng-select id="txtDepartamento" [items]="listDepartamento" #select bindLabel="nombre" dropdownPosition="auto"
-        bindValue="id_departamento" labelForId="txtDepartamento" placeholder="Seleccionar o buscar" [virtualScroll]="true"
-        formControlName="id_departamento" (blur)="selectedDepartamento($event)" >
-      </ng-select>
-      <!-- <div class="invalid-feedback">
-        <div *ngIf="f.id_departamento.errors?.required">El campo es requerido</div>
-        <div *ngIf="f.id_departamento.errors?.pattern">Solo se aceptan digitos</div>
-      </div> -->
-    </div>
-    <div class="col-md-4 mb-3">
-      <input-label [requires]="false" [label]="'Municipio'" [id]="'txtMunicipio'"></input-label>
-      <ng-select [items]="listDepartamentoMunicipio" #select bindLabel="nombre" dropdownPosition="auto" bindValue="id_municipio" labelForId="txtMunicipio"
-        placeholder="Seleccionar o buscar" [virtualScroll]="true" formControlName="id_municipio" >
-      </ng-select>
-      <!-- <div class="invalid-feedback">
-        <div *ngIf="f.id_municipio.errors?.required">El campo es requerido</div>
-        <div *ngIf="f.id_municipio.errors?.pattern">Solo se aceptan digitos</div>
-      </div> -->
-    </div>
-  </div>
-  <div class="form-row">
-    <div class="col mb-3">
-      <input-label [label]="'Dirección'" [id]="'txtDireccion'"></input-label>
-      <input type="text" class="form-control" id="txtDireccion" formControlName="direccion" >
-      <!-- <div *ngIf="isHasErrors('direccion')" class="invalid-feedback">
-        <div *ngIf="f.direccion.errors?.required">El campo es requerido</div>
-        <div *ngIf="f.direccion.errors?.pattern">Solo se acepta texto sin caracteres especiales</div>
-      </div> -->
-    </div>
-  </div>
-  <div class="form-row">
-    <div class="col mb-3">
-      <input-label [label]="'Petición'" [id]="'txtPeticion'"></input-label>
-      <input type="text" class="form-control" id="txtPeticion" formControlName="peticion" >
-      <!-- <div *ngIf="isHasErrors('peticion')" class="invalid-feedback">
-        <div *ngIf="f.peticion.errors?.required">El campo es requerido</div>
-        <div *ngIf="f.peticion.errors?.pattern">Solo se acepta texto sin caracteres especiales</div>
-      </div> -->
-    </div>
-  </div>
-  <div class="form-row">
-    <div class="col mb-3">
-      <input-label [label]="'Pruebas'" [id]="'txtPruebas'"></input-label>
-      <input type="text" class="form-control" id="txtPruebas" formControlName="pruebas" >
-      <!-- <div class="invalid-feedback">
-        <div *ngIf="f.pruebas.errors?.required">El campo es requerido</div>
-        <div *ngIf="f.pruebas.errors?.pattern">Solo se acepta texto sin caracteres especiales</div>
-      </div> -->
-    </div>
-  </div>
+
 </form>
