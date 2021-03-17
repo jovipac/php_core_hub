@@ -143,12 +143,8 @@ export class ExpedienteHechoComponent implements OnInit {
     if (this.formHecho.invalid) {
       return;
     }
-
-    if (this.isAddMode) {
-      this.updateHechoSolicitud();
-    } else {
-      this.updateHechoSolicitud();
-    }
+    // proceded to save or update
+    this.createOrUpdateHecho()
 
   }
 
@@ -281,6 +277,58 @@ export class ExpedienteHechoComponent implements OnInit {
     const id_departamento = this.formHecho.get('id_departamento').value;
     this.listDepartamentoMunicipio = this.listMunicipio
       .filter((departamento: any) => departamento.id_departamento == id_departamento);
+  }
+
+  private async createOrUpdateHecho() {
+    let completedProcess = false;
+    //Valor del Form, incluidos los controles deshabilitados
+    let formValues = {
+      ...this.formHecho.getRawValue(),
+    };
+
+    let result = formValues.hechos.forEach(async (hecho: any) => {
+      try {
+        this.loading.show();
+        if (isEmptyValue(hecho.id_expediente_hecho) && hecho.id_expediente_hecho != 0) {
+          let response: any = await this.expedienteHechoService.createExpedienteHecho({ ...hecho, id_expediente: this.id_expediente }).toPromise();
+          if (response.success) {
+            this.toastr.success(response.message, 'Hecho del expediente');
+            completedProcess = true;
+            this.loading.hide();
+          } else {
+            completedProcess = false;
+          }
+          this.submittedEvent.emit(completedProcess);
+        } else {
+          let response: any = await this.expedienteHechoService.updateExpedienteHecho(hecho.id_expediente_hecho, hecho).toPromise();
+          if (response.success) {
+            this.toastr.success(response.message, 'Hecho del expediente');
+            completedProcess = true;
+            this.loading.hide();
+          } else {
+            completedProcess = false;
+          }
+          this.submittedEvent.emit(completedProcess);
+        }
+      } catch(response) {
+        if (Object.prototype.toString.call(response.error.message) === '[object Object]') {
+          const messages = extractErrorMessages(response);
+          messages.forEach(propertyErrors => {
+            for (let message in propertyErrors) {
+              this.toastr.error(propertyErrors[message], 'Hecho del expediente');
+            }
+          });
+
+        } else {
+          this.toastr.error(response.error.message)
+        }
+        completedProcess = false;
+        this.loading.hide();
+      }
+
+    });
+    //result = await Promise.all([promise1, promise2, promise3]);
+    //this.submittedEvent.emit(result);
   }
 
   private updateHechoSolicitud() {
