@@ -205,6 +205,17 @@ export class ExpedientePersonaComponent implements OnInit {
     };
   }
 
+  displayValidation(value: boolean) {
+    return {
+      'is-invalid': value
+    };
+  }
+
+  displayValidationMsg(value: boolean) {
+    const cssStyle = Boolean(value) ? 'valid-feedback' : 'invalid-feedback';
+    return cssStyle;
+  }
+
   calculateAge(birthDate: string) {
     if (isValid(parseISO(birthDate)) === true) {
       const years = differenceInYears(new Date(), parseISO(birthDate));
