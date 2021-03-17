@@ -55,8 +55,7 @@ export class SolicitudComponent implements OnInit {
           const expediente = {
             ...data.result,
             correlativo: formatearCorrelativo(
-              data.result.id_auxiliatura,
-              data.result.anio, data.result.folio),
+              null, data.result.anio, data.result.folio),
             nombre_funcionario: [
               data.result?.nombres_funcionario,
               data.result?.apellidos_funcionario

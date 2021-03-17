@@ -53,17 +53,15 @@ export const extractErrorMessages = (errorResponse: HttpErrorResponse) => {
  * @param  {string} sep  :separador que se utiliza por defecto se usa el guion
  * @return {string}
  */
-export const formatearCorrelativo = (auxiliatura = "", anio, folio, sep = "-") => {
+export const formatearCorrelativo = (auxiliatura = null, anio: number, folio: number, sep = "-") => {
   return folio
     ? [
-      String(auxiliatura).padStart(3, "0"),
-      sep,
-      anio,
-      sep,
-      String(folio).padStart(6, "0")
+      auxiliatura ? String(auxiliatura).padStart(3, "0") : "",
+      String(folio).padStart(5, "0"),
+      anio
     ]
       .filter(Boolean)
-      .join("")
+      .join(sep)
     : "";
 };
 

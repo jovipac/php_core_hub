@@ -44,6 +44,7 @@
     "jquery-sparkline": "^2.4.0",
     "jszip": "^3.6.0",
     "ng-click-outside": "^3.2.0",
+    "ng-pick-datetime": "^7.0.0",
     "ng2-completer": "^9.0.1",
     "ng2-google-charts": "^3.4.0",
     "ng2-toasty": "^4.0.3",

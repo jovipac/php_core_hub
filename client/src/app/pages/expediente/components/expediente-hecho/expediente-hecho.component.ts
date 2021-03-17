@@ -57,7 +57,7 @@ export class ExpedienteHechoComponent implements OnInit {
 
     if (!this.isAddMode) {
       // Si existe ya un ID ya guardado, se consulta y carga la información
-      if (!isEmptyValue(this.id_expediente_hecho)) {
+      if (!isEmptyValue(this.id_expediente_hecho) && this.id_expediente_hecho > 0) {
         this.getExpedienteHecho(this.id_expediente_hecho);
       }
       else if (!isEmptyValue(this.id_expediente)) {
@@ -284,20 +284,21 @@ export class ExpedienteHechoComponent implements OnInit {
   }
 
   private updateHechoSolicitud() {
+    let completedProcess = false;
     //Valor del Form, incluidos los controles deshabilitados
     const formValues = {
       ...this.formHecho.getRawValue(),
     };
-    this.loading.show();
     formValues.hechos.forEach(hecho  => {
-
+      this.loading.show();
       this.expedienteHechoService.updateExpedienteHecho(hecho.id_expediente_hecho, hecho)
       .pipe(first())
       .subscribe({
           next: (response: any) => {
             this.toastr.success(response.message, 'Hecho del expediente');
-            this.submittedEvent.emit(true);
+            completedProcess = true;
             this.loading.hide();
+            this.submittedEvent.emit(completedProcess);
           },
           error: (error: HttpErrorResponse) => {
               const messages = extractErrorMessages(error);
@@ -306,7 +307,7 @@ export class ExpedienteHechoComponent implements OnInit {
                   this.toastr.error(propertyErrors[message], 'Hecho del expediente');
                 }
               });
-              this.submittedEvent.emit(false);
+              completedProcess = false;
               this.loading.hide();
           }
       });
