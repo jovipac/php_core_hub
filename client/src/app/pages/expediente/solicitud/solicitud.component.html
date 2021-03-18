@@ -107,12 +107,12 @@
         <h5 class="card-title">Paso 3: Hechos</h5>
       </div>
       <div class="card-body">
-        <ngb-carousel [wrap]="false" [interval]="10000">
-          <ng-template ngbSlide *ngFor="let hecho of solicitudHechos; let idx = index;">
+        <carousel [noWrap]="false" [interval]="10000">
+          <slide *ngFor="let hecho of solicitudHechos; let idx = index;">
             <p class="card-text">Hechos: {{ hecho.hecho }}</p>
             <p class="card-text">Petición: {{ hecho.peticion }}</p>
-          </ng-template>
-        </ngb-carousel>
+          </slide>
+        </carousel>
       </div>
       <div class="card-footer text-center">
         <div class="row align-items-center">

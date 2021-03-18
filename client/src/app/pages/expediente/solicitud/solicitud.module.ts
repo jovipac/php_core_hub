@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../../shared/shared.module';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { NgxSpinnerModule } from "ngx-spinner";
 
 import { SolicitudRoutingModule } from './solicitud-routing.module';
@@ -18,6 +21,9 @@ import { ExpedienteHechoComponent } from '../components/expediente-hecho/expedie
     NgSelectModule,
     SolicitudRoutingModule,
     ReactiveFormsModule,
+    TabsModule,
+    TypeaheadModule,
+    CarouselModule,
     NgxSpinnerModule
   ],
   declarations: [

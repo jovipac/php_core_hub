@@ -4,7 +4,7 @@
     <app-card [hidHeader]="true" [blockClass]="'table-border-style'">
       <div class="col-lg-12 buttoms">
         <!-- Button trigger modal -->
-        <button (click)="open(addUser,0);" class="btn btn-primary float-right btn-md button-separate"><i
+        <button (click)="openModal(addUser,0);" class="btn btn-primary float-right btn-md button-separate"><i
             class="icofont icofont-plus-circle">
           </i>Nuevo usuario</button>
       </div>
@@ -41,15 +41,13 @@
                 <td>
                   <div class="row">
                     <div class="col">
-                      <div ngbDropdown class="d-inline-block">
-                        <button class="btn btn-outline-primary btn-mini" id="dropdownBasic1"
-                          ngbDropdownToggle>Acciones</button>
-                        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                          <button class="btn-mini"
-                            (click)="open(updateUser,user.id_funcionario); getOficial(user.id_funcionario)"
-                            ngbDropdownItem>Actualizar</button>
-                          <button class="btn-mini" (click)="open(addPermit , user.id_usuario); loadModuleAssigned(user.id_usuario)" ngbDropdownItem>Asignar permisos</button>
-                          <button class="btn-mini" (click)="deleteOficial(user.id_funcionario)" ngbDropdownItem>Inhabilitar</button>
+                      <div dropdown class="d-inline-block">
+                        <button class="btn btn-outline-primary btn-mini dropdown-toggle" id="dropdownBasic1"
+                        dropdownToggle >Acciones</button>
+                        <div *dropdownMenu aria-labelledby="dropdownBasic1" class="dropdown-menu">
+                          <li class="dropdown-item btn-mini" (click)="openModal(updateUser,user.id_funcionario); getOficial(user.id_funcionario)">Actualizar</li>
+                          <li class="dropdown-item btn-mini" (click)="openModal(addPermit , user.id_usuario); loadModuleAssigned(user.id_usuario)">Asignar permisos</li>
+                          <li class="dropdown-item btn-mini" (click)="deleteOficial(user.id_funcionario)">Inhabilitar</li>
                         </div>
                       </div>
                     </div>
@@ -66,11 +64,11 @@
 
 
 
-<ng-template #addUser let-c="close" let-d="dismiss">
+<ng-template #addUser>
   <div class="modal-content">
     <div class="modal-header">
       <h6 class="modal-title" id="modal-title-default">Administración de usuarios</h6>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="d('Cross click')">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
         <span aria-hidden="true">×</span>
       </button>
     </div>
@@ -81,7 +79,7 @@
             <div class="form-group">
               <label for="">* Código:</label>
               <input type="text" class="form-control" formControlName="codigo" placeholder="Código"
-               [ngClass]="{ 'is-invalid': SentPdhCode }" required>
+              [ngClass]="{ 'is-invalid': SentPdhCode }" required>
             </div>
           </div>
 
@@ -194,11 +192,11 @@
 </ng-template>
 
 
-<ng-template #updateUser let-c="close" let-d="dismiss">
+<ng-template #updateUser>
   <div class="modal-content">
     <div class="modal-header">
       <h6 class="modal-title" id="modal-title-default">Administración de usuarios</h6>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="d('Cross click')">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
         <span aria-hidden="true">×</span>
       </button>
     </div>
@@ -323,12 +321,12 @@
 </ng-template>
 
 
-<ng-template #addPermit let-c="close" let-d="dismiss">
+<ng-template #addPermit>
   <ngx-spinner></ngx-spinner>
   <div class="modal-content">
     <div class="modal-header">
       <h6 class="modal-title" id="modal-title-default">Administración de usuarios</h6>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="d('Cross click')">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
         <span aria-hidden="true">×</span>
       </button>
     </div>
