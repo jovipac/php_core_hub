@@ -4,6 +4,7 @@ import { NgModule, NO_ERRORS_SCHEMA, LOCALE_ID } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 // Bootstrap components
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 import { AppComponent } from './app.component';
 import { AdminComponent } from './layout/admin/admin.component';
@@ -35,6 +36,7 @@ registerLocaleData(localeEs, 'es');
     ModalModule.forRoot(),
     SharedModule,
     FormsModule,
+    BsDatepickerModule.forRoot(),
     HttpClientModule,
     ToastrModule.forRoot({
       timeOut: 10000,
