@@ -8,7 +8,7 @@ use App\Http\Traits\DateTimeMutator;
 use App\Http\Traits\Userstamps;
 
 
-class ExpedienteHecho extends Model
+class ExpedienteHechoPrueba extends Model
 {
     use SoftDeletesBoolean, Userstamps, DateTimeMutator;
 
@@ -20,8 +20,8 @@ class ExpedienteHecho extends Model
      *
      * @var array
      */
-    protected $table = 'tt_expediente_hecho';
-    protected $primaryKey = 'id_expediente_hecho';
+    protected $table = 'tt_expediente_hecho_prueba';
+    protected $primaryKey = 'id_expediente_hecho_prueba';
 
     /**
      * The attributes that are mass assignable.
@@ -29,8 +29,8 @@ class ExpedienteHecho extends Model
      * @var array
      */
     protected $fillable = [
-        'id_expediente_hecho', 'id_expediente', 'fecha_hora', 'id_tipo_area_lugar', 'id_departamento', 'id_municipio',
-        'direccion', 'hecho', 'peticion', 'prueba', 'borrado'
+        'id_expediente_hecho_prueba', 'id_expediente', 'id_expediente_hecho',
+        'nombre', 'tamanio', 'ubicacion', 'borrado'
     ];
 
     /**
