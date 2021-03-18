@@ -55,6 +55,6 @@ class CreateExpedienteHechoPruebasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('expediente_hecho_pruebas');
+        Schema::dropIfExists('tt_expediente_hecho_prueba');
     }
 }
