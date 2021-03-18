@@ -7,24 +7,29 @@ import { DocumentoIdentidadPersonaService, ExpedientePersonaService, PersonasSer
 import { ToastrService } from 'ngx-toastr';
 import { ExpedientePersona, DocumentoIdentidad, Sexo, Genero, TipoDireccion } from '../../../../shared/models';
 import { TipoVinculacion, Departamento, Municipio } from '../../../../shared/models';
-import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
+import { TypeaheadMatch, TypeaheadConfig } from 'ngx-bootstrap/typeahead';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { first, debounceTime, distinctUntilChanged, filter, switchMap, map, catchError } from 'rxjs/operators';
+import { Observable, Observer } from 'rxjs';
+import { first, distinctUntilChanged, filter, switchMap, map, catchError } from 'rxjs/operators';
 import { isEmptyValue } from '../../../../shared/utils';
 import { format, isValid, parseISO, differenceInYears } from 'date-fns';
 import { extractErrorMessages } from '../../../../shared/utils';
 import { NgxSpinnerService } from "ngx-spinner";
+
+export function getTypeaheadConfig(): TypeaheadConfig {
+  return Object.assign(new TypeaheadConfig(), { cancelRequestOnFocusLost: true });
+}
 @Component({
   selector: 'app-expediente-persona',
   templateUrl: './expediente-persona.component.html',
-  styleUrls: ['./expediente-persona.component.scss']
+  styleUrls: ['./expediente-persona.component.scss'],
+  providers: [{ provide: TypeaheadConfig, useFactory: getTypeaheadConfig }]
 })
 export class ExpedientePersonaComponent implements OnInit {
   @Input() id_expediente_persona: number;
   @Output() submittedEvent = new EventEmitter();
-  @ViewChild('instance') instance: NgbTypeahead;
 
+  suggestions: Observable<any>;
   personaForm: FormGroup;
   direcciones: FormArray;
   id_expediente: number;
@@ -73,6 +78,35 @@ export class ExpedientePersonaComponent implements OnInit {
 
     // Finalmente se llama la construccion del formulario
     this.buildForm();
+
+    this.suggestions = new Observable((observer: Observer<string>) => observer.next(this.personaForm.get('identificador').value))
+      .pipe(
+        distinctUntilChanged(),
+        filter((term:string) => term.length >= 3),
+        switchMap((searchText) => {
+          const dataSend = {
+            'id_documento_identidad': this.personaForm.get('id_documento_identidad').value,
+            'identificador': searchText
+          };
+          console.log(searchText);
+          return this.documentoIdentidadPersonaService.searchDocumentoIdentidadPersona(dataSend)
+        }),
+        catchError((response: HttpErrorResponse) => {
+          if (Object.prototype.toString.call(response.error.message) === '[object Object]') {
+            const messages = extractErrorMessages(response);
+            messages.forEach(propertyErrors => {
+              for (let message in propertyErrors) {
+                this.toastr.error(propertyErrors[message], 'Solicitud');
+              }
+            });
+          } else
+            this.toastr.error(response.error.message);
+
+          return [];
+        }),
+        map((response: any) => { return response.result })
+      );
+
 
     if (!this.isAddMode) {
       // Si existe ya un ID ya guardado, se consulta y carga la información
@@ -229,6 +263,11 @@ export class ExpedientePersonaComponent implements OnInit {
   addDireccion(data: any): void {
     this.direcciones = this.personaForm.get('direcciones') as FormArray;
     this.direcciones.push(this.buildDireccion(data));
+  }
+
+  removeTabHandler(tab: any): void {
+    this.direcciones.removeAt(tab);
+    console.log('Remove Tab handler',tab);
   }
 
   onSubmit() {
@@ -406,50 +445,14 @@ export class ExpedientePersonaComponent implements OnInit {
       .filter((departamento: any) => departamento.id_departamento == id_departamento);
   }
 
-  public searchByIdentificacion = (text$: Observable<string>) => {
-    return text$.pipe(
-      debounceTime(200),
-      distinctUntilChanged(),
-      filter(term => term.length >= 3),
-      switchMap((searchText) => {
-        const dataSend = {
-          'id_documento_identidad': this.personaForm.get('id_documento_identidad').value,
-          'identificador': searchText
-        };
-        return this.documentoIdentidadPersonaService.searchDocumentoIdentidadPersona(dataSend)
-      }),
-      catchError((response: HttpErrorResponse) => {
-        if (Object.prototype.toString.call(response.error.message) === '[object Object]') {
-          const messages = extractErrorMessages(response);
-          messages.forEach(propertyErrors => {
-            for (let message in propertyErrors) {
-              this.toastr.error(propertyErrors[message], 'Solicitud');
-            }
-          });
-        } else
-          this.toastr.error(response.error.message);
-
-        return [];
-      }),
-      map((response: any) => { return response.result })
-    );
-  }
-
-  protected changeDocumentoIdentidadPersona(data: any) {
+  changeDocumentoIdentidadPersona(data: any) {
     if (isEmptyValue(this.personaForm.get('identificador').value) || !this.isSelectedID)
       this.personaForm.patchValue({ id_persona: '' });
-    this.isSelectedID = Boolean(this.instance.dismissPopup());
+    //this.isSelectedID = Boolean(this.instance.dismissPopup());
   }
-  protected resultFormatDocumentoIdentidadPersona(data: any) {
-    return data.identificador;
-  }
-  protected inputFormatocumentoIdentidadPersona(data: any) {
-    if (data.identificador)
-      return data.identificador
-    return data;
-  }
-  protected setDocumentoIdentidadPersona(data: any) {
-    this.isSelectedID = this.instance.isPopupOpen();
+
+  setDocumentoIdentidadPersona(data: TypeaheadMatch) {
+    this.isSelectedID = true; //this.instance.isPopupOpen();
     const selected = {
       'id_documento_identidad': data.item.id_documento_identidad,
       'id_persona': data.item.id_persona

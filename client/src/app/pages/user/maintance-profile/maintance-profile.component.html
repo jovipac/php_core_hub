@@ -4,7 +4,7 @@
     <app-card [hidHeader]="true" [blockClass]="'table-border-style'">
       <div class="col-lg-12 buttoms">
         <!-- Button trigger modal -->
-        <button (click)="open(addProfile,0)" class="btn btn-primary float-right btn-md button-separate"><i
+        <button (click)="openModal(addProfile,0)" class="btn btn-primary float-right btn-md button-separate"><i
           class="icofont icofont-plus-circle">
           </i>Nuevo Perfil</button>
           <br>
@@ -28,18 +28,12 @@
                 <td>
                   <div class="row">
                     <div class="col">
-                      <div ngbDropdown class="d-inline-block">
-                        <button class="btn btn-outline-primary btn-mini" id="dropdownBasic1"
-                          ngbDropdownToggle>Acciones</button>
-                        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                          <button class="btn-mini" (click)="open(updateProfile,profile.id_rol); getRol(profile.id_rol)"
-                            ngbDropdownItem>Actualizar</button>
-                          <button class="btn-mini"
-                            (click)="open(addPermit, profile.id_rol); loadModuleAssigned(profile.id_rol)"
-                            ngbDropdownItem>Asignar
-                            permisos</button>
-                          <button class="btn-mini" (click)="deleteProfile(profile.id_rol)"
-                            ngbDropdownItem>Inhabilitar</button>
+                      <div dropdown class="d-inline-block">
+                        <button class="btn btn-outline-primary btn-mini dropdown-toggle" id="dropdownBasic1" dropdownToggle>Acciones</button>
+                        <div *dropdownMenu aria-labelledby="dropdownBasic1" class="dropdown-menu">
+                          <button class="dropdown-item btn-mini" (click)="openModal(updateProfile,profile.id_rol); getRol(profile.id_rol)">Actualizar</button>
+                          <button class="dropdown-item btn-mini" (click)="openModal(addPermit, profile.id_rol); loadModuleAssigned(profile.id_rol)">Asignar permisos</button>
+                          <button class="dropdown-item btn-mini" (click)="deleteProfile(profile.id_rol)">Inhabilitar</button>
                         </div>
                       </div>
                     </div>
@@ -59,7 +53,7 @@
   <div class="modal-content">
     <div class="modal-header">
       <h6 class="modal-title" id="modal-title-default">Administración de perfiles</h6>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="d('Cross click')">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
         <span aria-hidden="true">×</span>
       </button>
     </div>
@@ -131,7 +125,7 @@
   <div class="modal-content">
     <div class="modal-header">
       <h6 class="modal-title" id="modal-title-default">Administración de Perfiles</h6>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="d('Cross click')">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
         <span aria-hidden="true">×</span>
       </button>
     </div>
@@ -200,7 +194,7 @@
   <div class="modal-content">
     <div class="modal-header">
       <h6 class="modal-title" id="modal-title-default">Administración de Perfiles</h6>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="d('Cross click')">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
         <span aria-hidden="true">×</span>
       </button>
     </div>

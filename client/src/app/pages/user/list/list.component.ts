@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
 import { ServicesService } from "../../../service/services.service";
 import { AuxiliaturaService, DependenciaService } from '../../../service/catalogos';
 import { FormGroup, Validators, FormBuilder } from "@angular/forms";
@@ -66,6 +66,7 @@ interface rolAssigned {
 })
 
 export class ListComponent implements OnInit {
+  public modalRef: BsModalRef;
   public errorState: boolean = false;
   public closeResult: string = '';
   public listUsers: Array<oficial>;
@@ -91,7 +92,7 @@ export class ListComponent implements OnInit {
   public SentPdhCode: boolean = false;
 
   constructor(
-    private modalService: NgbModal,
+    private modalService: BsModalService,
     private service: ServicesService,
     private auxiliaturaService: AuxiliaturaService,
     private dependenciaService: DependenciaService,
@@ -144,15 +145,21 @@ export class ListComponent implements OnInit {
 
 
   /* manager modals */
-  open(content, code) {
+  openModal(content, code) {
     this.errorState = false;
     this.ResetSenti();
-    this.modalService
-      .open(content, { size: "xl", centered: false })
+    this.modalRef = this.modalService
+      .show(content, { class: 'modal-xl', backdrop: 'static', keyboard: true });
+    /*
       .result.then(
         (result) => { this.closeResult = "Closed with: $result"; },
         (reason) => { this.closeResult = "Dismissed $this.getDismissReason(reason)"; }
       );
+    */
+  }
+
+  closeModal(modalId?: number){
+    this.modalService.hide(modalId);
   }
 
   getOficial(codeOficial) {
@@ -175,7 +182,7 @@ export class ListComponent implements OnInit {
     }
   }
   getDismissReason(reason: any) {
-    this.modalService.dismissAll(reason);
+    this.modalRef.hide();
   }
 
   /* function get position */

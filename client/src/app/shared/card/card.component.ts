@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
+/*import { BsDropdownConfig  } from 'ngx-bootstrap/dropdown';*/
 /*import { AnimationBuilder, AnimationService } from 'css-animator';*/
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
 
@@ -7,7 +7,7 @@ import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular
   selector: 'app-card',
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss'],
-  providers: [NgbDropdownConfig],
+  providers: [],
   animations: [
     trigger('collapsedCard', [
       state('collapsed, void',
@@ -65,8 +65,7 @@ export class CardComponent implements OnInit {
 
   public cardRemove: string;
 
-  constructor(/*animationService: AnimationService,*/ config: NgbDropdownConfig) {
-    config.placement = 'bottom-right';
+  constructor(/*animationService: AnimationService, config: BsDropdownConfig*/ ) {
     this.customHeader = false;
     this.options = true;
     this.hidHeader = false;

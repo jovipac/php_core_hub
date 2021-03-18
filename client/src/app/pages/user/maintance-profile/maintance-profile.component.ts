@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
 import { ServicesService } from '../../../service/services.service';
 import { FormGroup, Validators, FormBuilder } from "@angular/forms";
 import { ToastrService } from 'ngx-toastr';
@@ -32,6 +32,7 @@ interface rolAssigned {
   styleUrls: ['./maintance-profile.component.scss']
 })
 export class MaintanceProfileComponent implements OnInit {
+  public modalRef: BsModalRef;
   public errorState: boolean = false;
   public closeResult: string = '';
   public message: Object = {};
@@ -50,7 +51,7 @@ export class MaintanceProfileComponent implements OnInit {
   public nameAssigned: String = "";
 
   constructor(
-    private modalService: NgbModal,
+    private modalService: BsModalService,
     private service: ServicesService,
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
@@ -80,18 +81,24 @@ export class MaintanceProfileComponent implements OnInit {
     });
   }
   /* manager modals */
-  open(content, code) {
+  openModal(content, code) {
     this.errorState = false;
-    this.modalService
-      .open(content, { size: "xl", centered: false })
+    this.modalRef = this.modalService
+      .show(content, { class: 'modal-xl', backdrop: 'static', keyboard: true });
+    /*
       .result.then(
         (result) => { this.closeResult = "Closed with: $result"; },
         (reason) => { this.closeResult = "Dismissed $this.getDismissReason(reason)"; }
       );
+    */
+  }
+
+  closeModal(modalId?: number){
+    this.modalService.hide(modalId);
   }
 
   getDismissReason(reason: any) {
-    this.modalService.dismissAll(reason);
+    this.modalRef.hide();
   }
 
   getListRol() {

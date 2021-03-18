@@ -1,13 +1,13 @@
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 import { AccordionAnchorDirective, AccordionDirective, AccordionLinkDirective } from './accordion';
 import { ToggleFullScreenDirective } from './fullscreen/toggle-fullscreen.directive';
 import { CardRefreshDirective } from './card/card-refresh.directive';
 import { CardToggleDirective } from './card/card-toggle.directive';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { CardModule } from './card/card.module';
-import { ModalModule } from './modal/modal.module';
+import { CustomModalModule } from './modal/modal.module';
 import { ModalAnimationComponent } from './modal-animation/modal-animation.component';
 import { LabelInputComponent } from './element/input-label/input-label.component';
 import { DataFilterPipe } from './element/data-filter.pipe';
@@ -26,9 +26,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     CommonModule,
     PerfectScrollbarModule,
     ClickOutsideModule,
-    NgbModule,
     CardModule,
-    ModalModule
+    CustomModalModule
   ],
   declarations: [
     AccordionAnchorDirective,
@@ -53,13 +52,12 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     CardToggleDirective,
     SpinnerComponent,
     CardModule,
-    ModalModule,
+    CustomModalModule,
     ModalAnimationComponent,
     LabelInputComponent,
     InlineClockComponent,
     DataFilterPipe,
     ParentRemoveDirective,
-    NgbModule,
     PerfectScrollbarModule,
     ClickOutsideModule
   ],

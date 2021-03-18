@@ -5,7 +5,8 @@ import { Expediente, ExpedientePersona, ExpedienteHecho } from '../../../shared/
 import { first } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { formatearCorrelativo } from '../../../shared/utils/helpers';
-import { NgbCarouselConfig, NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CarouselConfig } from 'ngx-bootstrap/carousel';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { isEmptyValue } from '../../../shared/utils';
 import { NgxSpinnerService } from "ngx-spinner";
 
@@ -13,13 +14,14 @@ import { NgxSpinnerService } from "ngx-spinner";
   selector: 'app-solicitud',
   templateUrl: './solicitud.component.html',
   styleUrls: ['./solicitud.component.scss'],
-  providers: [ NgbCarouselConfig, NgbModalConfig, NgbModal ]
+  providers: [ CarouselConfig ]
 })
 export class SolicitudComponent implements OnInit {
   private id: string;
   isAddMode: boolean;
   id_expediente_persona: number;
   public solicitud: Expediente;
+  private configNgbModal: object;
   public solicitudPersonas: Array<ExpedientePersona>;
   public solicitudHechos: Array<ExpedienteHecho>;
 
@@ -30,16 +32,18 @@ export class SolicitudComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
-    private configNgbCarousel: NgbCarouselConfig,
-    private configNgbModal: NgbModalConfig,
-    private modalService: NgbModal,
+    private configNgbCarousel: CarouselConfig,
+    private modalService: BsModalService,
     private loading: NgxSpinnerService
   ) {
-    configNgbModal.backdrop = 'static';
-    configNgbModal.keyboard = true;
+    this.configNgbModal = {
+      class: 'modal-xl',
+      backdrop: 'static',
+      keyboard: true
+    }
 
-    configNgbCarousel.showNavigationArrows = true;
-    configNgbCarousel.showNavigationIndicators = false;
+    configNgbCarousel.pauseOnFocus = true;
+    configNgbCarousel.showIndicators = false;
   }
 
   ngOnInit(): void {
@@ -137,14 +141,14 @@ export class SolicitudComponent implements OnInit {
   }
 
   showModalStep(content: any) {
-    this.modalService.open(content, { size: "xl" });
+    this.modalService.show(content, this.configNgbModal);
   }
   dismissModalStep() {
-    this.modalService.dismissAll();
+    this.modalService.hide();
   }
   submitModalStep(isSubmitCompleted:any) {
     if(isSubmitCompleted){
-      this.modalService.dismissAll("success");
+      this.modalService.hide();
     }
   }
 
