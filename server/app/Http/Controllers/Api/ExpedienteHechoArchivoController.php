@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
-use App\Models\ExpedienteHechoPrueba;
+use App\Models\ExpedienteHechoArchivo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class ExpedienteHechoPruebaController extends ApiController
+class ExpedienteHechoArchivoController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -17,16 +17,16 @@ class ExpedienteHechoPruebaController extends ApiController
     public function index(Request $request)
     {
         if ($request->has('per_page') && $request->filled('per_page')) {
-            $expedienteHechoPruebas = ExpedienteHechoPrueba::query()
+            $expedienteHechoArchivos = ExpedienteHechoArchivo::query()
                 ->paginate($request->per_page);
         } else
-            $expedienteHechoPruebas = ExpedienteHechoPrueba::all();
+            $expedienteHechoArchivos = ExpedienteHechoArchivo::all();
 
         return $this->apiResponse(
             [
                 'success' => true,
                 'message' => "Listado de pruebas adjunta del hechos",
-                'result' => $expedienteHechoPruebas
+                'result' => $expedienteHechoArchivos
             ]
         );
     }
@@ -60,22 +60,22 @@ class ExpedienteHechoPruebaController extends ApiController
             return $this->respondError($validator->errors(), 422);
         }
         $input = $request->all();
-        $expedienteHechoPrueba = ExpedienteHechoPrueba::create($input);
+        $expedienteHechoArchivo = ExpedienteHechoArchivo::create($input);
 
         return $this->respondCreated([
             'success' => true,
             'message' => "Prueba adjunta del hecho agregada con exito",
-            'result' => $expedienteHechoPrueba
+            'result' => $expedienteHechoArchivo
         ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\ExpedienteHechoPrueba  $expedienteHechoPrueba
+     * @param  \App\ExpedienteHechoArchivo  $expedienteHechoArchivo
      * @return \Illuminate\Http\Response
      */
-    public function show(ExpedienteHechoPrueba $expedienteHechoPrueba)
+    public function show(ExpedienteHechoArchivo $expedienteHechoArchivo)
     {
         //
     }
@@ -83,10 +83,10 @@ class ExpedienteHechoPruebaController extends ApiController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\ExpedienteHechoPrueba  $expedienteHechoPrueba
+     * @param  \App\ExpedienteHechoArchivo  $expedienteHechoArchivo
      * @return \Illuminate\Http\Response
      */
-    public function edit(ExpedienteHechoPrueba $expedienteHechoPrueba)
+    public function edit(ExpedienteHechoArchivo $expedienteHechoArchivo)
     {
         //
     }
@@ -95,10 +95,10 @@ class ExpedienteHechoPruebaController extends ApiController
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\ExpedienteHechoPrueba  $expedienteHechoPrueba
+     * @param  \App\ExpedienteHechoArchivo  $expedienteHechoArchivo
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ExpedienteHechoPrueba $expedienteHechoPrueba)
+    public function update(Request $request, ExpedienteHechoArchivo $expedienteHechoArchivo)
     {
         $validator = Validator::make($request->all(), [
             'id_expediente_hecho_prueba' => 'required|integer',
@@ -112,24 +112,24 @@ class ExpedienteHechoPruebaController extends ApiController
             return $this->respondError($validator->errors(), 422);
         }
         $input = $request->all();
-        $expedienteHechoPrueba = ExpedienteHechoPrueba::create($input);
+        $expedienteHechoArchivo = ExpedienteHechoArchivo::create($input);
 
         return $this->respondCreated([
             'success' => true,
             'message' => "Prueba adjunta del hecho actualizada con exito",
-            'result' => $expedienteHechoPrueba
+            'result' => $expedienteHechoArchivo
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\ExpedienteHechoPrueba  $expedienteHechoPrueba
+     * @param  \App\ExpedienteHechoArchivo  $expedienteHechoArchivo
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ExpedienteHechoPrueba $expedienteHechoPrueba)
+    public function destroy(ExpedienteHechoArchivo $expedienteHechoArchivo)
     {
-        $expedienteHechoPrueba->delete();
+        $expedienteHechoArchivo->delete();
 
         return $this->respondSuccess('Prueba adjunta del hecho eliminado con exito');
 
@@ -138,13 +138,13 @@ class ExpedienteHechoPruebaController extends ApiController
     /**
      * Restore the specified resource from storage.
      *
-     * @param  \App\ExpedienteHechoPrueba  $expedienteHechoPrueba
+     * @param  \App\ExpedienteHechoArchivo  $expedienteHechoArchivo
      * @return \Illuminate\Http\Response
      */
     public function restore($id)
     {
-        $expedienteHechoPrueba = ExpedienteHechoPrueba::withTrashed()->findorfail($id);
-        $expedienteHechoPrueba->restore();
+        $expedienteHechoArchivo = ExpedienteHechoArchivo::withTrashed()->findorfail($id);
+        $expedienteHechoArchivo->restore();
 
         return $this->respondSuccess('Prueba adjunta del hecho restaurada con exito');
     }

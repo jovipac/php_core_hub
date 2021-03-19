@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateExpedienteHechoPruebasTable extends Migration
+class CreateExpedienteHechoArchivosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateExpedienteHechoPruebasTable extends Migration
      */
     public function up()
     {
-        Schema::create('tt_expediente_hecho_prueba', function (Blueprint $table) {
-            $table->increments('id_expediente_hecho_prueba');
-            $table->integer('id_expediente_hecho')->unsigned();
+        Schema::create('tt_expediente_hecho_archivo', function (Blueprint $table) {
+            $table->increments('id_expediente_hecho_archivo');
             $table->integer('id_expediente')->unsigned();
+            $table->integer('id_expediente_hecho')->unsigned();
             $table->string('ubicacion', 255)->nullable();
             $table->string('nombre', 255)->nullable();
             $table->integer('tamanio')->nullable();
@@ -55,6 +55,6 @@ class CreateExpedienteHechoPruebasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tt_expediente_hecho_prueba');
+        Schema::dropIfExists('tt_expediente_hecho_archivo');
     }
 }

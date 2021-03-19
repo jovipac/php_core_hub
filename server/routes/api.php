@@ -142,6 +142,11 @@ Route::group([
     ]]);
     Route::get('tipo-area-lugar/restore/{tipo_area_lugar}', 'Api\TipoAreaLugarController@restore')->name('tipo-area-lugar.restore');
 
+    Route::resource('clasificacion-derecho', 'Api\ClasificacionDerechoController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+    Route::post('clasificacion-derecho/search', 'Api\ClasificacionDerechoController@search')->name('clasificacion-derecho.search');
+
     Route::resource('visitas', 'Api\VisitaController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
@@ -164,6 +169,11 @@ Route::group([
     ]]);
     Route::get('expediente-hechos/restore/{expediente_hecho}', 'Api\ExpedienteHechoController@restore')->name('expediente-hechos.restore');
     Route::post('expediente-hechos/search', 'Api\ExpedienteHechoController@search')->name('expediente-hechos.search');
+
+    Route::resource('expediente-hecho-archivos', 'Api\ExpedienteHechoArchivoController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+    Route::post('expediente-hecho-archivos/search', 'Api\ExpedienteHechoArchivo@search')->name('expediente-hecho-archivos.search');
 
     Route::get('rol-modulos', 'Api\RolModuloController@index')->name('menu.index');
     Route::get('rol-modulos/assigned/{id}', 'Api\RolModuloController@assigned');
