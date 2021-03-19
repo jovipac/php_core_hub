@@ -44,13 +44,12 @@ class ExpedienteHechoArchivoController extends ApiController
         $extension = $request->file('file')->extension();
         $mime = $request->file('file')->getMimeType();
         $clientSize = $request->file('file')->getSize();
-        $path = $request->file('file')->getSecurePath();
-        $request->file('file')->store('images');
+        $filePath = $request->file('file')->store('uploads');
 
         $expedienteHechoArchivo = [
             'filename' =>  $fileName,
             'extension' =>  $extension,
-            'path' =>  $path,
+            'path' =>  $filePath,
             'mime' => $mime,
             'size' => $clientSize
         ];
