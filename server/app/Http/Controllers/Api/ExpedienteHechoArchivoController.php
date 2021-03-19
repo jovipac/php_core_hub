@@ -12,6 +12,7 @@ class ExpedienteHechoArchivoController extends ApiController
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -34,11 +35,33 @@ class ExpedienteHechoArchivoController extends ApiController
     /**
      * Show the form for creating a new resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function upload(Request $request)
     {
-        //
+        $fileName = $request->file('file')->getClientOriginalName();
+        $extension = $request->file('file')->extension();
+        $mime = $request->file('file')->getMimeType();
+        $clientSize = $request->file('file')->getSize();
+        $path = $request->file('file')->getSecurePath();
+        $request->file('file')->store('images');
+
+        $expedienteHechoArchivo = [
+            'filename' =>  $fileName,
+            'extension' =>  $extension,
+            'path' =>  $path,
+            'mime' => $mime,
+            'size' => $clientSize
+        ];
+
+        return $this->apiResponse(
+            [
+                'success' => true,
+                'message' => "Archivo adjunto del hecho subido con exito",
+                'result' => $expedienteHechoArchivo
+            ]
+        );
     }
 
     /**
