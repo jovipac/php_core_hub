@@ -173,8 +173,8 @@ Route::group([
     Route::resource('expediente-hecho-archivos', 'Api\ExpedienteHechoArchivoController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
-    Route::post('expediente-hecho-archivos/upload', 'Api\ExpedienteHechoArchivo@upload')->name('expediente-hecho-archivos.upload');
-    Route::post('expediente-hecho-archivos/search', 'Api\ExpedienteHechoArchivo@search')->name('expediente-hecho-archivos.search');
+    Route::post('expediente-hecho-archivos/upload', 'Api\ExpedienteHechoArchivoController@upload')->name('expediente-hecho-archivos.upload');
+    Route::post('expediente-hecho-archivos/search', 'Api\ExpedienteHechoArchivoController@search')->name('expediente-hecho-archivos.search');
 
     Route::get('rol-modulos', 'Api\RolModuloController@index')->name('menu.index');
     Route::get('rol-modulos/assigned/{id}', 'Api\RolModuloController@assigned');
