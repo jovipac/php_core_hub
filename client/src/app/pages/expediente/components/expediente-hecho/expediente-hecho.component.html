@@ -88,6 +88,11 @@
             </div>
           </div>
         </div>
+        <div class="form-row">
+          <angular-file-uploader formControlName="files"
+                [config]="fileUploaderConfig" [resetUpload]=resetVar>
+          </angular-file-uploader>
+        </div>
       </ng-container>
     </div>
   </ng-container>

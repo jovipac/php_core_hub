@@ -21,7 +21,7 @@ export class ExpedienteHechoComponent implements OnInit {
   @Output() submittedEvent = new EventEmitter();
 
   formHecho: FormGroup;
-  //hechos = new FormArray([]);
+  fileUploaderConfig: object;
   id_expediente: number;
   id_persona: number;
   isAddMode: boolean;
@@ -39,7 +39,25 @@ export class ExpedienteHechoComponent implements OnInit {
     private departamentoService: DepartamentoService,
     private municipioService: MunicipioService,
     private loading: NgxSpinnerService
-  ) { }
+  ) {
+    this.fileUploaderConfig = {
+      multiple: true,
+      maxSize: "20",
+      uploadAPI: {
+        url:"https://example-file-upload-api"
+      },
+      replaceTexts: {
+        selectFileBtn: 'Adjuntar pruebas',
+        resetBtn: 'Reiniciar',
+        uploadBtn: 'Adjuntar',
+        dragNDropBox: 'Drag N Drop',
+        attachPinBtn: 'Attach Files...',
+        afterUploadMsg_success: 'Successfully Uploaded !',
+        afterUploadMsg_error: 'Upload Failed !',
+        sizeLimit: 'Size Limit'
+      }
+    }
+  }
 
   ngOnInit(): void {
     this.id_expediente = this.route.snapshot.params['id'];
@@ -113,6 +131,10 @@ export class ExpedienteHechoComponent implements OnInit {
         value: data?.prueba,
         disabled: false,
       }, [Validators.pattern(/^\S+[a-zA-ZÀ-ÿ0-9\-\s.,]*\S+$/)]),
+      files: new FormControl({
+        value: data?.files,
+        disabled: false,
+      }, []),
     }, {});
   }
 
