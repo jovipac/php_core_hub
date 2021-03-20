@@ -1,13 +1,14 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormArray, Validators } from "@angular/forms";
 import { ActivatedRoute } from '@angular/router';
-import { ExpedienteHechoService } from '../../../../service';
+import { ExpedienteHechoService, ExpedienteHechoArchivoService } from '../../../../service';
 import { TipoAreaLugarService, DepartamentoService, MunicipioService } from '../../../../service/catalogos';
 import { TipoAreaLugar, Departamento, Municipio } from '../../../../shared/models';
-import { first, debounceTime, distinctUntilChanged, filter, switchMap, map, catchError } from 'rxjs/operators';
+import { first } from 'rxjs/operators';
 import { format, isValid, parseISO } from 'date-fns';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
+import { FileUploader } from 'ng2-file-upload';
 import { isEmptyValue, extractErrorMessages } from '../../../../shared/utils';
 import { NgxSpinnerService } from "ngx-spinner";
 
@@ -26,6 +27,7 @@ export class ExpedienteHechoComponent implements OnInit {
   id_persona: number;
   isAddMode: boolean;
   submitted: boolean = false;
+  uploader: FileUploader;
   public listTipoAreaLugar: Array<TipoAreaLugar>;
   public listDepartamento: Array<Departamento>;
   public listMunicipio: Array<Municipio>;
@@ -35,11 +37,19 @@ export class ExpedienteHechoComponent implements OnInit {
     private route: ActivatedRoute,
     private toastr: ToastrService,
     private expedienteHechoService: ExpedienteHechoService,
+    private expedienteHechoArchivoService: ExpedienteHechoArchivoService,
     private tipoAreaLugarService: TipoAreaLugarService,
     private departamentoService: DepartamentoService,
     private municipioService: MunicipioService,
     private loading: NgxSpinnerService
-  ) { }
+  ) {
+    this.uploader = new FileUploader({
+      url: expedienteHechoArchivoService.uploadURL,
+      disableMultipart: false,
+      method: 'POST',
+      authToken: `${JSON.parse(sessionStorage.getItem('validate')).token_type} ${JSON.parse(sessionStorage.getItem('validate')).access_token}`,
+    });
+  }
 
   ngOnInit(): void {
     this.id_expediente = this.route.snapshot.params['id'];
@@ -49,11 +59,17 @@ export class ExpedienteHechoComponent implements OnInit {
     this.getListDepartamento();
     this.getListMunicipio();
 
+    this.uploader.onBeforeUploadItem = (item) => {
+      item.withCredentials = false;
+    }
+    this.uploader.response.subscribe((res: object) => {
+      console.log(res);
+    });
+
     // Finalmente se llama la construccion del formulario
     this.formHecho =  new FormGroup({
       hechos: new FormArray([])
     });
-    // this.buildForm({});
 
     if (!this.isAddMode) {
       // Si existe ya un ID ya guardado, se consulta y carga la información
@@ -113,6 +129,10 @@ export class ExpedienteHechoComponent implements OnInit {
         value: data?.prueba,
         disabled: false,
       }, [Validators.pattern(/^\S+[a-zA-ZÀ-ÿ0-9\-\s.,]*\S+$/)]),
+      archivos_adjuntos: new FormControl({
+        value: data?.archivos_adjuntos,
+        disabled: false,
+      }, []),
     }, {});
   }
 
@@ -279,6 +299,31 @@ export class ExpedienteHechoComponent implements OnInit {
       .filter((departamento: any) => departamento.id_departamento == id_departamento);
   }
 
+  onFileSelected(event: File[]) {
+/*
+    [...event].forEach(file => {
+      this.formHecho.controls.hechos.patchValue({
+        archivos_adjuntos: file
+      });
+    });
+*/
+/*
+    let reader = new FileReader();
+
+    if(event.length) {
+      const [file] = event;
+      reader.readAsDataURL(file);
+
+      reader.onload = () => {
+        this.formHecho.patchValue({
+          archivos_adjuntos: reader.result
+        });
+      };
+    }
+*/
+  console.log(this.formHecho.value);
+  }
+
   private async createOrUpdateHecho() {
     let completedProcess = false;
     //Valor del Form, incluidos los controles deshabilitados
@@ -308,7 +353,8 @@ export class ExpedienteHechoComponent implements OnInit {
           } else {
             completedProcess = false;
           }
-          this.submittedEvent.emit(completedProcess);
+          //this.submittedEvent.emit(completedProcess);
+          this.uploader.uploadAll();
         }
       } catch(response) {
         if (Object.prototype.toString.call(response.error.message) === '[object Object]') {

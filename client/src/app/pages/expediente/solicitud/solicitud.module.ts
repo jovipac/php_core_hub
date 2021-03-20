@@ -7,6 +7,8 @@ import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
+import { FileUploadModule } from 'ng2-file-upload';
+import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { NgxSpinnerModule } from "ngx-spinner";
 
 import { SolicitudRoutingModule } from './solicitud-routing.module';
@@ -30,6 +32,8 @@ import { ExpedienteHechoComponent } from '../components/expediente-hecho/expedie
     BsDropdownModule,
     BsDatepickerModule,
     TimepickerModule,
+    FileUploadModule,
+    ProgressbarModule,
     NgxSpinnerModule
   ],
   declarations: [
