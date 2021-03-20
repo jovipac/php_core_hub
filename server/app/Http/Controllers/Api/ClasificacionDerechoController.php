@@ -17,7 +17,7 @@ class ClasificacionDerechoController extends ApiController
     public function index()
     {
         ClasificacionDerecho::fixTree();
-        $clasificacionDerechos = ClasificacionDerecho::all();
+        $clasificacionDerechos = ClasificacionDerecho::all()->toTree();
         return $this->apiResponse(
             [
                 'success' => true,
