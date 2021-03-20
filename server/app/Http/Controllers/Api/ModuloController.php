@@ -47,7 +47,13 @@ class ModuloController extends ApiController
         }
         $input = $request->all();
         $input['order'] = Modulo::max('order')+1;
-        $modulo = Modulo::create($input);
+
+        if ($request->has('id_parent') && $request->filled('id_parent')) {
+            $parent = Modulo::find($request->input('id_parent'));
+            $modulo = Modulo::create($input, $parent);
+        } else {
+            $modulo = Modulo::create($input);
+        }
 
         return $this->respondCreated([
             'success' => true,

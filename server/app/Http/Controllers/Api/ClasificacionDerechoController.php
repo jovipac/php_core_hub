@@ -17,7 +17,7 @@ class ClasificacionDerechoController extends ApiController
     public function index()
     {
         ClasificacionDerecho::fixTree();
-        $clasificacionDerechos = ClasificacionDerecho::all();
+        $clasificacionDerechos = ClasificacionDerecho::all()->toTree();
         return $this->apiResponse(
             [
                 'success' => true,
@@ -72,7 +72,13 @@ class ClasificacionDerechoController extends ApiController
             return $this->respondError($validator->errors(), 422);
         }
         $input = $request->all();
-        $clasificacionDerecho = ClasificacionDerecho::create($input);
+
+        if ($request->has('id_parent') && $request->filled('id_parent')) {
+            $parent = ClasificacionDerecho::find($request->input('id_parent'));
+            $clasificacionDerecho = ClasificacionDerecho::create($input, $parent);
+        } else {
+            $clasificacionDerecho = ClasificacionDerecho::create($input);
+        }
 
         return $this->respondCreated([
             'success' => true,

@@ -7,11 +7,18 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class ExpedienteHechoArchivoService {
+  public uploadURL: string;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {
+    this.uploadURL = `${environment.host}expediente-hecho-archivos/upload`;
+  }
 
   getListExpedienteHechoArchivo() {
     return this.httpClient.get(`${environment.host}expediente-hecho-archivos`, getHeaders())
+  }
+
+  uploadExpedienteHechoArchivo(data: any) {
+    return this.httpClient.post(`${environment.host}expediente-hecho-archivos/upload`, data, getHeaders())
   }
 
   searchExpedienteHechoArchivo(data: any) {

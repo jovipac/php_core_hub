@@ -1,13 +1,14 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormArray, Validators } from "@angular/forms";
 import { ActivatedRoute } from '@angular/router';
-import { ExpedienteHechoService } from '../../../../service';
+import { ExpedienteHechoService, ExpedienteHechoArchivoService } from '../../../../service';
 import { TipoAreaLugarService, DepartamentoService, MunicipioService } from '../../../../service/catalogos';
 import { TipoAreaLugar, Departamento, Municipio } from '../../../../shared/models';
-import { first, debounceTime, distinctUntilChanged, filter, switchMap, map, catchError } from 'rxjs/operators';
+import { first } from 'rxjs/operators';
 import { format, isValid, parseISO } from 'date-fns';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
+import { FileUploader } from 'ng2-file-upload';
 import { isEmptyValue, extractErrorMessages } from '../../../../shared/utils';
 import { NgxSpinnerService } from "ngx-spinner";
 
@@ -26,6 +27,7 @@ export class ExpedienteHechoComponent implements OnInit {
   id_persona: number;
   isAddMode: boolean;
   submitted: boolean = false;
+  uploader: FileUploader;
   public listTipoAreaLugar: Array<TipoAreaLugar>;
   public listDepartamento: Array<Departamento>;
   public listMunicipio: Array<Municipio>;
@@ -35,11 +37,19 @@ export class ExpedienteHechoComponent implements OnInit {
     private route: ActivatedRoute,
     private toastr: ToastrService,
     private expedienteHechoService: ExpedienteHechoService,
+    private expedienteHechoArchivoService: ExpedienteHechoArchivoService,
     private tipoAreaLugarService: TipoAreaLugarService,
     private departamentoService: DepartamentoService,
     private municipioService: MunicipioService,
     private loading: NgxSpinnerService
-  ) { }
+  ) {
+    this.uploader = new FileUploader({
+      url: expedienteHechoArchivoService.uploadURL,
+      disableMultipart: false,
+      method: 'POST',
+      authToken: `${JSON.parse(sessionStorage.getItem('validate')).token_type} ${JSON.parse(sessionStorage.getItem('validate')).access_token}`,
+    });
+  }
 
   ngOnInit(): void {
     this.id_expediente = this.route.snapshot.params['id'];
@@ -49,11 +59,48 @@ export class ExpedienteHechoComponent implements OnInit {
     this.getListDepartamento();
     this.getListMunicipio();
 
+    this.uploader.onBeforeUploadItem = (item) => {
+      item.withCredentials = false;
+    }
+    this.uploader.response.subscribe(async (suscriptor: string) => {
+      try {
+        const dataInput = JSON.parse(suscriptor); console.log(dataInput);
+        const dataSend = {
+          'id_expediente': this.id_expediente,
+          'id_expediente_hecho': this.id_expediente,
+          'ubicacion': dataInput.result.path,
+          'nombre': dataInput.result.filename,
+          'tamanio': dataInput.result.size,
+        };
+
+        const response: any = await this.expedienteHechoArchivoService.createExpedienteHechoArchivo(dataSend).toPromise();
+        if (response.success) {
+          this.toastr.success(response.message, 'Archivo adjunto del Hecho');
+          this.loading.hide();
+        } else {
+          this.toastr.error(response.message)
+        }
+
+      } catch (response) {
+        if (Object.prototype.toString.call(response.error.message) === '[object Object]') {
+          const messages = extractErrorMessages(response);
+          messages.forEach(propertyErrors => {
+            for (let message in propertyErrors) {
+              this.toastr.error(propertyErrors[message], 'Archivo adjunto del Hecho');
+            }
+          });
+        } else {
+          this.toastr.error(response.error.message)
+        }
+        this.loading.hide();
+      }
+
+    });
+
     // Finalmente se llama la construccion del formulario
     this.formHecho =  new FormGroup({
       hechos: new FormArray([])
     });
-    // this.buildForm({});
 
     if (!this.isAddMode) {
       // Si existe ya un ID ya guardado, se consulta y carga la información
@@ -113,6 +160,10 @@ export class ExpedienteHechoComponent implements OnInit {
         value: data?.prueba,
         disabled: false,
       }, [Validators.pattern(/^\S+[a-zA-ZÀ-ÿ0-9\-\s.,]*\S+$/)]),
+      archivos_adjuntos: new FormControl({
+        value: data?.archivos_adjuntos,
+        disabled: false,
+      }, []),
     }, {});
   }
 
@@ -273,8 +324,8 @@ export class ExpedienteHechoComponent implements OnInit {
       });
   }
 
-  selectedDepartamento(data: any) {
-    const id_departamento = this.formHecho.get('id_departamento').value;
+  selectedDepartamento(id: number) {
+    const id_departamento = this.formHecho.get('hechos').value[id].id_departamento;
     this.listDepartamentoMunicipio = this.listMunicipio
       .filter((departamento: any) => departamento.id_departamento == id_departamento);
   }
@@ -308,7 +359,8 @@ export class ExpedienteHechoComponent implements OnInit {
           } else {
             completedProcess = false;
           }
-          this.submittedEvent.emit(completedProcess);
+          //this.submittedEvent.emit(completedProcess);
+          this.uploader.uploadAll();
         }
       } catch(response) {
         if (Object.prototype.toString.call(response.error.message) === '[object Object]') {
