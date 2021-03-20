@@ -293,8 +293,8 @@ export class ExpedienteHechoComponent implements OnInit {
       });
   }
 
-  selectedDepartamento(data: any) {
-    const id_departamento = this.formHecho.get('id_departamento').value;
+  selectedDepartamento(id: number) {
+    const id_departamento = this.formHecho.get('hechos').value[id].id_departamento;
     this.listDepartamentoMunicipio = this.listMunicipio
       .filter((departamento: any) => departamento.id_departamento == id_departamento);
   }

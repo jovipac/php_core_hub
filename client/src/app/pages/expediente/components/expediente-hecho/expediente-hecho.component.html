@@ -30,7 +30,7 @@
             <input-label [requires]="false" [label]="'Departamento'" [id]="'txtDepartamento'"></input-label>
             <ng-select id="txtDepartamento" [items]="listDepartamento" #select bindLabel="nombre" dropdownPosition="auto"
               bindValue="id_departamento" labelForId="txtDepartamento" placeholder="Seleccionar o buscar" [virtualScroll]="true"
-              formControlName="id_departamento" (blur)="selectedDepartamento($event)" [ngClass]="displayValidation(hecho.get('id_departamento').invalid)" >
+              formControlName="id_departamento" (blur)="selectedDepartamento(idx)" [ngClass]="displayValidation(hecho.get('id_departamento').invalid)" >
             </ng-select>
             <div [ngClass]="displayValidationMsg(hecho.get('id_departamento').valid)">
               <div *ngIf="hecho.get('id_departamento').errors?.required">El campo es requerido</div>
