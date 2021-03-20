@@ -16,6 +16,7 @@ import { SolicitudComponent } from './solicitud.component';
 import { ExpedienteEncabezadoComponent } from '../components/expediente-encabezado/expediente-encabezado.component';
 import { ExpedientePersonaComponent } from '../components/expediente-persona/expediente-persona.component';
 import { ExpedienteHechoComponent } from '../components/expediente-hecho/expediente-hecho.component';
+import { ExpedienteClasificacionComponent } from '../components/expediente-clasificacion/expediente-clasificacion.component';
 
 @NgModule({
   imports: [
@@ -36,7 +37,8 @@ import { ExpedienteHechoComponent } from '../components/expediente-hecho/expedie
     SolicitudComponent,
     ExpedienteEncabezadoComponent,
     ExpedientePersonaComponent,
-    ExpedienteHechoComponent
+    ExpedienteHechoComponent,
+    ExpedienteClasificacionComponent
   ]
 })
 export class SolicitudModule { }

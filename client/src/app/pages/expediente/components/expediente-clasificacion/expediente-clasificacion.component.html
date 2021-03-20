@@ -1,0 +1,21 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <ng-container formArrayName="ClasificacionDerechos">
+
+    <div class="form-row">
+      <div *ngFor="let EncabDerecho of listCaliDere; let idx = index;" class="col">
+        <p><strong>{{EncabDerecho.nombre}}</strong></p>
+        <div *ngFor="let children of form.get('ClasificacionDerechos')['controls'];index as i"  class="col">
+          <ng-container [formGroupName]="i">
+            <ul>
+              <li>
+                <input type="checkbox" formControlName="id_clasificacion_derecho">
+                {{children.nombre}}
+              </li>
+            </ul>
+          </ng-container>
+
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</form>

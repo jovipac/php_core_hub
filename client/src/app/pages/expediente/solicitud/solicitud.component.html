@@ -38,6 +38,19 @@
   </app-basic-modal>
 </ng-template>
 
+<ng-template #step04_Modal>
+  <ngx-spinner></ngx-spinner>
+  <app-basic-modal #step04Modal [hideFooter]="true" >
+    <div class="app-modal-header modal-header">
+      <h5 class="modal-title">Paso 4: Clasificación del Derecho</h5>
+      <button type="button" class="close basic-close" data-dismiss="modal" aria-label="Close" (click)="dismissModalStep()"><span aria-hidden="true">&times;</span></button>
+    </div>
+    <div class="app-modal-body modal-body">
+      <app-expediente-clasificacion #step04Form [id_expediente_hecho]="id_expediente_hecho" (submittedEvent)='submitModalStep($event)'></app-expediente-clasificacion>
+    </div>
+  </app-basic-modal>
+</ng-template>
+
 
 <div class="col-xl-12">
 
@@ -133,7 +146,7 @@
       <div class="card-footer text-center">
         <div class="row align-items-center">
           <div class="col">
-            <a href="javascript:" class="btn btn-sm btn-primary">Editar</a>
+            <a href="javascript:" class="btn btn-sm btn-primary" (click)="showModalStep(step04_Modal);">Editar</a>
           </div>
         </div>
       </div>
