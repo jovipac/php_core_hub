@@ -1,7 +1,9 @@
 <form action="javascript:" class="needs-validation" novalidate [formGroup]="formHecho" (ngSubmit)="onSubmit()" autocomplete="off" >
 
-  <ng-container formArrayName="hechos">
-    <div *ngFor="let hecho of formHecho.get('hechos')['controls'];index as idx">
+<ng-container formArrayName="hechos">
+  <tabset #dynamicTabs type="pills">
+    <tab *ngFor="let hecho of formHecho.get('hechos')['controls'];index as idx"
+      [id]="idx" [heading]="idx+1">
       <ng-container [formGroupName]="idx">
         <div class="form-row">
           <div class="col-md-4 mb-3">
@@ -155,7 +157,8 @@
           </div>
         </div>
       </ng-container>
-    </div>
-  </ng-container>
+    </tab>
+  </tabset>
+</ng-container>
 
 </form>
