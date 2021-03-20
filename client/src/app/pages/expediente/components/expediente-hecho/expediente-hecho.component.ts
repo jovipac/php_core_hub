@@ -62,8 +62,39 @@ export class ExpedienteHechoComponent implements OnInit {
     this.uploader.onBeforeUploadItem = (item) => {
       item.withCredentials = false;
     }
-    this.uploader.response.subscribe((res: object) => {
-      console.log(res);
+    this.uploader.response.subscribe(async (suscriptor: string) => {
+      try {
+        const dataInput = JSON.parse(suscriptor); console.log(dataInput);
+        const dataSend = {
+          'id_expediente': this.id_expediente,
+          'id_expediente_hecho': this.id_expediente,
+          'ubicacion': dataInput.result.path,
+          'nombre': dataInput.result.filename,
+          'tamanio': dataInput.result.size,
+        };
+
+        const response: any = await this.expedienteHechoArchivoService.createExpedienteHechoArchivo(dataSend).toPromise();
+        if (response.success) {
+          this.toastr.success(response.message, 'Archivo adjunto del Hecho');
+          this.loading.hide();
+        } else {
+          this.toastr.error(response.message)
+        }
+
+      } catch (response) {
+        if (Object.prototype.toString.call(response.error.message) === '[object Object]') {
+          const messages = extractErrorMessages(response);
+          messages.forEach(propertyErrors => {
+            for (let message in propertyErrors) {
+              this.toastr.error(propertyErrors[message], 'Archivo adjunto del Hecho');
+            }
+          });
+        } else {
+          this.toastr.error(response.error.message)
+        }
+        this.loading.hide();
+      }
+
     });
 
     // Finalmente se llama la construccion del formulario
@@ -297,31 +328,6 @@ export class ExpedienteHechoComponent implements OnInit {
     const id_departamento = this.formHecho.get('hechos').value[id].id_departamento;
     this.listDepartamentoMunicipio = this.listMunicipio
       .filter((departamento: any) => departamento.id_departamento == id_departamento);
-  }
-
-  onFileSelected(event: File[]) {
-/*
-    [...event].forEach(file => {
-      this.formHecho.controls.hechos.patchValue({
-        archivos_adjuntos: file
-      });
-    });
-*/
-/*
-    let reader = new FileReader();
-
-    if(event.length) {
-      const [file] = event;
-      reader.readAsDataURL(file);
-
-      reader.onload = () => {
-        this.formHecho.patchValue({
-          archivos_adjuntos: reader.result
-        });
-      };
-    }
-*/
-  console.log(this.formHecho.value);
   }
 
   private async createOrUpdateHecho() {
