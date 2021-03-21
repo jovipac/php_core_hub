@@ -91,7 +91,7 @@
           </div>
           <div class="col-md-4 mb-3">
             <input-label [label]="'Adjuntar pruebas'" [id]="'txtArchivoAdjunto'"></input-label>
-            <input type="file" ng2FileSelect [uploader]="uploader" multiple />
+            <input type="file" class="form-control" id="txtArchivoAdjunto" formControlName="archivos_adjuntos" ng2FileSelect [uploader]="uploader" multiple />
             <div>
               Progreso de la cola:
               <progressbar [value]="uploader.progress" [striped]="true">{{uploader.progress + '%'}}</progressbar>

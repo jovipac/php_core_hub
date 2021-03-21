@@ -62,25 +62,34 @@ export class ExpedienteHechoComponent implements OnInit {
     this.uploader.onBeforeUploadItem = (item) => {
       item.withCredentials = false;
     }
+    this.uploader.onSuccessItem = (item: any, suscriptor: string, status: number, headers: any): any => {
+      if (suscriptor) {
+        console.log("response", item);
+        console.log("response", JSON.parse(suscriptor));
+      }
+    }
+
     this.uploader.response.subscribe(async (suscriptor: string) => {
       try {
-        const dataInput = JSON.parse(suscriptor); console.log(dataInput);
-        const dataSend = {
-          'id_expediente': this.id_expediente,
-          'id_expediente_hecho': this.id_expediente,
-          'ubicacion': dataInput.result.path,
-          'nombre': dataInput.result.filename,
-          'tamanio': dataInput.result.size,
-        };
+        if (suscriptor) {
+          const dataInput = JSON.parse(suscriptor);
+          const dataSend = {
+            'id_expediente': dataInput.result.params?.id_expediente,
+            'id_expediente_hecho': dataInput.result.params?.id_expediente_hecho,
+            'ubicacion': dataInput.result.path,
+            'nombre': dataInput.result.filename,
+            'tamanio': dataInput.result.size,
+          };
 
-        const response: any = await this.expedienteHechoArchivoService.createExpedienteHechoArchivo(dataSend).toPromise();
-        if (response.success) {
-          this.toastr.success(response.message, 'Archivo adjunto del Hecho');
-          this.loading.hide();
-        } else {
-          this.toastr.error(response.message)
+          const response: any = await this.expedienteHechoArchivoService.createExpedienteHechoArchivo(dataSend).toPromise();
+          if (response.success) {
+            this.toastr.success(response.message, 'Archivo adjunto del Hecho');
+            this.loading.hide();
+          } else {
+            this.toastr.error(response.message)
+          }
+
         }
-
       } catch (response) {
         if (Object.prototype.toString.call(response.error.message) === '[object Object]') {
           const messages = extractErrorMessages(response);
@@ -341,26 +350,46 @@ export class ExpedienteHechoComponent implements OnInit {
       try {
         this.loading.show();
         if (isEmptyValue(hecho.id_expediente_hecho) && hecho.id_expediente_hecho != 0) {
-          let response: any = await this.expedienteHechoService.createExpedienteHecho({ ...hecho, id_expediente: this.id_expediente }).toPromise();
+          hecho = {
+            ...hecho,
+            id_expediente: this.id_expediente,
+            fecha_hora: format(parseISO(new Date(hecho.fecha_hora).toISOString()), 'yyyy-MM-dd HH:mm'),
+          };
+          let response: any = await this.expedienteHechoService.createExpedienteHecho(hecho).toPromise();
           if (response.success) {
             this.toastr.success(response.message, 'Hecho del expediente');
             completedProcess = true;
             this.loading.hide();
+
+            // Pasos para guardar los archivos adjuntos
+            this.uploader.onBuildItemForm = (fileItem: any, form: any) => {
+              form.append('id_expediente', this.id_expediente);
+              form.append('id_expediente_hecho', response.result.id_expediente_hecho);
+            };
+            this.uploader.uploadAll();
           } else {
             completedProcess = false;
           }
           this.submittedEvent.emit(completedProcess);
         } else {
+          hecho = { ...hecho, fecha_hora: format(parseISO(new Date(hecho.fecha_hora).toISOString()), 'yyyy-MM-dd HH:mm') };
           let response: any = await this.expedienteHechoService.updateExpedienteHecho(hecho.id_expediente_hecho, hecho).toPromise();
           if (response.success) {
             this.toastr.success(response.message, 'Hecho del expediente');
             completedProcess = true;
             this.loading.hide();
+
+            // Pasos para guardar los archivos adjuntos
+            this.uploader.onBuildItemForm = (fileItem: any, form: any) => {
+              form.append('id_expediente', this.id_expediente);
+              form.append('id_expediente_hecho', hecho.id_expediente_hecho);
+            };
+            this.uploader.uploadAll();
           } else {
             completedProcess = false;
           }
           //this.submittedEvent.emit(completedProcess);
-          this.uploader.uploadAll();
+
         }
       } catch(response) {
         if (Object.prototype.toString.call(response.error.message) === '[object Object]') {
