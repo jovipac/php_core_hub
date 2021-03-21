@@ -64,4 +64,10 @@ class ClasificacionDerecho extends Model
         return $this->belongsTo(ClasificacionDerecho::class, 'id_clasificacion_derecho', 'id_parent');
     }
 
+
+    public function clasificacion_derecho()
+    {
+        return $this->belongsTo(ExpedienteClasificacionDerecho::class, 'id_clasificacion_derecho', 'id_clasificacion_derecho');
+    }
+
 }

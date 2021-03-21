@@ -54,4 +54,10 @@ class Expediente extends Model
         return $this->belongsToMany(ExpedientePersona::class, 'tt_expediente_persona', 'id_expediente', 'id_persona', 'id_expediente', 'id_persona')->withTimestamps();
     }
 
+
+    public function clasificacionderecho()
+    {
+        return $this->belongsToMany(ExpedienteClasificacionDerecho::class, 'tt_expediente_clas_derecho', 'id_expediente', 'id_clasificacion_derecho', 'id_expediente', 'id_clasificacion_derecho')->withTimestamps();
+    }
+
 }
