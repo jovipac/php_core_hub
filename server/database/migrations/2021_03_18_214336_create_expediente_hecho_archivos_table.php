@@ -28,10 +28,10 @@ class CreateExpedienteHechoArchivosTable extends Migration
             $table->softDeletes();
 
             //FOREIGN KEY CONSTRAINTS
-            $table->foreign('id_expediente_hecho')->references('id_persona')->on('tc_persona')
+            $table->foreign('id_expediente_hecho')->references('id_expediente_hecho')->on('tt_expediente_hecho')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->foreign('id_expediente')->references('id_tipo_direccion')->on('tc_tipo_direccion')
+            $table->foreign('id_expediente')->references('id_expediente')->on('tt_expediente')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 

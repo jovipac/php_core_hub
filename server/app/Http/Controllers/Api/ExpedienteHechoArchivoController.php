@@ -40,6 +40,8 @@ class ExpedienteHechoArchivoController extends ApiController
      */
     public function upload(Request $request)
     {
+        $inputs = $request->except(['file']);
+
         $fileName = $request->file('file')->getClientOriginalName();
         $extension = $request->file('file')->extension();
         $mime = $request->file('file')->getMimeType();
@@ -47,6 +49,7 @@ class ExpedienteHechoArchivoController extends ApiController
         $filePath = $request->file('file')->store('uploads');
 
         $expedienteHechoArchivo = [
+            'params' => $inputs,
             'filename' =>  $fileName,
             'extension' =>  $extension,
             'path' =>  $filePath,
