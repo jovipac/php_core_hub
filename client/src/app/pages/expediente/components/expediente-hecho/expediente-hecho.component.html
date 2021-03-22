@@ -8,8 +8,9 @@
         <div class="form-row">
           <div class="col-md-4 mb-3">
             <input-label [label]="'Fecha y hora'" [id]="'txtFechaHora'"></input-label>
-            <input type="text" class="form-control" id="txtFechaHora" formControlName="fecha_hora" placeholder="Fecha" bsDatepicker container=""
-              [ngClass]="displayValidation(hecho.get('fecha_hora').invalid)" [bsConfig]="{ adaptivePosition: true }">
+            <input bsDatepicker type="text" class="form-control" id="txtFechaHora" formControlName="fecha_hora" placeholder="Fecha"
+              container="" [ngClass]="displayValidation(hecho.get('fecha_hora').invalid)"
+              [bsConfig]="dpConfig">
             <!-- <input type="datetime-local" class="form-control" id="txtFechaHora" formControlName="fecha_hora" placeholder="" [ngClass]="displayValidation(hecho.get('fecha_hora').invalid)"> -->
               <div [ngClass]="displayValidationMsg(hecho.get('fecha_hora').valid)">
               <div *ngIf="hecho.get('fecha_hora').errors?.required">El campo es requerido</div>

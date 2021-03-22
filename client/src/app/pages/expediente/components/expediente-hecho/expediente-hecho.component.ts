@@ -11,6 +11,10 @@ import { ToastrService } from 'ngx-toastr';
 import { FileUploader } from 'ng2-file-upload';
 import { isEmptyValue, extractErrorMessages } from '../../../../shared/utils';
 import { NgxSpinnerService } from "ngx-spinner";
+// Configuracion del componente Datepicker
+import { esLocale } from 'ngx-bootstrap/locale';
+import { defineLocale } from 'ngx-bootstrap/chronos';
+import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 
 @Component({
   selector: 'app-expediente-hecho',
@@ -28,6 +32,7 @@ export class ExpedienteHechoComponent implements OnInit {
   isAddMode: boolean;
   submitted: boolean = false;
   uploader: FileUploader;
+  public dpConfig: Partial<BsDatepickerConfig> = new BsDatepickerConfig();
   public listTipoAreaLugar: Array<TipoAreaLugar>;
   public listDepartamento: Array<Departamento>;
   public listMunicipio: Array<Municipio>;
@@ -41,8 +46,15 @@ export class ExpedienteHechoComponent implements OnInit {
     private tipoAreaLugarService: TipoAreaLugarService,
     private departamentoService: DepartamentoService,
     private municipioService: MunicipioService,
-    private loading: NgxSpinnerService
+    private loading: NgxSpinnerService,
+    private localeService: BsLocaleService
   ) {
+    defineLocale('es', esLocale);
+    this.localeService.use('es');
+    this.dpConfig.adaptivePosition = true;
+    this.dpConfig.containerClass = 'theme-blue';
+    this.dpConfig.dateInputFormat = 'L LT';
+
     this.uploader = new FileUploader({
       url: expedienteHechoArchivoService.uploadURL,
       disableMultipart: false,
@@ -52,6 +64,7 @@ export class ExpedienteHechoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.localeService.use('es');
     this.id_expediente = this.route.snapshot.params['id'];
     this.isAddMode = !this.id_expediente;
 
@@ -259,8 +272,7 @@ export class ExpedienteHechoComponent implements OnInit {
             const hechosFormateado = !isEmptyValue(hechos) ? hechos.map((hecho: any) => {
               return {
                 ...hecho,
-                fecha_hora: isValid(parseISO(hecho.fecha_hora)) ?
-                  format(parseISO(new Date(hecho.fecha_hora).toISOString()), 'yyyy-MM-dd HH:mm') : null,
+                fecha_hora: isValid(parseISO(hecho.fecha_hora)) ? new Date(hecho.fecha_hora) : null,
 
               }
             }) : [];
