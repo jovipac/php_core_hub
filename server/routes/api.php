@@ -147,6 +147,10 @@ Route::group([
     ]]);
     Route::post('clasificacion-derecho/search', 'Api\ClasificacionDerechoController@search')->name('clasificacion-derecho.search');
 
+    Route::resource('clasificacion-plantilla', 'Api\ClasificacionPlantillaController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+
     Route::resource('visitas', 'Api\VisitaController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
@@ -175,6 +179,11 @@ Route::group([
     ]]);
     Route::post('expediente-hecho-archivos/upload', 'Api\ExpedienteHechoArchivoController@upload')->name('expediente-hecho-archivos.upload');
     Route::post('expediente-hecho-archivos/search', 'Api\ExpedienteHechoArchivoController@search')->name('expediente-hecho-archivos.search');
+
+    Route::resource('expediente-documentos', 'Api\ExpedienteDocumentoController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+    Route::get('expediente-documentos/restore/{expediente_documento}', 'Api\ExpedienteDocumentoController@restore')->name('expediente-documentos.restore');
 
     Route::get('rol-modulos', 'Api\RolModuloController@index')->name('menu.index');
     Route::get('rol-modulos/assigned/{id}', 'Api\RolModuloController@assigned');
