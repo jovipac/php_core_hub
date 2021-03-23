@@ -34,6 +34,30 @@ class ExpedienteClasificacionDerechoController extends ApiController
     /**
      * Show the form for creating a new resource.
      *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        $ExpedienteClasificacionDerecho = ExpedienteClasificacionDerecho::query();
+
+        if ( $request->has('id_expediente') && $request->filled('id_expediente') ) {
+            $ExpedienteClasificacionDerecho->where('id_expediente', $request->id_expediente);
+        }
+
+        return $this->apiResponse(
+            [
+                'success' => true,
+                'message' => "Clasificacion de derechos del expediente encontrado con exito",
+                'result' => $ExpedienteClasificacionDerecho->get()
+            ]
+        );
+
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
      * @return \Illuminate\Http\Response
      */
     public function create()

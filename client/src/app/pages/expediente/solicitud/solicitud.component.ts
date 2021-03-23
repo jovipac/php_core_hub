@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ExpedienteService, ExpedientePersonaService, ExpedienteHechoService, ExpedienteDocumentoService } from '../../../service';
-import { Expediente, ExpedientePersona, ExpedienteHecho, ExpedienteDocumento } from '../../../shared/models';
+import { ExpedienteService, ExpedientePersonaService, ExpedienteHechoService, ExpedienteClasificacionDerechoService, ExpedienteDocumentoService } from '../../../service';
+import { Expediente, ExpedientePersona, ExpedienteHecho, ExpedienteClasificacionDerecho, ExpedienteDocumento } from '../../../shared/models';
 import { first } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { formatearCorrelativo } from '../../../shared/utils/helpers';
@@ -25,12 +25,14 @@ export class SolicitudComponent implements OnInit {
   private configNgbModal: object;
   public solicitudPersonas: Array<ExpedientePersona>;
   public solicitudHechos: Array<ExpedienteHecho>;
+  public solicitudClasificacionDerechos: Array<ExpedienteClasificacionDerecho>;
   public solicitudDocumentos: Array<ExpedienteDocumento>;
 
   constructor(
     private solicitudService: ExpedienteService,
     private solicitudPersonaService: ExpedientePersonaService,
     private expedienteHechoService: ExpedienteHechoService,
+    private expedienteClasificacionDerechosService: ExpedienteClasificacionDerechoService,
     private expedienteDocumentoService: ExpedienteDocumentoService,
     private route: ActivatedRoute,
     private router: Router,
@@ -81,6 +83,7 @@ export class SolicitudComponent implements OnInit {
       const dataSend = this.id ? { 'id_expediente': this.id } : {};
       this.listExpedientePersonas(dataSend);
       this.listExpedienteHechos(dataSend);
+      //this.listExpedienteClasificacionDerecho(dataSend);
       this.listExpedienteDocumentos(dataSend);
     }
 
@@ -155,6 +158,34 @@ export class SolicitudComponent implements OnInit {
             this.solicitudDocumentos = [];
           } else {
             this.solicitudDocumentos = documentosFormateado;
+          }
+
+        } else
+          this.toastr.error(response.message);
+
+      },
+      error: (error:any) => {
+        this.toastr.error(error.message);
+      }
+    });
+  }
+
+  listExpedienteClasificacionDerecho(dataSend: any) {
+    this.expedienteClasificacionDerechosService.searchExpedienteClasificacionDerecho(dataSend)
+    .pipe(first())
+    .subscribe({
+      next: (response:any) => {
+        if (response.success) {
+          const clasificacionderechos = response.result;
+          // Se formatea la informacion para adecuarla al formulario
+          const clasificacionderechosFormateado = !isEmptyValue(clasificacionderechos) ? clasificacionderechos.map((clasificacionderecho: any) => {
+            return <ExpedienteClasificacionDerecho>clasificacionderecho;
+          }) : [];
+
+          if (isEmptyValue(clasificacionderechosFormateado)) {
+            this.solicitudClasificacionDerechos = [];
+          } else {
+            this.solicitudClasificacionDerechos = clasificacionderechosFormateado;
           }
 
         } else
