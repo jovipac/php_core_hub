@@ -189,6 +189,7 @@ Route::group([
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
     Route::get('expediente-documentos/restore/{expediente_documento}', 'Api\ExpedienteDocumentoController@restore')->name('expediente-documentos.restore');
+    Route::post('expediente-documentos/search', 'Api\ExpedienteDocumentoController@search')->name('expediente-documentos.search');
 
     Route::get('rol-modulos', 'Api\RolModuloController@index')->name('menu.index');
     Route::get('rol-modulos/assigned/{id}', 'Api\RolModuloController@assigned');
