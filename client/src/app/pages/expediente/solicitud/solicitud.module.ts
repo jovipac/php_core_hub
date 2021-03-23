@@ -10,6 +10,7 @@ import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { FileUploadModule } from 'ng2-file-upload';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { NgxSpinnerModule } from "ngx-spinner";
+import { EditorModule } from '@tinymce/tinymce-angular';
 
 import { SolicitudRoutingModule } from './solicitud-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -36,7 +37,8 @@ import { ExpedienteDocumentoComponent } from '../components/expediente-documento
     TimepickerModule,
     FileUploadModule,
     ProgressbarModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    EditorModule
   ],
   declarations: [
     SolicitudComponent,

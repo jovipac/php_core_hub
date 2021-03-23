@@ -24,7 +24,7 @@
     "@angular/router": "^9.1.13",
     "@ng-select/ng-select": "^6.1.0",
     "@nicky-lenaers/ngx-scroll-to": "^3.0.1",
-    "@tinymce/tinymce-angular": "^4.0.0",
+    "@tinymce/tinymce-angular": "^4.2.2",
     "@types/ramda": "^0.25.00",
     "angular2-chartjs": "^0.5.1",
     "bootstrap": "^4.0.0",
@@ -61,6 +61,7 @@
     "screenfull": "^3.3.2",
     "sweetalert2": "^10.15.5",
     "ti-icons": "^0.1.2",
+    "tinymce": "^5.7.1",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
   },
