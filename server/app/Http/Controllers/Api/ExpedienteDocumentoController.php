@@ -33,6 +33,34 @@ class ExpedienteDocumentoController extends ApiController
     }
 
     /**
+     * Show the form for creating a new resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        $expedienteDocumento = ExpedienteDocumento::query();
+
+        if ( $request->has('id_expediente') && $request->filled('id_expediente') ) {
+            $expedienteDocumento->where('id_expediente', $request->id_expediente);
+        }
+
+        if ( $request->has('titulo') && $request->filled('titulo') ) {
+            $expedienteDocumento->where('titulo', 'like', '%' . $request->input('titulo') . '%');
+        }
+
+        return $this->apiResponse(
+            [
+                'success' => true,
+                'message' => "Documento del expediente encontrado con exito",
+                'result' => $expedienteDocumento->get()
+            ]
+        );
+
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
