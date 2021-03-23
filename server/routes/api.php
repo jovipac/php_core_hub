@@ -180,6 +180,11 @@ Route::group([
     Route::post('expediente-hecho-archivos/upload', 'Api\ExpedienteHechoArchivoController@upload')->name('expediente-hecho-archivos.upload');
     Route::post('expediente-hecho-archivos/search', 'Api\ExpedienteHechoArchivoController@search')->name('expediente-hecho-archivos.search');
 
+    Route::resource('expediente-clasificacion-derechos', 'Api\ExpedienteClasificacionDerechoController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+    Route::post('expediente-clasificacion-derechos/search', 'Api\ExpedienteClasificacionDerechoController@search')->name('expediente-clasificacion-derecho.search');
+
     Route::resource('expediente-documentos', 'Api\ExpedienteDocumentoController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);

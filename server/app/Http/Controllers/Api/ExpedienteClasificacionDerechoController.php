@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\ApiController;
 use App\Models\ExpedienteClasificacionDerecho;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class ExpedienteClasificacionDerechoController extends Controller
+class ExpedienteClasificacionDerechoController extends ApiController
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         if ($request->has('per_page') && $request->filled('per_page')) {
             $ExpedienteClasificacionDerecho = ExpedienteClasificacionDerecho::query()
