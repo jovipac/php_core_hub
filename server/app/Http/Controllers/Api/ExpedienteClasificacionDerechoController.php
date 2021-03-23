@@ -39,7 +39,11 @@ class ExpedienteClasificacionDerechoController extends ApiController
      */
     public function search(Request $request)
     {
-        $ExpedienteClasificacionDerecho = ExpedienteClasificacionDerecho::query();
+        $ExpedienteClasificacionDerecho = ExpedienteClasificacionDerecho::query()
+        ->select('tt_expediente_clas_derecho.id_expediente_clas_derecho', 'tt_expediente_clas_derecho.id_expediente',
+            'tt_expediente_clas_derecho.id_clasificacion_derecho', 'T01.nombre AS nombre_clasificacion_derecho',
+        )
+        ->leftJoin('tc_clasificacion_derecho AS T01', 'tt_expediente_clas_derecho.id_clasificacion_derecho ', 'T01.id_clasificacion_derecho ');
 
         if ( $request->has('id_expediente') && $request->filled('id_expediente') ) {
             $ExpedienteClasificacionDerecho->where('id_expediente', $request->id_expediente);

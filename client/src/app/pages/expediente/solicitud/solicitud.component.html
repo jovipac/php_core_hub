@@ -156,7 +156,11 @@
         <h5 class="card-title">Paso 4: Calificación de derechos</h5>
       </div>
       <div class="card-body">
-        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+        <ul class="list-group list-group-flush" *ngFor="let clasificacionderecho of solicitudClasificacionDerechos; index as idx">
+          <li class="list-group-item">
+            <i class="icofont icofont-checked"></i>&nbsp;&nbsp;{{ clasificacionderecho?.nombre_clasificacion_derecho }}
+          </li>
+        </ul>
       </div>
       <div class="card-footer text-center">
         <div class="row align-items-center">

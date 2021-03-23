@@ -83,7 +83,7 @@ export class SolicitudComponent implements OnInit {
       const dataSend = this.id ? { 'id_expediente': this.id } : {};
       this.listExpedientePersonas(dataSend);
       this.listExpedienteHechos(dataSend);
-      //this.listExpedienteClasificacionDerecho(dataSend);
+      this.listExpedienteClasificacionDerecho(dataSend);
       this.listExpedienteDocumentos(dataSend);
     }
 
