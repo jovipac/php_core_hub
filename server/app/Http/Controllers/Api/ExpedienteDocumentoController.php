@@ -123,13 +123,14 @@ class ExpedienteDocumentoController extends ApiController
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
         }
-        $input = $request->all();
-        $expedienteDocumento = ExpedienteDocumento::create($input);
+        $inputs = $request->except(['id_expediente_documento']);
+        $newExpedienteDocumento = ExpedienteDocumento::create($inputs);
+        $expedienteDocumento->delete();
 
         return $this->respondCreated([
             'success' => true,
             'message' => "Documento del expediente actualizado con exito",
-            'result' => $expedienteDocumento
+            'result' => $newExpedienteDocumento
         ]);
     }
 
