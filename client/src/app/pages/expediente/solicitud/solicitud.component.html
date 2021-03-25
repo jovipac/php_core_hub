@@ -1,6 +1,6 @@
-<ngx-spinner></ngx-spinner>
+<ngx-spinner name="dashboard"></ngx-spinner>
 <ng-template #step01_Modal>
-  <ngx-spinner></ngx-spinner>
+  <ngx-spinner name="step01"></ngx-spinner>
   <app-basic-modal #step01Modal [hideFooter]="true" >
     <div class="app-modal-header modal-header">
       <h5 class="modal-title" id="modal-title-default">Paso 1: Solicitud</h5>
@@ -13,7 +13,7 @@
 </ng-template>
 
 <ng-template #step02_Modal>
-  <ngx-spinner></ngx-spinner>
+  <ngx-spinner name="step02"></ngx-spinner>
   <app-basic-modal #step02Modal [hideFooter]="true" >
     <div class="app-modal-header modal-header">
       <h5 class="modal-title">Paso 2: Persona</h5>
@@ -26,7 +26,7 @@
 </ng-template>
 
 <ng-template #step03_Modal>
-  <ngx-spinner></ngx-spinner>
+  <ngx-spinner name="step03"></ngx-spinner>
   <app-basic-modal #step03Modal [hideFooter]="true" >
     <div class="app-modal-header modal-header">
       <h5 class="modal-title">Paso 3: Hechos</h5>
@@ -39,7 +39,7 @@
 </ng-template>
 
 <ng-template #step04_Modal>
-  <ngx-spinner></ngx-spinner>
+  <ngx-spinner name="step04"></ngx-spinner>
   <app-basic-modal #step04Modal [hideFooter]="true" >
     <div class="app-modal-header modal-header">
       <h5 class="modal-title">Paso 4: Clasificación del Derecho</h5>
@@ -52,22 +52,20 @@
 </ng-template>
 
 <ng-template #step05_Modal>
-  <ngx-spinner></ngx-spinner>
+  <ngx-spinner name="step05"></ngx-spinner>
   <app-basic-modal #step05Modal [hideFooter]="true" >
     <div class="app-modal-header modal-header">
-      <h5 class="modal-title">Paso 4: Clasificación del Derecho</h5>
+      <h5 class="modal-title">Paso 5: Documentos</h5>
       <button type="button" class="close basic-close" data-dismiss="modal" aria-label="Close" (click)="dismissModalStep()"><span aria-hidden="true">&times;</span></button>
     </div>
     <div class="app-modal-body modal-body">
-      <app-expediente-clasificacion #step05Form [id_expediente_hecho]="id_expediente_hecho" (submittedEvent)='submitModalStep($event)'></app-expediente-clasificacion>
+      <app-expediente-documento #step05Form [id_expediente_documento]="id_expediente_documento" (submittedEvent)='submitModalStep($event)'></app-expediente-documento>
     </div>
   </app-basic-modal>
 </ng-template>
 
 <div class="col-xl-12">
-
   <div class="card-deck">
-
     <div class="card">
       <div class="card-header">
         <h5 class="card-title">Paso 1: Solicitud</h5>
@@ -148,12 +146,21 @@
       </div>
     </div>
 
+  </div>
+</div>
+
+<div class="col-xl-12">
+  <div class="card-deck">
     <div class="card">
       <div class="card-header">
         <h5 class="card-title">Paso 4: Calificación de derechos</h5>
       </div>
       <div class="card-body">
-        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+        <ul class="list-group list-group-flush" *ngFor="let clasificacionderecho of solicitudClasificacionDerechos; index as idx">
+          <li class="list-group-item">
+            <i class="icofont icofont-checked"></i>&nbsp;&nbsp;{{ clasificacionderecho?.nombre_clasificacion_derecho }}
+          </li>
+        </ul>
       </div>
       <div class="card-footer text-center">
         <div class="row align-items-center">
@@ -169,7 +176,27 @@
         <h5 class="card-title">Paso 5: Documentos</h5>
       </div>
       <div class="card-body">
-        <p class="card-text"></p>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+            <tr>
+              <th>Acción</th>
+              <th>Titulo</th>
+            </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let documento of solicitudDocumentos; index as idx">
+                <td scope="row">
+                    <button type="button" class="btn btn-outline-primary btn-mini btn-icon-round"
+                      (click)="showModalStep(step05_Modal); goEditExpedienteDocumento(documento);">
+                      <i class="icofont icofont-ui-edit"></i>
+                    </button>
+                </td>
+                <td>{{ documento.titulo }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="card-footer text-center">
         <div class="row align-items-center">
@@ -179,7 +206,5 @@
         </div>
       </div>
     </div>
-
   </div>
-
 </div>

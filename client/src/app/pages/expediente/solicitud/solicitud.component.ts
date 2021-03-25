@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ExpedienteService, ExpedientePersonaService, ExpedienteHechoService } from '../../../service';
-import { Expediente, ExpedientePersona, ExpedienteHecho } from '../../../shared/models';
+import { ExpedienteService, ExpedientePersonaService, ExpedienteHechoService, ExpedienteClasificacionDerechoService, ExpedienteDocumentoService } from '../../../service';
+import { Expediente, ExpedientePersona, ExpedienteHecho, ExpedienteClasificacionDerecho, ExpedienteDocumento } from '../../../shared/models';
 import { first } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { formatearCorrelativo } from '../../../shared/utils/helpers';
@@ -20,15 +20,20 @@ export class SolicitudComponent implements OnInit {
   private id: string;
   isAddMode: boolean;
   id_expediente_persona: number;
+  id_expediente_documento: number;
   public solicitud: Expediente;
   private configNgbModal: object;
   public solicitudPersonas: Array<ExpedientePersona>;
   public solicitudHechos: Array<ExpedienteHecho>;
+  public solicitudClasificacionDerechos: Array<ExpedienteClasificacionDerecho>;
+  public solicitudDocumentos: Array<ExpedienteDocumento>;
 
   constructor(
     private solicitudService: ExpedienteService,
     private solicitudPersonaService: ExpedientePersonaService,
     private expedienteHechoService: ExpedienteHechoService,
+    private expedienteClasificacionDerechosService: ExpedienteClasificacionDerechoService,
+    private expedienteDocumentoService: ExpedienteDocumentoService,
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
@@ -51,7 +56,7 @@ export class SolicitudComponent implements OnInit {
     this.isAddMode = !this.id;
 
     if (!this.isAddMode) {
-      this.loading.show();
+      this.loading.show('dashboard');
       this.solicitudService.getExpediente(this.id)
       .pipe(first())
       .subscribe({
@@ -67,43 +72,48 @@ export class SolicitudComponent implements OnInit {
               .join(" ")
           };
           this.solicitud = <Expediente>expediente;
-          this.loading.hide();
+          this.loading.hide('dashboard');
         },
         error: (error:any) => {
           this.toastr.error(error.message);
-          this.loading.hide();
+          this.loading.hide('dashboard');
         }
       });
 
       const dataSend = this.id ? { 'id_expediente': this.id } : {};
-      this.solicitudPersonaService.searchExpedientePersona(dataSend)
-      .pipe(first())
-      .subscribe({
-        next: (data:any) => {
-          const personasFormateadas = data.result
-          ? data.result.map((employee) => {
-            employee.nombres_completos = [
-              employee.nombres,
-              employee.apellidos
-            ].filter(Boolean)
-            .join(" ");
-            return <ExpedientePersona>employee;
-        }) : [];
-
-          this.solicitudPersonas = personasFormateadas;
-        },
-        error: (error:any) => {
-          this.toastr.error(error.message);
-        }
-      });
-
-      this.searchExpedienteHecho(dataSend);
+      this.listExpedientePersonas(dataSend);
+      this.listExpedienteHechos(dataSend);
+      this.listExpedienteClasificacionDerecho(dataSend);
+      this.listExpedienteDocumentos(dataSend);
     }
 
   }
 
-  searchExpedienteHecho(dataSend: any) {
-    this.loading.show();
+  listExpedientePersonas(dataSend: any) {
+    this.solicitudPersonaService.searchExpedientePersona(dataSend)
+    .pipe(first())
+    .subscribe({
+      next: (data:any) => {
+        const personasFormateadas = data.result
+        ? data.result.map((employee) => {
+          employee.nombres_completos = [
+            employee.nombres,
+            employee.apellidos
+          ].filter(Boolean)
+          .join(" ");
+          return <ExpedientePersona>employee;
+      }) : [];
+
+        this.solicitudPersonas = personasFormateadas;
+      },
+      error: (error:any) => {
+        this.toastr.error(error.message);
+      }
+    });
+  }
+
+  listExpedienteHechos(dataSend: any) {
+    this.loading.show('dashboard');
     this.expedienteHechoService.searchExpedienteHecho(dataSend)
       .pipe(first())
       .subscribe({
@@ -123,17 +133,76 @@ export class SolicitudComponent implements OnInit {
 
           } else
             this.toastr.error(response.message);
-          this.loading.hide();
+          this.loading.hide('dashboard');
         },
         error: (error: any) => {
           this.toastr.error(error.message);
-          this.loading.hide();
+          this.loading.hide('dashboard');
         }
       });
   }
 
-  goEditExpedientePerson(persona) {
+  listExpedienteDocumentos(dataSend: any) {
+    this.expedienteDocumentoService.searchExpedienteDocumento(dataSend)
+    .pipe(first())
+    .subscribe({
+      next: (response:any) => {
+        if (response.success) {
+          const documentos = response.result;
+          // Se formatea la informacion para adecuarla al formulario
+          const documentosFormateado = !isEmptyValue(documentos) ? documentos.map((documento: any) => {
+            return <ExpedienteDocumento>documento;
+          }) : [];
+
+          if (isEmptyValue(documentosFormateado)) {
+            this.solicitudDocumentos = [];
+          } else {
+            this.solicitudDocumentos = documentosFormateado;
+          }
+
+        } else
+          this.toastr.error(response.message);
+
+      },
+      error: (error:any) => {
+        this.toastr.error(error.message);
+      }
+    });
+  }
+
+  listExpedienteClasificacionDerecho(dataSend: any) {
+    this.expedienteClasificacionDerechosService.searchExpedienteClasificacionDerecho(dataSend)
+    .pipe(first())
+    .subscribe({
+      next: (response:any) => {
+        if (response.success) {
+          const clasificacionderechos = response.result;
+          // Se formatea la informacion para adecuarla al formulario
+          const clasificacionderechosFormateado = !isEmptyValue(clasificacionderechos) ? clasificacionderechos.map((clasificacionderecho: any) => {
+            return <ExpedienteClasificacionDerecho>clasificacionderecho;
+          }) : [];
+
+          if (isEmptyValue(clasificacionderechosFormateado)) {
+            this.solicitudClasificacionDerechos = [];
+          } else {
+            this.solicitudClasificacionDerechos = clasificacionderechosFormateado;
+          }
+
+        } else
+          this.toastr.error(response.message);
+
+      },
+      error: (error:any) => {
+        this.toastr.error(error.message);
+      }
+    });
+  }
+
+  goEditExpedientePerson(persona: any) {
     this.id_expediente_persona = persona.id_expediente_persona;
+  }
+  goEditExpedienteDocumento(documento: any) {console.log(documento);
+    this.id_expediente_documento = documento.id_expediente_documento;
   }
 
   onBack() {

@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\ApiController;
 use App\Models\ExpedienteClasificacionDerecho;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class ExpedienteClasificacionDerechoController extends Controller
+class ExpedienteClasificacionDerechoController extends ApiController
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         if ($request->has('per_page') && $request->filled('per_page')) {
             $ExpedienteClasificacionDerecho = ExpedienteClasificacionDerecho::query()
@@ -28,6 +29,34 @@ class ExpedienteClasificacionDerechoController extends Controller
                 'result' => $ExpedienteClasificacionDerecho
             ]
         );
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        $ExpedienteClasificacionDerecho = ExpedienteClasificacionDerecho::query()
+        ->select('tt_expediente_clas_derecho.id_expediente_clas_derecho', 'tt_expediente_clas_derecho.id_expediente',
+            'tt_expediente_clas_derecho.id_clasificacion_derecho', 'T01.nombre AS nombre_clasificacion_derecho',
+        )
+        ->leftJoin('tc_clasificacion_derecho AS T01', 'tt_expediente_clas_derecho.id_clasificacion_derecho', 'T01.id_clasificacion_derecho');
+
+        if ( $request->has('id_expediente') && $request->filled('id_expediente') ) {
+            $ExpedienteClasificacionDerecho->where('id_expediente', $request->id_expediente);
+        }
+
+        return $this->apiResponse(
+            [
+                'success' => true,
+                'message' => "Clasificacion de derechos del expediente encontrado con exito",
+                'result' => $ExpedienteClasificacionDerecho->get()
+            ]
+        );
+
     }
 
     /**

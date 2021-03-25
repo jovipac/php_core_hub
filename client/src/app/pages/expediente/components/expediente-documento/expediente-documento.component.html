@@ -1,0 +1,45 @@
+<form action="javascript:" class="needs-validation" novalidate [formGroup]="formDocumento" (ngSubmit)="onSubmit()" autocomplete="off">
+
+  <ng-container formArrayName="documentos">
+    <tabset #dynamicTabs type="">
+      <tab *ngFor="let documento of formDocumento.get('documentos')['controls'];index as idx" [id]="idx" [heading]="">
+      <ng-container [formGroupName]="idx">
+        <div class="form-row">
+          <div class="col-md-10 mb-3">
+            <input-label [label]="'Titulo'" [id]="'txtTitulo'"></input-label>
+            <input type="text" class="form-control" id="txtTitulo" formControlName="titulo"
+              placeholder="Descripcion en un titulo" [ngClass]="displayValidation(documento.get('titulo').invalid)">
+            <div [ngClass]="displayValidationMsg(documento.get('titulo').valid)">
+              <div *ngIf="documento.get('titulo').errors?.required">El campo es requerido</div>
+              <div *ngIf="documento.get('titulo').errors?.pattern">Solo se aceptan digitos</div>
+            </div>
+          </div>
+          <div class="col-md-2 mb-3">
+            <input-label [requires]="false" [label]="'Tipo motivo'" [id]="'txtTipoMotivo'"></input-label>
+            <ng-select [items]="listMotivo" #select bindLabel="nombre" dropdownPosition="auto" bindValue="id_motivo" formControlName="id_motivo"
+              labelForId="txtTipoMotivo" placeholder="Seleccionar" [ngClass]="displayValidation(documento.get('id_motivo').invalid)" >
+            </ng-select>
+            <div [ngClass]="displayValidationMsg(documento.get('id_motivo').valid)">
+              <div *ngIf="documento.get('id_motivo').errors?.required">El campo es requerido</div>
+              <div *ngIf="documento.get('id_motivo').errors?.pattern">Solo se aceptan digitos</div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col">
+              <editor [init]="textEditorConfig" formControlName="texto" ></editor>
+          </div>
+        </div>
+      </ng-container>
+      </tab>
+    </tabset>
+  </ng-container>
+  <div class="row">
+    <div class="col"></div>
+    <div class="col text-center">
+      <button class="btn btn-primary" type="submit" id="btnSave"><i class="fa fa-save"></i>Guardar</button>
+    </div>
+    <div class="col"></div>
+  </div>
+
+</form>

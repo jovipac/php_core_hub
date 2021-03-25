@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {   FormBuilder,  FormGroup,   FormArray,   FormControl,   ValidatorFn } from '@angular/forms';
-import { ExpedienteClasificacionDerechoService } from '../../../../service/catalogos/expediente-clasificacion-derecho.service';
+import { ClasificacionDerechoService } from '../../../../service/catalogos';
+import { ExpedienteClasificacionDerechoService } from '../../../../service';
 
 
 interface CalificacionDerecho {
@@ -22,7 +23,7 @@ export class ExpedienteClasificacionComponent implements OnInit {
   ordersData = [];
 
   constructor(
-    private ECservice: ExpedienteClasificacionDerechoService,
+    private ECservice: ClasificacionDerechoService,
     private formBuilder: FormBuilder,
   ) {
     this.form = this.formBuilder.group({
@@ -54,7 +55,7 @@ export class ExpedienteClasificacionComponent implements OnInit {
 
 
   getCalificacionDerecho() {
-    this.ECservice.getCalificacionDerecho().subscribe(res => {
+    this.ECservice.getListClasificacionDerecho().subscribe(res => {
       let response: any = res;
       if (response.result.length > 0){
         //PADRES
