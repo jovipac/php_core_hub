@@ -1,4 +1,4 @@
-<form action="javascript:" class="needs-validation" novalidate [formGroup]="formDocumento" autocomplete="off">
+<form action="javascript:" class="needs-validation" novalidate [formGroup]="formDocumento" (ngSubmit)="onSubmit()" autocomplete="off">
 
   <ng-container formArrayName="documentos">
     <tabset #dynamicTabs type="">
@@ -33,10 +33,13 @@
       </ng-container>
       </tab>
     </tabset>
-
-
-
   </ng-container>
-
+  <div class="row">
+    <div class="col"></div>
+    <div class="col text-center">
+      <button class="btn btn-primary" type="submit" id="btnSave"><i class="fa fa-save"></i>Guardar</button>
+    </div>
+    <div class="col"></div>
+  </div>
 
 </form>

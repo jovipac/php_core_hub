@@ -114,7 +114,7 @@ class ExpedienteDocumentoController extends ApiController
     public function update(Request $request, ExpedienteDocumento $expedienteDocumento)
     {
         $validator = Validator::make($request->all(), [
-            'id_expediente_hecho_prueba' => 'required|integer',
+            'id_expediente_documento' => 'required|integer',
             'id_expediente' => 'nullable|integer',
             'id_motivo' => 'nullable|integer',
             'titulo' => 'nullable|string',

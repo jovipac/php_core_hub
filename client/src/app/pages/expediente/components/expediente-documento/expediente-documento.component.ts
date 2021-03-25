@@ -129,7 +129,7 @@ export class ExpedienteDocumentoComponent implements OnInit {
       return;
     }
     // Se procede a agregar o actualizar
-    // this.createOrUpdateHecho()
+    this.createOrUpdateDocumento()
 
   }
 
@@ -209,6 +209,66 @@ export class ExpedienteDocumentoComponent implements OnInit {
           this.loading.hide('step05');
         }
       });
+  }
+
+  private async createOrUpdateDocumento() {
+    let completedProcess = false;
+    //Valor del Form, incluidos los controles deshabilitados
+    let formValues = {
+      ...this.formDocumento.getRawValue(),
+    };
+
+    let result = formValues.documentos.forEach(async (documento: any) => {
+      try {
+        this.loading.show('step05');
+        if (isEmptyValue(documento.id_expediente_documento) && documento.id_expediente_documento != 0) {
+          documento = {
+            ...documento,
+            id_expediente: this.id_expediente,
+          };
+          let response: any = await this.expedienteDocumentoService.createExpedienteDocumento(documento).toPromise();
+          if (response.success) {
+            this.toastr.success(response.message, 'Documento del expediente');
+            completedProcess = true;
+            this.loading.hide('step05');
+
+          } else {
+            completedProcess = false;
+          }
+          this.submittedEvent.emit(completedProcess);
+        } else {
+          documento = { ...documento, };
+          let response: any = await this.expedienteDocumentoService.updateExpedienteDocumento(documento.id_expediente_documento, documento).toPromise();
+          if (response.success) {
+            this.toastr.success(response.message, 'Documento del expediente');
+            completedProcess = true;
+            this.loading.hide('step05');
+
+          } else {
+            completedProcess = false;
+          }
+          this.submittedEvent.emit(completedProcess);
+
+        }
+      } catch(response) {
+        if (Object.prototype.toString.call(response.error.message) === '[object Object]') {
+          const messages = extractErrorMessages(response);
+          messages.forEach(propertyErrors => {
+            for (let message in propertyErrors) {
+              this.toastr.error(propertyErrors[message], 'Documento del expediente');
+            }
+          });
+
+        } else {
+          this.toastr.error(response.error.message)
+        }
+        completedProcess = false;
+        this.loading.hide('step05');
+      }
+
+    });
+    //result = await Promise.all([promise1, promise2, promise3]);
+    //this.submittedEvent.emit(result);
   }
 
 
