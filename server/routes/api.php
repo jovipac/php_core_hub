@@ -210,4 +210,8 @@ Route::group([
     Route::put('menus/{menu}', 'Api\MenuController@update')->name('menu.update');
     Route::delete('menus/{menu}','Api\MenuController@destroy')->name('menu.destroy');
     Route::get('menu-items', 'Api\MenuController@menuItems')->name('menu.menuItems');
+
+    Route::resource('expediente-clas-derecho', 'Api\ExpedienteClasificacionDerechoController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
 });
