@@ -1,6 +1,6 @@
-<ngx-spinner></ngx-spinner>
+<ngx-spinner name="dashboard"></ngx-spinner>
 <ng-template #step01_Modal>
-  <ngx-spinner></ngx-spinner>
+  <ngx-spinner name="step01"></ngx-spinner>
   <app-basic-modal #step01Modal [hideFooter]="true" >
     <div class="app-modal-header modal-header">
       <h5 class="modal-title" id="modal-title-default">Paso 1: Solicitud</h5>
@@ -13,7 +13,7 @@
 </ng-template>
 
 <ng-template #step02_Modal>
-  <ngx-spinner></ngx-spinner>
+  <ngx-spinner name="step02"></ngx-spinner>
   <app-basic-modal #step02Modal [hideFooter]="true" >
     <div class="app-modal-header modal-header">
       <h5 class="modal-title">Paso 2: Persona</h5>
@@ -26,7 +26,7 @@
 </ng-template>
 
 <ng-template #step03_Modal>
-  <ngx-spinner></ngx-spinner>
+  <ngx-spinner name="step03"></ngx-spinner>
   <app-basic-modal #step03Modal [hideFooter]="true" >
     <div class="app-modal-header modal-header">
       <h5 class="modal-title">Paso 3: Hechos</h5>
@@ -39,7 +39,7 @@
 </ng-template>
 
 <ng-template #step04_Modal>
-  <ngx-spinner></ngx-spinner>
+  <ngx-spinner name="step04"></ngx-spinner>
   <app-basic-modal #step04Modal [hideFooter]="true" >
     <div class="app-modal-header modal-header">
       <h5 class="modal-title">Paso 4: Clasificación del Derecho</h5>
@@ -52,14 +52,14 @@
 </ng-template>
 
 <ng-template #step05_Modal>
-  <ngx-spinner></ngx-spinner>
+  <ngx-spinner name="step05"></ngx-spinner>
   <app-basic-modal #step05Modal [hideFooter]="true" >
     <div class="app-modal-header modal-header">
       <h5 class="modal-title">Paso 4: Clasificación del Derecho</h5>
       <button type="button" class="close basic-close" data-dismiss="modal" aria-label="Close" (click)="dismissModalStep()"><span aria-hidden="true">&times;</span></button>
     </div>
     <div class="app-modal-body modal-body">
-      <app-expediente-documento #step05Form [id_expediente_hecho]="id_expediente_hecho" (submittedEvent)='submitModalStep($event)'></app-expediente-documento>
+      <app-expediente-documento #step05Form [id_expediente_documento]="id_expediente_documento" (submittedEvent)='submitModalStep($event)'></app-expediente-documento>
     </div>
   </app-basic-modal>
 </ng-template>

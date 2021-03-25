@@ -286,7 +286,7 @@ export class ExpedientePersonaComponent implements OnInit {
   }
 
   getPersonaExpediente(id_expediente_persona) {
-    this.loading.show();
+    this.loading.show('step02');
     this.solicitudPersonaService.getExpedientePersona(id_expediente_persona)
       .pipe(first())
       .subscribe({
@@ -317,11 +317,11 @@ export class ExpedientePersonaComponent implements OnInit {
 
           } else
             this.toastr.error(response.message);
-          this.loading.hide();
+          this.loading.hide('step02');
         },
         error: (error: any) => {
           this.toastr.error(error.message);
-          this.loading.hide();
+          this.loading.hide('step02');
         }
       });
   }
@@ -465,7 +465,7 @@ export class ExpedientePersonaComponent implements OnInit {
   }
 
   public searchPersona(dataSend: object) {
-    this.loading.show();
+    this.loading.show('step02');
     this.personaService.searchPersona(dataSend)
       .pipe(first())
       .subscribe({
@@ -477,7 +477,7 @@ export class ExpedientePersonaComponent implements OnInit {
             this.toastr.success(response.message)
           } else
             this.toastr.error(response.message);
-          this.loading.hide();
+          this.loading.hide('step02');
         },
         error: (response: HttpErrorResponse) => {
           if (Object.prototype.toString.call(response.error.message) === '[object Object]') {
@@ -491,7 +491,7 @@ export class ExpedientePersonaComponent implements OnInit {
           } else {
             this.toastr.error(response.error.message)
           }
-          this.loading.hide();
+          this.loading.hide('step02');
         }
       });
   }
@@ -504,7 +504,7 @@ export class ExpedientePersonaComponent implements OnInit {
     };
 
     if (isEmptyValue(formValues.id_persona)) {
-      this.loading.show();
+      this.loading.show('step02');
       this.personaService.createPersona(formValues).pipe(
         first(),
         map((data: any) => {
@@ -524,7 +524,7 @@ export class ExpedientePersonaComponent implements OnInit {
           next: (response: any) => {
             this.toastr.success(response.message, 'Solicitud');
             this.submittedEvent.emit(true);
-            this.loading.hide();
+            this.loading.hide('step02');
           },
           error: (response: HttpErrorResponse) => {
             if (Object.prototype.toString.call(response.error.message) === '[object Object]') {
@@ -538,12 +538,12 @@ export class ExpedientePersonaComponent implements OnInit {
               this.toastr.error(response.error.message)
             }
             this.submittedEvent.emit(false);
-            this.loading.hide();
+            this.loading.hide('step02');
           }
         });
 
     } else {
-      this.loading.show();
+      this.loading.show('step02');
       this.solicitudPersonaService.createExpedientePersona(formValues)
         .pipe(
           first(),
@@ -569,7 +569,7 @@ export class ExpedientePersonaComponent implements OnInit {
           next: (response: any) => {
             this.toastr.success(response.message, 'Solicitud')
             this.submittedEvent.emit(true);
-            this.loading.hide();
+            this.loading.hide('step02');
           },
           error: (response: HttpErrorResponse) => {
             if (Object.prototype.toString.call(response.error.message) === '[object Object]') {
@@ -584,7 +584,7 @@ export class ExpedientePersonaComponent implements OnInit {
               this.toastr.error(response.error.message)
             }
             this.submittedEvent.emit(false);
-            this.loading.hide();
+            this.loading.hide('step02');
           }
         });
     }
@@ -596,7 +596,7 @@ export class ExpedientePersonaComponent implements OnInit {
     const formValues = {
       ...this.personaForm.getRawValue(),
     };
-    this.loading.show();
+    this.loading.show('step02');
     this.solicitudPersonaService.updateExpedientePersona(this.id_expediente_persona, formValues)
         .pipe(
           first(),
@@ -609,7 +609,7 @@ export class ExpedientePersonaComponent implements OnInit {
             next: (response: any) => {
               this.toastr.success(response.message, 'Expediente');
               this.submittedEvent.emit(true);
-              this.loading.hide();
+              this.loading.hide('step02');
             },
             error: (error: HttpErrorResponse) => {
                 const messages = extractErrorMessages(error);
@@ -619,7 +619,7 @@ export class ExpedientePersonaComponent implements OnInit {
                   }
                 });
                 this.submittedEvent.emit(false);
-                this.loading.hide();
+                this.loading.hide('step02');
             }
         });
   }

@@ -26,7 +26,6 @@ export class ExpedienteHechoComponent implements OnInit {
   @Output() submittedEvent = new EventEmitter();
 
   formHecho: FormGroup;
-  //hechos = new FormArray([]);
   id_expediente: number;
   id_persona: number;
   isAddMode: boolean;
@@ -97,7 +96,7 @@ export class ExpedienteHechoComponent implements OnInit {
           const response: any = await this.expedienteHechoArchivoService.createExpedienteHechoArchivo(dataSend).toPromise();
           if (response.success) {
             this.toastr.success(response.message, 'Archivo adjunto del Hecho');
-            this.loading.hide();
+            this.loading.hide('step03');
           } else {
             this.toastr.error(response.message)
           }
@@ -114,7 +113,7 @@ export class ExpedienteHechoComponent implements OnInit {
         } else {
           this.toastr.error(response.error.message)
         }
-        this.loading.hide();
+        this.loading.hide('step03');
       }
 
     });
@@ -222,7 +221,7 @@ export class ExpedienteHechoComponent implements OnInit {
   }
 
   getExpedienteHecho(id_expediente_hecho: number) {
-    this.loading.show();
+    this.loading.show('step03');
     this.expedienteHechoService.getExpedienteHecho(id_expediente_hecho)
       .pipe(first())
       .subscribe({
@@ -251,17 +250,17 @@ export class ExpedienteHechoComponent implements OnInit {
 
           } else
             this.toastr.error(response.message);
-          this.loading.hide();
+          this.loading.hide('step03');
         },
         error: (error: any) => {
           this.toastr.error(error.message);
-          this.loading.hide();
+          this.loading.hide('step03');
         }
       });
   }
 
   searchExpedienteHecho(dataSend: any) {
-    this.loading.show();
+    this.loading.show('step03');
     this.expedienteHechoService.searchExpedienteHecho(dataSend)
       .pipe(first())
       .subscribe({
@@ -287,11 +286,11 @@ export class ExpedienteHechoComponent implements OnInit {
 
           } else
             this.toastr.error(response.message);
-          this.loading.hide();
+          this.loading.hide('step03');
         },
         error: (error: any) => {
           this.toastr.error(error.message);
-          this.loading.hide();
+          this.loading.hide('step03');
         }
       });
   }
@@ -360,7 +359,7 @@ export class ExpedienteHechoComponent implements OnInit {
 
     let result = formValues.hechos.forEach(async (hecho: any) => {
       try {
-        this.loading.show();
+        this.loading.show('step03');
         if (isEmptyValue(hecho.id_expediente_hecho) && hecho.id_expediente_hecho != 0) {
           hecho = {
             ...hecho,
@@ -371,7 +370,7 @@ export class ExpedienteHechoComponent implements OnInit {
           if (response.success) {
             this.toastr.success(response.message, 'Hecho del expediente');
             completedProcess = true;
-            this.loading.hide();
+            this.loading.hide('step03');
 
             // Pasos para guardar los archivos adjuntos
             this.uploader.onBuildItemForm = (fileItem: any, form: any) => {
@@ -389,7 +388,7 @@ export class ExpedienteHechoComponent implements OnInit {
           if (response.success) {
             this.toastr.success(response.message, 'Hecho del expediente');
             completedProcess = true;
-            this.loading.hide();
+            this.loading.hide('step03');
 
             // Pasos para guardar los archivos adjuntos
             this.uploader.onBuildItemForm = (fileItem: any, form: any) => {
@@ -416,7 +415,7 @@ export class ExpedienteHechoComponent implements OnInit {
           this.toastr.error(response.error.message)
         }
         completedProcess = false;
-        this.loading.hide();
+        this.loading.hide('step03');
       }
 
     });
@@ -431,14 +430,14 @@ export class ExpedienteHechoComponent implements OnInit {
       ...this.formHecho.getRawValue(),
     };
     formValues.hechos.forEach(hecho  => {
-      this.loading.show();
+      this.loading.show('step03');
       this.expedienteHechoService.updateExpedienteHecho(hecho.id_expediente_hecho, hecho)
       .pipe(first())
       .subscribe({
           next: (response: any) => {
             this.toastr.success(response.message, 'Hecho del expediente');
             completedProcess = true;
-            this.loading.hide();
+            this.loading.hide('step03');
             this.submittedEvent.emit(completedProcess);
           },
           error: (error: HttpErrorResponse) => {
@@ -449,7 +448,7 @@ export class ExpedienteHechoComponent implements OnInit {
                 }
               });
               completedProcess = false;
-              this.loading.hide();
+              this.loading.hide('step03');
           }
       });
 

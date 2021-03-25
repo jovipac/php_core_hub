@@ -56,7 +56,7 @@ export class SolicitudComponent implements OnInit {
     this.isAddMode = !this.id;
 
     if (!this.isAddMode) {
-      this.loading.show();
+      this.loading.show('dashboard');
       this.solicitudService.getExpediente(this.id)
       .pipe(first())
       .subscribe({
@@ -72,11 +72,11 @@ export class SolicitudComponent implements OnInit {
               .join(" ")
           };
           this.solicitud = <Expediente>expediente;
-          this.loading.hide();
+          this.loading.hide('dashboard');
         },
         error: (error:any) => {
           this.toastr.error(error.message);
-          this.loading.hide();
+          this.loading.hide('dashboard');
         }
       });
 
@@ -113,7 +113,7 @@ export class SolicitudComponent implements OnInit {
   }
 
   listExpedienteHechos(dataSend: any) {
-    this.loading.show();
+    this.loading.show('dashboard');
     this.expedienteHechoService.searchExpedienteHecho(dataSend)
       .pipe(first())
       .subscribe({
@@ -133,11 +133,11 @@ export class SolicitudComponent implements OnInit {
 
           } else
             this.toastr.error(response.message);
-          this.loading.hide();
+          this.loading.hide('dashboard');
         },
         error: (error: any) => {
           this.toastr.error(error.message);
-          this.loading.hide();
+          this.loading.hide('dashboard');
         }
       });
   }
@@ -201,7 +201,7 @@ export class SolicitudComponent implements OnInit {
   goEditExpedientePerson(persona: any) {
     this.id_expediente_persona = persona.id_expediente_persona;
   }
-  goEditExpedienteDocumento(documento: any) {
+  goEditExpedienteDocumento(documento: any) {console.log(documento);
     this.id_expediente_documento = documento.id_expediente_documento;
   }
 

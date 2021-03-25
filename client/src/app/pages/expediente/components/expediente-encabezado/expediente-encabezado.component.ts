@@ -54,7 +54,7 @@ export class ExpedienteEncabezadoComponent implements OnInit {
     this.getListResultado();
 
     if (!this.isAddMode) {
-      this.loading.show();
+      this.loading.show('step01');
       this.solicitudService.getExpediente(this.id)
       .pipe(first())
       .subscribe({
@@ -67,11 +67,11 @@ export class ExpedienteEncabezadoComponent implements OnInit {
             fecha_ingreso: format(new Date(data.result.fecha_ingreso), 'yyyy-MM-dd'),
           };
           this.expedienteForm.patchValue(<Expediente>expediente);
-          this.loading.hide();
+          this.loading.hide('step01');
         },
         error: (error:any) => {
           this.toastr.error(error.message);
-          this.loading.hide();
+          this.loading.hide('step01');
         }
       });
 
@@ -261,7 +261,7 @@ export class ExpedienteEncabezadoComponent implements OnInit {
   }
 
   private updateSolicitud() {
-    this.loading.show();
+    this.loading.show('step01');
     const formValues = {
       ...this.expedienteForm.value,
     };
@@ -271,7 +271,7 @@ export class ExpedienteEncabezadoComponent implements OnInit {
             next: (response: any) => {
               this.toastr.success(response.message, 'Expediente')
               this.submittedEvent.emit(true);
-              this.loading.hide();
+              this.loading.hide('step01');
             },
             error: (error: HttpErrorResponse) => {
                 const messages = extractErrorMessages(error);
@@ -281,7 +281,7 @@ export class ExpedienteEncabezadoComponent implements OnInit {
                   }
                 });
                 this.submittedEvent.emit(false);
-                this.loading.hide();
+                this.loading.hide('step01');
             }
         });
   }
