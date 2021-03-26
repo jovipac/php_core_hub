@@ -77,7 +77,21 @@ class ExpedienteClasificacionDerechoController extends ApiController
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'nombre' => 'required|string',
+
+        ]);
+        if ($validator->fails()) {
+            return $this->respondError($validator->errors(), 422);
+        }
+        $input = $request->all();
+        $ExpedienteClasificacionDerecho = ExpedienteClasificacionDerecho::create($input);
+
+        return $this->respondCreated([
+            'success' => true,
+            'message' => "Tipo vinculacion creado con exito",
+            'result' => $ExpedienteClasificacionDerecho
+        ]);
     }
 
     /**
@@ -88,8 +102,6 @@ class ExpedienteClasificacionDerechoController extends ApiController
      */
     public function show(ExpedienteClasificacionDerecho $expedienteClasificacionDerecho)
     {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
