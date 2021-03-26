@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { formatearCorrelativo } from '../../../shared/utils/helpers';
 import { CarouselConfig } from 'ngx-bootstrap/carousel';
 import { BsModalService } from 'ngx-bootstrap/modal';
+import { format, isValid, parseISO } from 'date-fns';
 import { isEmptyValue } from '../../../shared/utils';
 import { NgxSpinnerService } from "ngx-spinner";
 
@@ -151,6 +152,11 @@ export class SolicitudComponent implements OnInit {
           const documentos = response.result;
           // Se formatea la informacion para adecuarla al formulario
           const documentosFormateado = !isEmptyValue(documentos) ? documentos.map((documento: any) => {
+            documento = {
+              ...documento,
+              created_at: isValid(parseISO(documento?.created_at)) ?
+                format(parseISO(new Date(documento.created_at).toISOString()), 'dd-MM-yyyy') : null,
+            }
             return <ExpedienteDocumento>documento;
           }) : [];
 
