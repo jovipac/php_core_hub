@@ -207,7 +207,7 @@ export class SolicitudComponent implements OnInit {
   goEditExpedientePerson(persona: any) {
     this.id_expediente_persona = persona.id_expediente_persona;
   }
-  goEditExpedienteDocumento(documento: any) {console.log(documento);
+  goEditExpedienteDocumento(documento: any) {
     this.id_expediente_documento = documento.id_expediente_documento;
   }
 

@@ -21,6 +21,7 @@ export class ExpedienteDocumentoComponent implements OnInit {
 
   id_expediente: number;
   isAddMode: boolean;
+  readOnlyEditor: boolean = false;
   submitted: boolean = false;
   formDocumento: FormGroup;
   textEditorConfig: object;
