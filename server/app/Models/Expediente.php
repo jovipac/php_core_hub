@@ -28,8 +28,8 @@ class Expediente extends Model
      * @var array
      */
     protected $fillable = [
-        'id_expediente', 'anio', 'folio', 'id_via', 'fecha_ingreso', 'id_prioridad',
-        'id_funcionario', 'observaciones', 'id_resultado', 'id_auxiliatura',
+        'id_expediente', 'anio', 'folio', 'id_via', 'fecha_ingreso', 'id_prioridad', 'id_motivo',
+        'id_dependencia', 'id_funcionario', 'observaciones', 'id_resultado', 'id_auxiliatura', 'id_visita',
         'borrado'
     ];
 

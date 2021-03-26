@@ -27,7 +27,7 @@
         </div>
         <div class="form-row">
           <div class="col">
-              <editor [init]="textEditorConfig" formControlName="texto" ></editor>
+              <editor [init]="textEditorConfig" formControlName="texto" [disabled]="readOnlyEditor"></editor>
           </div>
         </div>
       </ng-container>

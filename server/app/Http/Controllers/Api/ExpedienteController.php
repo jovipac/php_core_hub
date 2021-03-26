@@ -48,7 +48,6 @@ class ExpedienteController extends ApiController
             }
         }
         if ($request->has('id_visita') && $request->filled('id_visita')) {
-            //$findExpediente = Expediente::where("slug", $request->id_via)->first();
             $input['folio'] = $request->id_visita;
         }
 
@@ -57,11 +56,14 @@ class ExpedienteController extends ApiController
             'folio' => 'integer',
             'fecha_ingreso' => 'required',
             'id_via' => 'required|integer',
+            'id_motivo' => 'required|integer',
             'id_prioridad' => 'required|integer',
+            'id_dependencia' => 'required|integer',
             'id_funcionario' => 'required|integer',
             'observaciones' => 'string',
             'id_resultado' => 'nullable|integer',
             'id_auxiliatura' => 'required|integer',
+            'id_visita' => 'nullable|integer',
         ]);
 
         if ($validator->fails()) {
@@ -127,11 +129,14 @@ class ExpedienteController extends ApiController
             'folio' => 'integer',
             'fecha_ingreso' => 'required',
             'id_via' => 'required|integer',
+            'id_motivo' => 'nullable|integer',
             'id_prioridad' => 'required|integer',
+            'id_dependencia' => 'nullable|integer',
             'id_funcionario' => 'required|integer',
             'observaciones' => 'nullable|string',
             'id_resultado' => 'nullable|integer',
-            'id_auxiliatura' => 'integer',
+            'id_auxiliatura' => 'nullable|integer',
+            'id_visita' => 'nullable|integer',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);

@@ -19,11 +19,14 @@ class CreateExpedientesTable extends Migration
             $table->integer('folio')->unsigned();
             $table->integer('id_via')->unsigned();
             $table->date('fecha_ingreso')->nullable();
+            $table->integer('id_motivo')->unsigned();
             $table->integer('id_prioridad')->unsigned();
+            $table->integer('id_dependencia')->unsigned();
             $table->integer('id_funcionario')->nullable()->unsigned();
             $table->string('observaciones')->nullable();
             $table->integer('id_resultado')->nullable()->unsigned();
             $table->integer('id_auxiliatura')->unsigned();
+            $table->integer('id_visita')->nullable()->unsigned();
             $table->boolean('borrado')->default(0)->index();
             $table->integer('created_by')->nullable()->unsigned();
             $table->integer('updated_by')->nullable()->unsigned();
@@ -35,7 +38,13 @@ class CreateExpedientesTable extends Migration
             $table->foreign('id_via')->references('id_via')->on('tc_via')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
+            $table->foreign('id_motivo')->references('id_motivo')->on('tc_motivo')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->foreign('id_prioridad')->references('id_prioridad')->on('tc_prioridad')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreign('id_dependencia')->references('id_dependencia')->on('tc_dependencia')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->foreign('id_funcionario')->references('id_funcionario')->on('tc_funcionario')
@@ -45,6 +54,9 @@ class CreateExpedientesTable extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->foreign('id_auxiliatura')->references('id_auxiliatura')->on('tc_auxiliatura')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreign('id_visita')->references('id_visita')->on('tt_visita')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
