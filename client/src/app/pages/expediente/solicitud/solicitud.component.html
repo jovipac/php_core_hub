@@ -182,6 +182,7 @@
             <tr>
               <th>Acción</th>
               <th>Titulo</th>
+              <th>Creado</th>
             </tr>
             </thead>
             <tbody>
@@ -192,7 +193,8 @@
                       <i class="icofont icofont-ui-edit"></i>
                     </button>
                 </td>
-                <td>{{ documento.titulo }}</td>
+                <td>{{ documento?.titulo }}</td>
+                <td>{{ documento?.created_at | date:'medium' }}</td>
               </tr>
             </tbody>
           </table>

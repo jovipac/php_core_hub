@@ -4,4 +4,5 @@ export interface ExpedienteDocumento {
   id_motivo: number,
   titulo: string,
   texto: string,
+  created_at: Date,
 }

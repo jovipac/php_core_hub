@@ -40,7 +40,7 @@ class ExpedienteDocumentoController extends ApiController
      */
     public function search(Request $request)
     {
-        $expedienteDocumento = ExpedienteDocumento::query();
+        $expedienteDocumento = ExpedienteDocumento::query()->orderBy('created_at', 'desc');
 
         if ( $request->has('id_expediente') && $request->filled('id_expediente') ) {
             $expedienteDocumento->where('id_expediente', $request->id_expediente);
@@ -125,7 +125,6 @@ class ExpedienteDocumentoController extends ApiController
         }
         $inputs = $request->except(['id_expediente_documento']);
         $newExpedienteDocumento = ExpedienteDocumento::create($inputs);
-        $expedienteDocumento->delete();
 
         return $this->respondCreated([
             'success' => true,
