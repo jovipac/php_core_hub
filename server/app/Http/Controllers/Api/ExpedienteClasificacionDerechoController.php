@@ -25,7 +25,7 @@ class ExpedienteClasificacionDerechoController extends ApiController
         return $this->apiResponse(
             [
                 'success' => true,
-                'message' => "Listado de expedientes",
+                'message' => "Listado de clasificación del derecho",
                 'result' => $ExpedienteClasificacionDerecho
             ]
         );
@@ -60,16 +60,6 @@ class ExpedienteClasificacionDerechoController extends ApiController
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -78,18 +68,18 @@ class ExpedienteClasificacionDerechoController extends ApiController
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nombre' => 'required|string',
-
+            'id_expediente' => 'required|integer',
+            'id_clasificacion_derecho' => 'required|integer',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
         }
-        $input = $request->all();
-        $ExpedienteClasificacionDerecho = ExpedienteClasificacionDerecho::create($input);
+        $inputs = $request->all();
+        $ExpedienteClasificacionDerecho = ExpedienteClasificacionDerecho::create($inputs);
 
         return $this->respondCreated([
             'success' => true,
-            'message' => "Tipo vinculacion creado con exito",
+            'message' => "Clasificacion del derecho del expediente agregado al expediente con exito",
             'result' => $ExpedienteClasificacionDerecho
         ]);
     }
@@ -102,16 +92,13 @@ class ExpedienteClasificacionDerechoController extends ApiController
      */
     public function show(ExpedienteClasificacionDerecho $expedienteClasificacionDerecho)
     {
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\ExpedienteClasificacionDerecho  $expedienteClasificacionDerecho
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(ExpedienteClasificacionDerecho $expedienteClasificacionDerecho)
-    {
-        //
+        return $this->apiResponse(
+            [
+                'success' => true,
+                'message' => "Clasificacion del derecho del expediente encontrada con exito",
+                'result' => $expedienteClasificacionDerecho
+            ]
+        );
     }
 
     /**
@@ -123,7 +110,22 @@ class ExpedienteClasificacionDerechoController extends ApiController
      */
     public function update(Request $request, ExpedienteClasificacionDerecho $expedienteClasificacionDerecho)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'id_expediente_clas_derecho' => 'nullable|integer',
+            'id_expediente' => 'nullable|integer',
+            'id_clasificacion_derecho' => 'required|integer',
+        ]);
+        if ($validator->fails()) {
+            return $this->respondError($validator->errors(), 422);
+        }
+        $inputs = $request->all();
+        $expedienteClasificacionDerecho->update($inputs);
+
+        return $this->apiResponse([
+            'success' => true,
+            'message' => "Clasificacion del derecho del expediente actualizada al expediente con exito",
+            'result' => $expedienteClasificacionDerecho
+        ]);
     }
 
     /**
@@ -134,6 +136,8 @@ class ExpedienteClasificacionDerechoController extends ApiController
      */
     public function destroy(ExpedienteClasificacionDerecho $expedienteClasificacionDerecho)
     {
-        //
+        $expedienteClasificacionDerecho->delete();
+
+        return $this->respondSuccess('Clasificacion del derecho del expediente eliminado con exito');
     }
 }
