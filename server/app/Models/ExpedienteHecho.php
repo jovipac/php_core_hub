@@ -47,4 +47,9 @@ class ExpedienteHecho extends Model
         return $this->belongsTo(Expediente::class, 'id_expediente', 'id_expediente');
     }
 
+    public function archivos_adjuntos()
+    {
+        return $this->hasMany(ExpedienteHechoArchivo::class, 'id_expediente_hecho', 'id_expediente_hecho');
+    }
+
 }

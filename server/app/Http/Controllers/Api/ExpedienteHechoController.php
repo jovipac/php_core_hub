@@ -45,7 +45,8 @@ class ExpedienteHechoController extends ApiController
         )
         ->leftJoin('tc_tipo_area_lugar AS T01', 'tt_expediente_hecho.id_tipo_area_lugar', 'T01.id_tipo_area_lugar')
         ->leftJoin('tc_departamento AS T02', 'tt_expediente_hecho.id_departamento', 'T02.id_departamento')
-        ->leftJoin('tc_municipio AS T03', 'tt_expediente_hecho.id_municipio', 'T03.id_municipio');
+        ->leftJoin('tc_municipio AS T03', 'tt_expediente_hecho.id_municipio', 'T03.id_municipio')
+        ->with('archivos_adjuntos');
 
         if ( $request->has('id_expediente') && $request->filled('id_expediente') ) {
             $expedienteHecho->where('tt_expediente_hecho.id_expediente', $request->id_expediente);

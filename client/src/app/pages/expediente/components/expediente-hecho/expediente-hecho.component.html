@@ -97,16 +97,6 @@
               Progreso de la cola:
               <progressbar [value]="uploader.progress" [striped]="true">{{uploader.progress + '%'}}</progressbar>
             </div>
-            <button type="button" class="btn btn-success btn-sm" (click)="uploader.uploadAll()"
-              [disabled]="!uploader.getNotUploadedItems().length">
-              <span class="icofont icofont-upload"></span> Upload all
-            </button>
-            <button type="button" class="btn btn-warning btn-sm" (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
-              <span class="icofont icofont-ban"></span> Cancel all
-            </button>
-            <button type="button" class="btn btn-danger btn-sm" (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
-              <span class="icofont icofont-trash"></span> Remove all
-            </button>
           </div>
         </div>
         <div class="row">
