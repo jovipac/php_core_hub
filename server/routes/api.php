@@ -229,7 +229,5 @@ Route::group([
     Route::resource('expediente-clas-derecho', 'Api\ExpedienteClasificacionDerechoController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
-
-
-    Route::post('expediente-clas-derecho/search', 'Api\ExpedienteClasificacionDerechoController@search')->name('ExpedienteClasificacionDerecho.search');
+    Route::post('expediente-clas-derecho/search', 'Api\ExpedienteClasificacionDerechoController@search')->name('expediente-clas-derecho.search');
 });

@@ -236,17 +236,6 @@ export class ExpedienteHechoComponent implements OnInit {
 
             } : {};
             this.id_expediente_hecho = hecho.id_expediente_hecho;
-          //this.formHecho.patchValue(hechoFormateado);
-          /*
-            if (isEmptyValue(persona.direcciones)) {
-              this.addArchivoAdjunto({});
-            } else {
-              let archivoAdjuntos = this.formHecho.controls.direcciones as FormArray;
-              persona.archivoAdjuntos.forEach(archivoAdjunto  => {
-                archivoAdjuntos.push(this.buildArchivoAdjunto(archivoAdjunto));
-              })
-            }
-          */
 
           } else
             this.toastr.error(response.message);
@@ -281,6 +270,7 @@ export class ExpedienteHechoComponent implements OnInit {
             } else {
               hechosFormateado.forEach(hecho  => {
                 this.addHecho(hecho);
+
               })
             }
 

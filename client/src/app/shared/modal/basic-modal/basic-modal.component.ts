@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-basic-modal',
@@ -6,6 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./basic-modal.component.scss']
 })
 export class BasicModalComponent implements OnInit {
+  @ViewChild(ModalDirective, { static: false }) modal: ModalDirective;
   @Input() hideHeader = false;
   @Input() hideFooter = false;
 

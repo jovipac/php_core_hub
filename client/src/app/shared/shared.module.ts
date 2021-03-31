@@ -8,7 +8,6 @@ import { CardToggleDirective } from './card/card-toggle.directive';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { CardModule } from './card/card.module';
 import { CustomModalModule } from './modal/modal.module';
-import { ModalAnimationComponent } from './modal-animation/modal-animation.component';
 import { LabelInputComponent } from './element/input-label/input-label.component';
 import { DataFilterPipe } from './element/data-filter.pipe';
 import { MenuItems } from './menu-items/menu-items';
@@ -37,7 +36,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     CardRefreshDirective,
     CardToggleDirective,
     SpinnerComponent,
-    ModalAnimationComponent,
     LabelInputComponent,
     InlineClockComponent,
     DataFilterPipe,
@@ -53,7 +51,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     SpinnerComponent,
     CardModule,
     CustomModalModule,
-    ModalAnimationComponent,
     LabelInputComponent,
     InlineClockComponent,
     DataFilterPipe,

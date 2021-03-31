@@ -60,16 +60,6 @@ class ExpedienteClasificacionDerechoController extends ApiController
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -80,13 +70,12 @@ class ExpedienteClasificacionDerechoController extends ApiController
         $validator = Validator::make($request->all(), [
             'id_expediente' => 'required|integer',
             'id_clasificacion_derecho' => 'required|integer',
-
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422 );
         }
-        $input = $request->all();
-        $ExpedienteClasificacionDerecho = ExpedienteClasificacionDerecho::create($input);
+        $inputs = $request->all();
+        $ExpedienteClasificacionDerecho = ExpedienteClasificacionDerecho::create($inputs);
 
         return $this->respondCreated([
             'success' => true,

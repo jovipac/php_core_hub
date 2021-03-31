@@ -92,21 +92,11 @@
           </div>
           <div class="col-md-4 mb-3">
             <input-label [label]="'Adjuntar pruebas'" [id]="'txtArchivoAdjunto'"></input-label>
-            <input type="file" class="form-control" id="txtArchivoAdjunto" formControlName="archivos_adjuntos" ng2FileSelect [uploader]="uploader" multiple />
+            <input type="file" class="form-control" id="txtArchivoAdjunto" ng2FileSelect [uploader]="uploader" multiple />
             <div>
               Progreso de la cola:
               <progressbar [value]="uploader.progress" [striped]="true">{{uploader.progress + '%'}}</progressbar>
             </div>
-            <button type="button" class="btn btn-success btn-sm" (click)="uploader.uploadAll()"
-              [disabled]="!uploader.getNotUploadedItems().length">
-              <span class="icofont icofont-upload"></span> Upload all
-            </button>
-            <button type="button" class="btn btn-warning btn-sm" (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
-              <span class="icofont icofont-ban"></span> Cancel all
-            </button>
-            <button type="button" class="btn btn-danger btn-sm" (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
-              <span class="icofont icofont-trash"></span> Remove all
-            </button>
           </div>
         </div>
         <div class="row">
@@ -117,7 +107,33 @@
           <div class="col"></div>
         </div>
         <div class="form-row">
-          <div class="container table-responsive">
+          <div *ngIf="this.formHecho.get('hechos').value[idx].archivos_adjuntos" class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+              <tr>
+                <th></th>
+                <th>Nombre del archivo</th>
+                <th>tamaño</th>
+                <th>Acción</th>
+              </tr>
+              </thead>
+              <tbody>{{ archivos_adjuntos }}
+                <tr *ngFor="let archivo_adjunto of this.formHecho.get('hechos').value[idx].archivos_adjuntos; index as row;">
+                  <td>{{row+1}}</td>
+                  <td>
+                    {{ archivo_adjunto?.nombre }}
+                  </td>
+                  <td>{{ archivo_adjunto?.tamanio/1024/1024 | number:'.2'}} MB</td>
+                  <td scope="row">
+                    <button type="button" class="btn btn-primary btn-mini btn-icon-round" >
+                      <i class="icofont icofont-download"></i>Descargar
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div *ngIf="uploader.queue" class="container table-responsive">
             <table class="table">
               <thead>
                 <tr>
@@ -143,13 +159,13 @@
                   <td nowrap>
                     <button type="button" class="btn btn-success btn-sm" (click)="item.upload()"
                       [disabled]="item.isReady || item.isUploading || item.isSuccess">
-                      <span class="icofont icofont-upload"></span> Upload
+                      <span class="icofont icofont-upload"></span> Reintentar
                     </button>
                     <button type="button" class="btn btn-warning btn-sm" (click)="item.cancel()" [disabled]="!item.isUploading">
-                      <span class="icofont icofont-ban"></span> Cancel
+                      <span class="icofont icofont-ban"></span> Cancelar
                     </button>
                     <button type="button" class="btn btn-danger btn-sm" (click)="item.remove()">
-                      <span class="icofont icofont-trash"></span> Remove
+                      <span class="icofont icofont-trash"></span> Remover
                     </button>
                   </td>
                 </tr>
