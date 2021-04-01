@@ -100,7 +100,7 @@
           <div class="col-md-4 mb-3">
             <input-label [requires]="false" [label]="'Genero'" [id]="'txtGenero'"></input-label>
             <select class="form-control" id="txtGenero" formControlName="id_genero"
-              [ngClass]="displayErrorsCss('id_genero')" required>
+              [ngClass]="displayErrorsCss('id_genero')" >
               <option *ngFor="let genre of listGenre" value="{{genre.id_genero}}">{{genre.nombre}}</option>
             </select>
             <div *ngIf="isHasErrors('id_genero')" class="invalid-feedback">Seleccione un valor</div>
@@ -109,7 +109,7 @@
             <input-label [requires]="true" [label]="'Prioridad'" [id]="'txtPrioridad'"></input-label>
             <select class="form-control" id="txtPrioridad" formControlName="id_prioridad"
               [ngClass]="displayErrorsCss('id_prioridad')" required>
-              <option *ngFor="let prioridad of listPriority" value="{{prioridad.id_prioridad}}">{{prioridad.nombre}}</option>
+              <option *ngFor="let prioridad of listPriority" value="{{prioridad.id_prioridad}}"  >{{prioridad.nombre}}</option>
             </select>
             <div *ngIf="isHasErrors('id_prioridad')" class="invalid-feedback">Seleccione un valor</div>
           </div>

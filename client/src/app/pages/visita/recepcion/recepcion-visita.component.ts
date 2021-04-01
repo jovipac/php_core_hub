@@ -156,7 +156,7 @@ export class RecepcionVisitaComponent implements OnInit {
         disabled: false,
       }, [Validators.pattern("[0-9]+")]),
       id_prioridad: new FormControl({
-        value: null,
+        value: 2,
         disabled: false,
       }, []),
       observaciones: new FormControl({
