@@ -38,8 +38,8 @@ export class BasicLoginComponent implements OnInit {
           id_rol: defaultRol?.id_rol
         }
         const user = {
-          access_token: response.result.access_token,
-          token_type: response.result.token_type,
+          access_token: response.result.accessToken,
+          token_type: response.result.tokenType,
           username: response.result.user.username,
           rol: defaultRol?.id_rol,
           id_auxiliatura: response.result.user.id_auxiliatura,

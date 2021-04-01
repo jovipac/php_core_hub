@@ -58,7 +58,7 @@ export class ExpedienteHechoComponent implements OnInit {
       url: expedienteHechoArchivoService.uploadURL,
       disableMultipart: false,
       method: 'POST',
-      authToken: `${JSON.parse(sessionStorage.getItem('validate')).token_type} ${JSON.parse(sessionStorage.getItem('validate')).access_token}`,
+      authToken: `${JSON.parse(sessionStorage.getItem('validate')).tokenType} ${JSON.parse(sessionStorage.getItem('validate')).accessToken}`,
     });
   }
 
