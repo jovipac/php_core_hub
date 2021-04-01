@@ -5,7 +5,7 @@ export const getHeaders = () => {
   return {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      "authorization": `${JSON.parse(sessionStorage.getItem('validate')).tokenType} ${JSON.parse(sessionStorage.getItem('validate')).accessToken}`
+      "authorization": `${JSON.parse(sessionStorage.getItem('validate')).token_type} ${JSON.parse(sessionStorage.getItem('validate')).access_token}`
     })
   };
 }
