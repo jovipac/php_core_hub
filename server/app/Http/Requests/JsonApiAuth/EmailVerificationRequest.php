@@ -5,7 +5,7 @@ namespace App\Http\Requests\JsonApiAuth;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Auth\Events\Verified;
-use App\Models\User;
+use App\Models\Entities\User;
 
 class EmailVerificationRequest extends FormRequest
 {

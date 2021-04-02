@@ -19,9 +19,18 @@ class PasswordResetLinkController extends Controller
      */
     public function __invoke(PasswordResetLinkRequest $request)
     {
-        $user = $request->getUser();
-
         try {
+            // Here you can customize search email in Model
+            $input = $request->only(['email']);
+
+            if(User::where('email', $input['email'])->doesntExist()) {
+                return response()->json([
+                    'message' => 'User does not exists',
+                ], 404);
+            }
+
+            $user = User::where('email', $input['email'])->first();
+
             // Here you can customize the token length
             $token = Str::random(60);
 

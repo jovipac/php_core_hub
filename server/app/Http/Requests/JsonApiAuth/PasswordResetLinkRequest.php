@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\JsonApiAuth;
 
-use App\Models\User;
+use App\Models\Entities\User;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PasswordResetLinkRequest extends FormRequest

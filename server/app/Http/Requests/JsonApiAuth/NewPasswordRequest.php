@@ -3,7 +3,7 @@
 namespace App\Http\Requests\JsonApiAuth;
 
 use Carbon\Carbon;
-use App\Models\User;
+use App\Models\Entities\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
