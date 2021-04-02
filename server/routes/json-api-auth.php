@@ -15,7 +15,9 @@ Route::prefix('auth')->group(function () {
 
     Route::post('/register', RegisterController::class)->name('json-api-auth.register');
 
-    Route::post('/login', LoginController::class)->name('json-api-auth.login');
+    Route::post('/login', LoginController::class)
+        ->middleware(['throttle:6,1'])
+        ->name('json-api-auth.login');
 
     Route::get('/logout', LogoutController::class)
         ->middleware((AuthKit::getMiddleware()))

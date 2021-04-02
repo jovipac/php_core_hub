@@ -20,7 +20,7 @@ trait HasToShowApiTokens
      * @param bool $showToken
      * @return \Illuminate\Http\JsonResponse
      */
-    public function showCredentials($user, $remember = false, $showToken = true)
+    public function showCredentials($user, $statusCode = 200, $showToken = true, $remember = false)
     {
         $response = [
             'user' => new UsuarioResource($user),
@@ -38,7 +38,8 @@ trait HasToShowApiTokens
                 'success' => true,
                 'message' => __('json-api-auth.success'),
                 'result' => $response
-            ]
+            ],
+            $statusCode
         );
 
     }
