@@ -9,9 +9,11 @@ use App\Notifications\JsonApiAuth\ResetPasswordNotification;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use App\Http\Traits\Helpers\ApiResponseTrait;
 
 class PasswordResetLinkController extends Controller
 {
+    use ApiResponseTrait;
 
     /**
      * @param PasswordResetLinkRequest $request
@@ -24,9 +26,7 @@ class PasswordResetLinkController extends Controller
             $input = $request->only(['email']);
 
             if(User::where('email', $input['email'])->doesntExist()) {
-                return response()->json([
-                    'message' => 'User does not exists',
-                ], 404);
+                return $this->respondNotFound('User does not exists');
             }
 
             $user = User::where('email', $input['email'])->first();
@@ -42,14 +42,10 @@ class PasswordResetLinkController extends Controller
 
             $user->notify(new ResetPasswordNotification($token));
 
-            return response()->json([
-                'message' => __('json-api-auth.check_your_email'),
-            ]);
+            return $this->respondSuccess(__('json-api-auth.check_your_email'));
 
         } catch (\Exception $exception) {
-            return response()->json([
-                'message' => $exception->getMessage(),
-            ], 400);
+            return $this->respondError($exception->getMessage(), 400, $exception);
         }
 
     }
