@@ -17,21 +17,19 @@ class LoginController extends Controller
     {
         try {
 
-            if(Auth::attempt($request->only(['username', 'password']))) {
-                return $this->showCredentials(Auth::user());
+            if (Auth::attempt($request->only(['username', 'password']))) {
+                if ($request->has('remember') && $request->filled('remember'))
+                    return $this->showCredentials(Auth::user(), 200, true, true);
+                else
+                    return $this->showCredentials(Auth::user());
             }
 
         } catch (\Exception $exception) {
 
-            return response()->json([
-                'message' => $exception->getMessage()
-            ], 400);
+            return $this->respondError( $exception->getMessage(), 400);
 
         }
-
-        return response()->json([
-            'message' => __('json-api-auth.failed'),
-        ], 401);
+        return $this->respondError( __('json-api-auth.failed'), 401);
 
     }
 }
