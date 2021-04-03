@@ -78,6 +78,7 @@ export class ExpedientePersonaComponent implements OnInit {
 
     // Finalmente se llama la construccion del formulario
     this.buildForm();
+    this.setIdentificadorValidators();
 
     this.suggestions = new Observable((observer: Observer<string>) => observer.next(this.personaForm.get('identificador').value))
       .pipe(
@@ -190,6 +191,25 @@ export class ExpedientePersonaComponent implements OnInit {
       direcciones: new FormArray([])
 
     }, {});
+  }
+
+  setIdentificadorValidators() {
+    const identificacion = this.personaForm.get('identificador');
+    this.personaForm.get('id_documento_identidad').valueChanges
+      .subscribe(documentoIdentidad => {
+
+        const documento_identidad = this.listDocumentoIdentidad
+          .find((documento: any) => documento.id_documento_identidad == documentoIdentidad);
+
+        if (Boolean(documento_identidad?.requerido)) {
+          identificacion.setValidators([Validators.required, Validators.pattern(/\w+/)]);
+        } else {
+          identificacion.setValidators(null);
+        }
+
+        identificacion.updateValueAndValidity();
+
+      });
   }
 
   buildDireccion(data: any) {
