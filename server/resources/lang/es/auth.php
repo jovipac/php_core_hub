@@ -14,6 +14,6 @@ return [
     */
     'unauthenticated' => 'No autenticado o token caducado, por favor inicie sesión.',
     'failed' => 'Estas credenciales no coinciden con nuestros registros.',
-    'throttle' => 'Demasiados intentos de acceso. Por favor inténtelo de nuevo en :seconds segundos.',
+    'throttle' => 'Demasiados intentos de acceso. Por favor espere antes de volver a intentarlo.',
     'forbidden' => 'El propietario del recurso o el servidor de autorización denegó la solicitud.',
 ];

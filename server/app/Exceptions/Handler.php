@@ -45,8 +45,8 @@ class Handler extends ExceptionHandler
      */
     public function report(Throwable $exception)
     {
-        $ignoreable_exception_messages = ['Unauthenticated or Token Expired, Please Login'];
-        $ignoreable_exception_messages[] = 'The resource owner or authorization server denied the request.';
+        $ignoreable_exception_messages = [__('auth.unauthenticated')];
+        $ignoreable_exception_messages[] = __('auth.forbidden');
         if (app()->bound('sentry') && $this->shouldReport($exception)) {
             if (!in_array($exception->getMessage(), $ignoreable_exception_messages)) {
                 app('sentry')->captureException($exception);
@@ -83,7 +83,7 @@ class Handler extends ExceptionHandler
                 return $this->apiResponse(
                     [
                         'success' => false,
-                        'message' => 'Unauthenticated or Token Expired, Please Login'
+                        'message' => __('auth.unauthenticated')
                     ],
                     401
                 );
@@ -92,7 +92,7 @@ class Handler extends ExceptionHandler
                 return $this->apiResponse(
                     [
                         'success' => false,
-                        'message' => __('passwords.throttle')
+                        'message' => __('auth.throttle')
                     ],
                     429
                 );
