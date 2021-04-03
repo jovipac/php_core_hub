@@ -73,7 +73,7 @@ class ExpedientePersonaController extends ApiController
                 'T01.id_documento_identidad', 'T03.identificador')
             ->join('tt_expediente_persona AS T01', 'tc_persona.id_persona', 'T01.id_persona')
             ->leftJoin('tc_tipo_vinculacion AS T02', 'T01.id_tipo_vinculacion', 'T02.id_tipo_vinculacion')
-            ->join('tt_documento_identidad_persona AS T03', function ($join) {
+            ->lefJoin('tt_documento_identidad_persona AS T03', function ($join) {
                 $join->on('T03.id_persona', '=', 'tc_persona.id_persona')
                     ->on('T03.id_documento_identidad', '=', 'T01.id_documento_identidad');
             })

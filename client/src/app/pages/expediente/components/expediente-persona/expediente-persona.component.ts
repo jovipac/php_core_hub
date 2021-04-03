@@ -323,10 +323,10 @@ export class ExpedientePersonaComponent implements OnInit {
               ].filter(Boolean)
                 .join(" ")
             } : {};
-            this.id_persona = persona.id_persona;
+            this.id_persona = persona?.id_persona;
             this.personaForm.patchValue(personaFormateada);
 
-            if (isEmptyValue(persona.direcciones)) {
+            if (isEmptyValue(persona?.direcciones)) {
               this.addDireccion({});
             } else {
               let direcciones = this.personaForm.controls.direcciones as FormArray;
