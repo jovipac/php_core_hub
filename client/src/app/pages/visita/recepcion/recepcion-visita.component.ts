@@ -78,6 +78,7 @@ export class RecepcionVisitaComponent implements OnInit {
     }
     // Se llama la construccion del formulario
     this.buildForm();
+    this.setIdentificadorValidators();
   }
 
   dateLessThan(from: string) {
@@ -105,8 +106,7 @@ export class RecepcionVisitaComponent implements OnInit {
       identificador: new FormControl({
         value: '',
         disabled: !this.isAddMode,
-      }, [Validators.required,
-        Validators.pattern("[0-9A-z]+")]),
+      }, []),
       nombres: new FormControl({
         value: null,
         disabled: false,
@@ -164,6 +164,25 @@ export class RecepcionVisitaComponent implements OnInit {
         disabled: false,
       }, [Validators.pattern(/^\S+[a-zA-ZÀ-ÿ0-9\-\s.,]*\S+$/)]),
     }, { validators: this.dateLessThan('fecha_nacimiento') });
+  }
+
+  setIdentificadorValidators() {
+    const identificacion = this.visitaForm.get('identificador');
+    this.visitaForm.get('id_documento_identidad').valueChanges
+      .subscribe(documentoIdentidad => {
+
+        const documento_identidad = this.listDocumentoIdentidad
+          .find((documento: any) => documento.id_documento_identidad == documentoIdentidad);
+
+        if (Boolean(documento_identidad?.requerido)) {
+          identificacion.setValidators([Validators.required, Validators.pattern(/\w+/)]);
+        } else {
+          identificacion.setValidators(null);
+        }
+
+        identificacion.updateValueAndValidity();
+
+      });
   }
 
 
