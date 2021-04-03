@@ -92,7 +92,7 @@ class Handler extends ExceptionHandler
                 return $this->apiResponse(
                     [
                         'success' => false,
-                        'message' => 'Too Many Requests, Please Slow Down'
+                        'message' => __('passwords.throttle')
                     ],
                     429
                 );

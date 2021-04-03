@@ -12,8 +12,8 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-
+    'unauthenticated' => 'No autenticado o token caducado, por favor inicie sesión.',
     'failed' => 'Estas credenciales no coinciden con nuestros registros.',
     'throttle' => 'Demasiados intentos de acceso. Por favor inténtelo de nuevo en :seconds segundos.',
-
+    'forbidden' => 'El propietario del recurso o el servidor de autorización denegó la solicitud.',
 ];

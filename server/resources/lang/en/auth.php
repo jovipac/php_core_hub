@@ -12,8 +12,8 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-
+    'unauthenticated' => 'Unauthenticated or Token Expired, Please Login.',
     'failed' => 'These credentials do not match our records.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
-
+    'forbidden' => 'The resource owner or authorization server denied the request.',
 ];
