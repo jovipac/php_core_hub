@@ -16,7 +16,7 @@ class CreateDocumentosIdentidadPersonaTable extends Migration
         Schema::create('tt_documento_identidad_persona', function (Blueprint $table) {
             $table->integer('id_persona')->unsigned();
             $table->integer('id_documento_identidad')->unsigned();
-            $table->string('identificador', 100);
+            $table->string('identificador', 100)->nullable();
             $table->boolean('borrado')->default(0)->index();
             $table->timestamps();
             $table->softDeletes();

@@ -14,19 +14,23 @@ class DocumentoIdentidadCatalogSeeder extends Seeder
         $documentos =  [
             [
                 'nombre' => 'CUI',
-                'descripcion' => 'Código Único de Identificación'
+                'descripcion' => 'Código Único de Identificación',
+                'requerido' => true
             ],
             [
                 'nombre' => 'Licencia',
-                'descripcion' => 'Licencia de conducir vehiculo'
+                'descripcion' => 'Licencia de conducir vehiculo',
+                'requerido' => true
             ],
             [
                 'nombre' => 'Pasaporte',
-                'descripcion' => 'Identificación de persona extranjera'
+                'descripcion' => 'Identificación de persona extranjera',
+                'requerido' => true
             ],
             [
                 'nombre' => 'No porta',
-                'descripcion' => 'Pendiente de documento personal'
+                'descripcion' => 'Pendiente de documento personal',
+                'requerido' => false
             ],
         ];
 

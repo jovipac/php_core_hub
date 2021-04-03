@@ -17,7 +17,7 @@
               <input type="hidden" class="form-control" id="txtIdPersona" formControlName="id_persona" >
               <input type="text" class="form-control" id="txtIdentificador" formControlName="identificador" placeholder="Completo"
                 aria-describedby="inputGroupPrepend" (blur)="blurDocumentoIdentidadPersona($event)"
-                [ngClass]="{ 'is-invalid': (f.identificador.dirty || f.identificador.touched || submitted)  && f.identificador.errors }" required>
+                [ngClass]="{ 'is-invalid': (f.identificador.dirty || f.identificador.touched || submitted)  && f.identificador.errors }">
               <button class="btn btn-sm btn-outline-primary" type="button" id="btnBuscarByIdentificador" (click)="searchPersona(f.id_documento_identidad.value, f.identificador.value)">Buscar</button>
               <div *ngIf="isHasErrors('identificador')" class="invalid-feedback">
                 <div *ngIf="f.identificador.errors?.required">El identificador es requerido</div>

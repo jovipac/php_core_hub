@@ -26,7 +26,7 @@ class DocumentoIdentidad extends Model
      * @var array
      */
     protected $fillable = [
-        'id_documento_identidad', 'nombre', 'descripcion'
+        'id_documento_identidad', 'nombre', 'descripcion', 'requerido'
     ];
 
     /**
@@ -37,13 +37,6 @@ class DocumentoIdentidad extends Model
     protected $hidden = [
         'borrado',
     ];
-
-    /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = ['entrada', 'salida'];
 
     public function personas()
     {

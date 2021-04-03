@@ -17,6 +17,7 @@ class CreateDocumentosIdentidadTable extends Migration
             $table->increments('id_documento_identidad');
             $table->string('nombre', 50);
             $table->string('descripcion')->nullable();
+            $table->boolean('requerido')->default(1);
             $table->boolean('borrado')->default(0)->index();
             $table->timestamps();
             $table->softDeletes();
