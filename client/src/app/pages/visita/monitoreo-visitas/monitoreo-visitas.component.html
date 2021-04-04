@@ -3,7 +3,17 @@
     <app-card [options]="false">
       <form action="javascript:" class="needs-validation" novalidate [formGroup]="MonitorVisitas"
         (ngSubmit)="onSubmit()" autocomplete="off">
+
         <!-- PRIMER FILA -->
+        <div class="form-row" >
+          <div class="col-md-12 mb-12">
+              <p><strong> Monitoreo de {{ titulo }}  </strong></p>
+          </div>
+        </div>
+        <!-- / PRIMER FILA -->
+
+
+        <!-- SEGUNDA FILA -->
         <div class="form-row">
           <div class="col-md-3 mb-3" *ngIf="ChangeAux">
             <label for="validationCustom03">Auxiliatura:</label>
@@ -13,7 +23,7 @@
             </ng-select>
           </div>
 
-          <div class="col-md-3 mb-3">
+          <div class="col-md-3 mb-3" *ngIf="false">
             <label for="validationCustom03">Motivo de la visita:</label>
             <ng-select (change)="getListVisit()" id="id_motivo" [items]="listReason" #select bindLabel="nombre"
               dropdownPosition="auto" bindValue="id_motivo" labelForId="nombre" placeholder="Seleccionar Razón"
@@ -23,9 +33,9 @@
 
           </div>
         </div>
-        <!-- / PRIMER FILA -->
+        <!-- / SEGUNDA FILA -->
 
-        <!-- SEGUNDA FILA -->
+        <!-- TERCER FILA -->
         <div class="form-row" *ngIf="MostrarDiv">
           <div class="col-md-12 mb-12">
             <table class="table  table-striped" id="listMonitor">
@@ -38,6 +48,7 @@
                   <th>Apellidos</th>
                   <th>Edad</th>
                   <th>Teléfono</th>
+                  <th *ngIf="tipo === 2">visita</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
@@ -50,6 +61,7 @@
                   <td>{{visit.apellidos}}</td>
                   <td>{{visit.edad}}</td>
                   <td>{{visit.telefono}}</td>
+                  <td *ngIf="tipo === 2">{{visit.nombres_funcionario || visit.apellidos_funcionario }}</td>
                   <td>
                     <button class="btn btn-primary btn-icon" (click)="markExit(visit, 2)"><i
                         class="icofont icofont-arrow-up"></i></button>
@@ -66,7 +78,7 @@
             </table>
           </div>
         </div>
-        <!-- / SEGUNDA FILA -->
+        <!-- / TERCER FILA -->
       </form>
     </app-card>
   </div>

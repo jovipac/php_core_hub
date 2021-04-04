@@ -47,12 +47,13 @@ class VisitaController extends ApiController
                 'tt_visita.id_motivo', 'T02.nombre AS nombre_motivo',
                 'tt_visita.id_dependencia', 'T03.nombre AS nombre_dependencia',
                 'tt_visita.id_estado', 'T05.nombre AS nombre_estado',
-                'tt_visita.id_prioridad', 'T07.nombre AS nombre_prioridad'
+                'tt_visita.id_prioridad', 'T07.nombre AS nombre_prioridad',
+                'T04.nombres AS nombres_funcionario', 'T04.apellidos AS apellidos_funcionario'
                 )
                 ->join('tc_persona AS T01', 'tt_visita.id_persona', 'T01.id_persona')
                 ->join('tc_motivo AS T02', 'tt_visita.id_motivo', 'T02.id_motivo')
                 ->join('tc_dependencia AS T03', 'tt_visita.id_dependencia', 'T03.id_dependencia')
-                ->join('tc_funcionario AS T04', 'tt_visita.id_funcionario', 'T04.id_funcionario')
+                ->leftJoin('tc_funcionario AS T04', 'tt_visita.id_funcionario', 'T04.id_funcionario')
                 ->join('tc_estado AS T05', 'tt_visita.id_estado', 'T05.id_estado')
                 ->join('tc_auxiliatura AS T06', 'tt_visita.id_auxiliatura', 'T06.id_auxiliatura')
                 ->join('tc_prioridad AS T07', 'tt_visita.id_prioridad', 'T07.id_prioridad') ;
@@ -89,12 +90,13 @@ class VisitaController extends ApiController
                 'tt_visita.id_motivo', 'T02.nombre AS nombre_motivo',
                 'tt_visita.id_dependencia', 'T03.nombre AS nombre_dependencia',
                 'tt_visita.id_estado', 'T05.nombre AS nombre_estado',
-                'tt_visita.id_auxiliatura', 'T06.nombre AS nombre_auxiliatura', 'T07.nombre AS nombre_prioridad'
+                'tt_visita.id_auxiliatura', 'T06.nombre AS nombre_auxiliatura', 'T07.nombre AS nombre_prioridad',
+                'T04.nombres AS nombres_funcionario', 'T04.apellidos AS apellidos_funcionario'
                 )
                 ->join('tc_persona AS T01', 'tt_visita.id_persona', 'T01.id_persona')
                 ->join('tc_motivo AS T02', 'tt_visita.id_motivo', 'T02.id_motivo')
                 ->join('tc_dependencia AS T03', 'tt_visita.id_dependencia', 'T03.id_dependencia')
-                ->join('tc_funcionario AS T04', 'tt_visita.id_funcionario', 'T04.id_funcionario')
+                ->leftJoin('tc_funcionario AS T04', 'tt_visita.id_funcionario', 'T04.id_funcionario')
                 ->join('tc_estado AS T05', 'tt_visita.id_estado', 'T05.id_estado')
                 ->join('tc_auxiliatura AS T06', 'tt_visita.id_auxiliatura', 'T06.id_auxiliatura')
                 ->join('tc_prioridad AS T07', 'tt_visita.id_prioridad', 'T07.id_prioridad') ;

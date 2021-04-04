@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, Validators  } from "@angular/forms";
+import { FormBuilder, FormGroup, FormControl, Validators } from "@angular/forms";
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ServicesService } from "../../../service/services.service";
-import { ExpedienteService} from '../../../service';
+import { ExpedienteService } from '../../../service';
 import * as $ from 'jquery';
 import 'datatables.net';
 import 'datatables.net-dt';
@@ -48,14 +48,16 @@ export class MonitoreoVisitasComponent implements OnInit {
   isAddMode: boolean;
   loading = false;
   submitted = false;
+  tipo: string;
+  titulo: string;
 
   public listAuxiliary: Array<auxiliary>;
   public listReason: Array<Reason>;
   public listVisit: Array<Visit>;
   public rol = JSON.parse(sessionStorage.getItem('validate')).rol;
   public auxiliatura = JSON.parse(sessionStorage.getItem('validate')).id_auxiliatura;
-  public MostrarDiv : boolean = false;
-  public  ChangeAux : boolean = false;
+  public MostrarDiv: boolean = false;
+  public ChangeAux: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -69,10 +71,6 @@ export class MonitoreoVisitasComponent implements OnInit {
   }
 
   private buildForm() {
-
-
-
-
     this.MonitorVisitas = new FormGroup({
       id_auxiliatura: new FormControl({
         value: '',
@@ -82,16 +80,25 @@ export class MonitoreoVisitasComponent implements OnInit {
         value: '',
 
       }, [Validators.required, Validators.pattern("[0-9]+")]),
-    },);
+    });
   }
 
   ngOnInit() {
-    this.getListAuxiliary()
-    this.getListReason()
+    // MOTIVO 1 DENUNCIAS  ---- 2 VISISTA PERSONAL
+    this.tipo = this.route.snapshot.params['id'];
 
-    if (this.rol == 1){
+    if (this.tipo === "1") {
+      this.titulo = "Denuncias";
+    } else {
+      this.titulo = "Visitas Personales";
+    }
+
+    this.getListVisit();
+
+    if (this.rol == 1) {
       this.ChangeAux = true;
-    }else{
+      this.getListAuxiliary()
+    } else {
       this.ChangeAux = false;
     }
 
@@ -105,17 +112,17 @@ export class MonitoreoVisitasComponent implements OnInit {
   }
 
   getListVisit() {
-    let Auxiliatura ;
-    if (this.rol == 1){
+    let Auxiliatura;
+    if (this.rol == 1) {
       Auxiliatura = this.MonitorVisitas.value.id_auxiliatura;
-    }else{
+    } else {
       Auxiliatura = this.auxiliatura;
     }
 
 
     let data = {
       id_auxiliatura: Auxiliatura,
-      id_motivo: this.MonitorVisitas.value.id_motivo,
+      id_motivo: this.tipo,
       id_estado: 1
     }
     this.service.getListVisit(data).subscribe(res => {
@@ -204,41 +211,41 @@ export class MonitoreoVisitasComponent implements OnInit {
   }
 
 
-  markExit(visit , estado) {
+  markExit(visit, estado) {
     let d = new Date();
-    let mes =  d.getMonth() + 1 ;
-    let hour =  d.getFullYear() + "-" + mes  + "-" +   d.getDay()   + " "  +  d.getHours() + ":" + d.getMinutes() ;
+    let mes = d.getMonth() + 1;
+    let hour = d.getFullYear() + "-" + mes + "-" + d.getDay() + " " + d.getHours() + ":" + d.getMinutes();
     let msj = "";
 
-    if (estado == 2){
+    if (estado == 2) {
       msj = "Despues de marcar como atendido, no se puede revertir la accion!"
-    }else{
+    } else {
       msj = "Despues de marcar como retirada a la persona, no se puede revertir la accion!"
     }
 
     let VisitUpdate = {
-      salida:  format(new Date(), 'yyyy-MM-dd HH:mm'),
-      entrada: visit.entrada ,
+      salida: format(new Date(), 'yyyy-MM-dd HH:mm'),
+      entrada: visit.entrada,
       id_estado: estado
     };
 
 
-     Swal.fire({
-       title: '¿Esta seguro?',
-       text: msj,
-       icon: 'warning',
-       showCancelButton: true,
-       confirmButtonColor: '#3085d6',
-       cancelButtonColor: '#d33',
-       confirmButtonText: 'Si. Estoy seguro',
-       cancelButtonText: 'Cancelar'
-     }).then((result) => {
+    Swal.fire({
+      title: '¿Esta seguro?',
+      text: msj,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si. Estoy seguro',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
       if (result.isConfirmed) {
 
-        this.service.updateVisit(visit.id_visita , VisitUpdate ).subscribe(res => {
+        this.service.updateVisit(visit.id_visita, VisitUpdate).subscribe(res => {
           let response: any = res;
 
-          if(estado == 2) {
+          if (estado == 2) {
             let dataExpe = {
               "id_visita": visit.id_visita,
               "anio": d.getFullYear(),
@@ -249,29 +256,35 @@ export class MonitoreoVisitasComponent implements OnInit {
               "id_persona": visit.id_persona,
               "id_auxiliatura": this.auxiliatura
             }
-            this.Expservice.createExpediente( dataExpe ).subscribe(res => {
-              let response: any = res;
-              const exp = response.result;
-              this.router.navigate(['../../../expediente/solicitud/editar', exp.id_expediente], { relativeTo: this.route });
 
-            }, err => {
-              this.toastr.error('Error al actualizar el estado de la visita', 'Error')
-            })
-          }else{
-           this.toastr.success( "Ticket retirado exitosamente", 'Monitor de atención')
-           $(document).ready(function () { $('#listMonitor').DataTable().destroy(); })
-           this.getListVisit();
+            if (this.tipo === "1") {
+              this.Expservice.createExpediente(dataExpe).subscribe(res => {
+                let response: any = res;
+                const exp = response.result;
+                this.router.navigate(['../../../expediente/solicitud/editar', exp.id_expediente], { relativeTo: this.route });
+
+              }, err => {
+                this.toastr.error('Error al actualizar el estado de la visita', 'Error');
+              })
+            }else {
+              this.toastr.success("Ticket actualizado exitosamente", 'Monitor de atención')  ;
+              this.getListVisit();
+            }
+          } else {
+            this.toastr.success("Ticket retirado exitosamente", 'Monitor de atención')
+            $(document).ready(function () { $('#listMonitor').DataTable().destroy(); })
+            this.getListVisit();
           }
         }, err => {
           this.toastr.error('Error al actualizar el estado de la visita', 'Error')
         })
-       }
-     })
+      }
+    })
   }
 
 
 
-  GoEdit(visit){
+  GoEdit(visit) {
     this.router.navigate(['../../solicitud/editar', visit.id_visita], { relativeTo: this.route });
 
   }
