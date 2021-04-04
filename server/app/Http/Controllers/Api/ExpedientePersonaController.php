@@ -55,7 +55,7 @@ class ExpedientePersonaController extends ApiController
 
         return $this->respondCreated([
             'success' => true,
-            'message' => "Expediente Persona creado con exito",
+            'message' => "Persona en el expediente creado con exito",
             'result' => $expedientePersona
         ]);
     }
@@ -83,7 +83,7 @@ class ExpedientePersonaController extends ApiController
         return $this->apiResponse(
             [
                 'success' => true,
-                'message' => "Expediente Persona encontrado",
+                'message' => "Persona en el expediente encontrado",
                 'result' => $persona->first()
             ]
         );
@@ -120,7 +120,7 @@ class ExpedientePersonaController extends ApiController
         return $this->apiResponse(
             [
                 'success' => true,
-                'message' => "Expediente Persona encontrado",
+                'message' => "Persona en el expediente encontrado",
                 'result' => $personas
             ]
         );
@@ -150,7 +150,7 @@ class ExpedientePersonaController extends ApiController
 
         return $this->apiResponse([
             'success' => true,
-            'message' => "Expediente Persona actualizado con exito",
+            'message' => "Persona en el expediente actualizado con exito",
             'result' => $expedientePersona
         ]);
     }
@@ -164,8 +164,7 @@ class ExpedientePersonaController extends ApiController
     public function destroy(ExpedientePersona $expedientePersona)
     {
         $expedientePersona->delete();
-
-        return $this->respondSuccess('Expediente Persona eliminado con exito');
+        return $this->respondSuccess('Persona en el expediente eliminado con exito');
     }
 
     /**
@@ -179,6 +178,6 @@ class ExpedientePersonaController extends ApiController
         $via = ExpedientePersona::withTrashed()->findorfail($id);
         $via->restore();
 
-        return $this->respondSuccess('Expediente Persona restaurada con exito');
+        return $this->respondSuccess('Persona en el expediente restaurada con exito');
     }
 }

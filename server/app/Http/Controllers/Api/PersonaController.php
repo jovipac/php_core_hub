@@ -227,7 +227,7 @@ class PersonaController extends ApiController
                         return $this->respondError($validate->errors(), 422);
                     }
 
-                    $persona->direcciones()->updateOrCreate(['id_persona_direccion' => $direccion['id_persona_direccion ']], $direccion);
+                    $persona->direcciones()->updateOrCreate(['id_persona_direccion' => $direccion['id_persona_direccion'] ?? null], $direccion);
                 }
 
             }
