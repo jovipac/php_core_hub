@@ -17,7 +17,9 @@
 
               <ul class="dropdown-menu " *ngIf="menus.children.length > 0" >
                 <li class="dropdown-item" *ngFor="let item of menus.children" >
-                  <a [routerLink]="[menus.state,item.state]">{{item.name}} </a>
+
+                  <a *ngIf="item.params" [routerLink]="[menus.state,item.state, item.params]">{{item.name}} </a>
+                  <a *ngIf="!item.params" [routerLink]="[menus.state,item.state]">{{item.name}} </a>
                 </li>
               </ul>
 

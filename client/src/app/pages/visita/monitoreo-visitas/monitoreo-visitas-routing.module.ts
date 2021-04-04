@@ -3,8 +3,9 @@ import { Routes, RouterModule } from '@angular/router';
 import { MonitoreoVisitasComponent } from './monitoreo-visitas.component';
 
 const routes: Routes = [
+
   {
-    path: '',
+    path: ':id',
     component: MonitoreoVisitasComponent,
     data: {
       breadcrumb: 'Monitor de atención',

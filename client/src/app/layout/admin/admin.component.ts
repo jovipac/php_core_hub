@@ -369,7 +369,8 @@ export class AdminComponent implements OnInit {
                     if (res.children[i].children[j].target === 'left') {
                       children.push({
                         state: res.children[i].children[j].accion,
-                        name: res.children[i].children[j].nombre
+                        name: res.children[i].children[j].nombre,
+                        params: res.children[i].children[j].url
                       })
                     }/* fin de menu lateral */
                   }
