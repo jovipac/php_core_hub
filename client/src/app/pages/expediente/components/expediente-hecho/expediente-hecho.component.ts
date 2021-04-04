@@ -91,6 +91,7 @@ export class ExpedienteHechoComponent implements OnInit {
             'ubicacion': dataInput.result.path,
             'nombre': dataInput.result.filename,
             'tamanio': dataInput.result.size,
+            'mime': dataInput.result.mime,
           };
 
           const response: any = await this.expedienteHechoArchivoService.createExpedienteHechoArchivo(dataSend).toPromise();
