@@ -123,12 +123,15 @@ class ExpedienteHechoArchivoController extends ApiController
         try {
             $expedienteHechoArchivo = ExpedienteHechoArchivo::find($id);
 
-            $file = Storage::disk('public')->get(storage_path('app/').$expedienteHechoArchivo['ubicacion']);
+            $url = Storage::disk('uploads')->url($expedienteHechoArchivo['ubicacion']);
 
-            return response()->download($file, $expedienteHechoArchivo['nombre'], [
-                'Content-Type', $expedienteHechoArchivo['mime'],
-                'Content-Length', $expedienteHechoArchivo['tamanio']
-            ]);
+            return $this->apiResponse(
+                [
+                    'success' => true,
+                    'message' => "Prueba adjunta del hecho encontrado con exito",
+                    'result' => $url
+                ]
+            );
 
         } catch (\Exception $exception) {
             return $this->respondError($exception->getMessage(), 400);
