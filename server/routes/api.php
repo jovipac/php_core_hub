@@ -172,6 +172,7 @@ Route::group([
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
     Route::post('expediente-hecho-archivos/upload', 'Api\ExpedienteHechoArchivoController@upload')->name('expediente-hecho-archivos.upload');
+    Route::get('expediente-hecho-archivos/download/{expediente_hecho_archivo}', 'Api\ExpedienteHechoArchivoController@download')->name('expediente-hecho-archivos.download');
     Route::post('expediente-hecho-archivos/search', 'Api\ExpedienteHechoArchivoController@search')->name('expediente-hecho-archivos.search');
 
     Route::resource('expediente-clasificacion-derechos', 'Api\ExpedienteClasificacionDerechoController', ['only' => [

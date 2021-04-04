@@ -121,12 +121,12 @@ class ExpedienteClasificacionDerechoController extends ApiController
             return $this->respondError($validator->errors(), 422);
         }
 
-        $ExpedienteClasificacionDerecho->update($request->all());
+        $expedienteClasificacionDerecho->update($request->all());
 
         return $this->apiResponse([
             'success' => true,
             'message' => "Clasificacion actualizada con exito",
-            'result' => $ExpedienteClasificacionDerecho
+            'result' => $expedienteClasificacionDerecho
         ]);
     }
 

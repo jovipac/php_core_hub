@@ -6,7 +6,7 @@ use App\Http\Controllers\ApiController;
 use App\Models\ExpedienteHechoArchivo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Support\Facades\Storage;
 class ExpedienteHechoArchivoController extends ApiController
 {
     /**
@@ -78,6 +78,7 @@ class ExpedienteHechoArchivoController extends ApiController
             'id_expediente' => 'required|integer',
             'id_expediente_hecho' => 'required|integer',
             'ubicacion' => 'string',
+            'mime' => 'string',
             'nombre' => 'string',
             'tamanio' => 'integer',
         ]);
@@ -102,18 +103,36 @@ class ExpedienteHechoArchivoController extends ApiController
      */
     public function show(ExpedienteHechoArchivo $expedienteHechoArchivo)
     {
-        //
+        return $this->apiResponse(
+            [
+                'success' => true,
+                'message' => "Prueba adjunta del hecho encontrado",
+                'result' => $expedienteHechoArchivo
+            ]
+        );
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for creating a new resource.
      *
-     * @param  \App\ExpedienteHechoArchivo  $expedienteHechoArchivo
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function edit(ExpedienteHechoArchivo $expedienteHechoArchivo)
+    public function download($id)
     {
-        //
+        try {
+            $expedienteHechoArchivo = ExpedienteHechoArchivo::find($id);
+
+            $file = Storage::disk('public')->get($expedienteHechoArchivo['ubicacion']);
+
+            return response()->download($file, $expedienteHechoArchivo['nombre'], [
+                'Content-Type', $expedienteHechoArchivo['mime'],
+                'Content-Length', $expedienteHechoArchivo['tamanio']
+            ]);
+
+        } catch (\Exception $exception) {
+            return $this->respondError($exception->getMessage(), 400);
+        }
     }
 
     /**

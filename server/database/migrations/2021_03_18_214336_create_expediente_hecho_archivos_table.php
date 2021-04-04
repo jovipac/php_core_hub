@@ -19,7 +19,8 @@ class CreateExpedienteHechoArchivosTable extends Migration
             $table->integer('id_expediente_hecho')->unsigned();
             $table->string('ubicacion', 255)->nullable();
             $table->string('nombre', 255)->nullable();
-            $table->integer('tamanio')->nullable();
+            $table->string('mime', 100)->nullable();
+            $table->mediumInteger('tamanio')->nullable()->unsigned();
             $table->boolean('borrado')->default(0)->index();
             $table->integer('created_by')->nullable()->unsigned();
             $table->integer('updated_by')->nullable()->unsigned();
