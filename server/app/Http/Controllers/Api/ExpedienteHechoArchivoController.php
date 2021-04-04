@@ -123,7 +123,7 @@ class ExpedienteHechoArchivoController extends ApiController
         try {
             $expedienteHechoArchivo = ExpedienteHechoArchivo::find($id);
 
-            $file = Storage::disk('public')->get($expedienteHechoArchivo['ubicacion']);
+            $file = Storage::disk('public')->get(storage_path('app/').$expedienteHechoArchivo['ubicacion']);
 
             return response()->download($file, $expedienteHechoArchivo['nombre'], [
                 'Content-Type', $expedienteHechoArchivo['mime'],
