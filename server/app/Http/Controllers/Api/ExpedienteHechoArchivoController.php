@@ -129,7 +129,10 @@ class ExpedienteHechoArchivoController extends ApiController
                 [
                     'success' => true,
                     'message' => "Prueba adjunta del hecho encontrado con exito",
-                    'result' => $url
+                    'result' => [
+                        'nombre' => $expedienteHechoArchivo['nombre'],
+                        'url' => $url
+                    ]
                 ]
             );
 
