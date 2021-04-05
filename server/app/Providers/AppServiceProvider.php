@@ -16,6 +16,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         Passport::ignoreMigrations();
+        $this->makeDynamicUrls();
     }
 
     /**
@@ -26,5 +27,20 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
+    }
+
+    /**
+     * Make relative urls into absolute urls
+     *
+     * @return void
+     */
+    public function makeDynamicUrls()
+    {
+        $url = $this->app->request->getHost();
+        $protocol = (env('IS_HTTPS') == true) ? 'https://' : 'http://';
+
+        $addressUrl = $protocol.$url;
+        config()->set('app.url', $addressUrl);
+
     }
 }

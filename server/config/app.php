@@ -52,6 +52,8 @@ return [
     |
     */
 
+    'secure' => (bool) env('IS_HTTPS', false),
+
     'url' => env('APP_URL', 'http://localhost'),
 
     'asset_url' => env('ASSET_URL', null),
