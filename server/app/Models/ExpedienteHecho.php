@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Http\Traits\SoftDeletesBoolean;
 use App\Http\Traits\DateTimeMutator;
 use App\Http\Traits\Userstamps;
-
+use Illuminate\Support\Facades\Storage;
 
 class ExpedienteHecho extends Model
 {
@@ -41,6 +41,15 @@ class ExpedienteHecho extends Model
     protected $hidden = [
         'borrado',
     ];
+
+    public function getUrlAttribute()
+    {
+        $value = null;
+        if (!is_null($this->attributes['ubicacion'] ?? null)) {
+            $value = Storage::disk('uploads')->url($this->ubicacion);
+        }
+        return $value;
+    }
 
     public function expediente()
     {

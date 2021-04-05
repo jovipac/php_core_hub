@@ -7,6 +7,7 @@ use App\Models\ExpedientePersona;
 use App\Models\Entities\Persona;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use App\Helpers\UtilsHelper;
 class ExpedientePersonaController extends ApiController
 {
@@ -44,7 +45,16 @@ class ExpedientePersonaController extends ApiController
             'id_expediente' => 'required|integer',
             'id_persona' => 'required|integer',
             'id_documento_identidad' => 'nullable|integer',
-            'id_tipo_vinculacion' => 'nullable|integer',
+            'id_tipo_vinculacion' => [
+                'nullable',
+                'integer',
+                Rule::unique('tt_expediente_persona')->where(function ($query) use ($request) {
+                    return $query
+                        ->where('id_expediente', $request->id_expediente)
+                        ->where('id_persona', $request->id_persona)
+                        ->where('id_tipo_vinculacion', $request->id_tipo_vinculacion);
+                }),
+            ],
             'flag_confidencial' => 'boolean',
         ]);
         if ($validator->fails()) {
