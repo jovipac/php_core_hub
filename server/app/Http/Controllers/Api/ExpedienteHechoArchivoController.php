@@ -123,7 +123,8 @@ class ExpedienteHechoArchivoController extends ApiController
         try {
             $expedienteHechoArchivo = ExpedienteHechoArchivo::find($id);
 
-            $url = Storage::disk('uploads')->url($expedienteHechoArchivo['ubicacion']);
+            $fullPath = Storage::disk('uploads')->url($expedienteHechoArchivo['ubicacion']);
+            $generatedURI = url($fullPath);
 
             return $this->apiResponse(
                 [
@@ -131,7 +132,7 @@ class ExpedienteHechoArchivoController extends ApiController
                     'message' => "Prueba adjunta del hecho encontrado con exito",
                     'result' => [
                         'nombre' => $expedienteHechoArchivo['nombre'],
-                        'url' => $url
+                        'url' => $generatedURI
                     ]
                 ]
             );

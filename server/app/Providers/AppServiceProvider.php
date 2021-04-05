@@ -37,7 +37,7 @@ class AppServiceProvider extends ServiceProvider
     public function makeDynamicUrls()
     {
         $url = $this->app->request->getHost();
-        $protocol = (env('IS_HTTPS') == true) ? 'https://' : 'http://';
+        $protocol = (config()->get('app.secure') == true) ? 'https://' : 'http://';
 
         $addressUrl = $protocol.$url;
         config()->set('app.url', $addressUrl);

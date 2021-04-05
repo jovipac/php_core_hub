@@ -54,7 +54,8 @@ class ExpedienteHechoArchivo extends Model
     {
         $value = null;
         if (!is_null($this->attributes['ubicacion'] ?? null)) {
-            $value = Storage::disk('uploads')->url($this->ubicacion);
+            $fullPath = Storage::disk('uploads')->url($this->ubicacion);
+            $value = url($fullPath);
         }
         return $value;
     }
