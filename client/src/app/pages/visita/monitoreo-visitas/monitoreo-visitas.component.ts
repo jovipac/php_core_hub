@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit  } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from "@angular/forms";
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -41,7 +41,7 @@ interface Visit {
   templateUrl: './monitoreo-visitas.component.html',
   styleUrls: ['./monitoreo-visitas.component.scss']
 })
-export class MonitoreoVisitasComponent implements OnInit {
+export class MonitoreoVisitasComponent implements OnInit   {
   MonitorVisitas: FormGroup;
   formStatus = new FormStatus();
   id: string;
@@ -87,6 +87,7 @@ export class MonitoreoVisitasComponent implements OnInit {
     console.log(JSON.parse(sessionStorage.getItem('validate')));
     // MOTIVO 1 DENUNCIAS  ---- 2 VISISTA PERSONAL
     this.tipo = this.route.snapshot.params['id'];
+    console.log("entrada");
 
     if (this.tipo === "1") {
       this.titulo = "Denuncias";
@@ -292,6 +293,9 @@ export class MonitoreoVisitasComponent implements OnInit {
     this.router.navigate(['../../solicitud/editar', visit.id_visita], { relativeTo: this.route });
 
   }
+
+
+
 
 
 

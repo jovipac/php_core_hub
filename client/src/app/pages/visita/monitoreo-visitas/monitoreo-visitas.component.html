@@ -63,14 +63,14 @@
                   <td>{{visit.telefono}}</td>
                   <td *ngIf="tipo === 2">{{visit.nombres_funcionario || visit.apellidos_funcionario }}</td>
                   <td>
-                    <button class="btn btn-primary btn-icon" (click)="markExit(visit, 2)"><i
-                        class="icofont icofont-arrow-up"></i></button>
+                    <button class="btn btn-primary btn-icon"  title="Atender usuario" (click)="markExit(visit, 2)"><i
+                        class="icofont icofont-gears"></i></button>
 
-                    <button class="btn btn-warning btn-icon" (click)="GoEdit(visit)"><i
+                    <button class="btn btn-warning btn-icon" title="Editar" (click)="GoEdit(visit)"><i
                         class="icofont icofont-ui-edit"></i></button>
 
-                        <button class="btn btn-danger btn-icon" (click)="markExit(visit , 3)"><i
-                          class="icofont icofont-delete-alt"></i></button>
+                        <button class="btn btn-danger btn-icon" title="Dar salida al usuario" (click)="markExit(visit , 3)"><i
+                          class="icofont icofont-location-arrow"></i></button>
 
                   </td>
                 </tr>
