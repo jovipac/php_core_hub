@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Http\Traits\SoftDeletesBoolean;
 use App\Http\Traits\DateTimeMutator;
 
-class Etnia extends Model
+class ComunidadLinguistica extends Model
 {
     use SoftDeletesBoolean, DateTimeMutator;
 
@@ -17,8 +17,8 @@ class Etnia extends Model
      *
      * @var array
      */
-    protected $table = 'tc_etnia';
-    protected $primaryKey = 'id_etnia';
+    protected $table = 'tc_comunidad_linguistica';
+    protected $primaryKey = 'id_comunidad_linguistica';
 
     /**
      * The attributes that are mass assignable.
@@ -26,7 +26,7 @@ class Etnia extends Model
      * @var array
      */
     protected $fillable = [
-        'nombres', 'descripcion',
+        'id_etnia', 'nombre', 'descripcion'
     ];
 
     /**
@@ -38,8 +38,10 @@ class Etnia extends Model
         'borrado',
     ];
 
-    public function comunidad_linguistica()
+    public function etnia()
     {
-        return $this->hasMany(ComunidadLinguistica::class, 'id_etnia', 'id_etnia');
+        return $this->belongsTo(Etnia::class, 'id_etnia', 'id_etnia');
     }
+
+
 }

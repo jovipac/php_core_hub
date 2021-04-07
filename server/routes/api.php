@@ -97,7 +97,12 @@ Route::group([
     Route::resource('etnia', 'Api\EtniaController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
-    Route::get('etnia/restore/{etnia}', 'Api\EtniaController@restore')->name('etnia.restore');
+    Route::get('etnia/restore/{etnium}', 'Api\EtniaController@restore')->name('etnia.restore');
+
+    Route::resource('comunidad-linguistica', 'Api\ComunidadLinguisticaController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+    Route::get('comunidad-linguistica/restore/{comunidad-linguistica}', 'Api\ComunidadLinguisticaController@restore')->name('comunidad-linguistica.restore');
 
     Route::resource('departamento', 'Api\DepartamentoController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'

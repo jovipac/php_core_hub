@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
-use App\Models\Catalogs\Etnia;
+use App\Models\Catalogs\ComunidadLinguistica;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class EtniaController extends ApiController
+class ComunidadLinguisticaController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -16,12 +16,12 @@ class EtniaController extends ApiController
      */
     public function index()
     {
-        $etnias = Etnia::all();
+        $comunidad_linguisticas = ComunidadLinguistica::all();
         return $this->apiResponse(
             [
                 'success' => true,
-                'message' => "Listado de clasificación de la etnia",
-                'result' => $etnias
+                'message' => "Listado de comunidades linguisticas",
+                'result' => $comunidad_linguisticas
             ]
         );
     }
@@ -35,37 +35,21 @@ class EtniaController extends ApiController
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nombre' => 'required|string',
-            'descripcion' => 'string|unique:tc_etnia',
+            'id_etnia' => 'required|integer',
+            'nombre' => 'required|unique:tc_comunidad_linguistica',
+            'descripcion' => 'nullable|string',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
         }
         $input = $request->all();
-        $etnium = Etnia::create($input);
+        $comunidad_linguistica = ComunidadLinguistica::create($input);
 
         return $this->respondCreated([
             'success' => true,
-            'message' => "Clasificación de la etnia creado con exito",
-            'result' => $etnium
+            'message' => "Comunidad linguistica creado con exito",
+            'result' => $comunidad_linguistica
         ]);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Etnia  $etnium
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Etnia $etnium)
-    {
-        return $this->apiResponse(
-            [
-                'success' => true,
-                'message' => "Clasificación de la etnia encontrado",
-                'result' => $etnium
-            ]
-        );
     }
 
 
@@ -73,52 +57,55 @@ class EtniaController extends ApiController
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Etnia  $etnium
+     * @param  \App\ComunidadLinguistica  $comunidad_linguistica
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Etnia $etnium)
+    public function update(Request $request, ComunidadLinguistica $comunidad_linguistica)
     {
         $validator = Validator::make($request->all(), [
-            'nombre' => 'required|string',
-            'descripcion' => 'string',
+            'id_etnia' => 'required|integer',
+            'nombre' => 'nullable|string',
+            'descripcion' => 'nullable|string',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
         }
 
-        $etnium->update($request->all());
+        $comunidad_linguistica->update($request->all());
 
         return $this->apiResponse([
             'success' => true,
-            'message' => "Clasificación de la etnia actualizado con exito",
-            'result' => $etnium
+            'message' => "Comunidad linguistica actualizado con exito",
+            'result' => $comunidad_linguistica
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Etnia  $etnium
+     * @param  \App\ComunidadLinguistica  $comunidad_linguistica
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Etnia $etnium)
+    public function destroy(ComunidadLinguistica $comunidad_linguistica)
     {
-        $etnium->delete();
+        $comunidad_linguistica->delete();
 
-        return $this->respondSuccess('Clasificación de la etnia eliminado con exito');
+        return $this->respondSuccess('Comunidad linguistica eliminado con exito');
+
     }
 
-        /**
+    /**
      * Restore the specified resource from storage.
      *
-     * @param  \App\Etnia  $etnium
+     * @param  \App\ComunidadLinguistica  $comunidad_linguistica
      * @return \Illuminate\Http\Response
      */
     public function restore($id)
     {
-        $user = Etnia::withTrashed()->findorfail($id);
+        $user = ComunidadLinguistica::withTrashed()->findorfail($id);
         $user->restore();
 
-        return $this->respondSuccess('Clasificación de la etnia restaurado con exito');
+        return $this->respondSuccess('Comunidad linguistica restaurado con exito');
     }
+
 }
