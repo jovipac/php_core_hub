@@ -9,11 +9,15 @@ import { environment } from '../../environments/environment';
 export class ExpedienteService {
 
   constructor(private httpClient: HttpClient) { }
-/*
+
+  getListExpediente() {
+    return this.httpClient.get(`${environment.host}expedientes`, getHeaders())
+  }
+
   searchExpediente(data) {
     return this.httpClient.post(`${environment.host}expedientes/search`, data , getHeaders())
   }
-*/
+
   getExpediente(id) {
     return this.httpClient.get(`${environment.host}expedientes/${id}`, getHeaders())
   }

@@ -17,6 +17,33 @@
                 <th>Acciones</th>
               </tr>
             </thead>
+            <tbody>
+              <tr *ngFor="let solicitud of listSolicitudes">
+                <td>{{solicitud?.correlativo}}</td>
+                <td>{{solicitud?.nombre_prioridad}}</td>
+                <td>{{solicitud?.fecha_ingreso}}</td>
+                <td>{{solicitud?.nombre_via}}</td>
+                <td>{{solicitud?.nombre_auxiliatura}}</td>
+                <td>{{solicitud?.nombre_funcionario}}</td>
+                <td>{{solicitud?.id_via}}</td>
+                <td>{{solicitud?.nombre_resultado}}</td>
+                <td>
+                  <div class="row">
+                    <div class="col">
+                      <div dropdown class="d-inline-block">
+                        <button class="btn btn-outline-primary btn-mini dropdown-toggle" id="dropdownBasic1"
+                        dropdownToggle >Acciones</button>
+                        <div *dropdownMenu aria-labelledby="dropdownBasic1" class="dropdown-menu">
+                          <li class="dropdown-item btn-mini">Editar</li>
+                          <li class="dropdown-item btn-mini">Confirmar</li>
+                          <li class="dropdown-item btn-mini">Estado</li>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </div>
