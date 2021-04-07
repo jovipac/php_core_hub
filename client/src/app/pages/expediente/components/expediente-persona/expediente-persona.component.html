@@ -263,6 +263,28 @@
             </div>
           </div>
         </div>
+        <div class="form-row">
+          <div class="col-md-3 mb-3">
+            <input-label [requires]="false" [label]="'Estado conyugal'" [id]="'txtEstadoConyugal'"></input-label>
+            <ng-select id="txtEstadoConyugal" [items]="listSexo" #select bindLabel="nombre" dropdownPosition="auto"
+              bindValue="id_sexo" labelForId="txtEstadoConyugal" placeholder="Seleccionar o buscar" [virtualScroll]="true"
+              formControlName="id_estado_conyugal" [ngClass]="displayValidation(f.id_estado_conyugal.invalid)">
+            </ng-select>
+            <div [ngClass]="displayValidationMsg(f.id_estado_conyugal.valid)">
+              <div *ngIf="f.id_estado_conyugal.errors?.required">El campo es requerido</div>
+            </div>
+          </div>
+          <div class="col-md-3 mb-3">
+            <input-label [requires]="false" [label]="'Relacion victima agresor'" [id]="'txtRelacionVictimaAgresor'"></input-label>
+            <ng-select id="txtRelacionVictimaAgresor" [items]="listSexo" #select bindLabel="nombre" dropdownPosition="auto"
+              bindValue="id_sexo" labelForId="txtEstadoConyugal" placeholder="Seleccionar o buscar" [virtualScroll]="true"
+              formControlName="id_relacion_vic_agre" [ngClass]="displayValidation(f.id_relacion_vic_agre.invalid)">
+            </ng-select>
+            <div [ngClass]="displayValidationMsg(f.id_relacion_vic_agre.valid)">
+              <div *ngIf="f.id_relacion_vic_agre.errors?.required">El campo es requerido</div>
+            </div>
+          </div>
+        </div>
       </ng-container>
     </tab>
   </tabset>

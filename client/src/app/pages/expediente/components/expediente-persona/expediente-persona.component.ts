@@ -206,6 +206,14 @@ export class ExpedientePersonaComponent implements OnInit {
         value: null,
         disabled: false,
       }, [Validators.pattern("[0-9]*")]),
+      id_estado_conyugal: new FormControl({
+        value: null,
+        disabled: false,
+      }, [Validators.pattern("[0-9]+")]),
+      id_relacion_vic_agre: new FormControl({
+        value: null,
+        disabled: false,
+      }, [Validators.pattern("[0-9]+")]),
 
     }, {});
   }
