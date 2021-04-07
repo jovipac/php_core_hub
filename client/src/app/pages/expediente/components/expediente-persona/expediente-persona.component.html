@@ -1,6 +1,21 @@
 <form action="javascript:" class="needs-validation" novalidate [formGroup]="personaForm" (ngSubmit)="onSubmit()" autocomplete="off" >
   <div class="form-row">
-    <div class="col-md-4 mb-3">
+    <div class="col-md-4 mb-3" >
+      <input-label [requires]="true" [label]="'Tipo vinculación'" [id]="'txtTipoVinculacion'"></input-label>
+      <br>
+      <input type="checkbox" > Denunciante &nbsp;&nbsp;&nbsp;&nbsp;
+      <input type="checkbox" > Sindicado
+      <br>
+      <input type="checkbox" > Victima &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <input type="checkbox" > Ministerio Público
+      <br>
+      <input type="checkbox" > Abogado defensor
+
+    </div>
+
+    <div class="col-md-4 mb-3" *ngIf="0">
+
+
       <input-label [requires]="true" [label]="'Tipo vinculación'" [id]="'txtTipoVinculacion'"></input-label>
       <select class="form-control" id="txtTipoVinculacion" formControlName="id_tipo_vinculacion"
         [ngClass]="displayErrorsCss('id_tipo_vinculacion')" required>
@@ -16,6 +31,10 @@
     <tab heading="Información general" id="tab1">
       <ng-container>
           <div class="form-row">
+
+
+
+
             <div class="col-md-3 mb-3">
               <input-label [requires]="true" [label]="'Tipo documento'" [id]="'txtDocumentoIdentidad'"></input-label>
               <select class="form-control" id="txtDocumentoIdentidad" formControlName="id_documento_identidad"

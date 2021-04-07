@@ -159,6 +159,16 @@ export class RecepcionVisitaComponent implements OnInit {
         value: 2,
         disabled: false,
       }, []),
+      id_etnia: new FormControl({
+        value: 0,
+        disabled: false,
+      }, []),
+
+      id_comunidad: new FormControl({
+        value: 0,
+        disabled: false,
+      }, []),
+
       observaciones: new FormControl({
         value: '',
         disabled: false,

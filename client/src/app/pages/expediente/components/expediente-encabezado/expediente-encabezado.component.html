@@ -37,13 +37,6 @@
   </div>
 
   <div class="form-row">
-    <div class="col mb-3">
-      <input-label [label]="'Observaciones'" [id]="'txtObservaciones'"></input-label>
-      <textarea type="text" class="form-control" id="txtObservaciones" formControlName="observaciones" rows="3"></textarea>
-    </div>
-  </div>
-
-  <div class="form-row">
     <div class="col-md-6 mb-3">
       <input-label [requires]="true" [label]="'Visita a unidad'" [id]="'txtAuxiliatura'"></input-label>
       <ng-select id="txtAuxiliatura" [items]="listAuxiliatura" #select bindLabel="nombre" dropdownPosition="auto"
@@ -76,6 +69,50 @@
       </div>
     </div>
   </div>
+
+
+  <div class="form-row">
+    <div class="col-md-3 mb-3">
+      <input-label [requires]="true" [label]="'Fecha Hechos'" [id]="'txtfechaHechos'"></input-label>
+      <input type="date" class="form-control" id="txtFechaNacimiento" formControlName="fecha_nacimiento"
+      placeholder="" >
+
+    </div>
+    <div class="col-md-3 mb-3">
+      <input-label [requires]="true" [label]="'Depto Ocurrencia Hechos'" [id]="'txtdepto'"></input-label>
+      <select class="form-control" id="txtdepto" formControlName="id_depto"
+        [ngClass]="displayErrorsCss('id_depto')" required>
+        <option value="1">Guatemala</option>
+      </select>
+      <div *ngIf="isHasErrors('id_depto')" class="invalid-feedback">Seleccione un valor</div>
+    </div>
+    <div class="col-md-3 mb-3">
+      <input-label [requires]="true" [label]="'Muni Ocurrencia Hechos'" [id]="'txtmuni'"></input-label>
+      <select class="form-control" id="txtmuni" formControlName="id_muni"
+        [ngClass]="displayErrorsCss('id_muni')" required>
+        <option value="1">Mixco</option>
+      </select>
+      <div *ngIf="isHasErrors('id_muni')" class="invalid-feedback">Seleccione un valor</div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+      <input-label [requires]="true" [label]="'Area Geografica'" [id]="'txtarea'"></input-label>
+      <select class="form-control" id="txtarea" formControlName="id_area"
+        [ngClass]="displayErrorsCss('id_area')" required>
+        <option value="1">Urbana</option>
+      </select>
+      <div *ngIf="isHasErrors('id_muni')" class="invalid-feedback">Seleccione un valor</div>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="col mb-3">
+      <input-label [label]="'Observaciones'" [id]="'txtObservaciones'"></input-label>
+      <textarea type="text" class="form-control" id="txtObservaciones" formControlName="observaciones" rows="3"></textarea>
+    </div>
+  </div>
+
+
 
   <div class="row">
     <div class="col"></div>
