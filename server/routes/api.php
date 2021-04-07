@@ -94,6 +94,11 @@ Route::group([
     ]]);
     Route::get('genero/restore/{genero}', 'Api\GeneroController@restore')->name('genero.restore');
 
+    Route::resource('etnia', 'Api\EtniaController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+    Route::get('etnia/restore/{etnia}', 'Api\EtniaController@restore')->name('etnia.restore');
+
     Route::resource('departamento', 'Api\DepartamentoController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
