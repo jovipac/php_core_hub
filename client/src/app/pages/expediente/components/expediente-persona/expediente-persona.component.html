@@ -199,223 +199,54 @@
               </div>
             </ng-container>
           </tab>
-
         </tabset>
 
       </ng-container>
     </tab>
-
-  </tabset>
-<!--
-  <nav id="ngbNav" class="nav-tabs">
-    <ng-container ngbNavItem>
-      <a class="nav-link active" data-toggle="tab" role="tab">Información general</a>
-      <ng-template ngbNavContent>
-
+    <tab heading="Información INE" id="tab3">
+      <ng-container>
         <div class="form-row">
-          <div class="col-md-3 mb-3">
-            <input-label [requires]="true" [label]="'Tipo documento'" [id]="'txtDocumentoIdentidad'"></input-label>
-            <select class="form-control" id="txtDocumentoIdentidad" formControlName="id_documento_identidad"
-              [ngClass]="displayErrorsCss('id_documento_identidad')" required>
-              <option *ngFor="let documentoIdentidad of listDocumentoIdentidad" value="{{documentoIdentidad.id_documento_identidad}}">{{documentoIdentidad.nombre}}</option>
-            </select>
-            <div *ngIf="isHasErrors('id_documento_identidad')" class="invalid-feedback">
-              <div *ngIf="f.id_documento_identidad.errors?.required">El campo es requerido</div>
-            </div>
-          </div>
-          <div class="col-md-4 mb-3">
-            <input-label [requires]="true" [label]="'Identificación'" [id]="'txtIdentificador'"></input-label>
-            <div class="input-group">
-              <input type="hidden" class="form-control" id="txtIdPersona" formControlName="id_persona" >
-              <input type="text" class="form-control" id="txtIdentificador" formControlName="identificador" placeholder="Buscar y seleccionar" #instance="ngbTypeahead" [typeahead]="searchByIdentificacion"
-                [editable]='true' [resultFormatter]="resultFormatDocumentoIdentidadPersona" [typeaheadItemTemplate]="inputFormatocumentoIdentidadPersona" [typeaheadOptionsLimit]="7"
-                (typeaheadOnSelect)="setDocumentoIdentidadPersona($event)" (change)="changeDocumentoIdentidadPersona($event)" required
-                [ngClass]="{ 'is-invalid': (f.identificador.dirty || f.identificador.touched || submitted)  && f.identificador.errors }" >
-              <div *ngIf="isHasErrors('identificador')" class="invalid-feedback">
-                <div *ngIf="f.identificador.errors?.required">El campo es requerido</div>
-                <div *ngIf="f.identificador.errors?.pattern">Digite un identificador valido</div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 mb-3 offset-md-3">
-            <div class="form-check">
-              <input type="checkbox" class="form-check-input" id="chkConfidencial" formControlName="flag_confidencial">
-              <label class="form-check-label" for="chkConfidencial">Confidencial</label>
-            </div>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="col-md-6 mb-3">
-            <input-label [requires]="true" [label]="'Nombres'" [id]="'txtNombres'"></input-label>
-            <input type="text" class="form-control" id="txtNombres" formControlName="nombres" placeholder="Completos"
-              [ngClass]="{ 'is-invalid': submitted && f.nombres.errors }"
-              required>
-            <div *ngIf="isHasErrors('nombres')" class="invalid-feedback">
-              <div *ngIf="f.nombres.errors?.required">Los nombres son requeridos</div>
-              <div *ngIf="f.nombres.errors?.minlength">El nombre es demasiado corto</div>
-            </div>
-          </div>
-          <div class="col-md-6 mb-3">
-            <input-label [requires]="true" [label]="'Apellidos'" [id]="'txtApellidos'"></input-label>
-            <input type="text" class="form-control" id="txtApellidos" formControlName="apellidos"
-              placeholder="Completos" [ngClass]="{ 'is-invalid': submitted && f.apellidos.errors }"
-              required>
-            <div *ngIf="isHasErrors('apellidos')" class="invalid-feedback">
-              <div *ngIf="f.apellidos.errors?.required">Los apellidos son requeridos</div>
-              <div *ngIf="f.nombres.errors?.minlength">El apellido es demasiado corto</div>
-            </div>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="col-md-4 mb-3">
-            <input-label [label]="'Correo electrónico'" [id]="'txtEmail'"></input-label>
-            <input type="text" class="form-control" id="txtEmail" formControlName="email" placeholder=""
-              [ngClass]="displayErrorsCss('email')">
-            <div *ngIf="isHasErrors('email')" class="invalid-feedback">
-              <div *ngIf="f.email.errors?.pattern">El correo electrónico no es valido</div>
-            </div>
-          </div>
-          <div class="col-md-3 mb-3">
-            <input-label [label]="'Teléfono'" [id]="'txtTelefono'"></input-label>
-            <input type="text" class="form-control" id="txtTelefono" formControlName="telefono" placeholder=""
-              [ngClass]="displayErrorsCss('telefono')">
-            <div *ngIf="isHasErrors('telefono')" class="invalid-feedback">
-              <div *ngIf="f.telefono.errors?.pattern">El telefono solo se aceptan digitos</div>
-            </div>
-          </div>
-          <div class="col-md-3 mb-3">
-            <input-label [label]="'Fecha Nacimiento'" [id]="'txtFechaNacimiento'"></input-label>
-            <input type="date" class="form-control" id="txtFechaNacimiento" formControlName="fecha_nacimiento"
-              placeholder="" (blur)="calculateAge(f.fecha_nacimiento.value)">
-            <div *ngIf="isHasErrors('fecha_nacimiento')" class="invalid-feedback">
-              Please provide a valid state.
-            </div>
-          </div>
           <div class="col-md-2 mb-3">
-            <input-label [label]="'Edad'" [id]="'txtEdad'"></input-label>
-            <input type="number" class="form-control" id="txtEdad" formControlName="edad" placeholder=""
-              [ngClass]="displayErrorsCss('edad')" >
-            <div *ngIf="isHasErrors('edad')" class="invalid-feedback">
-              Please provide a valid edad.
-            </div>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="col-md-4 mb-3">
-            <input-label [requires]="true" [label]="'Sexo'" [id]="'txtSexo'"></input-label>
-            <select class="form-control" id="txtSexo" formControlName="id_sexo"
-              [ngClass]="displayErrorsCss('id_sexo')" required>
-              <option *ngFor="let sexo of listSexo" value="{{sexo.id_sexo}}">{{sexo.nombre}}</option>
-            </select>
-            <div *ngIf="isHasErrors('id_sexo')" class="invalid-feedback">
-              <div *ngIf="f.id_sexo.errors?.required">El campo es requerido</div>
+            <input-label [requires]="false" [label]="'Pueblo de Pertenencia'" [id]="'txtEtnia'"></input-label>
+            <ng-select id="txtEtnia" [items]="listDepartamento" #select bindLabel="nombre" dropdownPosition="auto"
+              bindValue="id_departamento" labelForId="txtEtnia" placeholder="Seleccionar o buscar" [virtualScroll]="true"
+              formControlName="id_etnia" [ngClass]="displayValidation(f.id_etnia.invalid)">
+            </ng-select>
+            <div [ngClass]="displayValidationMsg(f.id_etnia.valid)">
+              <div *ngIf="f.id_etnia.errors?.required">El campo es requerido</div>
             </div>
           </div>
           <div class="col-md-4 mb-3">
-            <input-label [requires]="false" [label]="'Genero'" [id]="'txtGenero'"></input-label>
-            <select class="form-control" id="txtGenero" formControlName="id_genero"
-              [ngClass]="displayErrorsCss('id_genero')" required>
-              <option *ngFor="let genre of listGenero" value="{{genre.id_genero}}">{{genre.nombre}}</option>
-            </select>
-            <div *ngIf="isHasErrors('id_genero')" class="invalid-feedback">
-              <div *ngIf="f.id_genero.errors?.required">El campo es requerido</div>
+            <input-label [requires]="false" [label]="'Comunidad Linguistica'" [id]="'txtComunidadLinguistica'"></input-label>
+            <ng-select [items]="listDepartamentoMunicipio" #select bindLabel="nombre" dropdownPosition="auto" bindValue="id_municipio" labelForId="txtComunidadLinguistica"
+              placeholder="Seleccionar o buscar" [virtualScroll]="true" formControlName="id_comunidad_linguistica" [ngClass]="displayValidation(f.id_comunidad_linguistica.invalid)">
+            </ng-select>
+            <div [ngClass]="displayValidationMsg(f.id_comunidad_linguistica.valid)">
+              <div *ngIf="f.id_comunidad_linguistica.errors?.required">El campo es requerido</div>
             </div>
           </div>
           <div class="col-md-3 mb-3">
-            <input-label [label]="'Numero casillero'" [id]="'txtCodigoCasillero'"></input-label>
-            <input type="text" class="form-control" id="txtCodigoCasillero" formControlName="codigo_casillero" placeholder=""
-              [ngClass]="displayErrorsCss('codigo_casillero')">
-            <div *ngIf="isHasErrors('codigo_casillero')" class="invalid-feedback">
-              <div *ngIf="f.codigo_casillero.errors?.pattern">El numero de casillero solo se aceptan digitos</div>
+            <input-label [requires]="false" [label]="'¿Tiene alguna discapacidad?'" [id]="'txtDiscapacidad'"></input-label>
+            <select class="form-control" id="txtDiscapacidad" formControlName="flag_discapacidad" [ngClass]="displayValidation(f.flag_discapacidad.invalid)">
+              <option *ngFor="let tipoDireccion of listTipoDireccion" value="{{tipoDireccion.id_tipo_direccion}}">{{tipoDireccion.nombre}}</option>
+            </select>
+            <div [ngClass]="displayValidationMsg(f.flag_discapacidad.valid)">
+              <div *ngIf="f.flag_discapacidad.errors?.required">El campo es requerido</div>
             </div>
           </div>
-
+          <div class="col-md-3 mb-3">
+            <input-label [requires]="false" [label]="'Discapacidad'" [id]="'txtTipoDiscapacidad'"></input-label>
+            <ng-select [items]="listDepartamentoMunicipio" #select bindLabel="nombre" dropdownPosition="auto" bindValue="id_municipio" labelForId="txtTipoDiscapacidad"
+              placeholder="Seleccionar o buscar" [virtualScroll]="true" formControlName="id_tipo_discapacidad" [ngClass]="displayValidation(f.id_tipo_discapacidad.invalid)">
+            </ng-select>
+            <div [ngClass]="displayValidationMsg(f.id_tipo_discapacidad.valid)">
+              <div *ngIf="f.id_tipo_discapacidad.errors?.required">El campo es requerido</div>
+            </div>
+          </div>
         </div>
-
-      </ng-template>
-    </ng-container>
-    <ng-container ngbNavItem>
-      <a class="nav-link active" data-toggle="tab" role="tab">Dirección</a>
-      <ng-template ngbNavContent>
-        <ng-container formArrayName="direcciones">
-
-          <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
-            <li *ngFor="let direccion of personaForm.get('direcciones')['controls']; let idx = index;" [ngbNavItem]="idx">
-              <a class="nav-link active" data-toggle="tab" role="tab">
-                {{ idx+1 }} <i class="fa fa-map-marker"></i>
-                <span class="close position-relative pl-2 font-weight-light" (click)="close($event, idx)">&times;</span>
-              </a>
-              <ng-template ngbNavContent>
-                <ng-container [formGroupName]="idx">
-                  <div class="form-row">
-                    <div class="col-md-3 mb-3">
-                      <input-label [requires]="false" [label]="'Departamento'" [id]="'txtDepartamento'"></input-label>
-                      <ng-select id="txtDepartamento" [items]="listDepartamento" #select bindLabel="nombre" dropdownPosition="auto"
-                        bindValue="id_departamento" labelForId="txtDepartamento" placeholder="Seleccionar o buscar" [virtualScroll]="true"
-                        formControlName="id_departamento" (blur)="selectedDepartamento(idx)" [ngClass]="displayValidation(direccion.get('id_departamento').invalid)">
-                      </ng-select>
-                      <div [ngClass]="displayValidationMsg(direccion.get('id_departamento').valid)">
-                        <div *ngIf="direccion.get('id_departamento').errors?.required">El campo es requerido</div>
-                        <div *ngIf="direccion.get('id_departamento').errors?.pattern">Solo se aceptan digitos</div>
-                      </div>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                      <input-label [requires]="false" [label]="'Municipio'" [id]="'txtMunicipio'"></input-label>
-                      <ng-select [items]="listDepartamentoMunicipio" #select bindLabel="nombre" dropdownPosition="auto" bindValue="id_municipio" labelForId="txtMunicipio"
-                        placeholder="Seleccionar o buscar" [virtualScroll]="true" formControlName="id_municipio" [ngClass]="displayValidation(direccion.get('id_municipio').invalid)">
-                      </ng-select>
-                      <div [ngClass]="displayValidationMsg(direccion.get('id_municipio').valid)">
-                        <div *ngIf="direccion.get('id_municipio').errors?.required">El campo es requerido</div>
-                        <div *ngIf="direccion.get('id_municipio').errors?.pattern">Solo se aceptan digitos</div>
-                      </div>
-                    </div>
-                    <div class="col-md-2 mb-3 offset-md-3">
-                      <input-label [requires]="false" [label]="'Tipo dirección'" [id]="'txtTipoDireccion'"></input-label>
-                      <select class="form-control" id="txtTipoDireccion" formControlName="id_tipo_direccion" [ngClass]="displayValidation(direccion.get('id_tipo_direccion').invalid)">
-                        <option *ngFor="let tipoDireccion of listTipoDireccion" value="{{tipoDireccion.id_tipo_direccion}}">{{tipoDireccion.nombre}}</option>
-                      </select>
-                      <div [ngClass]="displayValidationMsg(direccion.get('id_tipo_direccion').valid)">
-                        <div *ngIf="direccion.get('id_tipo_direccion').errors?.required">El campo es requerido</div>
-                        <div *ngIf="direccion.get('id_tipo_direccion').errors?.pattern">Solo se acepta texto sin caracteres especiales</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form-row">
-                    <div class="col mb-3">
-                      <input-label [label]="'Dirección'" [id]="'txtDireccion'"></input-label>
-                      <input type="text" class="form-control" id="txtDireccion" formControlName="direccion" [ngClass]="displayValidation(direccion.get('direccion').invalid)" >
-                      <div [ngClass]="displayValidationMsg(direccion.get('direccion').valid)">
-                        <div *ngIf="direccion.get('direccion').errors?.required">El campo es requerido</div>
-                        <div *ngIf="direccion.get('direccion').errors?.pattern">Solo se acepta texto sin caracteres especiales</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form-row">
-                    <div class="col mb-3">
-                      <input-label [label]="'Comentarios'" [id]="'txtComentarios'"></input-label>
-                      <input type="text" class="form-control" id="txtComentarios" formControlName="comentarios" [ngClass]="displayValidation(direccion.get('comentarios').invalid)">
-                      <div [ngClass]="displayValidationMsg(direccion.get('comentarios').valid)">
-                        <div *ngIf="direccion.get('comentarios').errors?.required">El campo es requerido</div>
-                        <div *ngIf="direccion.get('comentarios').errors?.pattern">Solo se acepta texto sin caracteres especiales</div>
-                      </div>
-                    </div>
-                  </div>
-                </ng-container>
-              </ng-template>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href (click)="add($event)"><i class="fa fa-plus"></i></a>
-            </li>
-          </ul>
-
-          <div [ngbNavOutlet]="nav" class="mt-2"></div>
-        </ng-container>
-      </ng-template>
-
-    </ng-container>
-  </nav>
-  <div [ngbNavOutlet]="nav" class="mt-2"></div>
--->
+      </ng-container>
+    </tab>
+  </tabset>
 
   <div class="row">
     <div class="col"></div>
