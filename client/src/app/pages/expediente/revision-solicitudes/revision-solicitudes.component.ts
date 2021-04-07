@@ -14,6 +14,7 @@ import { NgxSpinnerService } from "ngx-spinner";
   styleUrls: ['./revision-solicitudes.component.scss']
 })
 export class RevisionSolicitudesComponent implements OnInit {
+  id_expediente: number;
   public listSolicitudes: Array<Expediente>;
 
   constructor(
@@ -40,7 +41,7 @@ export class RevisionSolicitudesComponent implements OnInit {
           ...data,
           correlativo: formatearCorrelativo(
             null, data.anio, data.folio),
-          nombre_funcionario: [
+          nombre_completo_funcionario: [
             data?.nombres_funcionario,
             data?.apellidos_funcionario
           ].filter(Boolean)
@@ -56,6 +57,11 @@ export class RevisionSolicitudesComponent implements OnInit {
         this.loading.hide('dashboard');
       }
     });
+  }
+
+  goEditExpediente(expediente: any) {
+    this.id_expediente = expediente.id_expediente;
+    this.router.navigate(['../../solicitud/editar', expediente.id_expediente], { relativeTo: this.route });
   }
 
 }

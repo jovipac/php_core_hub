@@ -24,7 +24,7 @@
                 <td>{{solicitud?.fecha_ingreso | date:'mediumDate'}}</td>
                 <td>{{solicitud?.nombre_via}}</td>
                 <td>{{solicitud?.nombre_auxiliatura}}</td>
-                <td>{{solicitud?.nombre_funcionario}}</td>
+                <td>{{solicitud?.nombre_completo_funcionario}}</td>
                 <td>{{solicitud?.id_via}}</td>
                 <td>{{solicitud?.nombre_resultado}}</td>
                 <td>
@@ -34,7 +34,7 @@
                         <button class="btn btn-outline-primary btn-mini dropdown-toggle" id="dropdownBasic1"
                         dropdownToggle >Acciones</button>
                         <div *dropdownMenu aria-labelledby="dropdownBasic1" class="dropdown-menu">
-                          <li class="dropdown-item btn-mini">Editar</li>
+                          <li class="dropdown-item btn-mini" (click)="goEditExpediente(solicitud);">Editar</li>
                           <li class="dropdown-item btn-mini">Confirmar</li>
                           <li class="dropdown-item btn-mini">Estado</li>
                         </div>
