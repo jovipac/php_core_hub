@@ -284,6 +284,80 @@
               <div *ngIf="f.id_relacion_vic_agre.errors?.required">El campo es requerido</div>
             </div>
           </div>
+
+          <div class="col-md-3 mb-3">
+            <input-label  [label]="'Trabajo Remunerado'" [id]="'txttrabajo'"></input-label>
+            <select class="form-control" id="txttrabajo" formControlName="id_trabajo"
+               required>
+              <option value="1">Si (trabajo por un salario o ingresos) </option>
+            </select>
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <input-label  [label]="'Ocupación'" [id]="'txtocupacion'"></input-label>
+            <select class="form-control" id="txtocupacion" formControlName="id_ocupacion"
+               required>
+              <option value="1">Ocupación ignorada </option>
+            </select>
+          </div>
+
+
+        </div>
+        <div class="form-row">
+          <div class="col-md-3 mb-3">
+            <input-label  [label]="'Actividad a la que se dedica'" [id]="'txtActi'"></input-label>
+            <select class="form-control" id="txtActi" formControlName="id_actividad"
+               required>
+              <option value="1">Que haceres del hogar </option>
+            </select>
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <input-label  [label]="'Codición Alfabetismo'" [id]="'txtAlfa'"></input-label>
+            <select class="form-control" id="txtAlfa" formControlName="id_Alfa"
+               required>
+              <option value="1">Alfabeta </option>
+            </select>
+          </div>
+
+
+
+          <div class="col-md-3 mb-3">
+            <input-label  [label]="'Grado Escolaridad'" [id]="'txtgrado'"></input-label>
+            <select class="form-control" id="txtgrado" formControlName="id_grado"
+               required>
+              <option value="1">Ninguno </option>
+            </select>
+          </div>
+
+
+          <div class="col-md-3 mb-3">
+            <input-label  [label]="'Departamento residencia'" [id]="'txtresidencia'"></input-label>
+            <select class="form-control" id="txtresidencia" formControlName="id_residencia"
+               required>
+              <option value="1">Guatemala </option>
+            </select>
+          </div>
+
+        </div>
+
+
+        <div class="form-row">
+          <div class="col-md-3 mb-3">
+            <input-label  [label]="'Municipio residencia'" [id]="'txtMunicipio'"></input-label>
+            <select class="form-control" id="txtMunicipio" formControlName="id_Municipio"
+               required>
+              <option value="1">San José Pinula </option>
+            </select>
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <input-label  [label]="'Tipo de violencia o agresion'" [id]="'txtMtipoagre'"></input-label>
+            <select class="form-control" id="txtMtipoagre" formControlName="id_Mtipoagre"
+               required>
+              <option value="1">Física </option>
+            </select>
+          </div>
         </div>
       </ng-container>
     </tab>
