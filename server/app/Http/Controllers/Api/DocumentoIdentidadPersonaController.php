@@ -104,7 +104,7 @@ class DocumentoIdentidadPersonaController extends ApiController
         $validator = Validator::make($request->all(), [
             'id_persona' => 'required|integer',
             'id_documento_identidad' => 'required|integer',
-            'identificador' => 'string',
+            'identificador' => 'nullable|string',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
@@ -148,7 +148,7 @@ class DocumentoIdentidadPersonaController extends ApiController
         $validator = Validator::make($request->all(), [
             'id_persona' => 'required|integer',
             'id_documento_identidad' => 'required|integer',
-            'identificador' => 'string',
+            'identificador' => 'nullable|string',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
