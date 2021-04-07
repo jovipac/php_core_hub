@@ -99,7 +99,7 @@ class PersonaController extends ApiController
         $inputs = $request->except(['direcciones']);
         $validator = Validator::make($inputs, [
             'id_documento_identidad' => 'required|integer',
-            'identificador' => 'required|integer|unique:tt_documento_identidad_persona',
+            'identificador' => 'nullable|unique:tt_documento_identidad_persona',
             'nombres' => 'required|string',
             'apellidos' => 'required|string',
             'id_sexo' => 'required|integer',
