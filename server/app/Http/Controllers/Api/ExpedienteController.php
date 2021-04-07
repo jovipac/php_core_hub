@@ -45,7 +45,7 @@ class ExpedienteController extends ApiController
             'tt_expediente.id_motivo', 'T02.nombre AS nombre_motivo',
             'tt_expediente.id_prioridad', 'T03.nombre AS nombre_prioridad',
             'tt_expediente.id_dependencia', 'T04.nombre AS nombre_dependencia',
-            'tt_expediente.id_funcionario', 'T05.nombres AS nombres_funcionario', 'T05.apellidos AS nombres_apellidos',
+            'tt_expediente.id_funcionario', 'T05.nombres AS nombres_funcionario', 'T05.apellidos AS apellidos_apellidos',
             'tt_expediente.id_auxiliatura', 'T06.nombre AS nombre_auxiliatura',
             'tt_expediente.id_resultado', 'T07.nombre AS nombre_resultado',
             'tt_expediente.observaciones', 'tt_expediente.id_visita'

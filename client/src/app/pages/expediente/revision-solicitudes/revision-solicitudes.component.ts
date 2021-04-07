@@ -49,7 +49,7 @@ export class RevisionSolicitudesComponent implements OnInit {
           return <Expediente>expediente;
       }) : [];
         this.listSolicitudes = expedientesFormateadas;
-        console.log(this.listSolicitudes);
+
       },
       error: (error:any) => {
         this.toastr.error(error.message);
