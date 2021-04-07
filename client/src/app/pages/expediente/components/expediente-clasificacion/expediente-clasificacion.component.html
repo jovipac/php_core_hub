@@ -1,21 +1,106 @@
-<form [formGroup]="form" (ngSubmit)="submit()">
-  <ng-container formArrayName="ClasificacionDerechos">
+<div class="row">
+  <div class="col-sm-12">
 
-    <div class="form-row">
-      <div *ngFor="let EncabDerecho of listCaliDere; let idx = index;" class="col">
-        <p><strong>{{EncabDerecho.nombre}}</strong></p>
-        <div *ngFor="let children of form.get('ClasificacionDerechos')['controls'];index as i"  class="col">
-          <ng-container [formGroupName]="i">
-            <ul>
-              <li>
-                <input type="checkbox" formControlName="id_clasificacion_derecho">
-                {{children.nombre}}
-              </li>
-            </ul>
-          </ng-container>
 
+        <!-- PRIMER FILA -->
+        <div class="form-row" >
+          <div class="col-md-3 mb-3">
+            <input-label [requires]="true" [label]="'Tipo de derecho'" [id]="'txttip'"></input-label>
+            <select class="form-control" id="txttip" formControlName="id_muni"
+               required>
+              <option value="1">Civiles y politicos </option>
+            </select>
+            <input type="text" id="fname" name="fname" placeholder="Económicos Sociales y Cultural" class="form-control">
+          </div>
+
+          <div class="col-md-2 mb-2">
+            <br>
+            <button class="btn btn-primary" type="submit" id="btnSave"><i class="fa fa-save"></i>Agregar</button>
+          </div>
+
+          <div class="col-md-7 mb-7">
+            <table class="table  table-striped" id="listMonitor">
+              <thead>
+                <tr>
+                  <th>Tipo de derecho</th>
+                  <th>Hechos Violatorios</th>
+                  <th>opciones</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td> Civiles y Politicos </td>
+                  <td> Maltrato </td>
+                  <td> <a href="url">Eliminar</a> </td>
+                </tr>
+
+                <tr>
+                  <td> Civiles y Politicos </td>
+                  <td> tortura </td>
+                  <td> <a href="url">Eliminar</a> </td>
+                </tr>
+
+                <tr>
+                  <td> Civiles y Politicos </td>
+                  <td> Amenazas </td>
+                  <td> <a href="url">Eliminar</a> </td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
-    </div>
-  </ng-container>
-</form>
+        <!-- / PRIMER FILA -->
+
+
+        <!-- SEGUNDA FILA -->
+        <div class="form-row">
+          <div class="col-md-3 mb-3" >
+            <label for="validationCustom03"> <strong> Hechos violatorios: </strong></label>
+
+          </div>
+        </div>
+        <!-- / SEGUNDA FILA -->
+
+        <!-- TERCER FILA -->
+        <div class="form-row" >
+          <div class="col-md-5 mb-5">
+            <input type="checkbox" > Maltrato
+            <br>
+            <input type="checkbox" > Tortura
+            <br>
+            <input type="checkbox" > Trato Crueles, inhumanos y degradantes
+            <br>
+            <input type="checkbox" > Uso excesivo y desproporcionado de la fuerza
+            <br>
+            <input type="checkbox" > Amenazas
+            <br>
+            <input type="checkbox" > Desaparción forzada
+            <br>
+            <input type="checkbox" > Acoso Escolar (bullying)
+            <br>
+            <input type="checkbox" > Violencia fisica
+            <br>
+            <input type="checkbox" > Violencia Sexual
+            <br>
+            <input type="checkbox" > Violencia psicológica
+            <br>
+            <input type="checkbox" > Violencia económica
+
+          </div>
+          <div class="col-md-7 mb-7">
+            <fieldset>
+              <legend>Que tipo de acción amerita esta solicitud</legend>
+              <select class="form-control" id="txttip" formControlName="id_muni2"
+              required>
+             <option value="1">Orientación </option>
+           </select>
+           <input type="text" id="fname" name="fname" placeholder="Investigación" class="form-control">
+             </fieldset>
+          </div>
+        </div>
+        <!-- / TERCER FILA -->
+
+  </div>
+</div>

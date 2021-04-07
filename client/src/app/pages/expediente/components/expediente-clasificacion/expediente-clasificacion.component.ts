@@ -26,9 +26,9 @@ export class ExpedienteClasificacionComponent implements OnInit {
     private ECservice: ClasificacionDerechoService,
     private formBuilder: FormBuilder,
   ) {
-    this.form = this.formBuilder.group({
-      ClasificacionDerechos: new FormArray([])
-    });
+    // this.form = this.formBuilder.group({
+    //   ClasificacionDerechos: new FormArray([])
+    // });
 
   }
 
@@ -40,18 +40,18 @@ export class ExpedienteClasificacionComponent implements OnInit {
   submit() {}
 
 
-  private buildForm(data: any): FormGroup {
-    return new FormGroup({
-      id_clasificacion_derecho : new FormControl({
-        value: data?.id_clasificacion_derecho
-      }, []),
-      id_expediente: new FormControl({
-        value: data?.id_expediente
+  // private buildForm(data: any): FormGroup {
+  //   return new FormGroup({
+  //     id_clasificacion_derecho : new FormControl({
+  //       value: data?.id_clasificacion_derecho
+  //     }, []),
+  //     id_expediente: new FormControl({
+  //       value: data?.id_expediente
 
-      }, []),
+  //     }, []),
 
-    }, {});
-  }
+  //   }, {});
+  // }
 
 
   getCalificacionDerecho() {
@@ -76,8 +76,8 @@ export class ExpedienteClasificacionComponent implements OnInit {
   getCalificacionChildren(parent){
     let ArrayParent = this.listCaliDere.filter(x => x.id_clasificacion_derecho == parent );
     console.log(ArrayParent[0].children);
-    (<FormArray>this.form.get('ClasificacionDerechos')).push(this.buildForm( ArrayParent[0].children));
-    return ArrayParent[0].children;
+    // (<FormArray>this.form.get('ClasificacionDerechos')).push(this.buildForm( ArrayParent[0].children));
+    // return ArrayParent[0].children;
   }
 
 }
