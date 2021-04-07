@@ -14,6 +14,10 @@ const routes: Routes = [
         path: 'solicitud',
         loadChildren: () => import('./solicitud/solicitud.module').then(m => m.SolicitudModule)
       },
+      {
+        path: 'revision-solicitud',
+        loadChildren: () => import('./revision-solicitudes/revision-solicitudes.module').then(m => m.RevisionSolicitudesModule)
+      },
     ]
   }
 ];
