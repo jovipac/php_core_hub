@@ -52,6 +52,22 @@ class ComunidadLinguisticaController extends ApiController
         ]);
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\ComunidadLinguistica  $comunidad_linguistica
+     * @return \Illuminate\Http\Response
+     */
+    public function show(ComunidadLinguistica $comunidad_linguistica)
+    {
+        return $this->apiResponse(
+            [
+                'success' => true,
+                'message' => "Comunidad linguistica encontrada con exito",
+                'result' => $comunidad_linguistica
+            ]
+        );
+    }
 
     /**
      * Update the specified resource in storage.

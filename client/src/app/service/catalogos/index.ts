@@ -8,6 +8,8 @@ export * from './departamento.service';
 export * from './municipio.service';
 export * from './sexo.service';
 export * from './genero.service';
+export * from './etnia.service';
+export * from './comunidad-linguistica.service';
 export * from './tipo-vinculacion.service';
 export * from './tipo-direccion.service';
 export * from './via.service';
