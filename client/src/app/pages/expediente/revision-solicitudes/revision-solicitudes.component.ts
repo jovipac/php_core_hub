@@ -26,11 +26,11 @@ export class RevisionSolicitudesComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading.show('dashboard');
-    this.listExpediente();
+    this.listExpediente({});
   }
 
-  listExpediente() {
-    this.solicitudService.getListExpediente()
+  listExpediente(dataSend: any) {
+    this.solicitudService.searchExpediente(dataSend)
     .pipe(first())
     .subscribe({
       next: (data:any) => {

@@ -164,7 +164,7 @@ Route::group([
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
     Route::get('expedientes/restore/{expedientes}', 'Api\ExpedienteController@restore')->name('expedientes.restore');
-    //Route::post('expedientes/search', 'Api\ExpedienteController@search')->name('expedientes.search');
+    Route::post('expedientes/search', 'Api\ExpedienteController@search')->name('expedientes.search');
 
     Route::resource('expediente-personas', 'Api\ExpedientePersonaController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'

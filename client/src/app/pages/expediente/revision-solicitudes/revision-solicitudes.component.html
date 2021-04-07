@@ -21,7 +21,7 @@
               <tr *ngFor="let solicitud of listSolicitudes">
                 <td>{{solicitud?.correlativo}}</td>
                 <td>{{solicitud?.nombre_prioridad}}</td>
-                <td>{{solicitud?.fecha_ingreso}}</td>
+                <td>{{solicitud?.fecha_ingreso | date:'mediumDate'}}</td>
                 <td>{{solicitud?.nombre_via}}</td>
                 <td>{{solicitud?.nombre_auxiliatura}}</td>
                 <td>{{solicitud?.nombre_funcionario}}</td>

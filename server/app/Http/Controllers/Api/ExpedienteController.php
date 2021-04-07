@@ -32,6 +32,47 @@ class ExpedienteController extends ApiController
     }
 
     /**
+     * Show the form for creating a new resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        $ExpedienteClasificacionDerecho = Expediente::query()
+        ->select('tt_expediente.id_expediente', 'tt_expediente.anio', 'tt_expediente.folio', 'tt_expediente.id_auxiliatura', 'tt_expediente.fecha_ingreso',
+            'tt_expediente.id_via', 'T01.nombre AS nombre_via',
+            'tt_expediente.id_motivo', 'T02.nombre AS nombre_motivo',
+            'tt_expediente.id_prioridad', 'T03.nombre AS nombre_prioridad',
+            'tt_expediente.id_dependencia', 'T04.nombre AS nombre_dependencia',
+            'tt_expediente.id_funcionario', 'T05.nombres AS nombres_funcionario', 'T05.apellidos AS nombres_apellidos',
+            'tt_expediente.id_auxiliatura', 'T06.nombre AS nombre_auxiliatura',
+            'tt_expediente.id_resultado', 'T07.nombre AS nombre_resultado',
+            'tt_expediente.observaciones', 'tt_expediente.id_visita'
+        )
+        ->leftJoin('tc_via AS T01', 'tt_expediente.id_via', 'T01.id_via')
+        ->leftJoin('tc_motivo AS T02', 'tt_expediente.id_motivo', 'T02.id_motivo')
+        ->leftJoin('tc_prioridad AS T03', 'tt_expediente.id_prioridad', 'T03.id_prioridad')
+        ->leftJoin('tc_dependencia AS T04', 'tt_expediente.id_dependencia', 'T04.id_dependencia')
+        ->leftJoin('tc_funcionario AS T05', 'tt_expediente.id_funcionario', 'T05.id_funcionario')
+        ->leftJoin('tc_auxiliatura AS T06', 'tt_expediente.id_auxiliatura', 'T06.id_auxiliatura')
+        ->leftJoin('tc_resultado AS T07', 'tt_expediente.id_resultado', 'T07.id_resultado');
+
+        if ( $request->has('id_expediente') && $request->filled('id_expediente') ) {
+            $ExpedienteClasificacionDerecho->where('id_expediente', $request->id_expediente);
+        }
+
+        return $this->apiResponse(
+            [
+                'success' => true,
+                'message' => "Clasificacion de derechos del expediente encontrado con exito",
+                'result' => $ExpedienteClasificacionDerecho->get()
+            ]
+        );
+
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
