@@ -84,6 +84,7 @@ export class MonitoreoVisitasComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(JSON.parse(sessionStorage.getItem('validate')));
     // MOTIVO 1 DENUNCIAS  ---- 2 VISISTA PERSONAL
     this.tipo = this.route.snapshot.params['id'];
 
@@ -254,7 +255,10 @@ export class MonitoreoVisitasComponent implements OnInit {
               "id_prioridad": visit.id_prioridad,
               "id_funcionario": visit.id_funcionario,
               "id_persona": visit.id_persona,
-              "id_auxiliatura": this.auxiliatura
+              "id_auxiliatura": this.auxiliatura,
+              "id_motivo": visit.id_motivo,
+              "id_dependencia": visit.id_dependencia
+
             }
 
             if (this.tipo === "1") {
