@@ -42,28 +42,28 @@ class EtniaController extends ApiController
             return $this->respondError($validator->errors(), 422);
         }
         $input = $request->all();
-        $etnia = Etnia::create($input);
+        $etnium = Etnia::create($input);
 
         return $this->respondCreated([
             'success' => true,
             'message' => "Clasificación de la etnia creado con exito",
-            'result' => $etnia
+            'result' => $etnium
         ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Etnia  $etnia
+     * @param  \App\Etnia  $etnium
      * @return \Illuminate\Http\Response
      */
-    public function show(Etnia $etnia)
+    public function show(Etnia $etnium)
     {
         return $this->apiResponse(
             [
                 'success' => true,
                 'message' => "Clasificación de la etnia encontrado",
-                'result' => $etnia
+                'result' => $etnium
             ]
         );
     }
@@ -73,10 +73,10 @@ class EtniaController extends ApiController
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Etnia  $etnia
+     * @param  \App\Etnia  $etnium
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Etnia $etnia)
+    public function update(Request $request, Etnia $etnium)
     {
         $validator = Validator::make($request->all(), [
             'nombre' => 'required|string',
@@ -86,24 +86,24 @@ class EtniaController extends ApiController
             return $this->respondError($validator->errors(), 422);
         }
 
-        $etnia->update($request->all());
+        $etnium->update($request->all());
 
         return $this->apiResponse([
             'success' => true,
             'message' => "Clasificación de la etnia actualizado con exito",
-            'result' => $etnia
+            'result' => $etnium
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Etnia  $etnia
+     * @param  \App\Etnia  $etnium
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Etnia $etnia)
+    public function destroy(Etnia $etnium)
     {
-        $etnia->delete();
+        $etnium->delete();
 
         return $this->respondSuccess('Clasificación de la etnia eliminado con exito');
     }
@@ -111,7 +111,7 @@ class EtniaController extends ApiController
         /**
      * Restore the specified resource from storage.
      *
-     * @param  \App\Etnia  $etnia
+     * @param  \App\Etnia  $etnium
      * @return \Illuminate\Http\Response
      */
     public function restore($id)
