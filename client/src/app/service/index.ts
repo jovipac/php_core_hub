@@ -1,3 +1,4 @@
+export * from './usuario.service';
 export * from './funcionarios.service';
 export * from './personas.service';
 export * from './persona-direccion.service';
