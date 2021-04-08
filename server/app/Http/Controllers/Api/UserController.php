@@ -125,4 +125,24 @@ class UserController extends ApiController
         return $this->respondSuccess('Usuario restaurado con exito');
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function trash(Request $request)
+    {
+        $users = User::onlyTrashed()
+            ->orderBy('deleted_at', 'desc')->get();
+
+        return $this->apiResponse(
+            [
+                'success' => true,
+                'message' => "Listado de usuarios eliminados",
+                'result' => $users
+            ]
+        );
+    }
+
 }

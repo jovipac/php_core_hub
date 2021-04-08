@@ -43,6 +43,7 @@ Route::group([
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
     Route::get('users/restore/{user}', 'Api\UserController@restore')->name('users.restore');
+    Route::post('users/trash', 'Api\UserController@trash')->name('users.trash');
 
     Route::resource('roles', 'Api\RolController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
