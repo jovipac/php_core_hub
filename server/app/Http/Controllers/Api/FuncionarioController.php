@@ -196,7 +196,10 @@ class FuncionarioController extends ApiController
     public function restore($id)
     {
         $funcionario = Funcionario::withTrashed()->findorfail($id);
+        $user = User::withTrashed()->where("id_funcionario", $funcionario->id_funcionario)->first();
+
         $funcionario->restore();
+        $user->restore();
 
         return $this->respondSuccess('Funcionario restaurada con exito');
     }
