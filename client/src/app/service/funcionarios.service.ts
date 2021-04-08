@@ -38,4 +38,8 @@ export class FuncionariosService {
     return this.httpClient.post(`${environment.host}funcionarios/trash`, data, getHeaders())
   }
 
+  restoreEmployees(id) {
+    return this.httpClient.get(`${environment.host}funcionarios/${id}`, getHeaders())
+  }
+
 }
