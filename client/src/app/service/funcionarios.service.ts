@@ -39,7 +39,7 @@ export class FuncionariosService {
   }
 
   restoreEmployees(id) {
-    return this.httpClient.get(`${environment.host}funcionarios/${id}`, getHeaders())
+    return this.httpClient.get(`${environment.host}funcionarios/restore/${id}`, getHeaders())
   }
 
 }

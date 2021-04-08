@@ -188,6 +188,20 @@ class FuncionarioController extends ApiController
     }
 
     /**
+     * Restore the specified resource from storage.
+     *
+     * @param  \App\Funcionario  $funcionario
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id)
+    {
+        $funcionario = Funcionario::withTrashed()->findorfail($id);
+        $funcionario->restore();
+
+        return $this->respondSuccess('Funcionario restaurada con exito');
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  \Illuminate\Http\Request  $request
