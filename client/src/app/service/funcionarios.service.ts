@@ -35,7 +35,7 @@ export class FuncionariosService {
   }
 
   getTrashEmployees() {
-    return this.httpClient.post(`${environment.host}funcionario/trash`, getHeaders())
+    return this.httpClient.post(`${environment.host}funcionarios/trash`, getHeaders())
   }
 
 }

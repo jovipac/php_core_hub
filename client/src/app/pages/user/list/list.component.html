@@ -8,7 +8,24 @@
             class="icofont icofont-plus-circle">
           </i>Nuevo usuario</button>
       </div>
-      <div class="table-responsive" >
+
+
+
+
+
+      <div class="table-responsive">
+        <form novalidate [formGroup]="SerchOficial"  >
+
+          <div class="col-lg-4">
+            <label for="validationCustom03">Estado de usuarios:</label>
+            <ng-select (change)="GetUser()" id="id_estado" [items]="liststates" #select bindLabel="nombre"
+              dropdownPosition="auto" bindValue="id_estado" labelForId="nombre"
+              placeholder="Seleccionar estado" [virtualScroll]="true" formControlName="id_estado" >
+            </ng-select>
+          </div>
+      </form>
+
+
         <div class="col-md-12" style="margin-bottom: 50px;">
           <table class="table  table-striped" id="list">
             <thead>
@@ -43,11 +60,16 @@
                     <div class="col">
                       <div dropdown class="d-inline-block">
                         <button class="btn btn-outline-primary btn-mini dropdown-toggle" id="dropdownBasic1"
-                        dropdownToggle >Acciones</button>
+                          dropdownToggle>Acciones</button>
                         <div *dropdownMenu aria-labelledby="dropdownBasic1" class="dropdown-menu">
-                          <li class="dropdown-item btn-mini" (click)="openModal(updateUser,user.id_funcionario); getOficial(user.id_funcionario)">Actualizar</li>
-                          <li class="dropdown-item btn-mini" (click)="openModal(addPermit , user.id_usuario); loadModuleAssigned(user.id_usuario)">Asignar permisos</li>
-                          <li class="dropdown-item btn-mini" (click)="deleteOficial(user.id_funcionario)">Inhabilitar</li>
+                          <li class="dropdown-item btn-mini"
+                            (click)="openModal(updateUser,user.id_funcionario); getOficial(user.id_funcionario)">
+                            Actualizar</li>
+                          <li class="dropdown-item btn-mini"
+                            (click)="openModal(addPermit , user.id_usuario); loadModuleAssigned(user.id_usuario)">
+                            Asignar permisos</li>
+                          <li class="dropdown-item btn-mini" (click)="deleteOficial(user.id_funcionario)">Inhabilitar
+                          </li>
                         </div>
                       </div>
                     </div>
@@ -79,21 +101,23 @@
             <div class="form-group">
               <label for="">* Código:</label>
               <input type="text" class="form-control" formControlName="codigo" placeholder="Código"
-              [ngClass]="{ 'is-invalid': SentPdhCode }" required>
+                [ngClass]="{ 'is-invalid': SentPdhCode }" required>
             </div>
           </div>
 
           <div class="col-md-3">
             <div class="form-group">
               <label for="">* Usuario:</label>
-              <input type="text" class="form-control" formControlName="username" placeholder="Usuario" [ngClass]="{ 'is-invalid': SentUsername }" required>
+              <input type="text" class="form-control" formControlName="username" placeholder="Usuario"
+                [ngClass]="{ 'is-invalid': SentUsername }" required>
             </div>
           </div>
 
           <div class="col-md-6">
             <div class="form-group">
               <label for="">* Correo electrónico:</label>
-              <input type="text" class="form-control" formControlName="email" placeholder="Correo electrónico" [ngClass]="{ 'is-invalid': SentEmail }" required>
+              <input type="text" class="form-control" formControlName="email" placeholder="Correo electrónico"
+                [ngClass]="{ 'is-invalid': SentEmail }" required>
             </div>
           </div>
 
@@ -136,7 +160,7 @@
           <div class="col-md-3">
             <div class="form-group">
               <label for="">* Perfil inicial:</label>
-              <select class="form-control" formControlName="id_rol" required >
+              <select class="form-control" formControlName="id_rol" required>
                 <option value="">Seleccionar</option>
                 <option *ngFor="let rol of listRol" value="{{rol.id_rol}}">{{rol.nombre}}</option>
               </select>
@@ -207,7 +231,7 @@
             <div class="form-group">
               <label for="">Código:</label>
               <input type="text" class="form-control" formControlName="codigo" placeholder="Código"
-               [ngClass]="{ 'is-invalid': SentPdhCode }" required>
+                [ngClass]="{ 'is-invalid': SentPdhCode }" required>
             </div>
           </div>
 
@@ -215,7 +239,7 @@
             <div class="form-group">
               <label for="">Usuario:</label>
               <input type="text" class="form-control" formControlName="username" placeholder="Usuario"
-              [ngClass]="{ 'is-invalid': SentPdhCode }" required>
+                [ngClass]="{ 'is-invalid': SentPdhCode }" required>
             </div>
           </div>
 
@@ -223,7 +247,7 @@
             <div class="form-group">
               <label for="">Correo electrónico:</label>
               <input type="text" class="form-control" formControlName="email" placeholder="Correo electrónico"
-              [ngClass]="{ 'is-invalid': SentPdhCode }" required>
+                [ngClass]="{ 'is-invalid': SentPdhCode }" required>
             </div>
           </div>
 

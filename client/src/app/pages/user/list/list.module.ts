@@ -8,6 +8,7 @@ import { SharedModule } from '../../../shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from "ngx-spinner";
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
     imports: [
@@ -18,7 +19,8 @@ import { NgxSpinnerModule } from "ngx-spinner";
         FormsModule,
         ReactiveFormsModule,
         ToastrModule.forRoot(), // ToastrModule added
-        NgxSpinnerModule
+        NgxSpinnerModule,
+        NgSelectModule
 
     ],
     bootstrap: [ListComponent],

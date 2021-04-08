@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
 import { ServicesService } from "../../../service/services.service";
+import {  FuncionariosService} from '../../../service';
 import { AuxiliaturaService, DependenciaService } from '../../../service/catalogos';
 import { FormGroup, Validators, FormBuilder } from "@angular/forms";
 import { ToastrService } from 'ngx-toastr';
@@ -59,6 +60,11 @@ interface rolAssigned {
   active: boolean
 }
 
+interface states {
+  id_estado: number,
+  nombre: string
+}
+
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
@@ -76,6 +82,7 @@ export class ListComponent implements OnInit {
   public listRol: Array<rol>;
   public createOficial: FormGroup;
   public updateOficial: FormGroup;
+  public SerchOficial: FormGroup;
   public message: Object = {};
   private codeOficial: number = 0;
   public codeAssigned: String = "";
@@ -83,6 +90,9 @@ export class ListComponent implements OnInit {
   public unassigned: Array<rolAssigned>;
   public assigned: Array<rolAssigned>;
   public codeModule: number = 0;
+
+
+
   public codeModuleUnassigned: number = 0;
   public assignedOne: boolean = true;
   public unassignedOne: boolean = true;
@@ -90,10 +100,13 @@ export class ListComponent implements OnInit {
   public SentUsername: boolean = false;
   public SentEmail: boolean = false;
   public SentPdhCode: boolean = false;
+  public liststates: Array<states>;
+
 
   constructor(
     private modalService: BsModalService,
     private service: ServicesService,
+    private funcionarioService: FuncionariosService,
     private auxiliaturaService: AuxiliaturaService,
     private dependenciaService: DependenciaService,
     private formBuilder: FormBuilder,
@@ -101,6 +114,7 @@ export class ListComponent implements OnInit {
     private spinner: NgxSpinnerService) {
     this.buildForm();
     this.buildFormUpdate();
+    this.buildFormSerch();
   }
 
   ngOnInit() {
@@ -109,6 +123,7 @@ export class ListComponent implements OnInit {
     this.getListDependecy();
     this.getListAuxiliary();
     this.getListRol();
+    this.getEstadosU();
   }
 
 
@@ -124,6 +139,12 @@ export class ListComponent implements OnInit {
       id_auxiliatura: ["", [Validators.required]],
       id_rol: ["1", [Validators.required]],
       borrado: ["", [Validators.required]]
+    });
+  }
+
+  private buildFormSerch() {
+    this.SerchOficial = this.formBuilder.group({
+      id_estado: ["", []]
     });
   }
 
@@ -563,6 +584,80 @@ export class ListComponent implements OnInit {
     this.SentUsername = false;
     this.SentEmail = false;
     this.SentPdhCode = false;
+  }
+
+  getEstadosU(){
+    let list = [ { id_estado: 1 , nombre: "Activo"  }, { id_estado: 0  , "nombre": "Inactivo"} ];
+    this.liststates = list;
+  }
+
+
+  getTrashEmployees() {
+    this.funcionarioService.getTrashEmployees().subscribe(res => {
+      let response: any = res;
+      console.log(response)
+      if (response.result.length > 0) {
+        this.listUsers = response.result;
+        $(document).ready(function () {
+          $('#list').DataTable({
+            dom: "Bfrtip",
+            buttons: [
+              {
+                extend: 'excel', className: 'btn btn-danger', exportOptions: {
+                  columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                }
+              }
+            ],
+            language: {
+              "sProcessing": "Procesando...",
+              "sLengthMenu": "Mostrar _MENU_ registros",
+              "sZeroRecords": "No se encontraron resultados",
+              "sEmptyTable": "Ningún dato disponible en esta tabla",
+              "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+              "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+              "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+              "sInfoPostFix": "",
+              "sSearch": "Buscar:",
+              "sUrl": "",
+              "sInfoThousands": ",",
+              "sLoadingRecords": "Cargando...",
+              "oPaginate": {
+                "sFirst": "Primero",
+                "sLast": "Último",
+                "sNext": "Siguiente",
+                "sPrevious": "Anterior"
+              },
+              "oAria": {
+                "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+              },
+              "buttons": {
+                "excel": "Descargar excel"
+              }
+            },
+            retrieve: true,
+            data: this.listUsers
+          });
+
+        });
+
+      } else {
+        this.listUsers = [];
+      }
+    }, err => {
+      console.log(err)
+    })
+  }
+
+
+  GetUser(){
+    let estado = this.SerchOficial.value.id_estado;
+
+    if(estado == 1){
+      this.getListOficial();
+    }else{
+      this.getTrashEmployees();
+    }
   }
 
 }
