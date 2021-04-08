@@ -34,8 +34,8 @@ export class FuncionariosService {
     return this.httpClient.delete(`${environment.host}funcionarios/${id}`, getHeaders())
   }
 
-  getTrashEmployees() {
-    return this.httpClient.post(`${environment.host}funcionarios/trash`, getHeaders())
+  getTrashEmployees(data: object = {}) {
+    return this.httpClient.post(`${environment.host}funcionarios/trash`, data, getHeaders())
   }
 
 }
