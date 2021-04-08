@@ -56,6 +56,8 @@ Route::group([
     Route::resource('funcionarios', 'Api\FuncionarioController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
+    Route::post('funcionarios/trash', 'Api\FuncionarioController@trash')->name('funcionarios.trash');
+
     Route::resource('dependencias', 'Api\DependenciaController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
