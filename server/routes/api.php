@@ -277,6 +277,10 @@ Route::group([
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
 
+    Route::resource('area-geografica', 'Api\AreageograficaController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+
 
 
 });
