@@ -115,41 +115,20 @@
           </div>
           <div class="col-md-3 mb-3">
             <input-label [requires]="true" [label]="'Etnia'" [id]="'txtEtnia'"></input-label>
-            <select class="form-control" id="txtEtnia" formControlName="id_etnia"
-              [ngClass]="displayErrorsCss('id_etnia')" required>
-              <option value="1">Ladino</option>
-              <option value="2" >Maya</option>
-              <option value="3">Garifuna</option>
-              <option value="4">Xinca</option>
-              <option value="5">Otro</option>
-              <option value="9">Ignorado</option>
-            </select>
+            <ng-select id="txtEtnia" [items]="listEtnia" #select bindLabel="nombre" dropdownPosition="auto"
+              bindValue="id_etnia" labelForId="txtEtnia" placeholder="Seleccionar un valor" [virtualScroll]="true"
+              formControlName="id_etnia" [ngClass]="displayErrorsCss('id_etnia')" (blur)="selectedDependency()" >
+            </ng-select>
             <div *ngIf="isHasErrors('id_etnia')" class="invalid-feedback">Seleccione un valor</div>
           </div>
-
-
           <div class="col-md-3 mb-3">
-            <input-label [requires]="true" [label]="'comunidad'" [id]="'txtComunidad'"></input-label>
-            <select class="form-control" id="txtComunidad" formControlName="id_comunidad"
-              [ngClass]="displayErrorsCss('id_comunidad')" required>
-              <option value="1">Achi</option>
-              <option value="2" >Akateka</option>
-              <option value="3">Awakateka</option>
-              <option value="4">Chalchiteka</option>
-              <option value="5">Ch’ortí</option>
-              <option value="6">Chuj</option>
-              <option value="7">Español</option>
-              <option value="8">Garifuna</option>
-              <option value="9">Itza’</option>
-              <option value="10">Ixil</option>
-              <option value="11">Jakalteka (popti)</option>
-              <option value="12">Kaqchikel</option>
-              <option value="13">K’iche’</option>
-            </select>
+            <input-label [requires]="true" [label]="'Comunidad'" [id]="'txtComunidad'"></input-label>
+            <ng-select id="txtComunidad" [items]="listComunidadLinguistica" #select bindLabel="nombre" dropdownPosition="auto"
+              bindValue="id_comunidad_linguistica" labelForId="txtComunidad" placeholder="Seleccionar un valor" [virtualScroll]="true"
+              formControlName="id_comunidad_linguistica" [ngClass]="displayErrorsCss('id_comunidad_linguistica')" >
+            </ng-select>
             <div *ngIf="isHasErrors('id_etnia')" class="invalid-feedback">Seleccione un valor</div>
           </div>
-
-
 
         </div>
 

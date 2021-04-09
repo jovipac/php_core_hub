@@ -23,6 +23,8 @@ class CreatePersonasTable extends Migration
             $table->string('email')->nullable();
             $table->string('telefono')->nullable();
             $table->string('codigo_casillero, 50')->nullable();
+            $table->integer('id_etnia')->nullable()->unsigned();
+            $table->integer('id_comunidad_linguistica')->nullable()->unsigned();
             $table->boolean('borrado')->default(0)->index();
             $table->timestamps();
             $table->softDeletes();

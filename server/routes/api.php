@@ -239,4 +239,16 @@ Route::group([
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
     Route::post('expediente-clas-derecho/search', 'Api\ExpedienteClasificacionDerechoController@search')->name('expediente-clas-derecho.search');
+
+    Route::resource('persona-discapacidad', 'Api\PersonaDiscapacidadController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+
+    Route::resource('estado-conyugal', 'Api\EstadoconyugalController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+
+    Route::resource('relacion-victima-agresor', 'Api\RelacionvicagreController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
 });
