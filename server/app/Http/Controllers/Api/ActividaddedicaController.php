@@ -1,12 +1,12 @@
 <?php
-namespace App\Http\Controllers\Api;
+
 
 use App\Http\Controllers\ApiController;
-use App\Models\Catalogs\ocupacion;
+use App\Models\Catalogs\actividaddedica;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class OcupacionController extends ApiController
+class ActividaddedicaController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -15,12 +15,12 @@ class OcupacionController extends ApiController
      */
     public function index()
     {
-        $ocupacion = ocupacion::all();
+        $actividaddedica = actividaddedica::all();
         return $this->apiResponse(
             [
                 'success' => true,
-                'message' => "Listado de ocupaciones",
-                'result' => $ocupacion
+                'message' => "Listado de actividades",
+                'result' => $actividaddedica
             ]
         );
     }
@@ -49,10 +49,10 @@ class OcupacionController extends ApiController
     /**
      * Display the specified resource.
      *
-     * @param  \App\ocupacion  $ocupacion
+     * @param  \App\actividaddedica  $actividaddedica
      * @return \Illuminate\Http\Response
      */
-    public function show(ocupacion $ocupacion)
+    public function show(actividaddedica $actividaddedica)
     {
         //
     }
@@ -60,10 +60,10 @@ class OcupacionController extends ApiController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\ocupacion  $ocupacion
+     * @param  \App\actividaddedica  $actividaddedica
      * @return \Illuminate\Http\Response
      */
-    public function edit(ocupacion $ocupacion)
+    public function edit(actividaddedica $actividaddedica)
     {
         //
     }
@@ -72,10 +72,10 @@ class OcupacionController extends ApiController
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\ocupacion  $ocupacion
+     * @param  \App\actividaddedica  $actividaddedica
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ocupacion $ocupacion)
+    public function update(Request $request, actividaddedica $actividaddedica)
     {
         //
     }
@@ -83,10 +83,10 @@ class OcupacionController extends ApiController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\ocupacion  $ocupacion
+     * @param  \App\actividaddedica  $actividaddedica
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ocupacion $ocupacion)
+    public function destroy(actividaddedica $actividaddedica)
     {
         //
     }

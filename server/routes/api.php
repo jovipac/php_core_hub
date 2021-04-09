@@ -259,4 +259,10 @@ Route::group([
     Route::resource('ocupacion', 'Api\OcupacionController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
+
+    Route::resource('actividad-dedica', 'Api\ActividaddedicaController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+
+
 });
