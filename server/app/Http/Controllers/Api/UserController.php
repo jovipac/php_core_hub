@@ -108,7 +108,7 @@ class UserController extends ApiController
     {
         $user->delete();
 
-        return $this->respondSuccess('Usuario eliminado con exito');
+        return $this->respondSuccess('Registro modificado con éxito');
     }
 
     /**
