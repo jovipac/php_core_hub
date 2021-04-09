@@ -24,6 +24,8 @@ class CreateExpedienteHechosTable extends Migration
             $table->text('hecho')->nullable();
             $table->text('peticion')->nullable();
             $table->text('prueba')->nullable();
+            $table->text('id_area_geografica')->nullable();
+            $table->integer('created_by')->nullable()->unsigned();
             $table->boolean('borrado')->default(0)->index();
             $table->integer('created_by')->nullable()->unsigned();
             $table->integer('updated_by')->nullable()->unsigned();
@@ -42,6 +44,10 @@ class CreateExpedienteHechosTable extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->foreign('id_municipio')->references('id_municipio')->on('tc_municipio')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+            $table->foreign('id_area_geografica')->references('id_area_geografica')->on('tc_area_geografica')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
