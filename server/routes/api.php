@@ -243,4 +243,8 @@ Route::group([
     Route::resource('persona-discapacidad', 'Api\PersonaDiscapacidadController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
+
+    Route::resource('estado-conyugal', 'Api\EstadoconyugalController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
 });
