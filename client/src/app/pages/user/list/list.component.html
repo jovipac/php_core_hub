@@ -53,10 +53,11 @@
                 <td>{{user.nombre_puesto}}</td>
                 <td>{{user.nombre_rol}}</td>
                 <td>{{user.email}}</td>
-                <td><span class="badge bg-primary">Activo</span></td>
+                <td *ngIf="estado == 1"  ><span class="badge bg-primary">Activo</span></td>
+                <td *ngIf="estado == 0"  ><span class="badge bg-primary">Inactivo</span></td>
                 <td>{{user.nombre_auxiliatura}}</td>
                 <td>
-                  <div class="row">
+                  <div class="row" *ngIf="estado == 1" >
                     <div class="col">
                       <div dropdown class="d-inline-block">
                         <button class="btn btn-outline-primary btn-mini dropdown-toggle" id="dropdownBasic1"
@@ -69,6 +70,20 @@
                             (click)="openModal(addPermit , user.id_usuario); loadModuleAssigned(user.id_usuario)">
                             Asignar permisos</li>
                           <li class="dropdown-item btn-mini" (click)="deleteOficial(user.id_funcionario)">Inhabilitar
+                          </li>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row" *ngIf="estado == 0" >
+                    <div class="col">
+                      <div dropdown class="d-inline-block">
+                        <button class="btn btn-outline-primary btn-mini dropdown-toggle" id="dropdownBasic1"
+                          dropdownToggle>Acciones</button>
+                        <div *dropdownMenu aria-labelledby="dropdownBasic1" class="dropdown-menu">
+
+                          <li class="dropdown-item btn-mini" (click)="restoreEmployees(user.id_funcionario)">Habilitar
                           </li>
                         </div>
                       </div>

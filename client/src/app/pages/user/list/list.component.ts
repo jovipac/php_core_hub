@@ -90,6 +90,7 @@ export class ListComponent implements OnInit {
   public unassigned: Array<rolAssigned>;
   public assigned: Array<rolAssigned>;
   public codeModule: number = 0;
+  public estado: number = 1;
 
 
 
@@ -256,6 +257,7 @@ export class ListComponent implements OnInit {
   }
   /* Function get list of oficial */
   getListOficial() {
+    $(document).ready(function () { $('#list').DataTable().destroy(); })
     this.service.getOficials().subscribe(res => {
       let response: any = res;
       console.log(response)
@@ -308,6 +310,7 @@ export class ListComponent implements OnInit {
         this.listUsers = [];
       }
     }, err => {
+      this.listUsers = [];
       console.log(err)
     })
   }
@@ -593,6 +596,7 @@ export class ListComponent implements OnInit {
 
 
   getTrashEmployees() {
+    $(document).ready(function () { $('#list').DataTable().destroy(); })
     this.funcionarioService.getTrashEmployees().subscribe(res => {
       let response: any = res;
       console.log(response)
@@ -603,7 +607,7 @@ export class ListComponent implements OnInit {
             dom: "Bfrtip",
             buttons: [
               {
-                extend: 'excel', className: 'btn btn-danger', exportOptions: {
+                extend: 'excel', className: 'btn btn-primary', exportOptions: {
                   columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
                 }
               }
@@ -645,6 +649,8 @@ export class ListComponent implements OnInit {
         this.listUsers = [];
       }
     }, err => {
+      this.listUsers = [];
+      this.toastr.warning( "No se pudo listar los usuarios inactivos", 'Listado de usuarios ')
       console.log(err)
     })
   }
@@ -652,12 +658,39 @@ export class ListComponent implements OnInit {
 
   GetUser(){
     let estado = this.SerchOficial.value.id_estado;
-
+    this.estado = estado;
     if(estado == 1){
+
       this.getListOficial();
     }else{
       this.getTrashEmployees();
     }
+  }
+
+
+  restoreEmployees(codeOficial) {
+    Swal.fire({
+      title: '¿Esta seguro?',
+      text: "Desea habilitar al funcionario!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si. Estoy seguro',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.funcionarioService.restoreEmployees(codeOficial).subscribe(res => {
+          let response: any = res;
+          this.toastr.success(response.message, 'Funcionarios')
+          $(document).ready(function () { $('#list').DataTable().destroy(); })
+          this.getTrashEmployees();
+
+        }, err => {
+          this.toastr.error('Error al habilitar al funcionario', 'Error')
+        })
+      }
+    })
   }
 
 }
