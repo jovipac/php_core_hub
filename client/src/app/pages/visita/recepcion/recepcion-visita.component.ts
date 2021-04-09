@@ -21,6 +21,7 @@ export class RecepcionVisitaComponent implements OnInit {
   public visitaForm: FormGroup;
   formStatus = new FormStatus();
   id: string;
+  id_persona: number;
   isAddMode: boolean;
   loading = false;
   submitted = false;
@@ -77,6 +78,7 @@ export class RecepcionVisitaComponent implements OnInit {
           .pipe(first())
           .subscribe({
             next: (data: any) => {
+              this.id_persona = data.result?.id_persona;
               return this.visitaForm.patchValue(data.result);
             },
             error: (error:any) => {
@@ -561,7 +563,13 @@ export class RecepcionVisitaComponent implements OnInit {
         id_estado: 2
       };
       this.visitaService.updateVisit(this.id, formValues)
-          .pipe(first())
+          .pipe(
+            first(),
+            switchMap((solicitud: any) => {console.log(solicitud);
+              return this.personaService.updatePersona(this.id_persona, formValues)
+              .pipe(first())
+            })
+          )
           .subscribe({
               next: (response: any) => {
                 this.toastr.success(response.message, 'Visitas')
