@@ -222,8 +222,8 @@ class VisitaController extends ApiController
             'entrada' => 'nullable|date',
             'salida' => 'nullable|date',
             'llamadas' => 'integer',
-            'id_dependencia' => 'integer',
-            'id_funcionario' => 'integer',
+            'id_dependencia' => 'nullable|integer',
+            'id_funcionario' => 'nullable|integer',
             'id_prioridad' => 'integer',
             'id_estado' => 'integer',
         ]);
