@@ -114,7 +114,7 @@
             <div *ngIf="isHasErrors('id_prioridad')" class="invalid-feedback">Seleccione un valor</div>
           </div>
           <div class="col-md-3 mb-3">
-            <input-label [requires]="true" [label]="'Etnia'" [id]="'txtEtnia'"></input-label>
+            <input-label  [label]="'Etnia'" [id]="'txtEtnia'"></input-label>
             <ng-select id="txtEtnia" [items]="listEtnia" #select bindLabel="nombre" dropdownPosition="auto"
               bindValue="id_etnia" labelForId="txtEtnia" placeholder="Seleccionar un valor" [virtualScroll]="true"
               formControlName="id_etnia" [ngClass]="displayErrorsCss('id_etnia')" (blur)="selectedDependency()" >
@@ -122,7 +122,7 @@
             <div *ngIf="isHasErrors('id_etnia')" class="invalid-feedback">Seleccione un valor</div>
           </div>
           <div class="col-md-3 mb-3">
-            <input-label [requires]="true" [label]="'Comunidad'" [id]="'txtComunidad'"></input-label>
+            <input-label  [label]="'Comunidad'" [id]="'txtComunidad'"></input-label>
             <ng-select id="txtComunidad" [items]="listComunidadLinguistica" #select bindLabel="nombre" dropdownPosition="auto"
               bindValue="id_comunidad_linguistica" labelForId="txtComunidad" placeholder="Seleccionar un valor" [virtualScroll]="true"
               formControlName="id_comunidad_linguistica" [ngClass]="displayErrorsCss('id_comunidad_linguistica')" >
@@ -171,6 +171,17 @@
               [ngClass]="displayErrorsCss('llamadas')">
             <div *ngIf="isHasErrors('llamadas')" class="invalid-feedback">
               <div *ngIf="f.llamadas.errors?.pattern">El numero de llamadas solo se aceptan digitos</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="col-md-3 mb-3">
+            <input-label [label]="'Institución en la que trabaja'" [id]="'txtInstiTrabaja'"></input-label>
+            <input type="text" class="form-control" id="txtInstiTrabaja" formControlName="institucion_trabaja" placeholder=""
+              [ngClass]="displayErrorsCss('institucion_trabaja')">
+            <div *ngIf="isHasErrors('institucion_trabaja')" class="invalid-feedback">
+              <div *ngIf="f.institucion_trabaja.errors?.pattern">El ingrese información valida</div>
             </div>
           </div>
         </div>

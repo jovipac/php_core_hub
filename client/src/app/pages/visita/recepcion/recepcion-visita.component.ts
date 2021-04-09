@@ -178,6 +178,13 @@ export class RecepcionVisitaComponent implements OnInit {
         disabled: false,
       }, []),
 
+      institucion_trabaja : new FormControl({
+        value: null,
+        disabled: false,
+      }, []),
+
+
+
       observaciones: new FormControl({
         value: '',
         disabled: false,
