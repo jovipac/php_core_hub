@@ -2,7 +2,9 @@ import { Component, ViewChild, Input, Output, EventEmitter, OnInit } from '@angu
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, FormArray, Validators, FormBuilder } from "@angular/forms";
 import { TipoVinculacionService, DocumentoIdentidadService, SexoService, GeneroService, TipoDireccionService } from '../../../../service/catalogos';
-import { DepartamentoService, MunicipioService } from '../../../../service/catalogos';
+import { DepartamentoService, MunicipioService, EtniaService, ComunidadLinguisticaService } from '../../../../service/catalogos';
+import { EstadoConyugalService, RelacionVictimaAgresorService, DiscapacidadPersonaService, TrabajoRemuneradoService } from '../../../../service/catalogos';
+import { OcupacionService, ActividadDedicaService, CondicionAlfabetismoService, EscolaridadService, TipoViolenciaService } from '../../../../service/catalogos';
 import { DocumentoIdentidadPersonaService, ExpedientePersonaService, PersonasService } from '../../../../service';
 import { ToastrService } from 'ngx-toastr';
 import { ExpedientePersona, DocumentoIdentidad, Sexo, Genero, TipoDireccion } from '../../../../shared/models';
@@ -46,6 +48,17 @@ export class ExpedientePersonaComponent implements OnInit {
   public listDepartamento: Array<Departamento>;
   public listMunicipio: Array<Municipio>;
   public listDepartamentoMunicipio: Array<Municipio>;
+  public listEtnia: Array<any>;
+  public listComunidadLinguistica: Array<any>;
+  public listEstadoConyugal: Array<any>;
+  public listRelacionVictimaAgresivo: Array<any>;
+  public listDiscapacidadPersona: Array<any>;
+  public listTrabajoRemunerado: Array<any>;
+  public listOcupacion: Array<any>;
+  public listActividadDedica: Array<any>;
+  public listCondicionAlfabetismo: Array<any>;
+  public listEscolaridad: Array<any>;
+  public listTipoViolencia: Array<any>;
 
   constructor(
     private route: ActivatedRoute,
@@ -60,6 +73,17 @@ export class ExpedientePersonaComponent implements OnInit {
     private personaService: PersonasService,
     private departamentoService: DepartamentoService,
     private municipioService: MunicipioService,
+    private etniaService: EtniaService,
+    private comunidadLinguisticaService: ComunidadLinguisticaService,
+    private estadoConyugalService: EstadoConyugalService,
+    private relacionVictimaAgresorService: RelacionVictimaAgresorService,
+    private discapacidadPersonaService: DiscapacidadPersonaService,
+    private trabajoRemuneradoService: TrabajoRemuneradoService,
+    private ocupacionService: OcupacionService,
+    private actividadDedicaService: ActividadDedicaService,
+    private condicionAlfabetismoService: CondicionAlfabetismoService,
+    private escolaridadService: EscolaridadService,
+    private tipoViolenciaService: TipoViolenciaService,
     private loading: NgxSpinnerService
   ) { }
 
@@ -75,6 +99,14 @@ export class ExpedientePersonaComponent implements OnInit {
     this.getListTipoDireccion();
     this.getListDepartamento();
     this.getListMunicipio();
+    this.getListEtnia();
+    this.getListComunidadLinguistica();
+    this.getListEstadoConyugal();
+    this.getListRelacionVictimaAgresor();
+    this.getListDiscapacidadPersona();
+    this.getListTrabajoRenumerado();
+    this.getListOcupacion();
+
 
     // Finalmente se llama la construccion del formulario
     this.buildForm();
@@ -482,6 +514,118 @@ export class ExpedientePersonaComponent implements OnInit {
           this.toastr.error(error.message);
         }
       });
+  }
+
+  getListEtnia() {
+    this.etniaService.getListEtnia()
+    .pipe(first())
+    .subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.listEtnia = response.result;
+        } else
+          this.toastr.error(response.message)
+      },
+      error: (error: HttpErrorResponse) => {
+        this.toastr.error(error.message);
+      }
+    });
+  }
+
+  getListComunidadLinguistica() {
+    this.comunidadLinguisticaService.getListComunidadLinguistica()
+    .pipe(first())
+    .subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.listComunidadLinguistica = response.result;
+        } else
+          this.toastr.error(response.message)
+      },
+      error: (error: HttpErrorResponse) => {
+        this.toastr.error(error.message);
+      }
+    });
+  }
+
+  getListEstadoConyugal() {
+    this.estadoConyugalService.getListEstadoConyugal()
+    .pipe(first())
+    .subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.listEstadoConyugal = response.result;
+        } else
+          this.toastr.error(response.message)
+      },
+      error: (error: HttpErrorResponse) => {
+        this.toastr.error(error.message);
+      }
+    });
+  }
+
+  getListRelacionVictimaAgresor() {
+    this.relacionVictimaAgresorService.getListRelacionVictimaAgresor()
+    .pipe(first())
+    .subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.listRelacionVictimaAgresivo = response.result;
+        } else
+          this.toastr.error(response.message)
+      },
+      error: (error: HttpErrorResponse) => {
+        this.toastr.error(error.message);
+      }
+    });
+  }
+
+  getListDiscapacidadPersona() {
+    this.discapacidadPersonaService.getListDiscapacidadPersona()
+    .pipe(first())
+    .subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.listDiscapacidadPersona = response.result;
+        } else
+          this.toastr.error(response.message)
+      },
+      error: (error: HttpErrorResponse) => {
+        this.toastr.error(error.message);
+      }
+    });
+  }
+
+  getListTrabajoRenumerado() {
+    this.trabajoRemuneradoService.getListTrabajoRemunerado()
+    .pipe(first())
+    .subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.listTrabajoRemunerado = response.result;
+        } else
+          this.toastr.error(response.message)
+      },
+      error: (error: HttpErrorResponse) => {
+        this.toastr.error(error.message);
+      }
+    });
+  }
+
+  getListOcupacion() {
+    this.ocupacionService.getListocupacion()
+    .pipe(first())
+    .subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.listOcupacion = response.result;
+        } else
+          this.toastr.error(response.message)
+      },
+      error: (error: HttpErrorResponse) => {
+        this.toastr.error(error.message);
+      }
+    });
   }
 
   selectedDepartamento(idx: number) {
