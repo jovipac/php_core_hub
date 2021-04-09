@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { AuxiliaturaService, DependenciaService, MotivoService, DocumentoIdentidadService, PrioridadService, SexoService, GeneroService } from '../../../service/catalogos';
+import { AuxiliaturaService, DependenciaService, MotivoService, DocumentoIdentidadService, PrioridadService } from '../../../service/catalogos';
+import { SexoService, GeneroService, EtniaService, ComunidadLinguisticaService } from '../../../service/catalogos';
 import { FuncionariosService, VisitasService, PersonasService } from '../../../service';
 import { DocumentoIdentidad, Prioridad, Sexo, Genero, Auxiliatura, Dependencia, Motivo, Funcionario } from '../../../shared/models';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -33,6 +34,8 @@ export class RecepcionVisitaComponent implements OnInit {
   public listAuxiliary: Array<Auxiliatura>;
   public listSex: Array<Sexo>;
   public listGenre: Array<Genero>;
+  public listEtnia: Array<any>;
+  public listComunidadLinguistica: Array<any>;
 
   constructor(
     private route: ActivatedRoute,
@@ -45,6 +48,8 @@ export class RecepcionVisitaComponent implements OnInit {
     private prioridadService: PrioridadService,
     private sexoService: SexoService,
     private generoService: GeneroService,
+    private etniaService: EtniaService,
+    private comunidadLinguisticaService: ComunidadLinguisticaService,
     private empleadoService: FuncionariosService,
     private visitaService: VisitasService,
     private personaService: PersonasService,
@@ -63,6 +68,9 @@ export class RecepcionVisitaComponent implements OnInit {
     this.getListDependecy();
     this.getListAuxiliary();
     this.getEmployees();
+    this.getListEtnia();
+    this.getListComunidadLinguistica();
+    this.getListGenre()
 
     if (!this.isAddMode) {
       this.visitaService.getVisit(this.id)
@@ -160,12 +168,11 @@ export class RecepcionVisitaComponent implements OnInit {
         disabled: false,
       }, []),
       id_etnia: new FormControl({
-        value: 0,
+        value: null,
         disabled: false,
       }, []),
-
-      id_comunidad: new FormControl({
-        value: 0,
+      id_comunidad_linguistica : new FormControl({
+        value: null,
         disabled: false,
       }, []),
 
@@ -291,7 +298,38 @@ export class RecepcionVisitaComponent implements OnInit {
         this.toastr.error(error.message);
       }
     });
+  }
 
+  getListEtnia() {
+    this.etniaService.getListEtnia()
+    .pipe(first())
+    .subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.listEtnia = response.result;
+        } else
+          this.toastr.error(response.message)
+      },
+      error: (error: HttpErrorResponse) => {
+        this.toastr.error(error.message);
+      }
+    });
+  }
+
+  getListComunidadLinguistica() {
+    this.comunidadLinguisticaService.getListComunidadLinguistica()
+    .pipe(first())
+    .subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.listComunidadLinguistica = response.result;
+        } else
+          this.toastr.error(response.message)
+      },
+      error: (error: HttpErrorResponse) => {
+        this.toastr.error(error.message);
+      }
+    });
   }
 
   getListReason() {
