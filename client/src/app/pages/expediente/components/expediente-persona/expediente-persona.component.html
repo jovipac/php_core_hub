@@ -227,8 +227,8 @@
         <div class="form-row">
           <div class="col-md-2 mb-3">
             <input-label [requires]="false" [label]="'Pueblo de Pertenencia'" [id]="'txtEtnia'"></input-label>
-            <ng-select id="txtEtnia" [items]="listDepartamento" #select bindLabel="nombre" dropdownPosition="auto"
-              bindValue="id_departamento" labelForId="txtEtnia" placeholder="Seleccionar o buscar" [virtualScroll]="true"
+            <ng-select id="txtEtnia" [items]="listEtnia" #select bindLabel="nombre" dropdownPosition="auto"
+              bindValue="id_etnia" labelForId="txtEtnia" placeholder="Seleccionar o buscar" [virtualScroll]="true"
               formControlName="id_etnia" [ngClass]="displayValidation(f.id_etnia.invalid)">
             </ng-select>
             <div [ngClass]="displayValidationMsg(f.id_etnia.valid)">
@@ -237,7 +237,7 @@
           </div>
           <div class="col-md-4 mb-3">
             <input-label [requires]="false" [label]="'Comunidad Linguistica'" [id]="'txtComunidadLinguistica'"></input-label>
-            <ng-select [items]="listDepartamentoMunicipio" #select bindLabel="nombre" dropdownPosition="auto" bindValue="id_municipio" labelForId="txtComunidadLinguistica"
+            <ng-select [items]="listComunidadLinguistica" #select bindLabel="nombre" dropdownPosition="auto" bindValue="id_comunidad_linguistica" labelForId="txtComunidadLinguistica"
               placeholder="Seleccionar o buscar" [virtualScroll]="true" formControlName="id_comunidad_linguistica" [ngClass]="displayValidation(f.id_comunidad_linguistica.invalid)">
             </ng-select>
             <div [ngClass]="displayValidationMsg(f.id_comunidad_linguistica.valid)">
@@ -247,7 +247,8 @@
           <div class="col-md-3 mb-3">
             <input-label [requires]="false" [label]="'¿Tiene alguna discapacidad?'" [id]="'txtDiscapacidad'"></input-label>
             <select class="form-control" id="txtDiscapacidad" formControlName="flag_discapacidad" [ngClass]="displayValidation(f.flag_discapacidad.invalid)">
-              <option *ngFor="let tipoDireccion of listTipoDireccion" value="{{tipoDireccion.id_tipo_direccion}}">{{tipoDireccion.nombre}}</option>
+              <option value="0">No</option>
+              <option value="1">Si</option>
             </select>
             <div [ngClass]="displayValidationMsg(f.flag_discapacidad.valid)">
               <div *ngIf="f.flag_discapacidad.errors?.required">El campo es requerido</div>
@@ -255,19 +256,20 @@
           </div>
           <div class="col-md-3 mb-3">
             <input-label [requires]="false" [label]="'Discapacidad'" [id]="'txtTipoDiscapacidad'"></input-label>
-            <ng-select [items]="listDepartamentoMunicipio" #select bindLabel="nombre" dropdownPosition="auto" bindValue="id_municipio" labelForId="txtTipoDiscapacidad"
-              placeholder="Seleccionar o buscar" [virtualScroll]="true" formControlName="id_tipo_discapacidad" [ngClass]="displayValidation(f.id_tipo_discapacidad.invalid)">
+            <ng-select [items]="listDiscapacidadPersona" #select bindLabel="nombre" dropdownPosition="auto" bindValue="id_discapacidad" labelForId="txtTipoDiscapacidad"
+              placeholder="Seleccionar o buscar" [virtualScroll]="true" formControlName="id_discapacidad" [ngClass]="displayValidation(f.id_discapacidad.invalid)">
             </ng-select>
-            <div [ngClass]="displayValidationMsg(f.id_tipo_discapacidad.valid)">
-              <div *ngIf="f.id_tipo_discapacidad.errors?.required">El campo es requerido</div>
+            <div [ngClass]="displayValidationMsg(f.id_discapacidad.valid)">
+              <div *ngIf="f.id_discapacidad.errors?.required">El campo es requerido</div>
             </div>
           </div>
         </div>
+
         <div class="form-row">
           <div class="col-md-3 mb-3">
             <input-label [requires]="false" [label]="'Estado conyugal'" [id]="'txtEstadoConyugal'"></input-label>
-            <ng-select id="txtEstadoConyugal" [items]="listSexo" #select bindLabel="nombre" dropdownPosition="auto"
-              bindValue="id_sexo" labelForId="txtEstadoConyugal" placeholder="Seleccionar o buscar" [virtualScroll]="true"
+            <ng-select id="txtEstadoConyugal" [items]="listEstadoConyugal" #select bindLabel="nombre" dropdownPosition="auto"
+              bindValue="id_estado_conyugal" labelForId="txtEstadoConyugal" placeholder="Seleccionar o buscar" [virtualScroll]="true"
               formControlName="id_estado_conyugal" [ngClass]="displayValidation(f.id_estado_conyugal.invalid)">
             </ng-select>
             <div [ngClass]="displayValidationMsg(f.id_estado_conyugal.valid)">
@@ -276,89 +278,63 @@
           </div>
           <div class="col-md-3 mb-3">
             <input-label [requires]="false" [label]="'Relacion victima agresor'" [id]="'txtRelacionVictimaAgresor'"></input-label>
-            <ng-select id="txtRelacionVictimaAgresor" [items]="listSexo" #select bindLabel="nombre" dropdownPosition="auto"
-              bindValue="id_sexo" labelForId="txtEstadoConyugal" placeholder="Seleccionar o buscar" [virtualScroll]="true"
+            <ng-select id="txtRelacionVictimaAgresor" [items]="listRelacionVictimaAgresivo" #select bindLabel="nombre" dropdownPosition="auto"
+              bindValue="id_relacion_vic_agre" labelForId="txtEstadoConyugal" placeholder="Seleccionar o buscar" [virtualScroll]="true"
               formControlName="id_relacion_vic_agre" [ngClass]="displayValidation(f.id_relacion_vic_agre.invalid)">
             </ng-select>
             <div [ngClass]="displayValidationMsg(f.id_relacion_vic_agre.valid)">
               <div *ngIf="f.id_relacion_vic_agre.errors?.required">El campo es requerido</div>
             </div>
           </div>
-
           <div class="col-md-3 mb-3">
-            <input-label  [label]="'Trabajo Remunerado'" [id]="'txttrabajo'"></input-label>
-            <select class="form-control" id="txttrabajo" formControlName="id_trabajo"
-               required>
-              <option value="1">Si (trabajo por un salario o ingresos) </option>
-            </select>
+            <input-label  [label]="'Trabajo Remunerado'" [id]="'txtTrabajoRemunerado'"></input-label>
+            <ng-select id="txtTrabajoRemunerado" [items]="listTrabajoRemunerado" #select bindLabel="nombre" dropdownPosition="auto"
+              bindValue="id_trabajo_remunerado" labelForId="txtTrabajoRemunerado" placeholder="Seleccionar o buscar" [virtualScroll]="true"
+              formControlName="id_trabajo_remunerado" [ngClass]="displayValidation(f.id_trabajo_remunerado.invalid)">
+            </ng-select>
+            <div [ngClass]="displayValidationMsg(f.id_trabajo_remunerado.valid)">
+              <div *ngIf="f.id_trabajo_remunerado.errors?.required">El campo es requerido</div>
+            </div>
           </div>
-
           <div class="col-md-3 mb-3">
-            <input-label  [label]="'Ocupación'" [id]="'txtocupacion'"></input-label>
-            <select class="form-control" id="txtocupacion" formControlName="id_ocupacion"
-               required>
-              <option value="1">Ocupación ignorada </option>
-            </select>
+            <input-label  [label]="'Ocupación'" [id]="'txtOcupacion'"></input-label>
+            <ng-select id="txtOcupacion" [items]="listOcupacion" #select bindLabel="nombre" dropdownPosition="auto"
+              bindValue="id_ocupacion" labelForId="txtOcupacion" placeholder="Seleccionar o buscar" [virtualScroll]="true"
+              formControlName="id_ocupacion" [ngClass]="displayValidation(f.id_ocupacion.invalid)">
+            </ng-select>
+            <div [ngClass]="displayValidationMsg(f.id_ocupacion.valid)">
+              <div *ngIf="f.id_ocupacion.errors?.required">El campo es requerido</div>
+            </div>
           </div>
-
-
         </div>
+
         <div class="form-row">
           <div class="col-md-3 mb-3">
             <input-label  [label]="'Actividad a la que se dedica'" [id]="'txtActi'"></input-label>
-            <select class="form-control" id="txtActi" formControlName="id_actividad"
-               required>
+            <select class="form-control" id="txtActi" formControlName="id_actividad_dedica">
               <option value="1">Que haceres del hogar </option>
             </select>
           </div>
-
           <div class="col-md-3 mb-3">
             <input-label  [label]="'Codición Alfabetismo'" [id]="'txtAlfa'"></input-label>
-            <select class="form-control" id="txtAlfa" formControlName="id_Alfa"
-               required>
+            <select class="form-control" id="txtAlfa" formControlName="id_condicion_alfabetismo">
               <option value="1">Alfabeta </option>
             </select>
           </div>
-
-
-
           <div class="col-md-3 mb-3">
-            <input-label  [label]="'Grado Escolaridad'" [id]="'txtgrado'"></input-label>
-            <select class="form-control" id="txtgrado" formControlName="id_grado"
-               required>
+            <input-label  [label]="'Grado Escolaridad'" [id]="'txtGradoEscolaridad'"></input-label>
+            <select class="form-control" id="txtGradoEscolaridad" formControlName="id_escolaridad">
               <option value="1">Ninguno </option>
             </select>
           </div>
-
-
           <div class="col-md-3 mb-3">
-            <input-label  [label]="'Departamento residencia'" [id]="'txtresidencia'"></input-label>
-            <select class="form-control" id="txtresidencia" formControlName="id_residencia"
-               required>
+            <input-label  [label]="'Tipo de violencia o agresion'" [id]="'txtTipoViolencia'"></input-label>
+            <select class="form-control" id="txtTipoViolencia" formControlName="id_tipo_violencia">
               <option value="1">Guatemala </option>
             </select>
           </div>
-
         </div>
 
-
-        <div class="form-row">
-          <div class="col-md-3 mb-3">
-            <input-label  [label]="'Municipio residencia'" [id]="'txtMunicipio'"></input-label>
-            <select class="form-control" id="txtMunicipio" formControlName="id_Municipio"
-               required>
-              <option value="1">San José Pinula </option>
-            </select>
-          </div>
-
-          <div class="col-md-3 mb-3">
-            <input-label  [label]="'Tipo de violencia o agresion'" [id]="'txtMtipoagre'"></input-label>
-            <select class="form-control" id="txtMtipoagre" formControlName="id_Mtipoagre"
-               required>
-              <option value="1">Física </option>
-            </select>
-          </div>
-        </div>
       </ng-container>
     </tab>
   </tabset>

@@ -225,27 +225,51 @@ export class ExpedientePersonaComponent implements OnInit {
       id_etnia: new FormControl({
         value: null,
         disabled: false,
-      }, [Validators.pattern("[0-9]+")]),
+      }, []),
       id_comunidad_linguistica: new FormControl({
         value: null,
         disabled: false,
-      }, [Validators.pattern("[0-9]+")]),
+      }, []),
       flag_discapacidad: new FormControl({
         value: null,
         disabled: false,
       }, [Validators.required]),
-      id_tipo_discapacidad: new FormControl({
+      id_discapacidad: new FormControl({
         value: null,
         disabled: false,
-      }, [Validators.pattern("[0-9]*")]),
+      }, []),
       id_estado_conyugal: new FormControl({
         value: null,
         disabled: false,
-      }, [Validators.pattern("[0-9]+")]),
+      }, []),
       id_relacion_vic_agre: new FormControl({
         value: null,
         disabled: false,
-      }, [Validators.pattern("[0-9]+")]),
+      }, []),
+      id_trabajo_remunerado: new FormControl({
+        value: null,
+        disabled: false,
+      }, []),
+      id_ocupacion: new FormControl({
+        value: null,
+        disabled: false,
+      }, []),
+      id_actividad_dedica: new FormControl({
+        value: null,
+        disabled: false,
+      }, []),
+      id_condicion_alfabetismo: new FormControl({
+        value: null,
+        disabled: false,
+      }, []),
+      id_escolaridad: new FormControl({
+        value: null,
+        disabled: false,
+      }, []),
+      id_tipo_violencia: new FormControl({
+        value: null,
+        disabled: false,
+      }, []),
 
     }, {});
   }
