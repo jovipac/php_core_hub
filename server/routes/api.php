@@ -255,4 +255,8 @@ Route::group([
     Route::resource('trabajo-remunerado', 'Api\TrabajoremuneradoController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
+
+    Route::resource('ocupacion', 'Api\OcupacionController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
 });
