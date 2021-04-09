@@ -14,6 +14,8 @@ export * from './tipo-vinculacion.service';
 export * from './tipo-direccion.service';
 export * from './via.service';
 export * from './resultado.service';
+export * from './estado-conyugal.service';
 export * from './tipo-area-lugar.service';
 export * from './clasificacion-derecho.service';
 export * from './clasificacion-plantilla.service';
+export * from './relacion-victima-agresor.service';
