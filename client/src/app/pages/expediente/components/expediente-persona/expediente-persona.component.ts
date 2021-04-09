@@ -106,6 +106,10 @@ export class ExpedientePersonaComponent implements OnInit {
     this.getListDiscapacidadPersona();
     this.getListTrabajoRenumerado();
     this.getListOcupacion();
+    this.getListActividadDedica();
+    this.getListCondicionAlfabetismo();
+    this.getListEscolaridad();
+    this.getListTipoViolencia();
 
 
     // Finalmente se llama la construccion del formulario
@@ -643,6 +647,70 @@ export class ExpedientePersonaComponent implements OnInit {
       next: (response: any) => {
         if (response.success) {
           this.listOcupacion = response.result;
+        } else
+          this.toastr.error(response.message)
+      },
+      error: (error: HttpErrorResponse) => {
+        this.toastr.error(error.message);
+      }
+    });
+  }
+
+  getListActividadDedica() {
+    this.actividadDedicaService.getListactividaddedica()
+    .pipe(first())
+    .subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.listActividadDedica = response.result;
+        } else
+          this.toastr.error(response.message)
+      },
+      error: (error: HttpErrorResponse) => {
+        this.toastr.error(error.message);
+      }
+    });
+  }
+
+  getListCondicionAlfabetismo() {
+    this.condicionAlfabetismoService.getListcondicionalfabetismo()
+    .pipe(first())
+    .subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.listCondicionAlfabetismo = response.result;
+        } else
+          this.toastr.error(response.message)
+      },
+      error: (error: HttpErrorResponse) => {
+        this.toastr.error(error.message);
+      }
+    });
+  }
+
+  getListEscolaridad() {
+    this.escolaridadService.getListescolaridad()
+    .pipe(first())
+    .subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.listEscolaridad = response.result;
+        } else
+          this.toastr.error(response.message)
+      },
+      error: (error: HttpErrorResponse) => {
+        this.toastr.error(error.message);
+      }
+    });
+  }
+
+  getListTipoViolencia() {
+    this.tipoViolenciaService.getListtipoviolencia()
+    .pipe(first())
+    .subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.listTipoViolencia = response.result;
         } else
           this.toastr.error(response.message)
       },

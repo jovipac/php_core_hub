@@ -237,8 +237,10 @@
           </div>
           <div class="col-md-4 mb-3">
             <input-label [requires]="false" [label]="'Comunidad Linguistica'" [id]="'txtComunidadLinguistica'"></input-label>
-            <ng-select [items]="listComunidadLinguistica" #select bindLabel="nombre" dropdownPosition="auto" bindValue="id_comunidad_linguistica" labelForId="txtComunidadLinguistica"
-              placeholder="Seleccionar o buscar" [virtualScroll]="true" formControlName="id_comunidad_linguistica" [ngClass]="displayValidation(f.id_comunidad_linguistica.invalid)">
+            <ng-select id="txtComunidadLinguistica" [items]="listComunidadLinguistica" #select bindLabel="nombre"
+              dropdownPosition="auto" bindValue="id_comunidad_linguistica" labelForId="txtComunidadLinguistica"
+              placeholder="Seleccionar o buscar" [virtualScroll]="true" formControlName="id_comunidad_linguistica"
+              [ngClass]="displayValidation(f.id_comunidad_linguistica.invalid)">
             </ng-select>
             <div [ngClass]="displayValidationMsg(f.id_comunidad_linguistica.valid)">
               <div *ngIf="f.id_comunidad_linguistica.errors?.required">El campo es requerido</div>
@@ -310,28 +312,44 @@
 
         <div class="form-row">
           <div class="col-md-3 mb-3">
-            <input-label  [label]="'Actividad a la que se dedica'" [id]="'txtActi'"></input-label>
-            <select class="form-control" id="txtActi" formControlName="id_actividad_dedica">
-              <option value="1">Que haceres del hogar </option>
-            </select>
+            <input-label  [label]="'Actividad a la que se dedica'" [id]="'txtActividadDedica'"></input-label>
+            <ng-select id="txtActividadDedica" [items]="listActividadDedica" #select bindLabel="nombre" dropdownPosition="auto"
+              bindValue="id_actividad_dedica" labelForId="txtActividadDedica" placeholder="Seleccionar o buscar" [virtualScroll]="true"
+              formControlName="id_actividad_dedica" [ngClass]="displayValidation(f.id_actividad_dedica.invalid)">
+            </ng-select>
+            <div [ngClass]="displayValidationMsg(f.id_actividad_dedica.valid)">
+              <div *ngIf="f.id_actividad_dedica.errors?.required">El campo es requerido</div>
+            </div>
           </div>
           <div class="col-md-3 mb-3">
-            <input-label  [label]="'Codición Alfabetismo'" [id]="'txtAlfa'"></input-label>
-            <select class="form-control" id="txtAlfa" formControlName="id_condicion_alfabetismo">
-              <option value="1">Alfabeta </option>
-            </select>
+            <input-label  [label]="'Codición Alfabetismo'" [id]="'txtCondicionAlfabetismo'"></input-label>
+            <ng-select id="txtCondicionAlfabetismo" [items]="listCondicionAlfabetismo" #select bindLabel="nombre" dropdownPosition="auto"
+              bindValue="id_condicion_alfabetismo" labelForId="txtCondicionAlfabetismo" placeholder="Seleccionar o buscar" [virtualScroll]="true"
+              formControlName="id_condicion_alfabetismo" [ngClass]="displayValidation(f.id_condicion_alfabetismo.invalid)">
+            </ng-select>
+            <div [ngClass]="displayValidationMsg(f.id_condicion_alfabetismo.valid)">
+              <div *ngIf="f.id_condicion_alfabetismo.errors?.required">El campo es requerido</div>
+            </div>
           </div>
           <div class="col-md-3 mb-3">
             <input-label  [label]="'Grado Escolaridad'" [id]="'txtGradoEscolaridad'"></input-label>
-            <select class="form-control" id="txtGradoEscolaridad" formControlName="id_escolaridad">
-              <option value="1">Ninguno </option>
-            </select>
+            <ng-select id="txtGradoEscolaridad" [items]="listEscolaridad" #select bindLabel="nombre" dropdownPosition="auto"
+              bindValue="id_escolaridad" labelForId="txtGradoEscolaridad" placeholder="Seleccionar o buscar" [virtualScroll]="true"
+              formControlName="id_escolaridad" [ngClass]="displayValidation(f.id_escolaridad.invalid)">
+            </ng-select>
+            <div [ngClass]="displayValidationMsg(f.id_escolaridad.valid)">
+              <div *ngIf="f.id_escolaridad.errors?.required">El campo es requerido</div>
+            </div>
           </div>
           <div class="col-md-3 mb-3">
             <input-label  [label]="'Tipo de violencia o agresion'" [id]="'txtTipoViolencia'"></input-label>
-            <select class="form-control" id="txtTipoViolencia" formControlName="id_tipo_violencia">
-              <option value="1">Guatemala </option>
-            </select>
+            <ng-select id="txtTipoViolencia" [items]="listTipoViolencia" #select bindLabel="nombre" dropdownPosition="auto"
+              bindValue="id_tipo_violencia" labelForId="txtTipoViolencia" placeholder="Seleccionar o buscar" [virtualScroll]="true"
+              formControlName="id_tipo_violencia" [ngClass]="displayValidation(f.id_tipo_violencia.invalid)">
+            </ng-select>
+            <div [ngClass]="displayValidationMsg(f.id_tipo_violencia.valid)">
+              <div *ngIf="f.id_tipo_violencia.errors?.required">El campo es requerido</div>
+            </div>
           </div>
         </div>
 
