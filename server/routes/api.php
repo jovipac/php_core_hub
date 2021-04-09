@@ -273,6 +273,10 @@ Route::group([
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
 
+    Route::resource('tipo-violencia', 'Api\TipoviolenciaController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+
 
 
 });
