@@ -269,6 +269,10 @@ Route::group([
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
 
+    Route::resource('escolaridad', 'Api\EscolaridadController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+
 
 
 });
