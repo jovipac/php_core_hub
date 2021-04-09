@@ -7,7 +7,7 @@ use App\Models\Catalogs\PersonaDiscapacidad;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class PersonaDiscapacidadController extends Controller
+class PersonaDiscapacidadController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -21,7 +21,7 @@ class PersonaDiscapacidadController extends Controller
             [
                 'success' => true,
                 'message' => "Listado de discapacidades",
-                'result' => $PersonaDiscapacidad
+                'result' => $personaDiscapacidad
             ]
         );
     }

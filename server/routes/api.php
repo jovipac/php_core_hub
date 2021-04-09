@@ -240,7 +240,7 @@ Route::group([
     ]]);
     Route::post('expediente-clas-derecho/search', 'Api\ExpedienteClasificacionDerechoController@search')->name('expediente-clas-derecho.search');
 
-    Route::resource('PersonaDiscapacidad', 'Api\PersonaDiscapacidadController', ['only' => [
+    Route::resource('persona-discapacidad', 'Api\PersonaDiscapacidadController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
 });
