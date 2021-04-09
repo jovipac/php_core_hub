@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormArray, Validators } from "@angular/forms";
 import { ActivatedRoute } from '@angular/router';
 import { ExpedienteHechoService, ExpedienteHechoArchivoService } from '../../../../service';
-import { TipoAreaLugarService, DepartamentoService, MunicipioService } from '../../../../service/catalogos';
+import { TipoAreaLugarService, DepartamentoService, MunicipioService , AreaGeograficaService } from '../../../../service/catalogos';
 import { TipoAreaLugar, Departamento, Municipio } from '../../../../shared/models';
 import { first } from 'rxjs/operators';
 import { format, isValid, parseISO } from 'date-fns';
@@ -36,6 +36,7 @@ export class ExpedienteHechoComponent implements OnInit {
   public listDepartamento: Array<Departamento>;
   public listMunicipio: Array<Municipio>;
   public listDepartamentoMunicipio: Array<Municipio>;
+  public listAreaGeografica: Array<any>;
 
   constructor(
     private route: ActivatedRoute,
@@ -44,6 +45,7 @@ export class ExpedienteHechoComponent implements OnInit {
     private expedienteHechoArchivoService: ExpedienteHechoArchivoService,
     private tipoAreaLugarService: TipoAreaLugarService,
     private departamentoService: DepartamentoService,
+    private areageograficaService: AreaGeograficaService,
     private municipioService: MunicipioService,
     private loading: NgxSpinnerService,
     private localeService: BsLocaleService
@@ -70,6 +72,7 @@ export class ExpedienteHechoComponent implements OnInit {
     this.getListTipoAreaLugar();
     this.getListDepartamento();
     this.getListMunicipio();
+    this.getListAreaGeografica();
 
     this.uploader.onBeforeUploadItem = (item) => {
       item.withCredentials = false;
@@ -166,6 +169,12 @@ export class ExpedienteHechoComponent implements OnInit {
         value: data?.id_municipio,
         disabled: false,
       }, [Validators.pattern("[0-9]+")]),
+      id_area_geografica: new FormControl({
+        value: data?.id_area_geografica,
+        disabled: false,
+      }, [Validators.pattern("[0-9]+")]),
+
+
       direccion: new FormControl({
         value: data?.direccion,
         disabled: false,
@@ -339,6 +348,22 @@ export class ExpedienteHechoComponent implements OnInit {
     const id_departamento = this.formHecho.get('hechos').value[id].id_departamento;
     this.listDepartamentoMunicipio = this.listMunicipio
       .filter((departamento: any) => departamento.id_departamento == id_departamento);
+  }
+
+  getListAreaGeografica() {
+    this.areageograficaService.getListareageografica()
+      .pipe(first())
+      .subscribe({
+        next: (response: any) => {
+          if (response.success) {
+            this.listAreaGeografica = response.result;
+          } else
+            this.toastr.error(response.message)
+        },
+        error: (error: HttpErrorResponse) => {
+          this.toastr.error(error.message);
+        }
+      });
   }
 
   private async createOrUpdateHecho() {

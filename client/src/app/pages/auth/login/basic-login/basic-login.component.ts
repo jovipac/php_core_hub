@@ -48,6 +48,7 @@ export class BasicLoginComponent implements OnInit {
               username: response.result.user.username,
               rol: defaultRol?.id_rol,
               id_auxiliatura: response.result.user.id_auxiliatura,
+              id_funcionario: response.result.user.id_funcionario,
               codes: JSON.stringify(dataMenu)
             }
 

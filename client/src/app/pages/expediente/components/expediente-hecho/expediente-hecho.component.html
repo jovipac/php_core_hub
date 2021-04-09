@@ -50,6 +50,17 @@
               <div *ngIf="hecho.get('id_municipio').errors?.pattern">Solo se aceptan digitos</div>
             </div>
           </div>
+          <div class="col-md-4 mb-4">
+            <input-label [requires]="false" [label]="'Area Geografica'" [id]="'txtarea'"></input-label>
+            <ng-select [items]="listAreaGeografica" #select bindLabel="nombre" dropdownPosition="auto" bindValue="id_area_geografica" labelForId="txtarea"
+              placeholder="Seleccionar o buscar" [virtualScroll]="true" formControlName="id_area_geografica" [ngClass]="displayValidation(hecho.get('id_area_geografica').invalid)">
+            </ng-select>
+            <div [ngClass]="displayValidationMsg(hecho.get('id_area_geografica').valid)">
+              <div *ngIf="hecho.get('id_area_geografica').errors?.required">El campo es requerido</div>
+              <div *ngIf="hecho.get('id_area_geografica').errors?.pattern">Solo se aceptan digitos</div>
+            </div>
+
+          </div>
         </div>
         <div class="form-row">
           <div class="col mb-3">

@@ -488,12 +488,20 @@ export class RecepcionVisitaComponent implements OnInit {
   }
 
   private createVisita() {
+    let VarFuncionario ;
+
+    if(this.visitaForm.value.id_funcionario === null){
+       VarFuncionario = JSON.parse(sessionStorage.getItem('validate')).id_funcionario;
+    }else{
+      VarFuncionario = this.visitaForm.value.id_funcionario;
+    }
 
     let formValues = {
       ...this.visitaForm.value,
       entrada: format(parseISO(new Date().toISOString()), 'yyyy-MM-dd HH:mm'),
       id_auxiliatura: JSON.parse(sessionStorage.getItem('validate')).id_auxiliatura,
-      id_estado: 1
+      id_estado: 1,
+      id_funcionario: VarFuncionario
     };
 
     if (formValues.id_persona === null || formValues.id_persona === '') {

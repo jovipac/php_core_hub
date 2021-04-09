@@ -124,32 +124,6 @@ export class ExpedienteEncabezadoComponent implements OnInit {
         disabled: false,
       }, []),
 
-      fecha_nacimiento: new FormControl({
-        value: null,
-        disabled: false,
-      }, []),
-
-      id_depto: new FormControl({
-        value: null,
-        disabled: false,
-      }, []),
-
-
-      id_muni: new FormControl({
-        value: null,
-        disabled: false,
-      }, []),
-
-
-      id_area: new FormControl({
-        value: null,
-        disabled: false,
-      }, []),
-
-
-
-
-
       observaciones: new FormControl({
           value: '',
           disabled: false,

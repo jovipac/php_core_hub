@@ -392,7 +392,7 @@ export class ListComponent implements OnInit {
   deleteOficial(codeOficial) {
     Swal.fire({
       title: '¿Esta seguro?',
-      text: "Despues de inhabilitar al funcionario, no se puede revertir la accion!",
+      text: "el usuario no podrá ingresar al sistema",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
