@@ -184,7 +184,8 @@ class FuncionarioController extends ApiController
         $findUser->delete();
         $funcionario->delete();
 
-        return $this->respondSuccess('Eliminado con exito');
+
+        return $this->respondSuccess('Registro modificado con éxito');
     }
 
     /**
