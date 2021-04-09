@@ -251,4 +251,8 @@ Route::group([
     Route::resource('relacion-victima-agresor', 'Api\RelacionvicagreController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
+
+    Route::resource('trabajo-remunerado', 'Api\TrabajoremuneradoController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
 });
