@@ -153,8 +153,7 @@ select {
   -moz-appearance: none;
   -ms-appearance: none;
   border: 0;
-  background: url(http://vision.gpoinnovate.com/ojgt/assets/styles/min/../../images/select.svg) #fff no-repeat 93%
-      center;
+  background: url(http://vision.gpoinnovate.com/ojgt/assets/styles/min/../../images/select.svg) #fff no-repeat 85% center;
   background-size: 15px;
   margin: 0;
   overflow: hidden;
@@ -471,93 +470,6 @@ textarea {
 .page-int.page-inbox .shelters-top .col.three select {
   border-bottom: solid 1px #767676;
   color: #767676;
-}
-header {
-  background: transparent linear-gradient(89deg, #15456f 0%, #3683e1 100%) 0% 0%;
-  height: 89px;
-}
-header .col.one {
-  padding: 32px 15px 0 15px;
-}
-header .col.one button {
-  background: transparent;
-  border: 0;
-  padding: 0 0 33px 0;
-}
-header .col.one button span {
-  width: 28px;
-  height: 3px;
-  background: #fff;
-  display: block;
-  margin: 0 0 5px 0;
-}
-header .col.one button span.three {
-  width: 18px;
-}
-header .col.two {
-  padding: 12px 15px 0 15px;
-}
-header .col.two img {
-  width: 94px;
-}
-header .col.three {
-  padding: 26px 15px 0 15px;
-}
-header .col.three ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  font-size: 12px;
-}
-header .col.three ul li {
-  float: left;
-  padding: 0 10px;
-  margin: 0 10px;
-  position: relative;
-}
-header .col.three ul li a {
-  color: #fff;
-}
-header .col.three ul li a span {
-  display: block;
-}
-header .col.three ul li a span.ico {
-  text-align: center;
-  margin: 0 0 5px 0;
-}
-header .col.three ul li a span.ico img {
-  margin: 0 auto;
-}
-header .col.three ul li::before {
-  content: "";
-  width: 1px;
-  background: #fff;
-  right: -10px;
-  height: 100%;
-  top: 0;
-  position: absolute;
-}
-header .col.four {
-  padding: 20px 15px 0 15px;
-  float: right;
-  position: absolute;
-  right: 0;
-  width: 320px;
-  top: 0;
-}
-header .col.four .colint {
-  color: #fff;
-  font-size: 14px;
-}
-header .col.four .colint.img img {
-  overflow: hidden;
-  border-radius: 50px;
-  -moz-border-radius: 75px;
-  -webkit-border-radius: 50px;
-}
-header .col.four .colint.oneint,
-header .col.four .colint.twoint {
-  padding: 12px 15px 15px 0;
 }
 .wrap-int {
   padding: 25px;
@@ -8539,3 +8451,19 @@ button.close {
   }
 }
 /*# sourceMappingURL=bootstrap.min.css.map */
+
+
+
+
+.bg-primary-menu {
+  background-color: #15456f!important;
+  color: #fff;
+}
+.nav-link2 {
+  color: #fff;
+}
+.colormenu {
+  background-color: transparent;
+  color: #fff;
+  border: none;
+}
