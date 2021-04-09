@@ -26,6 +26,8 @@ export * from './condicion-alfabetismo.service';
 export * from './escolaridad.service';
 export * from './tipo-violencia.service';
 export * from './actividad-dedica.service';
+export * from './area-geografica.service';
+
 
 
 
