@@ -265,4 +265,14 @@ Route::group([
     ]]);
 
 
+    Route::resource('condicion-alfabetismo', 'Api\CondicionalfabetismoController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+
+    Route::resource('escolaridad', 'Api\EscolaridadController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+
+
+
 });
