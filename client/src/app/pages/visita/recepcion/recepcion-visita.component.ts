@@ -560,7 +560,6 @@ export class RecepcionVisitaComponent implements OnInit {
         ...this.visitaForm.getRawValue(),
         entrada: format(new Date(this.visitaForm.value.entrada), 'yyyy-MM-dd HH:mm'),
         salida: format(new Date(), 'yyyy-MM-dd HH:mm'),
-        id_estado: 2
       };
       this.visitaService.updateVisit(this.id, formValues)
           .pipe(
