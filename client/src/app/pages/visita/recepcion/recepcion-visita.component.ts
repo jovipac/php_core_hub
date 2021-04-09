@@ -567,13 +567,18 @@ export class RecepcionVisitaComponent implements OnInit {
                 this.toastr.success(response.message, 'Visitas')
                 this.router.navigate(['../../'], { relativeTo: this.route });
               },
-              error: (error: HttpErrorResponse) => {
-                  const messages = extractErrorMessages(error);
+              error: (response: HttpErrorResponse) => {
+                if (Object.prototype.toString.call(response.error.message) === '[object Object]') {
+                  const messages = extractErrorMessages(response);
                   messages.forEach(propertyErrors => {
                     for (let message in propertyErrors) {
-                      this.toastr.error(propertyErrors[message], 'Visitas');
+                      this.toastr.error(propertyErrors[message], 'Solicitud');
                     }
                   });
+
+                } else {
+                  this.toastr.error(response.error.message)
+                }
                   this.loading = false;
               }
           });
