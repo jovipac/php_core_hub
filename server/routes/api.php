@@ -265,4 +265,10 @@ Route::group([
     ]]);
 
 
+    Route::resource('condicion-alfabetismo', 'Api\CondicionalfabetismoController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+
+
+
 });
