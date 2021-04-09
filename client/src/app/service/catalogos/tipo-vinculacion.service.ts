@@ -18,7 +18,7 @@ export class TipoVinculacionService {
     return this.httpClient.get(`${environment.host}tipo-vinculacion/${id}`, getHeaders())
   }
 
-  createTipoVinculacion(data): any {
+  createTipoVinculacion(data: any): any {
     return this.httpClient.post(`${environment.host}tipo-vinculacion`, data, getHeaders())
   }
 
