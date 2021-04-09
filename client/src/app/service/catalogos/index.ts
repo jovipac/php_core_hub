@@ -19,3 +19,4 @@ export * from './tipo-area-lugar.service';
 export * from './clasificacion-derecho.service';
 export * from './clasificacion-plantilla.service';
 export * from './relacion-victima-agresor.service';
+export * from './discapacidad-persona.service';
