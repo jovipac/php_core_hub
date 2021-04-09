@@ -247,4 +247,8 @@ Route::group([
     Route::resource('estado-conyugal', 'Api\EstadoconyugalController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
+
+    Route::resource('relacion-victima-agresor', 'Api\RelacionvicagreController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
 });
