@@ -1,72 +1,64 @@
-<header>
-  <div class="">
-    <div class="row">
-      <div class="col-md-1 col one">
-        <div class="dropdown">
-          <button   type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
-            aria-expanded="false">
-            <span></span>
-            <span></span>
-            <span class="three"></span>
-          </button>
-          <ul class="dropdown-menu multi-level" *ngFor="let menu of menuItems">
-            <li class="dropdown-submenu" *ngFor="let menus of menu.main">
-              <a class="dropdown-item" *ngIf="menus.children.length > 0 " href="#" >{{menus.name}}</a>
-              <a class="dropdown-item" *ngIf="menus.children.length == 0 && menus.name != 'Salir'" href="#" >{{menus.name}}</a>
-              <a class="dropdown-item" *ngIf="menus.children.length == 0 && menus.name == 'Salir'" (click)="logout()" >{{menus.name}}</a>
+<nav class="navbar navbar-expand-lg navbar-light bg-light bg-primary-menu">
+  <div class="col-md-1">
 
-              <ul class="dropdown-menu " *ngIf="menus.children.length > 0" >
-                <li class="dropdown-item" *ngFor="let item of menus.children" >
 
-                  <a *ngIf="item.params" [routerLink]="[menus.state,item.state, item.params]">{{item.name}} </a>
-                  <a *ngIf="!item.params" [routerLink]="[menus.state,item.state]">{{item.name}} </a>
-                </li>
-              </ul>
 
+
+    <div class="dropdownss">
+      <button   type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="colormenu">
+        <br>
+        <i class="ti-menu"></i>
+      </button>
+      <ul class="dropdown-menu multi-level" *ngFor="let menu of menuItems">
+        <li class="dropdown-submenu" *ngFor="let menus of menu.main">
+          <a class="dropdown-item" *ngIf="menus.children.length > 0 " href="#" >{{menus.name}}</a>
+          <a class="dropdown-item" *ngIf="menus.children.length == 0 && menus.name != 'Salir'" href="#" >{{menus.name}}</a>
+          <a class="dropdown-item" *ngIf="menus.children.length == 0 && menus.name == 'Salir'" (click)="logout()" >{{menus.name}}</a>
+
+          <ul class="dropdown-menu " *ngIf="menus.children.length > 0" >
+            <li class="dropdown-item" *ngFor="let item of menus.children" >
+
+              <a *ngIf="item.params" [routerLink]="[menus.state,item.state, item.params]">{{item.name}} </a>
+              <a *ngIf="!item.params" [routerLink]="[menus.state,item.state]">{{item.name}} </a>
             </li>
           </ul>
-        </div>
 
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="col-md-5 text-left">
+    <!-- <h5>Sistema de Gestión de Denuncias - PDH</h5> -->
+
+    <a [routerLink]="['/dashboard']">
+      <img class="img-fluid" src="assets/images/pdh_images/logo_nadvar.png" >
+    </a>
+  </div>
+
+  <div class="col-md-6 text-right">
+    <div _ngcontent-rdr-c5="" class="btn-group dropdown-split-primary dropdown" ngbdropdown="">
+      <br>
+      <button _ngcontent-rdr-c5="" class="btn btn-primary" type="button">
+        <i _ngcontent-rdr-c5="" class="icofont icofont-user-alt-3"></i>
+        Bienvenido (a) :   <b> {{username | uppercase}}</b>
+      </button>
+      <button _ngcontent-rdr-c5="" aria-expanded="false" aria-haspopup="true"
+        class="btn btn-primary dropdown-toggle dropdown-toggle-split waves-effect waves-light dropdown-toggle"
+        data-toggle="dropdown" ngbdropdowntoggle="" type="button"><span _ngcontent-rdr-c5="" class="sr-only">Toggle
+          primary</span></button>
+      <div _ngcontent-rdr-c5="" class="dropdown-menu" ngbdropdownmenu="" x-placement="bottom-left"><a
+          _ngcontent-rdr-c5="" class="dropdown-item waves-effect waves-light" [routerLink]="['/login']">Cerrar Sesión</a>
       </div>
-      <div class="col-md-3 ">
-        <a [routerLink]="['/dashboard']">
-          <img class="image" src="assets/images/pdh_images/logo_nadvar.png" alt="" >
-        </a>
-      </div>
-      <div class="col-md-6 col three">
-        <ul>
-          <li>
-            <a href="#">
-              <span class="icon" style="width: 100%;text-align: center" ><img src="assets/icon/create_new_folder.svg" alt=""> </span>
-              <span class="text" style="width: 100%;text-align: center">Modulo 1 </span>
-            </a>
-          </li>
-          <li>
-            <a href="">
-              <span class="icon" style="width: 100%;text-align: center" >
-                <img src="assets/icon/search.svg" alt="">
-              </span>
-              <span class="text" style="width: 100%;text-align: center">Búsqueda</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-      <div class="col-md-2 col four">
-        <div class="row">
-          <div class="col-md-2 colint oneint">
-            <a href=""></a>
-          </div>
-          <div class="col-md-7 colint twoint">
-            {{username}}
-          </div>
-          <div>
-            <img class="avatar" src="assets/images/pdh_images/avatar.png" alt="">
-          </div>
-        </div>
-      </div>
+        
     </div>
   </div>
-</header>
+</nav>
+
+
+
+
 
 <div class="pcoded-main-container">
   <div class="pcoded-wrapper">
