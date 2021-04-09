@@ -20,3 +20,13 @@ export * from './clasificacion-derecho.service';
 export * from './clasificacion-plantilla.service';
 export * from './relacion-victima-agresor.service';
 export * from './discapacidad-persona.service';
+export * from './trabajo-remunerado.service';
+export * from './ocupacion.service';
+export * from './condicion-alfabetismo.service';
+export * from './escolaridad.service';
+export * from './tipo-violencia.service';
+export * from './actividad-dedica.service';
+
+
+
+
