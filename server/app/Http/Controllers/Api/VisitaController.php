@@ -252,4 +252,25 @@ class VisitaController extends ApiController
 
         return $this->respondSuccess('Registro de visita eliminado con exito');
     }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function trash(Request $request)
+    {
+        $users = Visita::onlyTrashed()
+            ->orderBy('deleted_at', 'desc')->get();
+
+        return $this->apiResponse(
+            [
+                'success' => true,
+                'message' => "Listado registro de visitas eliminados",
+                'result' => $users
+            ]
+        );
+    }
+
 }
