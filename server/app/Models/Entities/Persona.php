@@ -27,7 +27,10 @@ class Persona extends Model
      */
     protected $fillable = [
         'id_persona', 'nombres', 'apellidos', 'fecha_nacimiento', 'id_sexo', 'id_genero',
-        'email', 'telefono', 'codigo_casillero', 'id_etnia', 'id_comunidad_linguistica',
+        'email', 'telefono', 'codigo_casillero', 'institucion_trabaja',
+        'id_etnia', 'id_comunidad_linguistica', 'id_estado_conyugal', 'id_relacion_vic_agre',
+        'flag_discapacidad', 'id_discapacidad', 'id_trabajo_remunerado', 'id_ocupacion',
+        'id_actividad_dedica', 'id_condicion_alfabetismo', 'id_escolaridad', 'id_tipo_violencia',
         'direcciones'
     ];
 
