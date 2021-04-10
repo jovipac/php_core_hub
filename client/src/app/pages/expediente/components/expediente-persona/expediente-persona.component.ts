@@ -219,7 +219,7 @@ export class ExpedientePersonaComponent implements OnInit {
       id_tipo_vinculacion: new FormControl({
         value: null,
         disabled: false,
-      }, [Validators.pattern("[0-9]*")]),
+      }, [Validators.required]),
       codigo_casillero: new FormControl({
         value: null,
         disabled: false,

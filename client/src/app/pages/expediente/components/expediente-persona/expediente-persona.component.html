@@ -1,28 +1,13 @@
 <form action="javascript:" class="needs-validation" novalidate [formGroup]="personaForm" (ngSubmit)="onSubmit()" autocomplete="off" >
   <div class="form-row">
-    <div class="col-md-4 mb-3" >
+    <div class="col-md-4 mb-3">
       <input-label [requires]="true" [label]="'Tipo vinculación'" [id]="'txtTipoVinculacion'"></input-label>
-      <br>
-      <input type="checkbox" > Denunciante &nbsp;&nbsp;&nbsp;&nbsp;
-      <input type="checkbox" > Sindicado
-      <br>
-      <input type="checkbox" > Victima &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <input type="checkbox" > Ministerio Público
-      <br>
-      <input type="checkbox" > Abogado defensor
-
-    </div>
-
-    <div class="col-md-4 mb-3" *ngIf="0">
-
-
-      <input-label [requires]="true" [label]="'Tipo vinculación'" [id]="'txtTipoVinculacion'"></input-label>
-      <select class="form-control" id="txtTipoVinculacion" formControlName="id_tipo_vinculacion"
-        [ngClass]="displayErrorsCss('id_tipo_vinculacion')" required>
-        <option *ngFor="let tipoVinculacion of listTipoVinculacion" value="{{tipoVinculacion.id_tipo_vinculacion}}">{{tipoVinculacion.nombre}}</option>
-      </select>
-      <div *ngIf="isHasErrors('id_tipo_vinculacion')" class="invalid-feedback">
+      <ng-select [items]="listTipoVinculacion" #select bindLabel="nombre" dropdownPosition="auto" bindValue="id_tipo_vinculacion" labelForId="txtTipoVinculacion" [multiple]="false"
+        placeholder="Seleccionar o buscar" [virtualScroll]="true" formControlName="id_tipo_vinculacion" [ngClass]="displayValidation(f.id_tipo_vinculacion.invalid)">
+      </ng-select>
+      <div [ngClass]="displayValidationMsg(f.id_tipo_vinculacion.valid)">
         <div *ngIf="f.id_tipo_vinculacion.errors?.required">El campo es requerido</div>
+        <div *ngIf="f.id_tipo_vinculacion.errors?.pattern">Solo se aceptan digitos</div>
       </div>
     </div>
   </div>
