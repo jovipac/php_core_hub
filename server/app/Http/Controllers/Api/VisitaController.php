@@ -48,7 +48,8 @@ class VisitaController extends ApiController
                 'tt_visita.id_dependencia', 'T03.nombre AS nombre_dependencia',
                 'tt_visita.id_estado', 'T05.nombre AS nombre_estado',
                 'tt_visita.id_prioridad', 'T07.nombre AS nombre_prioridad',
-                'T04.nombres AS nombres_funcionario', 'T04.apellidos AS apellidos_funcionario'
+                'T04.nombres AS nombres_funcionario', 'T04.apellidos AS apellidos_funcionario' ,
+                'T01.institucion_trabaja', 'T01.id_etnia', 'T01.id_comunidad_linguistica'
                 )
                 ->join('tc_persona AS T01', 'tt_visita.id_persona', 'T01.id_persona')
                 ->join('tc_motivo AS T02', 'tt_visita.id_motivo', 'T02.id_motivo')
@@ -91,7 +92,8 @@ class VisitaController extends ApiController
                 'tt_visita.id_dependencia', 'T03.nombre AS nombre_dependencia',
                 'tt_visita.id_estado', 'T05.nombre AS nombre_estado',
                 'tt_visita.id_auxiliatura', 'T06.nombre AS nombre_auxiliatura', 'T07.nombre AS nombre_prioridad',
-                'T04.nombres AS nombres_funcionario', 'T04.apellidos AS apellidos_funcionario'
+                'T04.nombres AS nombres_funcionario', 'T04.apellidos AS apellidos_funcionario',
+                'T01.institucion_trabaja', 'T01.id_etnia', 'T01.id_comunidad_linguistica'
                 )
                 ->join('tc_persona AS T01', 'tt_visita.id_persona', 'T01.id_persona')
                 ->join('tc_motivo AS T02', 'tt_visita.id_motivo', 'T02.id_motivo')
@@ -178,7 +180,7 @@ class VisitaController extends ApiController
             'tt_visita.id_estado', 'T05.nombre AS nombre_estado',
             'tt_visita.id_auxiliatura', 'T06.nombre AS nombre_auxiliatura',
             'tt_visita.id_prioridad', 'T07.nombre AS nombre_prioridad',
-            'tt_visita.observaciones'
+            'tt_visita.observaciones' , 'T01.institucion_trabaja', 'T01.id_etnia', 'T01.id_comunidad_linguistica'
             )
             ->join('tc_persona AS T01', 'tt_visita.id_persona', 'T01.id_persona')
             ->join('tc_motivo AS T02', 'tt_visita.id_motivo', 'T02.id_motivo')
