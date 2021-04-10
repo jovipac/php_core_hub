@@ -29,7 +29,7 @@ class Visita extends Model
     protected $fillable = [
         'id_visita', 'id_persona', 'id_motivo', 'entrada', 'salida', 'llamadas', 'edad',
         'id_dependencia', 'id_funcionario', 'id_auxiliatura', 'id_estado', 'id_prioridad',
-        'observaciones' , 'institucion_trabaja'
+        'observaciones'
     ];
 
     /**

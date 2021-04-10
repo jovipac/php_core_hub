@@ -105,6 +105,7 @@ class PersonaController extends ApiController
             'id_sexo' => 'required|integer',
             'id_genero' => 'required|integer',
             'fecha_nacimiento' => 'date',
+            'institucion_trabaja' => 'string',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);

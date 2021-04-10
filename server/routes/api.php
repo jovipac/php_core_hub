@@ -53,6 +53,10 @@ Route::group([
     Route::resource('usuario-roles', 'Api\UsuarioRolController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
+    Route::get('usuario-roles/restore/{user}', 'Api\UsuarioRolController@restore')->name('UsuarioRol.restore');
+    Route::post('usuario-roles/trash', 'Api\UsuarioRolController@trash')->name('UsuarioRol.trash');
+
+
     Route::resource('funcionarios', 'Api\FuncionarioController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);

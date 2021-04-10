@@ -143,6 +143,7 @@ class VisitaController extends ApiController
             'id_auxiliatura' => 'required|integer',
             'id_prioridad' => 'required|integer',
             'id_estado' => 'nullable|integer',
+            'institucion_trabaja' => 'nullable|string',
             'observaciones' => 'nullable|string',
         ]);
         if ($validator->fails()) {

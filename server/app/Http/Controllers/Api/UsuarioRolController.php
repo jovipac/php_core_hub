@@ -102,6 +102,42 @@ class UsuarioRolController extends ApiController
     {
         $usuario_role->delete();
 
-        return $this->respondSuccess('Rol del usuario eliminado con exito');
+        return $this->respondSuccess('Rol del usuario dado de baja con exito');
     }
+
+    /**
+     * Restore the specified resource from storage.
+     *
+     * @param  \App\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id)
+    {
+        $usuariorol = UsuarioRol::withTrashed()->findorfail($id);
+        $usuariorol->restore();
+
+        return $this->respondSuccess('Rol restaurado con exito');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function trash(Request $request)
+    {
+        $UsuarioRol = UsuarioRol::onlyTrashed()
+            ->orderBy('deleted_at', 'desc')->get();
+
+        return $this->apiResponse(
+            [
+                'success' => true,
+                'message' => "Listado de usuarios eliminados",
+                'result' => $UsuarioRol
+            ]
+        );
+    }
+
+
 }
