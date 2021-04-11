@@ -116,9 +116,9 @@ class ExpedientePersonaController extends ApiController
     public function search(Request $request)
     {
         $query = Persona::query()
-            ->select('tc_persona.*', 'T01.*', 'T02.nombre AS nombre_tipo_vinculacion')
-            ->join('tt_expediente_persona AS T01', 'tc_persona.id_persona', 'T01.id_persona')
-            ->leftJoin('tc_tipo_vinculacion AS T02', 'T01.id_tipo_vinculacion', 'T02.id_tipo_vinculacion');
+            ->select('tc_persona.*', 'T01.*')
+            ->join('tt_expediente_persona AS T01', 'tc_persona.id_persona', 'T01.id_persona');
+
 
         if ( $request->has('id_expediente') && $request->filled('id_expediente') ) {
             $query->where('T01.id_expediente', $request->id_expediente);
@@ -128,6 +128,15 @@ class ExpedientePersonaController extends ApiController
         }
 
         $personas = $query->get()->map(function ($item) {
+            //Se extrae los ID de los tipos de vinculacion de la persona del expediente
+            $queryPersonaTipoVinculacion = ExpedientePersonaVinculacion::query()
+                ->select('tt_expediente_persona_vinculacion.id_expediente_persona_vinculacion', 'tt_expediente_persona_vinculacion.id_expediente_persona',
+                    'tt_expediente_persona_vinculacion.id_tipo_vinculacion','T01.nombre AS nombre_tipo_vinculacion')
+                ->leftJoin('tc_tipo_vinculacion AS T01', 'tt_expediente_persona_vinculacion.id_tipo_vinculacion', 'T01.id_tipo_vinculacion')
+                ->where('tt_expediente_persona_vinculacion.id_expediente_persona', $item['id_expediente_persona']);
+            $tipos_vinculacion = $queryPersonaTipoVinculacion->get()->all();
+            $item['id_tipo_vinculacion'] = $tipos_vinculacion;
+
             if ($item['flag_confidencial'] == true) {
                 $item['nombres'] = UtilsHelper::stringToCensor($item['nombres']);
                 $item['apellidos'] = UtilsHelper::stringToCensor($item['apellidos']);
