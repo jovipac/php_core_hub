@@ -46,4 +46,9 @@ class ExpedientePersona extends Model
         return $this->belongsToMany(Expediente::class, 'tt_expediente','id_persona','id_expediente','id_persona','id_expediente')->withTimestamps();
     }
 
+    public function tipos_vinculacion()
+    {
+        return $this->belongsToMany(ExpedientePersonaVinculacion::class, 'tt_expediente_persona_vinculacion','id_expediente_persona','id_tipo_vinculacion','id_expediente_persona','id_tipo_vinculacion')->withTimestamps();
+    }
+
 }

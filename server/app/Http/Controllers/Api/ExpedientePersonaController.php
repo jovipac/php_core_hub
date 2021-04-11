@@ -41,27 +41,22 @@ class ExpedientePersonaController extends ApiController
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $inputs = $request->except(['id_tipo_vinculacion']);
+        $validator = Validator::make($inputs, [
             'id_expediente' => 'required|integer',
             'id_persona' => 'required|integer',
             'id_documento_identidad' => 'nullable|integer',
-            'id_tipo_vinculacion' => [
-                'nullable',
-                'integer',
-                Rule::unique('tt_expediente_persona')->where(function ($query) use ($request) {
-                    return $query
-                        ->where('id_expediente', $request->id_expediente)
-                        ->where('id_persona', $request->id_persona)
-                        ->where('id_tipo_vinculacion', $request->id_tipo_vinculacion);
-                }),
-            ],
             'flag_confidencial' => 'boolean',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
         }
-        $input = $request->all();
-        $expedientePersona = ExpedientePersona::create($input);
+
+        $expedientePersona = ExpedientePersona::create($inputs);
+
+        if ($request->has('id_tipo_vinculacion') && $request->filled('id_tipo_vinculacion')) {
+            $expedientePersona->tipos_vinculacion()->sync($request->id_tipo_vinculacion);
+        }
 
         return $this->respondCreated([
             'success' => true,
@@ -145,18 +140,23 @@ class ExpedientePersonaController extends ApiController
      */
     public function update(Request $request, ExpedientePersona $expedientePersona)
     {
-        $validator = Validator::make($request->all(), [
+        $inputs = $request->except(['id_tipo_vinculacion']);
+
+        $validator = Validator::make($inputs, [
             'id_expediente' => 'required|integer',
             'id_persona' => 'required|integer',
             'id_documento_identidad' => 'nullable|integer',
-            'id_tipo_vinculacion' => 'required|integer',
             'flag_confidencial' => 'nullable|boolean',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
         }
 
-        $expedientePersona->update($request->all());
+        $expedientePersona->update($inputs);
+
+        if ($request->has('id_tipo_vinculacion') && $request->filled('id_tipo_vinculacion')) {
+            $expedientePersona->tipos_vinculacion()->sync($request->id_tipo_vinculacion);
+        }
 
         return $this->apiResponse([
             'success' => true,
