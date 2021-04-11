@@ -280,9 +280,16 @@ export class ExpedienteClasificacionComponent implements OnInit {
     }
     this.ECservice.search(data).subscribe(res => {
       let response: any = res;
-      console.log(response)
+
       if (response.result.length > 0) {
         this.listClasExpe = response.result;
+        if(this.listClasExpe === undefined){
+          this.listClasPos  =   this.listChildren
+        }
+        else{
+          const cmp = (x, y) => x.id_clasificacion_derecho === y.id_clasificacion_derecho;
+          this.listClasPos  = differenceWith(cmp, this.listChildren, this.listClasExpe ); //=> [{a: 1}, {a: 2}]
+        }
         $(document).ready(function () {
           $('#TableclasExpedienteAsig').DataTable({
             dom: "frtip",
