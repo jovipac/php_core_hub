@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\ApiController;
 use App\Models\ExpedientePersona;
 use App\Models\Entities\Persona;
+use App\Models\ExpedientePersonaVinculacion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 use App\Helpers\UtilsHelper;
+
 class ExpedientePersonaController extends ApiController
 {
     /**
@@ -73,7 +74,7 @@ class ExpedientePersonaController extends ApiController
      */
     public function show(ExpedientePersona $expedientePersona)
     {
-        $persona = Persona::query()
+        $query = Persona::query()
             ->select('tc_persona.*', 'T01.*', 'T02.nombre AS nombre_tipo_vinculacion',
                 'T01.id_documento_identidad', 'T03.identificador')
             ->join('tt_expediente_persona AS T01', 'tc_persona.id_persona', 'T01.id_persona')
@@ -85,11 +86,23 @@ class ExpedientePersonaController extends ApiController
             ->with('direcciones')
             ->where('T01.id_expediente_persona', $expedientePersona->id_expediente_persona);
 
+        //Se extrae los ID de los tipos de vinculacion de la persona del expediente
+        $queryPersonaTipoVinculacion = ExpedientePersonaVinculacion::query()
+            ->select('tt_expediente_persona_vinculacion.id_expediente_persona_vinculacion', 'tt_expediente_persona_vinculacion.id_expediente_persona',
+                'tt_expediente_persona_vinculacion.id_tipo_vinculacion','T01.nombre AS nombre_tipo_vinculacion')
+            ->leftJoin('tc_tipo_vinculacion AS T01', 'tt_expediente_persona_vinculacion.id_tipo_vinculacion', 'T01.id_tipo_vinculacion')
+            ->where('tt_expediente_persona_vinculacion.id_expediente_persona', $expedientePersona->id_expediente_persona);
+        $tipos_vinculacion = $queryPersonaTipoVinculacion->get()->all();
+        $persona = $query->first();
+
+        $persona['id_tipo_vinculacion'] = $tipos_vinculacion;
+
+
         return $this->apiResponse(
             [
                 'success' => true,
                 'message' => "Persona en el expediente encontrado",
-                'result' => $persona->first()
+                'result' => $persona
             ]
         );
     }
