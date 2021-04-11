@@ -1,106 +1,108 @@
-<div class="row">
-  <div class="col-sm-12">
+<form action="javascript:" class="needs-validation" novalidate [formGroup]="hechosform"
+  autocomplete="off">
+  <div class="row">
+    <div class="col-sm-12">
+
+      <!-- PRIMER FILA -->
+      <div class="form-row">
+        <div class="col-md-3 mb-3">
+            <div class="row">
+              <div class="form-row">
+                <div class="col-md-12 mb-12">
+                  <input-label [requires]="false" [label]="'Tipo de derecho'" [id]="'txtTipoDerecho'"></input-label>
+                  <select class="form-control" id="txtTipoDerecho" formControlName="id_clasificacion_derecho"
+                    [ngClass]="displayErrorsCss('id_clasificacion_derecho')" (change)="getCalificacionChildren()">
+                    <option *ngFor="let resultado of listCaliDere" value="{{resultado.id_clasificacion_derecho}}">
+                      {{resultado.nombre}}
+                    </option>
+                  </select>
+                  <div *ngIf="isHasErrors('id_clasificacion_derecho')" class="invalid-feedback">
+                    <div *ngIf="f.id_auxiliatura.errors?.required">El campo es requerido</div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="col-md-12 mb-12">
+                  <label for="validationCustom03"> <strong> {{titleDerecho}} </strong></label>
+                  <select class="form-control" id="txtTipoDerecho" formControlName="id_clasificacion_derecho_Add"
+                    [ngClass]="displayErrorsCss('id_clasificacion_derecho_Add')" >
+                    <option *ngFor="let resultado of listClasPos" value="{{resultado.id_clasificacion_derecho}}">
+                      {{resultado.nombre}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+        </div>
 
 
-        <!-- PRIMER FILA -->
-        <div class="form-row" >
-          <div class="col-md-3 mb-3">
-            <input-label [requires]="true" [label]="'Tipo de derecho'" [id]="'txttip'"></input-label>
-            <select class="form-control" id="txttip" formControlName="id_muni"
-               required>
-              <option value="1">Civiles y politicos </option>
+
+        <div class="col-md-2 mb-2">
+          <br>
+          <button class="btn btn-primary" (click)="addClasi()"><i class="fa fa-save"></i>Agregar</button>
+        </div>
+
+        <div class="col-md-7 mb-7">
+          <table class="table  table-striped" id="TableclasExpedienteAsig">
+            <thead>
+              <tr>
+                <th>Tipo de derecho</th>
+                <th>Hechos Violatorios</th>
+                <th>Opciones</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let clasifi of listClasExpe">
+                <td>{{clasifi.nombre_clasificacion_derecho_P }}</td>
+                <td>{{clasifi.nombre_clasificacion_derecho_H}}</td>
+
+
+                <td>
+
+                  <button class="btn btn-primary btn-icon" title="Quitar Clasificación" (click)="QuitClasi(clasifi)" ><i
+                    class="icofont icofont-location-arrow"></i></button>
+
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- / PRIMER FILA -->
+
+
+      <!-- SEGUNDA FILA -->
+      <div class="form-row">
+
+      </div>
+      <!-- / SEGUNDA FILA -->
+
+      <!-- TERCER FILA -->
+      <div class="form-row">
+        <div class="col-md-5 mb-5">
+        </div>
+        <div class="col-md-7 mb-7 ">
+          <fieldset>
+            <legend>Que tipo de acción amerita esta solicitud</legend>
+            <input-label [requires]="false" [label]="'Resultado'" [id]="'txtResultado'"></input-label>
+            <select class="form-control" id="txtResultado" formControlName="id_resultado"
+              [ngClass]="displayErrorsCss('id_resultado')">
+              <option *ngFor="let resultado of listResultado" value="{{resultado.id_resultado}}">{{resultado.nombre}}
+              </option>
             </select>
-            <input type="text" id="fname" name="fname" placeholder="Económicos Sociales y Cultural" class="form-control">
-          </div>
+            <div *ngIf="isHasErrors('id_resultado')" class="invalid-feedback">
+              <div *ngIf="f.id_auxiliatura.errors?.required">El campo es requerido</div>
+            </div>
 
-          <div class="col-md-2 mb-2">
-            <br>
-            <button class="btn btn-primary" type="submit" id="btnSave"><i class="fa fa-save"></i>Agregar</button>
-          </div>
-
-          <div class="col-md-7 mb-7">
-            <table class="table  table-striped" id="listMonitor">
-              <thead>
-                <tr>
-                  <th>Tipo de derecho</th>
-                  <th>Hechos Violatorios</th>
-                  <th>opciones</th>
-
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td> Civiles y Politicos </td>
-                  <td> Maltrato </td>
-                  <td> <a href="url">Eliminar</a> </td>
-                </tr>
-
-                <tr>
-                  <td> Civiles y Politicos </td>
-                  <td> tortura </td>
-                  <td> <a href="url">Eliminar</a> </td>
-                </tr>
-
-                <tr>
-                  <td> Civiles y Politicos </td>
-                  <td> Amenazas </td>
-                  <td> <a href="url">Eliminar</a> </td>
-                </tr>
-
-              </tbody>
-            </table>
-          </div>
+            <button class="btn btn-primary "  title="Atender usuario" (click)="UpdateAccion()" ><i
+              class="fa fa-save"></i> Guardar </button>
+          </fieldset>
         </div>
-        <!-- / PRIMER FILA -->
+      </div>
+      <!-- / TERCER FILA -->
 
-
-        <!-- SEGUNDA FILA -->
-        <div class="form-row">
-          <div class="col-md-3 mb-3" >
-            <label for="validationCustom03"> <strong> Hechos violatorios: </strong></label>
-
-          </div>
-        </div>
-        <!-- / SEGUNDA FILA -->
-
-        <!-- TERCER FILA -->
-        <div class="form-row" >
-          <div class="col-md-5 mb-5">
-            <input type="checkbox" > Maltrato
-            <br>
-            <input type="checkbox" > Tortura
-            <br>
-            <input type="checkbox" > Trato Crueles, inhumanos y degradantes
-            <br>
-            <input type="checkbox" > Uso excesivo y desproporcionado de la fuerza
-            <br>
-            <input type="checkbox" > Amenazas
-            <br>
-            <input type="checkbox" > Desaparción forzada
-            <br>
-            <input type="checkbox" > Acoso Escolar (bullying)
-            <br>
-            <input type="checkbox" > Violencia fisica
-            <br>
-            <input type="checkbox" > Violencia Sexual
-            <br>
-            <input type="checkbox" > Violencia psicológica
-            <br>
-            <input type="checkbox" > Violencia económica
-
-          </div>
-          <div class="col-md-7 mb-7">
-            <fieldset>
-              <legend>Que tipo de acción amerita esta solicitud</legend>
-              <select class="form-control" id="txttip" formControlName="id_muni2"
-              required>
-             <option value="1">Orientación </option>
-           </select>
-           <input type="text" id="fname" name="fname" placeholder="Investigación" class="form-control">
-             </fieldset>
-          </div>
-        </div>
-        <!-- / TERCER FILA -->
-
+    </div>
   </div>
-</div>
+</form>

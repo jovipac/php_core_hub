@@ -166,36 +166,22 @@
         <h5 class="card-title">Paso 4: Calificación de derechos</h5>
       </div>
       <div class="card-body">
-        <table class="table  table-striped" id="listMonitor">
-          <thead>
-            <tr>
-              <th>Tipo de derecho</th>
-              <th>Hechos Violatorios</th>
 
+          <table class="table  table-striped" id="TableclasExpediente">
+            <thead>
+              <tr>
+                <th>Tipo de derecho</th>
+                <th>Hechos Violatorios</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let clasifi of listClasExpe">
+                <td>{{clasifi.nombre_clasificacion_derecho_P }}</td>
+                <td>{{clasifi.nombre_clasificacion_derecho_H}}</td>
+              </tr>
+            </tbody>
+          </table>
 
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td> Civiles y Politicos </td>
-              <td> Maltrato </td>
-
-            </tr>
-
-            <tr>
-              <td> Civiles y Politicos </td>
-              <td> tortura </td>
-
-            </tr>
-
-            <tr>
-              <td> Civiles y Politicos </td>
-              <td> Amenazas </td>
-
-            </tr>
-
-          </tbody>
-        </table>
       </div>
       <div class="card-footer text-center">
         <div class="row align-items-center">
