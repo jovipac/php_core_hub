@@ -15,7 +15,7 @@ class CreateComunidadLinguisticasTable extends Migration
     {
         Schema::create('tc_comunidad_linguistica', function (Blueprint $table) {
             $table->increments('id_comunidad_linguistica');
-            $table->string('id_etnia')->unsigned();
+            $table->integer('id_etnia')->unsigned();
             $table->string('nombre');
             $table->string('descripcion')->nullable();
             $table->boolean('borrado')->default(0)->index();

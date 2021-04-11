@@ -180,6 +180,12 @@ Route::group([
     Route::get('expediente-personas/restore/{expediente-persona}', 'Api\ExpedientePersonaController@restore')->name('expediente-persona.restore');
     Route::post('expediente-personas/search', 'Api\ExpedientePersonaController@search')->name('expediente-persona.search');
 
+    Route::resource('expediente-persona-vinculacion', 'Api\ExpedientePersonaVinculacionController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+    Route::get('expediente-persona-vinculacion/restore/{expediente_persona_vinculacion}', 'Api\ExpedientePersonaVinculacionController@restore')->name('expediente-persona-vinculacion.restore');
+    Route::post('expediente-persona-vinculacion/search', 'Api\ExpedientePersonaVinculacionController@search')->name('expediente-persona-vinculacion.search');
+
     Route::resource('expediente-hechos', 'Api\ExpedienteHechoController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);

@@ -2,7 +2,7 @@
   <div class="form-row">
     <div class="col-md-4 mb-3">
       <input-label [requires]="true" [label]="'Tipo vinculación'" [id]="'txtTipoVinculacion'"></input-label>
-      <ng-select [items]="listTipoVinculacion" #select bindLabel="nombre" dropdownPosition="auto" bindValue="id_tipo_vinculacion" labelForId="txtTipoVinculacion" [multiple]="false"
+      <ng-select [items]="listTipoVinculacion" #select bindLabel="nombre" dropdownPosition="auto" bindValue="id_tipo_vinculacion" labelForId="txtTipoVinculacion" [multiple]="true"
         placeholder="Seleccionar o buscar" [virtualScroll]="true" formControlName="id_tipo_vinculacion" [ngClass]="displayValidation(f.id_tipo_vinculacion.invalid)">
       </ng-select>
       <div [ngClass]="displayValidationMsg(f.id_tipo_vinculacion.valid)">

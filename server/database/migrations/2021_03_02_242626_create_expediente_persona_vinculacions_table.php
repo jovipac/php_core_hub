@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateExpedientePersonasTable extends Migration
+class CreateExpedientePersonaVinculacionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateExpedientePersonasTable extends Migration
      */
     public function up()
     {
-        Schema::create('tt_expediente_persona', function (Blueprint $table) {
-            $table->increments('id_expediente_persona');
-            $table->integer('id_expediente')->unsigned();
-            $table->integer('id_persona')->unsigned();
-            $table->integer('id_documento_identidad')->nullable()->unsigned();
-            $table->boolean('flag_confidencial')->default(0);
+        Schema::create('tt_expediente_persona_vinculacion', function (Blueprint $table) {
+            $table->increments('id_expediente_persona_vinculacion');
+            $table->integer('id_expediente_persona')->unsigned();
+            $table->integer('id_tipo_vinculacion')->nullable()->unsigned();
             $table->boolean('borrado')->default(0)->index();
             $table->integer('created_by')->nullable()->unsigned();
             $table->integer('updated_by')->nullable()->unsigned();
@@ -27,16 +25,12 @@ class CreateExpedientePersonasTable extends Migration
             $table->softDeletes();
 
             //FOREIGN KEY CONSTRAINTS
-            $table->foreign('id_expediente')->references('id_expediente')
-                ->on('tt_expediente')
+            $table->foreign('id_expediente_persona')->references('id_expediente_persona')
+                ->on('tt_expediente_persona')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->foreign('id_persona')->references('id_persona')
-                ->on('tc_persona')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
-            $table->foreign('id_documento_identidad')->references('id_documento_identidad')
-                ->on('tc_documento_identidad')
+            $table->foreign('id_tipo_vinculacion')->references('id_tipo_vinculacion')
+                ->on('tc_tipo_vinculacion')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
@@ -60,6 +54,6 @@ class CreateExpedientePersonasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tt_expediente_persona');
+        Schema::dropIfExists('tt_expediente_persona_vinculacion');
     }
 }
