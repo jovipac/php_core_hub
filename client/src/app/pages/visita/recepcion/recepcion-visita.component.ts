@@ -181,9 +181,7 @@ export class RecepcionVisitaComponent implements OnInit {
       institucion_trabaja : new FormControl({
         value: null,
         disabled: false,
-      }, []),
-
-
+      }, [Validators.pattern(/^\S+[a-zA-ZÀ-ÿ0-9\-\s.,]*\S+$/)]),
 
       observaciones: new FormControl({
         value: '',

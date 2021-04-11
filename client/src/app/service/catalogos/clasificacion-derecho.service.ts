@@ -27,7 +27,11 @@ export class ClasificacionDerechoService {
   }
 
   deleteClasificacionDerecho(id: number) {
-    return this.httpClient.delete(`${environment.host}clasificacion-derecho/${id}`, getHeaders())
+    return this.httpClient.delete(`${environment.host}expediente-clasificacion-derechos/${id}`, getHeaders())
+  }
+
+  search(data: any){
+    return this.httpClient.post(`${environment.host}expediente-clasificacion-derechos/search` ,  data , getHeaders())
   }
 
 
