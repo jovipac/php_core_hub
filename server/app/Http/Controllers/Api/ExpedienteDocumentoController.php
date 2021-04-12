@@ -70,7 +70,7 @@ class ExpedienteDocumentoController extends ApiController
     {
         $validator = Validator::make($request->all(), [
             'id_expediente' => 'required|integer',
-            'id_motivo' => 'required|integer',
+            'id_plantilla_documento' => 'nullable|integer',
             'titulo' => 'nullable|string',
             'texto' => 'nullable|string',
         ]);
@@ -116,7 +116,7 @@ class ExpedienteDocumentoController extends ApiController
         $validator = Validator::make($request->all(), [
             'id_expediente_documento' => 'required|integer',
             'id_expediente' => 'nullable|integer',
-            'id_motivo' => 'nullable|integer',
+            'id_plantilla_documento' => 'nullable|integer',
             'titulo' => 'nullable|string',
             'texto' => 'nullable|string',
         ]);

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Catalogs;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Traits\SoftDeletesBoolean;
 use App\Http\Traits\DateTimeMutator;
 use App\Http\Traits\Userstamps;
 
-class ExpedienteDocumento extends Model
+class PlantillaDocumento extends Model
 {
     use SoftDeletesBoolean, Userstamps, DateTimeMutator;
 
@@ -19,8 +19,8 @@ class ExpedienteDocumento extends Model
      *
      * @var array
      */
-    protected $table = 'tt_expediente_documento';
-    protected $primaryKey = 'id_expediente_documento';
+    protected $table = 'tt_plantilla_documento';
+    protected $primaryKey = 'id_plantilla_documento';
 
     /**
      * The attributes that are mass assignable.
@@ -28,7 +28,7 @@ class ExpedienteDocumento extends Model
      * @var array
      */
     protected $fillable = [
-        'id_expediente_documento', 'id_expediente', 'id_plantilla_documento', 'titulo', 'texto', 'borrado'
+        'id_plantilla_documento', 'titulo', 'texto', 'id_clasificacion_plantilla'
     ];
 
     /**
@@ -37,12 +37,7 @@ class ExpedienteDocumento extends Model
      * @var array
      */
     protected $hidden = [
-        'created_by', 'updated_by', 'updated_at', 'deleted_by', 'deleted_at', 'borrado',
+        'borrado',
     ];
-
-    public function expediente()
-    {
-        return $this->belongsTo(Expediente::class, 'id_expediente', 'id_expediente');
-    }
 
 }
