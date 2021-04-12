@@ -222,8 +222,8 @@ export class ExpedienteClasificacionComponent implements OnInit {
     };
   }
 
-  addClasi(){
-
+  addClasi(event: Event) {
+    event.preventDefault();
     let data = {
       id_expediente:  this.id ,
       id_clasificacion_derecho :  this.hechosform.value.id_clasificacion_derecho_Add
@@ -327,6 +327,8 @@ export class ExpedienteClasificacionComponent implements OnInit {
 
         });
 
+      }else{
+        this.listClasExpe = [];
       }
     }, err => {
       console.log(err)
