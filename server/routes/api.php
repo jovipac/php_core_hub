@@ -204,6 +204,12 @@ Route::group([
     ]]);
     Route::post('expediente-clasificacion-derechos/search', 'Api\ExpedienteClasificacionDerechoController@search')->name('expediente-clasificacion-derecho.search');
 
+    Route::resource('expediente-comentario', 'Api\ExpedienteComentarioController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+    Route::get('expediente-comentario/restore/{expediente_comentario}', 'Api\ExpedienteComentarioController@restore')->name('expediente-comentario.restore');
+    Route::post('expediente-comentario/search', 'Api\ExpedienteComentarioController@search')->name('expediente-comentario.search');
+
     Route::resource('expediente-documentos', 'Api\ExpedienteDocumentoController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
