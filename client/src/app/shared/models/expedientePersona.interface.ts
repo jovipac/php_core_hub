@@ -3,7 +3,7 @@ export interface ExpedientePersona {
   id_expediente: number,
   id_persona: number,
   id_tipo_vinculacion: number,
-  nombre_tipo_vinculacion: string,
+  nombre_tipos_vinculacion: string,
   flag_confidencial: boolean,
   nombres: string
   apellidos: string,

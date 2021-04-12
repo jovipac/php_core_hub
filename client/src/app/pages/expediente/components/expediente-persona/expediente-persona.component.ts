@@ -125,7 +125,7 @@ export class ExpedientePersonaComponent implements OnInit {
             'id_documento_identidad': this.personaForm.get('id_documento_identidad').value,
             'identificador': searchText
           };
-          console.log(searchText);
+
           return this.documentoIdentidadPersonaService.searchDocumentoIdentidadPersona(dataSend)
         }),
         catchError((response: HttpErrorResponse) => {
@@ -402,6 +402,7 @@ export class ExpedientePersonaComponent implements OnInit {
             const personaFormateada = !isEmptyValue(persona) ? {
               ...persona,
               fecha_nacimiento: format(parseISO(new Date(persona.fecha_nacimiento).toISOString()), 'yyyy-MM-dd'),
+              id_tipo_vinculacion: !isEmptyValue(persona.id_tipo_vinculacion) ? persona.id_tipo_vinculacion.map( tipo_vinculacion => tipo_vinculacion.id_tipo_vinculacion) : [],
               nombres_completos: [
                 persona.nombres,
                 persona.apellidos
@@ -410,7 +411,7 @@ export class ExpedientePersonaComponent implements OnInit {
             } : {};
             this.id_persona = persona?.id_persona;
             this.personaForm.patchValue(personaFormateada);
-
+console.log(personaFormateada);
             if (isEmptyValue(persona?.direcciones)) {
               this.addDireccion({});
             } else {

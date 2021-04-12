@@ -118,13 +118,16 @@ export class SolicitudComponent implements OnInit {
     .subscribe({
       next: (data:any) => {
         const personasFormateadas = data.result
-        ? data.result.map((employee) => {
-          employee.nombres_completos = [
-            employee.nombres,
-            employee.apellidos
+        ? data.result.map((persona) => {
+          persona.nombres_completos = [
+            persona.nombres,
+            persona.apellidos
           ].filter(Boolean)
-          .join(" ");
-          return <ExpedientePersona>employee;
+          .join(" "),
+          persona.nombre_tipos_vinculacion = !isEmptyValue(persona.id_tipo_vinculacion) ?
+              persona.id_tipo_vinculacion.map( tipo_vinculacion => tipo_vinculacion.nombre_tipo_vinculacion)
+              .join(', ') : '';
+          return <ExpedientePersona>persona;
       }) : [];
 
         this.solicitudPersonas = personasFormateadas;
