@@ -14,5 +14,6 @@ export interface Expediente {
   nombre_resultado: string,
   id_auxiliatura: number,
   nombre_auxiliatura: string,
-  observaciones: string
+  observaciones: string,
+  id_estado_expediente: number
 }

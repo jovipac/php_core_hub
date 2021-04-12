@@ -34,6 +34,7 @@ export class SolicitudComponent implements OnInit {
   isAddMode: boolean;
   id_expediente_persona: number;
   id_expediente_documento: number;
+  id_estado : number;
   public solicitud: Expediente;
   private configNgbModal: object;
   public solicitudPersonas: Array<ExpedientePersona>;
@@ -44,6 +45,7 @@ export class SolicitudComponent implements OnInit {
   public listComment: Array<any>;
   public errorState: boolean = false;
   public formcomentarios: FormGroup;
+
   contComment: number;
 
   constructor(
@@ -95,6 +97,7 @@ export class SolicitudComponent implements OnInit {
               .join(" ")
           };
           this.solicitud = <Expediente>expediente;
+          this.id_estado =  this.solicitud.id_estado_expediente;
           this.loading.hide('dashboard');
         },
         error: (error:any) => {
