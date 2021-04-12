@@ -7,7 +7,7 @@ import { first } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { formatearCorrelativo } from '../../../shared/utils/helpers';
 import { CarouselConfig } from 'ngx-bootstrap/carousel';
-import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalService , BsModalRef } from 'ngx-bootstrap/modal';
 import { isValid, parseISO } from 'date-fns';
 import { isEmptyValue } from '../../../shared/utils';
 import { NgxSpinnerService } from "ngx-spinner";
@@ -15,6 +15,8 @@ import * as $ from 'jquery';
 import 'datatables.net';
 import 'datatables.net-dt';
 import "datatables.net-buttons/js/buttons.html5.js";
+import { FormGroup, Validators, FormBuilder } from "@angular/forms";
+
 
 @Component({
   selector: 'app-solicitud',
@@ -23,6 +25,7 @@ import "datatables.net-buttons/js/buttons.html5.js";
   providers: [ CarouselConfig ]
 })
 export class SolicitudComponent implements OnInit {
+  public modalRef: BsModalRef;
   private id: string;
   isAddMode: boolean;
   id_expediente_persona: number;
@@ -34,6 +37,8 @@ export class SolicitudComponent implements OnInit {
   public solicitudClasificacionDerechos: Array<ExpedienteClasificacionDerecho>;
   public solicitudDocumentos: Array<ExpedienteDocumento>;
   public listClasExpe: Array<any>;
+  public errorState: boolean = false;
+  public formcomentarios: FormGroup;
 
   constructor(
     private solicitudService: ExpedienteService,
@@ -47,7 +52,8 @@ export class SolicitudComponent implements OnInit {
     private toastr: ToastrService,
     private configNgbCarousel: CarouselConfig,
     private modalService: BsModalService,
-    private loading: NgxSpinnerService
+    private loading: NgxSpinnerService ,
+    private formBuilder: FormBuilder
   ) {
     this.configNgbModal = {
       class: 'modal-xl',
@@ -62,6 +68,7 @@ export class SolicitudComponent implements OnInit {
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
     this.isAddMode = !this.id;
+    this.buildFormComment();
 
     if (!this.isAddMode) {
       this.loading.show('dashboard');
@@ -96,6 +103,13 @@ export class SolicitudComponent implements OnInit {
       this.getClasificacionAsig();
     }
 
+  }
+
+  private buildFormComment() {
+    this.formcomentarios = this.formBuilder.group({
+      comentario: [""],
+      id_usuario: ["", ]
+    });
   }
 
   listExpedientePersonas(dataSend: any) {
@@ -286,6 +300,18 @@ export class SolicitudComponent implements OnInit {
       console.log(err)
     })
 
+  }
+
+  openModal(content, code) {
+    this.errorState = false;
+
+    this.modalRef = this.modalService
+      .show(content, { class: 'modal-xl', backdrop: 'static', keyboard: true });
+
+  }
+
+  closeModal(modalId?: number){
+    this.modalService.hide(modalId);
   }
 
 }
