@@ -15,13 +15,13 @@
             </div>
           </div>
           <div class="col-md-2 mb-3">
-            <input-label [requires]="false" [label]="'Tipo motivo'" [id]="'txtTipoMotivo'"></input-label>
-            <ng-select [items]="listMotivo" #select bindLabel="nombre" dropdownPosition="auto" bindValue="id_motivo" formControlName="id_motivo"
-              labelForId="txtTipoMotivo" placeholder="Seleccionar" [ngClass]="displayValidation(documento.get('id_motivo').invalid)" >
+            <input-label [requires]="false" [label]="'Plantilla'" [id]="'txtTipoMotivo'"></input-label>
+            <ng-select [items]="listMotivo" #select bindLabel="nombre" dropdownPosition="auto" bindValue="id_plantilla_documento" formControlName="id_plantilla_documento"
+              labelForId="txtTipoMotivo" placeholder="Seleccionar" [ngClass]="displayValidation(documento.get('id_plantilla_documento').invalid)" >
             </ng-select>
-            <div [ngClass]="displayValidationMsg(documento.get('id_motivo').valid)">
-              <div *ngIf="documento.get('id_motivo').errors?.required">El campo es requerido</div>
-              <div *ngIf="documento.get('id_motivo').errors?.pattern">Solo se aceptan digitos</div>
+            <div [ngClass]="displayValidationMsg(documento.get('id_plantilla_documento').valid)">
+              <div *ngIf="documento.get('id_plantilla_documento').errors?.required">El campo es requerido</div>
+              <div *ngIf="documento.get('id_plantilla_documento').errors?.pattern">Solo se aceptan digitos</div>
             </div>
           </div>
         </div>
