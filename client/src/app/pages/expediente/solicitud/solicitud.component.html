@@ -77,7 +77,7 @@
   <div class="col-sm-12">
     <div class="form-row">
       <div class="col-md-4 mb-4">
-        <button type="button" class="btn btn-outline-primary btn-mini" (click)="openModal(addcomment , 0);" >Comentarios <i> (1)</i>
+        <button type="button" class="btn btn-outline-primary btn-mini" (click)="openModal(addcomment , 0);" >Comentarios <i> ({{ contComment}})</i>
         </button>
       </div>
 
@@ -260,13 +260,39 @@
       </button>
     </div>
     <div class="modal-body">
-      <form novalidate [formGroup]="formcomentarios" (ngSubmit)="createNewOficial($event)">
-        <div class="row">
-          <div class="form-row">
-            <div class="col mb-12">
-              <input-label [label]="'Observaciones'" [id]="'txtObservaciones'"></input-label>
-              <textarea type="text" class="form-control" id="txtObservaciones" formControlName="comentarios" rows="3"></textarea>
-            </div>
+      <form novalidate [formGroup]="formcomentarios" (ngSubmit)="SaveComment()">
+        <div class="form-row">
+          <div class="col mb-12">
+            <input-label [label]="'Comentario'" [id]="'txtObservaciones'"></input-label>
+            <textarea type="text" class="form-control" id="comentario" formControlName="comentario" rows="3"></textarea>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="col mb-12" style="text-align: center">
+              <a href="javascript:" class="btn btn-sm btn-primary" (click)="SaveComment()">Guardar</a>
+          </div>
+        </div>
+
+
+        <div class="form-row">
+          <div class="col mb-12">
+            <table class="table  table-striped" id="tblComentarios" >
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Usuario</th>
+                  <th>Comentario</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let list of listComment">
+                  <td>{{list.fecha | date:'medium' }} </td>
+                  <td>{{list.username_created_by}}</td>
+                  <td>{{list.comentario}}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </form>
