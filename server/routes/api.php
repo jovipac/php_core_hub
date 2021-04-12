@@ -167,6 +167,11 @@ Route::group([
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
 
+    Route::resource('plantilla-documento', 'Api\PlantillaDocumentoController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+    Route::post('plantilla-documento/search', 'Api\PlantillaDocumentoController@search')->name('plantilla-documento.search');
+
     Route::resource('visitas', 'Api\VisitaController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);

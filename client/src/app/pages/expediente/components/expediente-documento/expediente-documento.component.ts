@@ -95,8 +95,8 @@ export class ExpedienteDocumentoComponent implements OnInit {
         value: data?.titulo,
         disabled: false,
       }, []),
-      id_motivo: new FormControl({
-        value: data?.id_motivo,
+      id_plantilla_documento: new FormControl({
+        value: data?.id_plantilla_documento,
         disabled: false,
       }, [Validators.pattern("[0-9]+")]),
       texto: new FormControl({
