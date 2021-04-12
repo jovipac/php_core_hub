@@ -16,7 +16,7 @@
           </div>
           <div class="col-md-2 mb-3">
             <input-label [requires]="false" [label]="'Plantilla'" [id]="'txtTipoMotivo'"></input-label>
-            <ng-select [items]="listMotivo" #select bindLabel="nombre" dropdownPosition="auto" bindValue="id_plantilla_documento" formControlName="id_plantilla_documento"
+            <ng-select [items]="listPlantillaDocumento" #select bindLabel="titulo" dropdownPosition="auto" bindValue="id_plantilla_documento" formControlName="id_plantilla_documento"
               labelForId="txtTipoMotivo" placeholder="Seleccionar" [ngClass]="displayValidation(documento.get('id_plantilla_documento').invalid)" >
             </ng-select>
             <div [ngClass]="displayValidationMsg(documento.get('id_plantilla_documento').valid)">

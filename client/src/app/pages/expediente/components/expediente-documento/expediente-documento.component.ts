@@ -1,8 +1,8 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormArray, Validators } from "@angular/forms";
 import { ExpedienteDocumentoService } from '../../../../service';
-import { MotivoService } from '../../../../service/catalogos';
-import { Motivo } from '../../../../shared/models';
+import { PlantillaDocumentoService } from '../../../../service/catalogos';
+import { PlantillaDocumento } from '../../../../shared/models';
 import { ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
@@ -26,12 +26,12 @@ export class ExpedienteDocumentoComponent implements OnInit {
   formDocumento: FormGroup;
   textEditorConfig: object;
 
-  public listMotivo: Array<Motivo>;
+  public listPlantillaDocumento: Array<any>;
 
   constructor(
     private route: ActivatedRoute,
     private toastr: ToastrService,
-    private motivoService: MotivoService,
+    private plantillaDocumentoService: PlantillaDocumentoService,
     private expedienteDocumentoService: ExpedienteDocumentoService,
     private loading: NgxSpinnerService,
   ) { }
@@ -41,7 +41,7 @@ export class ExpedienteDocumentoComponent implements OnInit {
     this.id_expediente = this.route.snapshot.params['id'];
     this.isAddMode = !this.id_expediente;
 
-    this.getListMotivo()
+    this.getListPlantillaDocumento()
 
     // Inicializacion del editor de texto
     this.textEditorConfig = {
@@ -134,13 +134,13 @@ export class ExpedienteDocumentoComponent implements OnInit {
 
   }
 
-  getListMotivo() {
-    this.motivoService.getListMotivo()
+  getListPlantillaDocumento() {
+    this.plantillaDocumentoService.getListPlantillaDocumento()
     .pipe(first())
     .subscribe({
       next: (response: any) => {
         if (response.success) {
-          this.listMotivo = response.result;
+          this.listPlantillaDocumento = response.result;
         } else
           this.toastr.error(response.message)
       },
