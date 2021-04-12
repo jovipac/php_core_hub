@@ -19,7 +19,7 @@ class PlantillaDocumento extends Model
      *
      * @var array
      */
-    protected $table = 'tt_plantilla_documento';
+    protected $table = 'tc_plantilla_documento';
     protected $primaryKey = 'id_plantilla_documento';
 
     /**
