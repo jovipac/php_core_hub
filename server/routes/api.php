@@ -36,6 +36,10 @@ Route::group([
     ]]);
     Route::get('estado/restore/{estado}', 'Api\EstadoController@restore')->name('estados.restore');
 
+    Route::resource('estado-expediente', 'Api\EstadoExpedienteController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+
     Route::resource('modulos', 'Api\ModuloController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
