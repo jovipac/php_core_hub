@@ -16,7 +16,7 @@ class CreateExpedienteDocumentosTable extends Migration
         Schema::create('tt_expediente_documento', function (Blueprint $table) {
             $table->increments('id_expediente_documento');
             $table->integer('id_expediente')->unsigned();
-            $table->integer('id_motivo')->nullable()->unsigned();
+            $table->integer('id_plantilla_documento')->nullable()->unsigned();
             $table->string('titulo', 255)->nullable();
             $table->mediumText('texto')->nullable();
             $table->boolean('borrado')->default(0)->index();
@@ -31,7 +31,7 @@ class CreateExpedienteDocumentosTable extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->foreign('id_motivo')->references('id_motivo')->on('tc_motivo')
+            $table->foreign('id_plantilla_documento')->references('id_plantilla_documento')->on('tc_plantilla_documento')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 

@@ -61,11 +61,11 @@ class ExpedienteController extends ApiController
         ->leftJoin('tc_estado_expediente AS T08', 'tt_expediente.id_estado_expediente', 'T08.id_estado_expediente');
 
         if ( $request->has('id_expediente') && $request->filled('id_expediente') ) {
-            $ExpedienteClasificacionDerecho->where('id_expediente', $request->id_expediente);
+            $ExpedienteClasificacionDerecho->where('tt_expediente.id_expediente', $request->id_expediente);
         }
 
         if ( $request->has('id_estado_expediente') && $request->filled('id_estado_expediente') ) {
-            $ExpedienteClasificacionDerecho->where('id_estado_expediente', $request->id_estado_expediente);
+            $ExpedienteClasificacionDerecho->where('tt_expediente.id_estado_expediente', $request->id_estado_expediente);
         }
 
         return $this->apiResponse(
