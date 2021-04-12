@@ -27,6 +27,7 @@ class CreateExpedientesTable extends Migration
             $table->integer('id_resultado')->nullable()->unsigned();
             $table->integer('id_auxiliatura')->unsigned();
             $table->integer('id_visita')->nullable()->unsigned();
+            $table->integer('id_estado_expediente')->unsigned();
             $table->boolean('borrado')->default(0)->index();
             $table->integer('created_by')->nullable()->unsigned();
             $table->integer('updated_by')->nullable()->unsigned();
@@ -54,6 +55,9 @@ class CreateExpedientesTable extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->foreign('id_auxiliatura')->references('id_auxiliatura')->on('tc_auxiliatura')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreign('id_estado_expediente')->references('id_estado_expediente')->on('tc_estado_expediente')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->foreign('id_visita')->references('id_visita')->on('tt_visita')
