@@ -16,6 +16,9 @@ import 'datatables.net';
 import 'datatables.net-dt';
 import "datatables.net-buttons/js/buttons.html5.js";
 import { FormGroup, Validators, FormBuilder } from "@angular/forms";
+import Swal from 'sweetalert2';
+import { HttpErrorResponse } from '@angular/common/http';
+import { extractErrorMessages } from '../../../shared/utils';
 
 
 
@@ -398,6 +401,54 @@ export class SolicitudComponent implements OnInit {
       this.toastr.warning( "No se pudo listar los usuarios inactivos", 'Listado de usuarios ')
       console.log(err)
     })
+
+  }
+
+  UpdateStateExpe(_estado) {
+    if (this.solicitudDocumentos.length == 0){
+      this.toastr.warning( "No se han adjuntado documentos a la solicitud", 'Comentarios de solicitud')
+    }else{
+      Swal.fire({
+        title: '¿Esta seguro?',
+        text: "De actualizar el estado",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si. Estoy seguro',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.UpdateAccion(_estado);
+        }
+      })
+    }
+
+  }
+
+  UpdateAccion(_state){
+
+    const formValues = {
+      ...this.solicitud,
+      id_estado_expediente: _state
+    };
+    this.solicitudService.updateExpediente(this.id, formValues)
+        .pipe(first())
+        .subscribe({
+            next: (response: any) => {
+              this.toastr.success(response.message, 'Expediente')
+
+            },
+            error: (error: HttpErrorResponse) => {
+                const messages = extractErrorMessages(error);
+                messages.forEach(propertyErrors => {
+                  for (let message in propertyErrors) {
+                    this.toastr.error(propertyErrors[message], 'Expediente');
+                  }
+                });
+
+            }
+        });
 
   }
 
