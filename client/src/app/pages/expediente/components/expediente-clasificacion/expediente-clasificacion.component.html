@@ -40,7 +40,7 @@
 
         <div class="col-md-2 mb-2">
           <br>
-          <button class="btn btn-primary" (click)="addClasi()"><i class="fa fa-save"></i>Agregar</button>
+          <button class="btn btn-primary" (click)="addClasi($event)"  ><i class="fa fa-save"></i>Agregar</button>
         </div>
 
         <div class="col-md-7 mb-7">
@@ -93,7 +93,7 @@
               </option>
             </select>
             <div *ngIf="isHasErrors('id_resultado')" class="invalid-feedback">
-              <div *ngIf="f.id_auxiliatura.errors?.required">El campo es requerido</div>
+
             </div>
 
             <button class="btn btn-primary "  title="Atender usuario" (click)="UpdateAccion()" ><i
