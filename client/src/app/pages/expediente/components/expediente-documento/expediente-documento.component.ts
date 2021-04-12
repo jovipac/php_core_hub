@@ -2,7 +2,6 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormArray, Validators } from "@angular/forms";
 import { ExpedienteDocumentoService } from '../../../../service';
 import { PlantillaDocumentoService } from '../../../../service/catalogos';
-import { PlantillaDocumento } from '../../../../shared/models';
 import { ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
