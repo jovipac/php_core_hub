@@ -4,7 +4,7 @@ import { RevisionSolicitudesComponent } from './revision-solicitudes.component';
 
 const routes: Routes = [
   {
-    path: '',
+    path: ':id',
     component: RevisionSolicitudesComponent,
     data: {
         breadcrumb: 'Revisión de solicitudes',
