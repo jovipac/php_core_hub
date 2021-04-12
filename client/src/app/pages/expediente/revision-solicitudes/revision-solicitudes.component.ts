@@ -7,6 +7,8 @@ import { ToastrService } from 'ngx-toastr';
 import { formatearCorrelativo } from '../../../shared/utils/helpers';
 import { isEmptyValue } from '../../../shared/utils';
 import { NgxSpinnerService } from "ngx-spinner";
+import { HttpErrorResponse } from '@angular/common/http';
+import { extractErrorMessages } from '../../../shared/utils';
 
 @Component({
   selector: 'app-revision-solicitudes',
@@ -15,6 +17,8 @@ import { NgxSpinnerService } from "ngx-spinner";
 })
 export class RevisionSolicitudesComponent implements OnInit {
   id_expediente: number;
+  tipo: number;
+  estadoSiguiente: number;
   public listSolicitudes: Array<Expediente>;
 
   constructor(
@@ -27,7 +31,19 @@ export class RevisionSolicitudesComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading.show('dashboard');
-    this.listExpediente({});
+    this.tipo = this.route.snapshot.params['id'];
+    if(this.tipo == 1){
+      this.estadoSiguiente = 2;
+    }else{
+      this.estadoSiguiente = 3;
+    }
+
+
+    console.log(this.tipo);
+    let data = {
+      id_estado_expediente: this.tipo
+    }
+    this.listExpediente(data);
   }
 
   listExpediente(dataSend: any) {
@@ -62,6 +78,36 @@ export class RevisionSolicitudesComponent implements OnInit {
   goEditExpediente(expediente: any) {
     this.id_expediente = expediente.id_expediente;
     this.router.navigate(['../../solicitud/editar', expediente.id_expediente], { relativeTo: this.route });
+  }
+
+  UpdateAccion(  expediente: any){
+
+    const formValues = {
+      ...expediente,
+      id_estado_expediente: this.estadoSiguiente
+    };
+    this.solicitudService.updateExpediente(expediente.id_expediente , formValues)
+        .pipe(first())
+        .subscribe({
+            next: (response: any) => {
+              this.toastr.success(response.message, 'Expediente');
+              let data = {
+                id_estado_expediente: this.tipo
+              }
+              this.listExpediente(data);
+
+            },
+            error: (error: HttpErrorResponse) => {
+                const messages = extractErrorMessages(error);
+                messages.forEach(propertyErrors => {
+                  for (let message in propertyErrors) {
+                    this.toastr.error(propertyErrors[message], 'Expediente');
+                  }
+                });
+
+            }
+        });
+
   }
 
 }

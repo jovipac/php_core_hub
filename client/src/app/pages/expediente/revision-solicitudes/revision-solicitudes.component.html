@@ -35,8 +35,8 @@
                         dropdownToggle >Acciones</button>
                         <div *dropdownMenu aria-labelledby="dropdownBasic1" class="dropdown-menu">
                           <li class="dropdown-item btn-mini" (click)="goEditExpediente(solicitud);">Editar</li>
-                          <li class="dropdown-item btn-mini">Confirmar</li>
-                          <li class="dropdown-item btn-mini">Estado</li>
+                          <li class="dropdown-item btn-mini" (click)="UpdateAccion(solicitud)">Confirmar Estado</li>
+
                         </div>
                       </div>
                     </div>
