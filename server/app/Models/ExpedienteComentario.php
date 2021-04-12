@@ -38,7 +38,7 @@ class ExpedienteComentario extends Model
      * @var array
      */
     protected $hidden = [
-        'created_by', 'updated_by', 'updated_at', 'deleted_by', 'deleted_at', 'borrado',
+        'updated_by', 'updated_at', 'deleted_by', 'deleted_at', 'borrado',
     ];
 
     public function expediente()

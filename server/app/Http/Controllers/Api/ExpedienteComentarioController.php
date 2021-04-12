@@ -39,7 +39,10 @@ class ExpedienteComentarioController extends ApiController
      */
     public function search(Request $request)
     {
-        $expedienteComentario = ExpedienteComentario::query()->orderBy('created_at', 'desc');
+        $expedienteComentario = ExpedienteComentario::query()
+            ->select('tt_expediente_comentario.*', 'T01.username AS username_created_by')
+            ->join('tc_usuario AS T01', 'tt_expediente_comentario.created_by', 'T01.id_usuario')
+            ->orderBy('created_at', 'desc');
 
         if ( $request->has('id_expediente') && $request->filled('id_expediente') ) {
             $expedienteComentario->where('id_expediente', $request->id_expediente);
