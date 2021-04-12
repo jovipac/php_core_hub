@@ -73,6 +73,24 @@
   </app-basic-modal>
 </ng-template>
 
+<div class="row">
+  <div class="col-sm-12">
+    <div class="form-row">
+      <div class="col-md-4 mb-4">
+        <button type="button" class="btn btn-outline-primary btn-mini" (click)="openModal(addcomment , 0);" >Comentarios <i> ({{ contComment}})</i>
+        </button>
+      </div>
+
+      <div class="col-md-4 mb-4"></div>
+
+      <div class="col-md-4 mb-4" style="display: flex; justify-content: flex-end">
+        <button type="button" class="btn btn-outline-primary btn-mini">Enviar a revisar</button>
+        <button type="button" class="btn btn-outline-primary btn-mini">Confirmar Estado</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="col-xl-12">
   <div class="card-deck">
     <div class="card">
@@ -167,20 +185,20 @@
       </div>
       <div class="card-body">
 
-          <table class="table  table-striped" id="TableclasExpediente">
-            <thead>
-              <tr>
-                <th>Tipo de derecho</th>
-                <th>Hechos Violatorios</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let clasifi of listClasExpe">
-                <td>{{clasifi.nombre_clasificacion_derecho_P }}</td>
-                <td>{{clasifi.nombre_clasificacion_derecho_H}}</td>
-              </tr>
-            </tbody>
-          </table>
+        <table class="table  table-striped" id="TableclasExpediente">
+          <thead>
+            <tr>
+              <th>Tipo de derecho</th>
+              <th>Hechos Violatorios</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let clasifi of listClasExpe">
+              <td>{{clasifi.nombre_clasificacion_derecho_P }}</td>
+              <td>{{clasifi.nombre_clasificacion_derecho_H}}</td>
+            </tr>
+          </tbody>
+        </table>
 
       </div>
       <div class="card-footer text-center">
@@ -231,3 +249,56 @@
     </div>
   </div>
 </div>
+
+
+<ng-template #addcomment>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h6 class="modal-title" id="modal-title-default">Comentarios</h6>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form novalidate [formGroup]="formcomentarios" (ngSubmit)="SaveComment()">
+        <div class="form-row">
+          <div class="col mb-12">
+            <input-label [label]="'Comentario'" [id]="'txtObservaciones'"></input-label>
+            <textarea type="text" class="form-control" id="comentario" formControlName="comentario" rows="3"></textarea>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="col mb-12" style="text-align: center">
+              <a href="javascript:" class="btn btn-sm btn-primary" (click)="SaveComment()">Guardar</a>
+          </div>
+        </div>
+
+
+        <div class="form-row">
+          <div class="col mb-12">
+            <table class="table  table-striped" id="tblComentarios" >
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Usuario</th>
+                  <th>Comentario</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let list of listComment">
+                  <td>{{list.fecha | date:'medium' }} </td>
+                  <td>{{list.username_created_by}}</td>
+                  <td>{{list.comentario}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+
+    </div>
+  </div>
+</ng-template>

@@ -1,20 +1,23 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ExpedienteService, ExpedientePersonaService, ExpedienteHechoService, ExpedienteClasificacionDerechoService, ExpedienteDocumentoService  } from '../../../service';
+import { ExpedienteService, ExpedientePersonaService, ExpedienteHechoService, ExpedienteClasificacionDerechoService, ExpedienteDocumentoService , ExpedienteComentarioService  } from '../../../service';
 import { ClasificacionDerechoService } from '../../../service/catalogos';
 import { Expediente, ExpedientePersona, ExpedienteHecho, ExpedienteClasificacionDerecho, ExpedienteDocumento } from '../../../shared/models';
 import { first } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { formatearCorrelativo } from '../../../shared/utils/helpers';
 import { CarouselConfig } from 'ngx-bootstrap/carousel';
-import { BsModalService } from 'ngx-bootstrap/modal';
-import { isValid, parseISO } from 'date-fns';
+import { BsModalService , BsModalRef } from 'ngx-bootstrap/modal';
+import { isValid, parseISO , format } from 'date-fns';
 import { isEmptyValue } from '../../../shared/utils';
 import { NgxSpinnerService } from "ngx-spinner";
 import * as $ from 'jquery';
 import 'datatables.net';
 import 'datatables.net-dt';
 import "datatables.net-buttons/js/buttons.html5.js";
+import { FormGroup, Validators, FormBuilder } from "@angular/forms";
+
+
 
 @Component({
   selector: 'app-solicitud',
@@ -23,6 +26,7 @@ import "datatables.net-buttons/js/buttons.html5.js";
   providers: [ CarouselConfig ]
 })
 export class SolicitudComponent implements OnInit {
+  public modalRef: BsModalRef;
   private id: string;
   isAddMode: boolean;
   id_expediente_persona: number;
@@ -34,12 +38,17 @@ export class SolicitudComponent implements OnInit {
   public solicitudClasificacionDerechos: Array<ExpedienteClasificacionDerecho>;
   public solicitudDocumentos: Array<ExpedienteDocumento>;
   public listClasExpe: Array<any>;
+  public listComment: Array<any>;
+  public errorState: boolean = false;
+  public formcomentarios: FormGroup;
+  contComment: number;
 
   constructor(
     private solicitudService: ExpedienteService,
     private solicitudPersonaService: ExpedientePersonaService,
     private expedienteHechoService: ExpedienteHechoService,
     private expedienteClasificacionDerechosService: ExpedienteClasificacionDerechoService,
+    private expedientecomentarioservice: ExpedienteComentarioService,
     private expedienteDocumentoService: ExpedienteDocumentoService,
     private clasificacionderechoservice: ClasificacionDerechoService,
     private route: ActivatedRoute,
@@ -47,7 +56,8 @@ export class SolicitudComponent implements OnInit {
     private toastr: ToastrService,
     private configNgbCarousel: CarouselConfig,
     private modalService: BsModalService,
-    private loading: NgxSpinnerService
+    private loading: NgxSpinnerService ,
+    private formBuilder: FormBuilder
   ) {
     this.configNgbModal = {
       class: 'modal-xl',
@@ -61,7 +71,9 @@ export class SolicitudComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
+    this.contComment = 0 ;
     this.isAddMode = !this.id;
+    this.buildFormComment();
 
     if (!this.isAddMode) {
       this.loading.show('dashboard');
@@ -94,8 +106,17 @@ export class SolicitudComponent implements OnInit {
       this.listExpedienteClasificacionDerecho(dataSend);
       this.listExpedienteDocumentos(dataSend);
       this.getClasificacionAsig();
+      this.Getcomment();
+
     }
 
+  }
+
+  private buildFormComment() {
+    this.formcomentarios = this.formBuilder.group({
+      comentario: [""],
+      id_usuario: ["", ]
+    });
   }
 
   listExpedientePersonas(dataSend: any) {
@@ -290,5 +311,96 @@ export class SolicitudComponent implements OnInit {
     })
 
   }
+
+  openModal(content, code) {
+    this.errorState = false;
+    this.modalRef = this.modalService
+      .show(content, { class: 'modal-xl', backdrop: 'static', keyboard: true });
+
+  }
+
+  closeModal(modalId?: number){
+    this.modalService.hide(modalId);
+  }
+
+  SaveComment(){
+    let data = {
+      id_expediente: this.id ,
+      comentario : this.formcomentarios.value.comentario,
+      fecha: format(new Date(), 'yyyy-MM-dd')
+    }
+
+    this.expedientecomentarioservice.createexpedientecomentario(data).subscribe(res => {
+
+      this.toastr.success("Comentario agregado con exito", 'Comentarios de solicitud');
+      this.Getcomment();
+      this.formcomentarios.reset();
+    }, err => {
+      this.toastr.warning( "No se pudo crear el comentario", 'Comentarios de solicitud')
+      console.log(err)
+    })
+
+  }
+
+  Getcomment(){
+    let data = {
+      id_expediente: this.id
+    }
+
+    $(document).ready(function () { $('#tblComentarios').DataTable().destroy(); })
+    this.expedientecomentarioservice.searchexpedientecomentario(data).subscribe(res => {
+      let response: any = res;
+
+      if (response.result.length > 0) {
+        this.contComment = response.result.length;
+        this.listComment = response.result;
+        $(document).ready(function () {
+          $('#tblComentarios').DataTable({
+            dom: "frtip",
+
+            language: {
+              "sProcessing": "Procesando...",
+              "sLengthMenu": "Mostrar _MENU_ registros",
+              "sZeroRecords": "No se encontraron resultados",
+              "sEmptyTable": "Ningún dato disponible en esta tabla",
+              "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+              "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+              "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+              "sInfoPostFix": "",
+              "sSearch": "Buscar:",
+              "sUrl": "",
+              "sInfoThousands": ",",
+              "sLoadingRecords": "Cargando...",
+              "oPaginate": {
+                "sFirst": "Primero",
+                "sLast": "Último",
+                "sNext": "Siguiente",
+                "sPrevious": "Anterior"
+              },
+              "oAria": {
+                "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+              },
+
+            },
+            retrieve: true,
+            data: this.listUsers
+          });
+
+        });
+
+
+      } else {
+        this.contComment = 0 ;
+      }
+    }, err => {
+
+      this.toastr.warning( "No se pudo listar los usuarios inactivos", 'Listado de usuarios ')
+      console.log(err)
+    })
+
+  }
+
+
 
 }
