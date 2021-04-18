@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { getHeaders } from '../shared/utils/helpers';
 import { STORAGE_APP_PREFIX, TOKEN_NAME } from '../constants';
-
+import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
@@ -12,6 +13,10 @@ export class AuthService {
     private httpClient: HttpClient,
     public jwtHelper: JwtHelperService
     ) { }
+
+  headers: HttpHeaders = new HttpHeaders({
+    "Content-Type": "application/json"
+  });
 
   getToken(): string {
     const session = sessionStorage.getItem(STORAGE_APP_PREFIX);
@@ -46,6 +51,29 @@ export class AuthService {
 
   setRefreshToken(value: string) {
     sessionStorage.setItem(JSON.parse(STORAGE_APP_PREFIX).refreshToken, value);
+  }
+
+  /**
+   *
+   * @param auth : json from auth
+   * @function login
+   * @returns true and false, if exist user
+   */
+  login(auth: any) {
+    return this.httpClient.post(`${environment.host}auth/login`, auth, { headers: this.headers });
+  }
+
+  /**
+   * @function logout
+   * @returns true and false, delete token
+   */
+  logout() {
+    return this.httpClient.get(`${environment.host}auth/logout`, getHeaders())
+      .toPromise()
+      .then(res => {
+        sessionStorage.removeItem(STORAGE_APP_PREFIX);
+        return res;
+      });
   }
 
 }

@@ -23,7 +23,7 @@
             </li>
           </ul>
 
-          
+
         </li>
       </ul>
     </div>
@@ -50,9 +50,9 @@
         data-toggle="dropdown" ngbdropdowntoggle="" type="button"><span _ngcontent-rdr-c5="" class="sr-only">Toggle
           primary</span></button>
       <div _ngcontent-rdr-c5="" class="dropdown-menu" ngbdropdownmenu="" x-placement="bottom-left"><a
-          _ngcontent-rdr-c5="" class="dropdown-item waves-effect waves-light" [routerLink]="['/login']">Cerrar Sesión</a>
+          _ngcontent-rdr-c5="" class="dropdown-item waves-effect waves-light" (click)="logout()">Cerrar Sesión</a>
       </div>
-        
+
     </div>
   </div>
 </nav>

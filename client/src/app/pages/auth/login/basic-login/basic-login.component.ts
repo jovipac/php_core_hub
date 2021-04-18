@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from "@angular/forms";
 import { Router } from '@angular/router';
-import { ServicesService } from '../../../../service/services.service';
+import { AuthService } from '../../../../service/auth.service';
 import { first } from 'rxjs/operators';
 import head from 'ramda/src/head';
 
@@ -17,7 +17,7 @@ export class BasicLoginComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private service: ServicesService
+    private authService: AuthService
   ) {
     this.buildForm();
   }
@@ -32,7 +32,7 @@ export class BasicLoginComponent implements OnInit {
   signin(event: Event) {
     event.preventDefault();
     if (this.login.valid) {
-      this.service.signIn(this.login.value)
+      this.authService.login(this.login.value)
       .pipe(first())
       .subscribe({
         next: (response:any) => {
