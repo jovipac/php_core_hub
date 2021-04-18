@@ -1,8 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, NO_ERRORS_SCHEMA, LOCALE_ID } from '@angular/core';
-
+import { STORAGE_APP_PREFIX, TOKEN_NAME } from './constants';
 import { AppRoutingModule } from './app-routing.module';
+// JSON web token module
+import { JwtModule } from "@auth0/angular-jwt";
+// Text editor module and component
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
+
 // Bootstrap components
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
@@ -34,6 +38,11 @@ registerLocaleData(localeEs, 'es');
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => JSON.parse(sessionStorage.getItem(STORAGE_APP_PREFIX))[TOKEN_NAME],
+      },
+    }),
     AppRoutingModule,
     ModalModule.forRoot(),
     SharedModule,

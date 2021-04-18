@@ -1,28 +1,35 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, CanActivateChild, CanLoad, Route, UrlSegment, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
+import { AuthService } from './service/auth.service';
 import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GuardGuard implements CanActivate, CanActivateChild, CanLoad {
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) { }
 
   canActivate() {
-    if (!sessionStorage.getItem("validate")) {
-      this.router.navigate(['/login']);
-      return false;
+    if (!this.authService.isTokenExpired()) {
+      return true;
     }
-    return true;
+
+    this.router.navigate(['/login']);
+    return false;
   }
+
   canActivateChild() {
-    if (!sessionStorage.getItem("validate")) {
-      this.router.navigate(['/login']);
-      return false;
+    if (!this.authService.isTokenExpired()) {
+      return true;
     }
-    return true;
+
+    this.router.navigate(['/login']);
+    return false;
   }
+
   canLoad() {
     if (!sessionStorage.getItem("validate")) {
       this.router.navigate(['/login']);
