@@ -93,8 +93,12 @@ class ExpedienteDocumentoController extends ApiController
      * @param  \App\ExpedienteDocumento  $expedienteDocumento
      * @return \Illuminate\Http\Response
      */
-    public function show(ExpedienteDocumento $expedienteDocumento)
+    public function show(ExpedienteDocumento $expediente_documento)
     {
+        $expedienteDocumento = ExpedienteDocumento::query()
+            ->with('archivos_adjuntos')
+            ->where('tt_expediente_hecho.id_expediente', $expediente_documento->id_expediente_documento);
+
         return $this->apiResponse(
             [
                 'success' => true,
