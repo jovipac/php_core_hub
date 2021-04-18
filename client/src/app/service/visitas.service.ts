@@ -22,8 +22,8 @@ export class VisitasService {
       return this.httpClient.post(`${environment.host}visitas`, data, getHeaders());
     }
 
-    updateVisit(codeRol, data) {
-      return this.httpClient.put(`${environment.host}visitas/${codeRol}`, data, getHeaders());
+    updateVisit(id, data) {
+      return this.httpClient.put(`${environment.host}visitas/${id}`, data, getHeaders());
     }
 
     deleteVisit(id) {

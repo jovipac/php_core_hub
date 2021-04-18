@@ -411,7 +411,7 @@ export class ExpedientePersonaComponent implements OnInit {
             } : {};
             this.id_persona = persona?.id_persona;
             this.personaForm.patchValue(personaFormateada);
-console.log(personaFormateada);
+
             if (isEmptyValue(persona?.direcciones)) {
               this.addDireccion({});
             } else {

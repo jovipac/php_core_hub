@@ -65,10 +65,10 @@ export class RecepcionVisitaComponent implements OnInit {
     this.getListPriority()
     this.getListSex()
     this.getListGenre()
-    this.getListReason()
-    this.getListDependecy();
-    this.getListAuxiliary();
-    this.getEmployees();
+    this.getListMotivo()
+    this.getListDependencia();
+    this.getListAuxiliatura();
+    this.getListEmpleado();
     this.getListEtnia();
     this.getListComunidadLinguistica();
     this.getListGenre()
@@ -339,7 +339,7 @@ export class RecepcionVisitaComponent implements OnInit {
     });
   }
 
-  getListReason() {
+  getListMotivo() {
     this.motivoService.getListMotivo().subscribe(res => {
       const response: any = res;
       if (response.result.length > 0)
@@ -352,7 +352,7 @@ export class RecepcionVisitaComponent implements OnInit {
     })
   }
 
-  getListDependecy() {
+  getListDependencia() {
     this.dependenciaService.getListDependencia()
     .pipe(first())
     .subscribe({
@@ -369,7 +369,7 @@ export class RecepcionVisitaComponent implements OnInit {
 
   }
 
-  getListAuxiliary() {
+  getListAuxiliatura() {
     this.auxiliaturaService.getListAuxiliatura()
     .pipe(first())
     .subscribe({
@@ -386,7 +386,7 @@ export class RecepcionVisitaComponent implements OnInit {
 
   }
 
-  getEmployees() {
+  getListEmpleado() {
     //const dataSend = id_unidad ? { 'id_dependencia': id_unidad } : {};
     this.empleadoService.getEmployees()
       .pipe(first())

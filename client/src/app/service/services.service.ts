@@ -149,15 +149,6 @@ export class ServicesService {
     return this.httpClient.get(`${environment.host}motivos`, this.createHeaders())
   }
 
-  getListVisit(data) {
-    return this.httpClient.post(`${environment.host}visitas/search`, data , this.createHeaders())
-  }
-
-  updateVisit(codeRol, data) {
-    return this.httpClient.put(`${environment.host}visitas/${codeRol}`, data, this.createHeaders());
-  }
-
-
   /*start module of user */
   /* user assigned */
   UserAssigned(codeRol) {

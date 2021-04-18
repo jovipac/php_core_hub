@@ -2,8 +2,8 @@ import { Component, OnInit  } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from "@angular/forms";
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { ServicesService } from "../../../service/services.service";
-import { ExpedienteService } from '../../../service';
+import { AuxiliaturaService, MotivoService } from '../../../service/catalogos';
+import { VisitasService, ExpedienteService } from '../../../service';
 import * as $ from 'jquery';
 import 'datatables.net';
 import 'datatables.net-dt';
@@ -61,7 +61,9 @@ export class MonitoreoVisitasComponent implements OnInit   {
 
   constructor(
     private formBuilder: FormBuilder,
-    private service: ServicesService,
+    private visitaService: VisitasService,
+    private auxiliaturaService: AuxiliaturaService,
+    private motivoService: MotivoService,
     private Expservice: ExpedienteService,
     private toastr: ToastrService,
     private router: Router,
@@ -127,7 +129,7 @@ export class MonitoreoVisitasComponent implements OnInit   {
       id_motivo: this.tipo,
       id_estado: 1
     }
-    this.service.getListVisit(data).subscribe(res => {
+    this.visitaService.searchVisit(data).subscribe(res => {
       let response: any = res;
       console.log(response)
       if (response.result.length > 0) {
@@ -188,7 +190,7 @@ export class MonitoreoVisitasComponent implements OnInit   {
   }
 
   getListAuxiliary() {
-    this.service.getListAuxiliary().subscribe(res => {
+    this.auxiliaturaService.getListAuxiliatura().subscribe(res => {
       let response: any = res;
       if (response.result.length > 0)
         this.listAuxiliary = response.result;
@@ -201,7 +203,7 @@ export class MonitoreoVisitasComponent implements OnInit   {
 
 
   getListReason() {
-    this.service.getListReason().subscribe(res => {
+    this.motivoService.getListMotivo().subscribe(res => {
       let response: any = res;
       if (response.result.length > 0)
         this.listReason = response.result;
@@ -244,7 +246,7 @@ export class MonitoreoVisitasComponent implements OnInit   {
     }).then((result) => {
       if (result.isConfirmed) {
 
-        this.service.updateVisit(visit.id_visita, VisitUpdate).subscribe(res => {
+        this.visitaService.updateVisit(visit.id_visita, VisitUpdate).subscribe(res => {
           let response: any = res;
 
           if (estado == 2) {
