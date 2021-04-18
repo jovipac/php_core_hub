@@ -3,30 +3,30 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
-use App\Models\ExpedienteHechoArchivo;
+use App\Models\ExpedienteDocumentoArchivo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
-class ExpedienteHechoArchivoController extends ApiController
+
+class ExpedienteDocumentoArchivoController extends ApiController
 {
     /**
      * Display a listing of the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
         if ($request->has('per_page') && $request->filled('per_page')) {
-            $expedienteHechoArchivos = ExpedienteHechoArchivo::query()
+            $expedienteHechoArchivos = ExpedienteDocumentoArchivo::query()
                 ->paginate($request->per_page);
         } else
-            $expedienteHechoArchivos = ExpedienteHechoArchivo::all();
+            $expedienteHechoArchivos = ExpedienteDocumentoArchivo::all();
 
         return $this->apiResponse(
             [
                 'success' => true,
-                'message' => "Listado de pruebas adjunta del hechos",
+                'message' => "Listado de pruebas adjunta de los documento",
                 'result' => $expedienteHechoArchivos
             ]
         );
@@ -48,7 +48,7 @@ class ExpedienteHechoArchivoController extends ApiController
         $clientSize = $request->file('file')->getSize();
         $filePath = $request->file('file')->store('uploads');
 
-        $expedienteHechoArchivo = [
+        $expedienteDocumentoArchivo = [
             'params' => $inputs,
             'filename' =>  $fileName,
             'extension' =>  $extension,
@@ -60,8 +60,8 @@ class ExpedienteHechoArchivoController extends ApiController
         return $this->apiResponse(
             [
                 'success' => true,
-                'message' => "Archivo adjunto del hecho subido con exito",
-                'result' => $expedienteHechoArchivo
+                'message' => "Archivo adjunto del documento subido con exito",
+                'result' => $expedienteDocumentoArchivo
             ]
         );
     }
@@ -76,7 +76,7 @@ class ExpedienteHechoArchivoController extends ApiController
     {
         $validator = Validator::make($request->all(), [
             'id_expediente' => 'required|integer',
-            'id_expediente_hecho' => 'required|integer',
+            'id_expediente_documento' => 'required|integer',
             'ubicacion' => 'string',
             'mime' => 'string',
             'nombre' => 'string',
@@ -86,28 +86,29 @@ class ExpedienteHechoArchivoController extends ApiController
             return $this->respondError($validator->errors(), 422);
         }
         $input = $request->all();
-        $expedienteHechoArchivo = ExpedienteHechoArchivo::create($input);
+        $expedienteDocumentoArchivo = ExpedienteDocumentoArchivo::create($input);
 
         return $this->respondCreated([
             'success' => true,
-            'message' => "Prueba adjunta del hecho agregada con exito",
-            'result' => $expedienteHechoArchivo
+            'message' => "Prueba adjunta del documento agregada con exito",
+            'result' => $expedienteDocumentoArchivo
         ]);
+
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\ExpedienteHechoArchivo  $expediente_hecho_archivo
+     * @param  \App\ExpedienteDocumentoArchivo  $expediente_documento_archivo
      * @return \Illuminate\Http\Response
      */
-    public function show(ExpedienteHechoArchivo $expediente_hecho_archivo)
+    public function show(ExpedienteDocumentoArchivo $expediente_documento_archivo)
     {
         return $this->apiResponse(
             [
                 'success' => true,
-                'message' => "Prueba adjunta del hecho encontrado",
-                'result' => $expediente_hecho_archivo
+                'message' => "Prueba adjunta del documento encontrado",
+                'result' => $expediente_documento_archivo
             ]
         );
     }
@@ -121,17 +122,17 @@ class ExpedienteHechoArchivoController extends ApiController
     public function download($id)
     {
         try {
-            $expedienteHechoArchivo = ExpedienteHechoArchivo::find($id);
+            $expedienteDocumentoArchivo = ExpedienteDocumentoArchivo::find($id);
 
-            $fullPath = Storage::disk('uploads')->url($expedienteHechoArchivo['ubicacion']);
+            $fullPath = Storage::disk('uploads')->url($expedienteDocumentoArchivo['ubicacion']);
             $generatedURI = url($fullPath);
 
             return $this->apiResponse(
                 [
                     'success' => true,
-                    'message' => "Prueba adjunta del hecho encontrado con exito",
+                    'message' => "Prueba adjunta del documento encontrado con exito",
                     'result' => [
-                        'nombre' => $expedienteHechoArchivo['nombre'],
+                        'nombre' => $expedienteDocumentoArchivo['nombre'],
                         'url' => $generatedURI
                     ]
                 ]
@@ -146,15 +147,15 @@ class ExpedienteHechoArchivoController extends ApiController
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\ExpedienteHechoArchivo  $expediente_hecho_archivo
+     * @param  \App\ExpedienteDocumentoArchivo  $expedienteDocumentoArchivo
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ExpedienteHechoArchivo $expediente_hecho_archivo)
+    public function update(Request $request, ExpedienteDocumentoArchivo $expediente_documento_archivo)
     {
         $validator = Validator::make($request->all(), [
-            'id_expediente_hecho_archivo' => 'required|integer',
+            'id_expediente_documento_prueba' => 'required|integer',
             'id_expediente' => 'nullable|integer',
-            'id_expediente_hecho' => 'nullable|integer',
+            'id_expediente_documento' => 'nullable|integer',
             'ubicacion' => 'nullable|string',
             'nombre' => 'nullable|string',
             'tamanio' => 'nullable|integer',
@@ -163,40 +164,41 @@ class ExpedienteHechoArchivoController extends ApiController
             return $this->respondError($validator->errors(), 422);
         }
         $input = $request->all();
-        $expediente_hecho_archivo = ExpedienteHechoArchivo::create($input);
+        $expediente_documento_archivo = ExpedienteDocumentoArchivo::create($input);
 
         return $this->respondCreated([
             'success' => true,
-            'message' => "Prueba adjunta del hecho actualizada con exito",
-            'result' => $expediente_hecho_archivo
+            'message' => "Prueba adjunta del documento actualizada con exito",
+            'result' => $expediente_documento_archivo
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\ExpedienteHechoArchivo  $expediente_hecho_archivo
+     * @param  \App\ExpedienteDocumentoArchivo  $expediente_documento_archivo
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ExpedienteHechoArchivo $expediente_hecho_archivo)
+    public function destroy(ExpedienteDocumentoArchivo $expediente_documento_archivo)
     {
-        $expediente_hecho_archivo->delete();
+        $expediente_documento_archivo->delete();
 
-        return $this->respondSuccess('Prueba adjunta del hecho eliminado con exito');
+        return $this->respondSuccess('Prueba adjunta del documento eliminado con exito');
 
     }
 
     /**
      * Restore the specified resource from storage.
      *
-     * @param  \App\ExpedienteHechoArchivo  $expediente_hecho_archivo
+     * @param  \App\ExpedienteDocumentoArchivo  $expediente_documento_archivo
      * @return \Illuminate\Http\Response
      */
     public function restore($id)
     {
-        $expediente_hecho_archivo = ExpedienteHechoArchivo::withTrashed()->findorfail($id);
-        $expediente_hecho_archivo->restore();
+        $expediente_documento_archivo = ExpedienteDocumentoArchivo::withTrashed()->findorfail($id);
+        $expediente_documento_archivo->restore();
 
-        return $this->respondSuccess('Prueba adjunta del hecho restaurada con exito');
+        return $this->respondSuccess('Prueba adjunta del documento restaurada con exito');
     }
+
 }

@@ -41,9 +41,7 @@ class UsuarioModuloController extends ApiController
     {
         $usuario_modulo = User::query()
             ->select(
-                //'T01.id_usuario',
                 'T01.id_modulo',
-                //'ts_usuario.username',
                 'T02.nombre AS nombre_modulo',
                 'T03.nombre AS nombre_modulo_padre'
             )

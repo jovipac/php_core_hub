@@ -39,10 +39,11 @@ class RolModuloController extends ApiController
     public function assigned($id)
     {
         $rol_modulo = Rol::query()
-        ->select('tt_rol_modulo.id_rol', 'tt_rol_modulo.id_modulo',
-            'ts_rol.nombre AS nombre_rol', 'T01.nombre AS nombre_modulo',
-            'T02.nombre AS nombre_modulo_padre')
-            ->join('tt_rol_modulo', 'ts_rol.id_rol', '=', 'tt_rol_modulo.id_rol')
+        ->select(
+            'tt_rol_modulo.id_modulo',
+            'T01.nombre AS nombre_modulo',
+            'T02.nombre AS nombre_modulo_padre'
+        )
             ->join('ts_modulo AS T01', 'tt_rol_modulo.id_modulo', '=', 'T01.id_modulo')
             ->leftJoin('ts_modulo AS T02', 'T02.id_modulo', '=', 'T01.id_parent')
             ->where('tt_rol_modulo.id_rol', $id)

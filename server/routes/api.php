@@ -225,6 +225,13 @@ Route::group([
     Route::get('expediente-documentos/restore/{expediente_documento}', 'Api\ExpedienteDocumentoController@restore')->name('expediente-documentos.restore');
     Route::post('expediente-documentos/search', 'Api\ExpedienteDocumentoController@search')->name('expediente-documentos.search');
 
+    Route::resource('expediente-documento-archivos', 'Api\ExpedienteDocumentoArchivoController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+    Route::post('expediente-documento-archivos/upload', 'Api\ExpedienteDocumentoArchivoController@upload')->name('expediente-documento-archivos.upload');
+    Route::get('expediente-documento-archivos/download/{expediente_documento_archivo}', 'Api\ExpedienteDocumentoArchivoController@download')->name('expediente-documento-archivos.download');
+    Route::post('expediente-documento-archivos/search', 'Api\ExpedienteDocumentoArchivoController@search')->name('expediente-documento-archivos.search');
+
     Route::get('rol-modulos', 'Api\RolModuloController@index')->name('menu.index');
     Route::get('rol-modulos/assigned/{id}', 'Api\RolModuloController@assigned');
     Route::get('rol-modulos/unassigned/{id}', 'Api\RolModuloController@unassigned');
