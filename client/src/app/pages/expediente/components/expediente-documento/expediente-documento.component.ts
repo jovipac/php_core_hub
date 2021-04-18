@@ -1,10 +1,11 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormArray, Validators } from "@angular/forms";
-import { ExpedienteDocumentoService } from '../../../../service';
+import { ExpedienteDocumentoService, ExpedienteDocumentoArchivoService } from '../../../../service';
 import { PlantillaDocumentoService } from '../../../../service/catalogos';
 import { ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
+import { FileUploader } from 'ng2-file-upload';
 import { first } from 'rxjs/operators';
 import { isEmptyValue, extractErrorMessages } from '../../../../shared/utils';
 import { NgxSpinnerService } from "ngx-spinner";
@@ -22,6 +23,7 @@ export class ExpedienteDocumentoComponent implements OnInit {
   isAddMode: boolean;
   readOnlyEditor: boolean = false;
   submitted: boolean = false;
+  uploader: FileUploader;
   formDocumento: FormGroup;
   textEditorConfig: object;
 
@@ -32,15 +34,64 @@ export class ExpedienteDocumentoComponent implements OnInit {
     private toastr: ToastrService,
     private plantillaDocumentoService: PlantillaDocumentoService,
     private expedienteDocumentoService: ExpedienteDocumentoService,
+    private expedienteDocumentoArchivoService: ExpedienteDocumentoArchivoService,
     private loading: NgxSpinnerService,
-  ) { }
+  ) {
+    this.uploader = new FileUploader({
+      url: expedienteDocumentoArchivoService.uploadURL,
+      disableMultipart: false,
+      method: 'POST',
+      authToken: `${JSON.parse(sessionStorage.getItem('validate')).token_type} ${JSON.parse(sessionStorage.getItem('validate')).access_token}`,
+    });
+  }
 
 
   ngOnInit(): void {
     this.id_expediente = this.route.snapshot.params['id'];
     this.isAddMode = !this.id_expediente;
 
-    this.getListPlantillaDocumento()
+    this.uploader.onBeforeUploadItem = (item) => {
+      item.withCredentials = false;
+    }
+    this.uploader.response.subscribe(async (suscriptor: string) => {
+      try {
+        if (suscriptor) {
+          const dataInput = JSON.parse(suscriptor);
+          const dataSend = {
+            'id_expediente': dataInput.result.params?.id_expediente,
+            'id_expediente_hecho': dataInput.result.params?.id_expediente_hecho,
+            'ubicacion': dataInput.result.path,
+            'nombre': dataInput.result.filename,
+            'tamanio': dataInput.result.size,
+            'mime': dataInput.result.mime,
+          };
+
+          const response: any = await this.expedienteDocumentoArchivoService.createExpedienteDocumentoArchivo(dataSend).toPromise();
+          if (response.success) {
+            this.toastr.success(response.message, 'Archivo adjunto del Documento');
+            this.loading.hide('step05');
+          } else {
+            this.toastr.error(response.message)
+          }
+
+        }
+      } catch (response) {
+        if (Object.prototype.toString.call(response.error.message) === '[object Object]') {
+          const messages = extractErrorMessages(response);
+          messages.forEach(propertyErrors => {
+            for (let message in propertyErrors) {
+              this.toastr.error(propertyErrors[message], 'Archivo adjunto del Documento');
+            }
+          });
+        } else {
+          this.toastr.error(response.error.message)
+        }
+        this.loading.hide('step05');
+      }
+
+    });
+
+    this.getListPlantillaDocumento();
 
     // Inicializacion del editor de texto
     this.textEditorConfig = {
@@ -100,6 +151,10 @@ export class ExpedienteDocumentoComponent implements OnInit {
       }, [Validators.pattern("[0-9]+")]),
       texto: new FormControl({
         value: data?.texto,
+        disabled: false,
+      }, []),
+      archivos_adjuntos: new FormControl({
+        value: data?.archivos_adjuntos,
         disabled: false,
       }, []),
     }, {});

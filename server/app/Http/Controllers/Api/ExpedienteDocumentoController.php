@@ -97,7 +97,8 @@ class ExpedienteDocumentoController extends ApiController
     {
         $expedienteDocumento = ExpedienteDocumento::query()
             ->with('archivos_adjuntos')
-            ->where('tt_expediente_hecho.id_expediente', $expediente_documento->id_expediente_documento);
+            ->where('id_expediente_documento', $expediente_documento->id_expediente_documento)
+            ->first();
 
         return $this->apiResponse(
             [
