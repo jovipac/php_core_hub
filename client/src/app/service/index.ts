@@ -8,7 +8,8 @@ export * from './expendiente.service';
 export * from './expediente-persona.service';
 export * from './expediente-persona-vinculacion.service';
 export * from './expediente-hecho.service';
-export * from './expediente-documento.service';
 export * from './expediente-hecho-archivo.service';
+export * from './expediente-documento.service';
+export * from './expediente-documento-archivo.service';
 export * from './expediente-clasificacion-derecho.service';
 export * from './expediente-comentario.service'
