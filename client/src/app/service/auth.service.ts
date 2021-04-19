@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { getHeaders } from '../shared/utils/helpers';
+import { getHeaders, isEmptyValue } from '../shared/utils/helpers';
 import { STORAGE_APP_PREFIX, TOKEN_NAME } from '../constants';
 import { environment } from '../../environments/environment';
 @Injectable({
@@ -20,7 +20,7 @@ export class AuthService {
 
   getToken(): string {
     const session = sessionStorage.getItem(STORAGE_APP_PREFIX);
-    return JSON.parse(session)[TOKEN_NAME];
+    return !isEmptyValue(session) ? JSON.parse(session)?.[TOKEN_NAME] : null;
   }
 
   setToken(token: string): void {
@@ -46,7 +46,8 @@ export class AuthService {
   }
 
   getRefreshToken() {
-    return JSON.parse(sessionStorage.getItem(STORAGE_APP_PREFIX)).refreshToken;
+    const session = sessionStorage.getItem(STORAGE_APP_PREFIX);
+    return !isEmptyValue(session) ?  JSON.parse(session)?.refreshToken : null;
   }
 
   setRefreshToken(value: string) {

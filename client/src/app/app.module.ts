@@ -40,7 +40,7 @@ registerLocaleData(localeEs, 'es');
     BrowserAnimationsModule,
     JwtModule.forRoot({
       config: {
-        tokenGetter: () => JSON.parse(sessionStorage.getItem(STORAGE_APP_PREFIX))[TOKEN_NAME],
+        tokenGetter: () => JSON.parse(sessionStorage.getItem(STORAGE_APP_PREFIX) || null)?.[TOKEN_NAME],
       },
     }),
     AppRoutingModule,
