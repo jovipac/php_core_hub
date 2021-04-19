@@ -1,27 +1,27 @@
 <form action="javascript:" class="needs-validation" novalidate [formGroup]="formDocumento" (ngSubmit)="onSubmit()" autocomplete="off">
 
-  <ng-container formArrayName="documentos">
-    <tabset #dynamicTabs type="">
-      <tab *ngFor="let documento of formDocumento.get('documentos')['controls'];index as idx" [id]="idx" [heading]="">
-      <ng-container [formGroupName]="idx">
+  <ng-container>
+    <tabset #dynamicTabs type="tabs">
+      <tab [id]="'idx'" [heading]="'Documento'">
+      <ng-container>
         <div class="form-row">
-          <div class="col-md-10 mb-3">
+          <div class="col-md-9 mb-3">
             <input-label [label]="'Titulo'" [id]="'txtTitulo'"></input-label>
             <input type="text" class="form-control" id="txtTitulo" formControlName="titulo"
-              placeholder="Descripcion en un titulo" [ngClass]="displayValidation(documento.get('titulo').invalid)">
-            <div [ngClass]="displayValidationMsg(documento.get('titulo').valid)">
-              <div *ngIf="documento.get('titulo').errors?.required">El campo es requerido</div>
-              <div *ngIf="documento.get('titulo').errors?.pattern">Solo se aceptan digitos</div>
+              placeholder="Descripcion en un titulo" [ngClass]="displayValidation(formDocumento.get('titulo').invalid)">
+            <div [ngClass]="displayValidationMsg(formDocumento.get('titulo').valid)">
+              <div *ngIf="formDocumento.get('titulo').errors?.required">El campo es requerido</div>
+              <div *ngIf="formDocumento.get('titulo').errors?.pattern">Solo se aceptan digitos</div>
             </div>
           </div>
-          <div class="col-md-2 mb-3">
+          <div class="col-md-3 mb-3">
             <input-label [requires]="false" [label]="'Plantilla'" [id]="'txtTipoMotivo'"></input-label>
             <ng-select [items]="listPlantillaDocumento" #select bindLabel="titulo" dropdownPosition="auto" bindValue="id_plantilla_documento" formControlName="id_plantilla_documento"
-              labelForId="txtTipoMotivo" placeholder="Seleccionar" [ngClass]="displayValidation(documento.get('id_plantilla_documento').invalid)" >
+              labelForId="txtTipoMotivo" placeholder="Seleccionar" [ngClass]="displayValidation(formDocumento.get('id_plantilla_documento').invalid)" >
             </ng-select>
-            <div [ngClass]="displayValidationMsg(documento.get('id_plantilla_documento').valid)">
-              <div *ngIf="documento.get('id_plantilla_documento').errors?.required">El campo es requerido</div>
-              <div *ngIf="documento.get('id_plantilla_documento').errors?.pattern">Solo se aceptan digitos</div>
+            <div [ngClass]="displayValidationMsg(formDocumento.get('id_plantilla_documento').valid)">
+              <div *ngIf="formDocumento.get('id_plantilla_documento').errors?.required">El campo es requerido</div>
+              <div *ngIf="formDocumento.get('id_plantilla_documento').errors?.pattern">Solo se aceptan digitos</div>
             </div>
           </div>
         </div>
@@ -30,7 +30,90 @@
               <editor [init]="textEditorConfig" formControlName="texto" [disabled]="readOnlyEditor"></editor>
           </div>
         </div>
+
       </ng-container>
+      </tab>
+      <tab [id]="'archivos'" [heading]="'Adjuntos'">
+        <ng-container>
+          <div class="form-row">
+            <div class="col-md-8 mb-3"></div>
+            <div class="col-md-4 mb-3">
+              <input-label [label]="'Subir archivo(s)'" [id]="'txtArchivoAdjunto'"></input-label>
+              <input type="file" class="form-control" id="txtArchivoAdjunto" ng2FileSelect [uploader]="uploader" multiple />
+              <div>
+                Progreso de la cola:
+                <progressbar [value]="uploader.progress" [striped]="true">{{uploader.progress + '%'}}</progressbar>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div *ngIf="formDocumento.get('archivos_adjuntos').value" class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                <tr>
+                  <th></th>
+                  <th>Nombre del archivo</th>
+                  <th>tamaño</th>
+                  <th>Acción</th>
+                </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let archivo_adjunto of formDocumento.get('archivos_adjuntos').value; index as row;">
+                    <td>{{row+1}}</td>
+                    <td>
+                      {{ archivo_adjunto?.nombre }}
+                    </td>
+                    <td>{{ archivo_adjunto?.tamanio/1024/1024 | number:'.2'}} MB</td>
+                    <td scope="row">
+                      <a role="button" class="btn btn-primary btn-mini btn-icon-round" href="{{ archivo_adjunto?.url }}" target="_blank">
+                        <i class="icofont icofont-download"></i>Descargar
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div *ngIf="uploader.queue" class="container table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th width="50%">Name</th>
+                    <th>Size</th>
+                    <th>Progress</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of uploader.queue">
+                    <td><strong>{{ item?.file?.name }}</strong></td>
+                    <td *ngIf="uploader.options.isHTML5" nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
+                    <td *ngIf="uploader.options.isHTML5">
+                      <progressbar [value]="item.progress">{{item.progress + '%'}}</progressbar>
+                    </td>
+                    <td class="text-center">
+                      <span *ngIf="item.isSuccess"><i class="icofont icofont-check-circled"></i></span>
+                      <span *ngIf="item.isCancel"><i class="icofont icofont-close-circled"></i></span>
+                      <span *ngIf="item.isError"><i class="icofont icofont-exclamation-circle"></i></span>
+                    </td>
+                    <td nowrap>
+                      <button type="button" class="btn btn-success btn-sm" (click)="item.upload()"
+                        [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                        <span class="icofont icofont-upload"></span> Reintentar
+                      </button>
+                      <button type="button" class="btn btn-warning btn-sm" (click)="item.cancel()" [disabled]="!item.isUploading">
+                        <span class="icofont icofont-ban"></span> Cancelar
+                      </button>
+                      <button type="button" class="btn btn-danger btn-sm" (click)="item.remove()">
+                        <span class="icofont icofont-trash"></span> Remover
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </ng-container>
       </tab>
     </tabset>
   </ng-container>

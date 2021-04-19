@@ -48,7 +48,7 @@ export class ExpedienteDocumentoComponent implements OnInit {
 
   ngOnInit(): void {
     this.id_expediente = this.route.snapshot.params['id'];
-    this.isAddMode = !this.id_expediente;
+    this.isAddMode = !this.id_expediente_documento;
 
     this.uploader.onBeforeUploadItem = (item) => {
       item.withCredentials = false;
@@ -59,7 +59,7 @@ export class ExpedienteDocumentoComponent implements OnInit {
           const dataInput = JSON.parse(suscriptor);
           const dataSend = {
             'id_expediente': dataInput.result.params?.id_expediente,
-            'id_expediente_hecho': dataInput.result.params?.id_expediente_hecho,
+            'id_expediente_documento': dataInput.result.params?.id_expediente_documento,
             'ubicacion': dataInput.result.path,
             'nombre': dataInput.result.filename,
             'tamanio': dataInput.result.size,
@@ -105,28 +105,22 @@ export class ExpedienteDocumentoComponent implements OnInit {
         'insertdatetime media table paste code help wordcount'
       ],
       toolbar:
-        'template | undo redo | formatselect | bold italic backcolor | \
+        'template | undo redo | formatselect | bold italic underline backcolor | \
         alignleft aligncenter alignright alignjustify | \
         bullist numlist outdent indent | removeformat | help'
     }
 
     // Inicializacion del formulario
-    this.formDocumento =  new FormGroup({
-      documentos: new FormArray([])
-    });
+    this.formDocumento = this.buildForm({});
 
     if (!this.isAddMode) {
       // Si existe ya un ID ya guardado, se consulta y carga la información
       if (!isEmptyValue(this.id_expediente_documento) && this.id_expediente_documento > 0) {
         this.getExpedienteDocumento(this.id_expediente_documento);
       }
-      else if (!isEmptyValue(this.id_expediente) && this.id_expediente_documento == 0) {
-        const dataSend = { 'id_expediente': this.id_expediente };
-        this.searchExpedienteDocumento(dataSend);
-      } else
-        this.addDocumento({});
+
     } else {
-      this.addDocumento({});
+      this.formDocumento = this.buildForm({});
     }
 
   }
@@ -171,10 +165,8 @@ export class ExpedienteDocumentoComponent implements OnInit {
     return cssStyle;
   }
 
-  addDocumento(data: any) {
-    (<FormArray>this.formDocumento.get('documentos')).push(this.buildForm(data));
-    //this.formDocumento = this.buildForm(data);
-  }
+  // convenience getter for easy access to form fields
+  get f() { return this.formDocumento.controls; }
 
   onSubmit() {
     this.submitted = true;
@@ -218,41 +210,10 @@ export class ExpedienteDocumentoComponent implements OnInit {
               ...documento,
             } : {};
             if (isEmptyValue(documentoFormateado)) {
-              this.addDocumento({});
+              this.formDocumento = this.buildForm({});
             } else {
-              this.addDocumento(documentoFormateado);
-            }
-
-          } else
-            this.toastr.error(response.message);
-          this.loading.hide('step05');
-        },
-        error: (error: any) => {
-          this.toastr.error(error.message);
-          this.loading.hide('step05');
-        }
-      });
-  }
-
-  searchExpedienteDocumento(dataSend: any) {
-    this.loading.show('step05');
-    this.expedienteDocumentoService.searchExpedienteDocumento(dataSend)
-      .pipe(first())
-      .subscribe({
-        next: (response: any) => {
-          if (response.success) {
-            const documentos = response.result;
-            // Se formatea la informacion para adecuarla al formulario
-            const documentosFormateado = !isEmptyValue(documentos) ? documentos.map((documento: any) => {
-              return { ...documento, }
-            }) : [];
-
-            if (isEmptyValue(documentosFormateado)) {
-              this.addDocumento({});
-            } else {
-              documentosFormateado.forEach(documento  => {
-                this.addDocumento(documento);
-              })
+              //this.formDocumento = this.buildForm(documentoFormateado);
+              this.formDocumento.patchValue(documentoFormateado);
             }
 
           } else
@@ -269,11 +230,10 @@ export class ExpedienteDocumentoComponent implements OnInit {
   private async createOrUpdateDocumento() {
     let completedProcess = false;
     //Valor del Form, incluidos los controles deshabilitados
-    let formValues = {
+    let documento = {
       ...this.formDocumento.getRawValue(),
     };
 
-    let result = formValues.documentos.forEach(async (documento: any) => {
       try {
         this.loading.show('step05');
         if (isEmptyValue(documento.id_expediente_documento) && documento.id_expediente_documento != 0) {
@@ -285,6 +245,14 @@ export class ExpedienteDocumentoComponent implements OnInit {
           if (response.success) {
             this.toastr.success(response.message, 'Documento del expediente');
             completedProcess = true;
+
+            // Pasos para guardar los archivos adjuntos
+            this.uploader.onBuildItemForm = (fileItem: any, form: any) => {
+              form.append('id_expediente', this.id_expediente);
+              form.append('id_expediente_documento', response.result.id_expediente_documento);
+            };
+            this.uploader.uploadAll();
+
             this.loading.hide('step05');
 
           } else {
@@ -297,6 +265,14 @@ export class ExpedienteDocumentoComponent implements OnInit {
           if (response.success) {
             this.toastr.success(response.message, 'Documento del expediente');
             completedProcess = true;
+
+            // Pasos para guardar los archivos adjuntos
+            this.uploader.onBuildItemForm = (fileItem: any, form: any) => {
+              form.append('id_expediente', this.id_expediente);
+              form.append('id_expediente_documento', documento.id_expediente_documento);
+            };
+            this.uploader.uploadAll();
+
             this.loading.hide('step05');
 
           } else {
@@ -321,9 +297,6 @@ export class ExpedienteDocumentoComponent implements OnInit {
         this.loading.hide('step05');
       }
 
-    });
-    //result = await Promise.all([promise1, promise2, promise3]);
-    //this.submittedEvent.emit(result);
   }
 
 

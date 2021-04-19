@@ -128,7 +128,7 @@
                 <th>Acción</th>
               </tr>
               </thead>
-              <tbody>{{ archivos_adjuntos }}
+              <tbody>
                 <tr *ngFor="let archivo_adjunto of this.formHecho.get('hechos').value[idx].archivos_adjuntos; index as row;">
                   <td>{{row+1}}</td>
                   <td>
