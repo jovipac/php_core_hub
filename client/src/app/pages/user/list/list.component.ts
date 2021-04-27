@@ -91,9 +91,6 @@ export class ListComponent implements OnInit {
   public assigned: Array<rolAssigned>;
   public codeModule: number = 0;
   public estado: number = 1;
-
-
-
   public codeModuleUnassigned: number = 0;
   public assignedOne: boolean = true;
   public unassignedOne: boolean = true;
@@ -268,7 +265,7 @@ export class ListComponent implements OnInit {
             dom: "Bfrtip",
             buttons: [
               {
-                extend: 'excel', className: 'btn btn-success', exportOptions: {
+                extend: 'excel', className: 'btn btn-outline-primary', exportOptions: {
                   columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
                 }
               }
@@ -282,7 +279,7 @@ export class ListComponent implements OnInit {
               "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
               "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
               "sInfoPostFix": "",
-              "sSearch": "Buscar:",
+              "sSearch": "Buscar en listado:",
               "sUrl": "",
               "sInfoThousands": ",",
               "sLoadingRecords": "Cargando...",
@@ -319,15 +316,12 @@ export class ListComponent implements OnInit {
     event.preventDefault();
     this.ResetSenti();
     if (this.createOficial.valid) {
-
       this.service.createOficial(this.createOficial.value).subscribe(res => {
         let response: any = res;
         $(document).ready(function () { $('#list').DataTable().destroy(); })
         this.getListOficial();
         this.toastr.success(response.message, 'Funcionarios')
         this.toastr.success(response.result.password, 'Password asignado')
-
-
 
         this.createOficial.reset();
         this.getDismissReason('Close click');
@@ -389,10 +383,12 @@ export class ListComponent implements OnInit {
 
 
   }
+
+  
   deleteOficial(codeOficial) {
     Swal.fire({
-      title: '¿Esta seguro?',
-      text: "el usuario no podrá ingresar al sistema",
+      title: '¿Esta seguro de cambiar el estado?',
+      text: "El usuario no podrá ingresar al sistema.",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',

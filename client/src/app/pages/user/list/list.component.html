@@ -2,28 +2,29 @@
 <div class="row">
   <div class="col-lg-12">
     <app-card [hidHeader]="true" [blockClass]="'table-border-style'">
-      <div class="col-lg-12 buttoms">
-        <!-- Button trigger modal -->
-        <button (click)="openModal(addUser,0);" class="btn btn-primary float-right btn-md button-separate"><i
-            class="icofont icofont-plus-circle">
-          </i>Nuevo usuario</button>
-      </div>
 
 
 
-
-
-      <div class="table-responsive">
-        <form novalidate [formGroup]="SerchOficial"  >
-
-          <div class="col-lg-4">
+      <div class="row">
+        <div class="col-sm-6">
+          <form novalidate [formGroup]="SerchOficial">
             <label for="validationCustom03">Estado de usuarios:</label>
             <ng-select (change)="GetUser()" id="id_estado" [items]="liststates" #select bindLabel="nombre"
-              dropdownPosition="auto" bindValue="id_estado" labelForId="nombre"
-              placeholder="Seleccionar estado" [virtualScroll]="true" formControlName="id_estado" >
+              dropdownPosition="auto" bindValue="id_estado" labelForId="nombre" placeholder="Seleccionar estado"
+              [virtualScroll]="true" formControlName="id_estado">
             </ng-select>
-          </div>
-      </form>
+          </form>
+        </div>
+        <div class="col-sm-6">
+          <button (click)="openModal(addUser,0);" class="btn btn-primary float-right btn-md button-separate"><i
+              class="icofont icofont-plus-circle">
+            </i> Crear usuario </button>
+        </div>
+
+      </div>
+      <hr>
+      <div class="table-responsive">
+
 
 
         <div class="col-md-12" style="margin-bottom: 50px;">
@@ -53,11 +54,11 @@
                 <td>{{user.nombre_puesto}}</td>
                 <td>{{user.nombre_rol}}</td>
                 <td>{{user.email}}</td>
-                <td *ngIf="estado == 1"  ><span class="badge bg-primary">Activo</span></td>
-                <td *ngIf="estado == 0"  ><span class="badge bg-primary">Inactivo</span></td>
+                <td *ngIf="estado == 1"><span class="badge bg-primary">Activo</span></td>
+                <td *ngIf="estado == 0"><span class="badge bg-primary">Inactivo</span></td>
                 <td>{{user.nombre_auxiliatura}}</td>
                 <td>
-                  <div class="row" *ngIf="estado == 1" >
+                  <div class="row" *ngIf="estado == 1">
                     <div class="col">
                       <div dropdown class="d-inline-block">
                         <button class="btn btn-outline-primary btn-mini dropdown-toggle" id="dropdownBasic1"
@@ -76,7 +77,7 @@
                     </div>
                   </div>
 
-                  <div class="row" *ngIf="estado == 0" >
+                  <div class="row" *ngIf="estado == 0">
                     <div class="col">
                       <div dropdown class="d-inline-block">
                         <button class="btn btn-outline-primary btn-mini dropdown-toggle" id="dropdownBasic1"
@@ -104,7 +105,7 @@
 <ng-template #addUser>
   <div class="modal-content">
     <div class="modal-header">
-      <h6 class="modal-title" id="modal-title-default">Administración de usuarios</h6>
+      <h6 class="modal-title" id="modal-title-default">Creación de usuarios</h6>
       <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
         <span aria-hidden="true">×</span>
       </button>
@@ -114,7 +115,7 @@
         <div class="row">
           <div class="col-md-3">
             <div class="form-group">
-              <label for="">* Código:</label>
+              <label for="">* Código PDH:</label>
               <input type="text" class="form-control" formControlName="codigo" placeholder="Código"
                 [ngClass]="{ 'is-invalid': SentPdhCode }" required>
             </div>
@@ -150,18 +151,7 @@
             </div>
           </div>
 
-          <div class="col-md-3">
-            <div class="form-group">
-              <label for="">* Dependencia:</label>
-              <select class="form-control" formControlName="id_dependencia" required>
-                <option value="">SELECCIONAR</option>
-                <option *ngFor="let dependency of listDependency" value="{{dependency.id_dependencia}}">
-                  {{dependency.nombre}}</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="col-md-3">
+          <div class="col-md-6">
             <div class="form-group">
               <label for="">* Puesto:</label>
               <select class="form-control" formControlName="id_puesto" required>
@@ -171,6 +161,7 @@
               </select>
             </div>
           </div>
+
 
           <div class="col-md-3">
             <div class="form-group">
@@ -192,6 +183,25 @@
               </select>
             </div>
           </div>
+
+
+
+
+          
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="">* Dependencia PDH:</label>
+              <select class="form-control" formControlName="id_dependencia" required>
+                <option value="">SELECCIONAR</option>
+                <option *ngFor="let dependency of listDependency" value="{{dependency.id_dependencia}}">
+                  {{dependency.nombre}}</option>
+              </select>
+            </div>
+          </div>
+
+          
+
+          
 
           <div class="col-md-3">
             <div class="form-group">
