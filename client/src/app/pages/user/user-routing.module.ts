@@ -21,6 +21,11 @@ const routes: Routes = [
                 path: 'maintance-profile',
                 loadChildren: () => import('./maintance-profile/maintance-profile.module').then(m => m.MaintanceProfileModule)
             }
+            ,
+            {
+                path: 'changepwd',
+                loadChildren: () => import('./changepwd/changepwd.module').then(m => m.ChangepwdModule)
+            }
         ]
     }
 ];

@@ -335,6 +335,13 @@ export class AdminComponent implements OnInit {
     })
   }
 
+
+  cambiarClave() {
+      this.router.navigate(['/user/changepwd'])
+
+  }
+
+
   getAllMenu() {
     return new Promise((resolve, reject) => {
 
