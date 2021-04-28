@@ -95,7 +95,7 @@ export class ExpedienteDocumentoComponent implements OnInit {
 
     // Inicializacion del editor de texto
     this.textEditorConfig = {
-      selector: '#classic',
+      //selector: '#classic',
       base_url: '/tinymce',
       suffix: '.min',
       height: 500,

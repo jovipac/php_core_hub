@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../../shared/shared.module';
 import { TabsModule } from 'ngx-bootstrap/tabs';
+import { ModalModule } from 'ngx-bootstrap/modal';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -30,6 +31,7 @@ import { ExpedienteDocumentoComponent } from '../components/expediente-documento
     SolicitudRoutingModule,
     ReactiveFormsModule,
     TabsModule,
+    ModalModule,
     TypeaheadModule,
     CarouselModule,
     BsDropdownModule,
