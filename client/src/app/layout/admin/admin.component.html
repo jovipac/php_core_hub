@@ -49,10 +49,16 @@
         class="btn btn-primary dropdown-toggle dropdown-toggle-split waves-effect waves-light dropdown-toggle"
         data-toggle="dropdown" ngbdropdowntoggle="" type="button"><span _ngcontent-rdr-c5="" class="sr-only">Toggle
           primary</span></button>
-      <div _ngcontent-rdr-c5="" class="dropdown-menu" ngbdropdownmenu="" x-placement="bottom-left"><a
-          _ngcontent-rdr-c5="" class="dropdown-item waves-effect waves-light" (click)="logout()">Cerrar Sesión</a>
-      </div>
+      <div _ngcontent-rdr-c5="" class="dropdown-menu" ngbdropdownmenu="" x-placement="bottom-left">
+        <li>
+          <a class="dropdown-item waves-effect waves-light" (click)="cambiarClave()">Cambiar Clave</a>
+        </li>
+        
 
+        <a class="dropdown-item waves-effect waves-light" (click)="logout()">Cerrar Sesión</a>
+        
+      </div>
+     
     </div>
   </div>
 </nav>
