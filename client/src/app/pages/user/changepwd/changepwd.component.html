@@ -1,0 +1,45 @@
+<div class="row">
+  <div class="col-sm-4"></div>
+  <div class="col-sm-4">
+    <app-card [cardTitle]="'Cambiar Clave'" [options]="false" style="text-align: center;">
+      <form class="needs-validation" novalidate [formGroup]="frmCambiarClave" (ngSubmit)="cambiarClave($event)" autocomplete="off" >
+
+        <div class="form-row">
+          <div class="col-md-12 mb-3"  style="text-align: left;">
+            <!-- <label for="">* Nuevo Password:</label> -->
+              <input type="text" class="form-control" formControlName="nuevaClave" placeholder="Nueva Clave"
+                [ngClass]="{ 'is-invalid': SentPdhCode }" required>
+            
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="col-md-12 mb-3"  style="text-align: left;">
+            <!-- <label for="">* Confirmar Nuevo Password:</label> -->
+              <input type="text" class="form-control" formControlName="confNuevaClave" placeholder="Confirmar Nueva Clave"
+                [ngClass]="{ 'is-invalid': SentPdhCode }" required>
+            
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col-md-12 mb-3"  style="text-align: center;">
+          <div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="errorState">
+            <span class="alert-inner--text">{{message.error}} </span>
+          </div>
+        </div>
+
+
+          <div class="col-md-12 mb-3"  style="text-align: center;">
+            <button type="submit" class="btn btn-success" >Cambiar Clave</button>
+          </div>
+         
+          <div class="col"></div>
+        </div>
+      </form>
+    </app-card>
+
+  </div>
+  <div class="col-sm-4"></div>
+</div>
