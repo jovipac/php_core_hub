@@ -95,6 +95,7 @@ export class ExpedienteDocumentoComponent implements OnInit {
 
     // Inicializacion del editor de texto
     this.textEditorConfig = {
+      selector: '#classic',
       base_url: '/tinymce',
       suffix: '.min',
       height: 500,
@@ -104,6 +105,7 @@ export class ExpedienteDocumentoComponent implements OnInit {
         'template searchreplace visualblocks code fullscreen',
         'insertdatetime media table paste code help wordcount'
       ],
+      templates: [],
       toolbar:
         'template | undo redo | formatselect | bold italic underline backcolor | \
         alignleft aligncenter alignright alignjustify | \
@@ -186,7 +188,18 @@ export class ExpedienteDocumentoComponent implements OnInit {
     .subscribe({
       next: (response: any) => {
         if (response.success) {
+          const plantillasFormated = !isEmptyValue(response.result) ?
+            response.result.map((template: any) => {
+              return {
+                title: template?.titulo,
+                description: template?.descripcion,
+                content: template.texto,
+              }
+            }) : [];
           this.listPlantillaDocumento = response.result;
+          this.textEditorConfig = { ...this.textEditorConfig, templates: plantillasFormated };
+          //console.log(this.textEditorConfig);
+
         } else
           this.toastr.error(response.message)
       },
