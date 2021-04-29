@@ -77,8 +77,9 @@ export class ServicesService {
 
 
   //bg para cambiar clave
-  updatePassword(id, data) {
-    return this.httpClient.put(`${environment.host}funcionariosChangepwd/${id}`, data, this.createHeaders())
+  //en los servicios siempre recibe un modelo del back
+  updatePassword(data) {
+    return this.httpClient.put(`${environment.host}changepwd`, data, this.createHeaders())
   }
 
 

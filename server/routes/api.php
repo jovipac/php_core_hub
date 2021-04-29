@@ -67,6 +67,9 @@ Route::group([
     Route::get('funcionarios/restore/{funcionario}', 'Api\FuncionarioController@restore')->name('funcionarios.restore');
     Route::post('funcionarios/trash', 'Api\FuncionarioController@trash')->name('funcionarios.trash');
 
+    Route::put('changepwd', 'Api\changepwdController@update')->name('changepwdController.update');
+
+
     Route::resource('dependencias', 'Api\DependenciaController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'
     ]]);
