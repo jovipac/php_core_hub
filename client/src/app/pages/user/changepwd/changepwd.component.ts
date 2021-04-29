@@ -63,9 +63,9 @@ export class ChangepwdComponent implements OnInit {
           password: this.frmCambiarClave.value['confNuevaClave'],
           id_usuario: codesSession['id_usuario']
         };
-
         ////se ejecuta el servicio
         this.service.updatePassword(objectToSend).subscribe(res => {
+
           let response: any = res;
           this.toastr.success(response.message, 'Cambiar Clave')
           $(document).ready(
