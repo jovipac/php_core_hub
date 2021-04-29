@@ -27,6 +27,23 @@ class PlantillaDocumentoController extends ApiController
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function list()
+    {
+        $resultados = PlantillaDocumento::query()
+        ->select(
+            'titulo AS title',
+            'texto AS content',
+        )
+        ->orderBy('created_at', 'desc');
+
+        return response()->json($resultados);
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @param  \Illuminate\Http\Request  $request

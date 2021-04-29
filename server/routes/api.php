@@ -22,6 +22,7 @@ Route::group([
     Route::get('logout', 'Auth\AuthController@logout')->middleware('auth:api');
 });
 */
+Route::get('plantilla-documento/list', 'Api\PlantillaDocumentoController@list')->name('plantilla-documento.list');
 
 Route::group([
     'middleware' => 'auth:api'
