@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+
 import { ListComponent } from './list.component';
 
 const routes: Routes = [
@@ -8,7 +9,7 @@ const routes: Routes = [
         component: ListComponent,
         data: {
             breadcrumb: 'Mantenimiento de usuarios',
-            icon: 'icofont-layout bg-c-blue',
+            icon: 'icofont-user bg-c-blue',
             status: true
         }
     }

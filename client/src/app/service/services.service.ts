@@ -65,11 +65,25 @@ export class ServicesService {
     return this.httpClient.put(`${environment.host}funcionarios/${id}`, data, this.createHeaders())
   }
 
+ 
+
   deleteOficial(id) {
     return this.httpClient.delete(`${environment.host}funcionarios/${id}`, this.createHeaders())
   }
 
+
   /* End service from oficial */
+
+
+
+  //bg para cambiar clave
+  //en los servicios siempre recibe un modelo del back
+  updatePassword(data) {
+    return this.httpClient.put(`${environment.host}changepwd`, data, this.createHeaders())
+  }
+
+
+
 
   getListDependency() {
     return this.httpClient.get(`${environment.host}dependencias`, this.createHeaders())
