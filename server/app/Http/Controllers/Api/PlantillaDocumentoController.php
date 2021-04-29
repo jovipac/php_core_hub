@@ -36,9 +36,11 @@ class PlantillaDocumentoController extends ApiController
         $resultados = PlantillaDocumento::query()
         ->select(
             'titulo AS title',
+            'titulo AS description',
             'texto AS content',
         )
-        ->orderBy('created_at', 'desc');
+        ->orderBy('created_at', 'desc')
+        ->get();
 
         return response()->json($resultados);
     }

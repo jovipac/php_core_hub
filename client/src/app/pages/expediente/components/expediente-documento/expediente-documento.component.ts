@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { FileUploader } from 'ng2-file-upload';
 import { first } from 'rxjs/operators';
 import { isEmptyValue, extractErrorMessages } from '../../../../shared/utils';
+import { environment } from '../../../../../environments/environment';
 import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
@@ -91,7 +92,7 @@ export class ExpedienteDocumentoComponent implements OnInit {
 
     });
 
-    this.getListPlantillaDocumento();
+
 
     // Inicializacion del editor de texto
     this.textEditorConfig = {
@@ -99,17 +100,18 @@ export class ExpedienteDocumentoComponent implements OnInit {
       base_url: '/tinymce',
       suffix: '.min',
       height: 500,
-      menubar: false,
+      menubar: true,
       plugins: [
         'advlist autolink lists link image charmap print preview anchor',
         'template searchreplace visualblocks code fullscreen',
         'insertdatetime media table paste code help wordcount'
       ],
-      templates: [],
+      templates: `${environment.host}plantilla-documento/list`,
       toolbar:
         'template | undo redo | formatselect | bold italic underline backcolor | \
         alignleft aligncenter alignright alignjustify | \
-        bullist numlist outdent indent | removeformat | help'
+        bullist numlist outdent indent | removeformat | help',
+      language: 'es_MX'
     }
 
     // Inicializacion del formulario
@@ -196,9 +198,9 @@ export class ExpedienteDocumentoComponent implements OnInit {
                 content: template.texto,
               }
             }) : [];
+
           this.listPlantillaDocumento = response.result;
           this.textEditorConfig = { ...this.textEditorConfig, templates: plantillasFormated };
-          //console.log(this.textEditorConfig);
 
         } else
           this.toastr.error(response.message)
