@@ -38,7 +38,7 @@
 
   <div class="form-row">
     <div class="col-md-6 mb-3">
-      <input-label [requires]="true" [label]="'Visita a unidad'" [id]="'txtAuxiliatura'"></input-label>
+      <input-label [requires]="true" [label]="'Sede de recepción'" [id]="'txtAuxiliatura'"></input-label>
       <ng-select id="txtAuxiliatura" [items]="listAuxiliatura" #select bindLabel="nombre" dropdownPosition="auto"
         bindValue="id_auxiliatura" labelForId="txtAuxiliatura" placeholder="Seleccionar a unidad" [virtualScroll]="true"
         formControlName="id_auxiliatura" [ngClass]="displayErrorsCss('id_auxiliatura')"  >
