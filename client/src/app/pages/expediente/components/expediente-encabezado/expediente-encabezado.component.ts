@@ -8,7 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Auxiliatura, Expediente, Prioridad, Via, Resultado, Funcionario } from '../../../../shared/models';
 import { first, map, switchMap  } from 'rxjs/operators';
 import { formatearCorrelativo } from '../../../../shared/utils/helpers';
-import { extractErrorMessages } from '../../../../shared/utils';
+import { isEmptyValue, extractErrorMessages } from '../../../../shared/utils';
 import { format, isValid } from 'date-fns';
 import { NgxSpinnerService } from "ngx-spinner";
 
@@ -86,7 +86,7 @@ export class ExpedienteEncabezadoComponent implements OnInit {
       id_expediente: new FormControl({
         value: null,
         disabled: !this.isAddMode,
-      }, [Validators.required]),
+      }, [Validators.pattern("[0-9]+")]),
       anio: new FormControl({
         value: null,
         disabled: false,
@@ -154,16 +154,14 @@ export class ExpedienteEncabezadoComponent implements OnInit {
 
   public onSubmit() {
     this.submitted = true;
+
     // stop here if form is invalid
     if (this.expedienteForm.invalid) {
       return;
     }
 
-    if (this.isAddMode) {
-      this.updateSolicitud();
-    } else {
-      this.updateSolicitud();
-    }
+    // Se procede a agregar o actualizar
+    this.createOrUpdate();
 
   }
 
@@ -286,5 +284,64 @@ export class ExpedienteEncabezadoComponent implements OnInit {
             }
         });
   }
+
+
+  private async createOrUpdate() {
+    let completedProcess = false;
+    //Valor del Form, incluidos los controles deshabilitados
+    let solicitud = {
+      ...this.expedienteForm.getRawValue(),
+    };
+
+      try {
+        this.loading.show('step01');
+        if (isEmptyValue(solicitud.id_expediente) && solicitud.id_expediente != 0) {
+          solicitud = {
+            ...solicitud,
+          };
+          let response: any = await this.solicitudService.createExpediente(solicitud).toPromise();
+          if (response.success) {
+            this.toastr.success(response.message, 'Expediente');
+            completedProcess = true;
+
+            this.loading.hide('step01');
+
+          } else {
+            completedProcess = false;
+          }
+          this.submittedEvent.emit(completedProcess);
+        } else {
+          solicitud = { ...solicitud, };
+          let response: any = await this.solicitudService.updateExpediente(this.id, solicitud).toPromise();
+          if (response.success) {
+            this.toastr.success(response.message, 'Expediente');
+            completedProcess = true;
+
+            this.loading.hide('step01');
+
+          } else {
+            completedProcess = false;
+          }
+          this.submittedEvent.emit(completedProcess);
+
+        }
+      } catch(response) {
+        if (Object.prototype.toString.call(response.error.message) === '[object Object]') {
+          const messages = extractErrorMessages(response);
+          messages.forEach(propertyErrors => {
+            for (let message in propertyErrors) {
+              this.toastr.error(propertyErrors[message], 'Expediente');
+            }
+          });
+
+        } else {
+          this.toastr.error(response.error.message)
+        }
+        completedProcess = false;
+        this.loading.hide('step01');
+      }
+
+  }
+
 
 }
