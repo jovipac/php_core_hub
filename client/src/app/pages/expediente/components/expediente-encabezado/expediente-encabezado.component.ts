@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { AuxiliaturaService, PrioridadService, ViaService, ResultadoService } from '../../../../service/catalogos';
 import { ExpedienteService, FuncionariosService} from '../../../../service';
@@ -33,6 +33,7 @@ export class ExpedienteEncabezadoComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private toastr: ToastrService,
     private auxiliaturaService: AuxiliaturaService,
     private solicitudService: ExpedienteService,
@@ -97,7 +98,7 @@ export class ExpedienteEncabezadoComponent implements OnInit {
       }, []),
       correlativo: new FormControl({
         value: null,
-        disabled: false,
+        disabled: true,
       }, []),
       fecha_ingreso: new FormControl({
         value: null,
@@ -303,9 +304,9 @@ export class ExpedienteEncabezadoComponent implements OnInit {
           if (response.success) {
             this.toastr.success(response.message, 'Expediente');
             completedProcess = true;
-
             this.loading.hide('step01');
-
+            solicitud.id_expediente = response.result.id_expediente;
+            this.router.navigate(['../../solicitud/editar', solicitud.id_expediente], { relativeTo: this.route });
           } else {
             completedProcess = false;
           }
