@@ -8,7 +8,7 @@ import * as $ from 'jquery';
 import 'datatables.net';
 import 'datatables.net-dt';
 import Swal from 'sweetalert2'
-import { extractErrorMessages, FormStatus } from '../../../shared/utils';
+import { isEmptyValue, FormStatus } from '../../../shared/utils';
 import "datatables.net-buttons/js/buttons.html5.js";
 import { format } from 'date-fns';
 import { first, map, switchMap  } from 'rxjs/operators';
@@ -85,11 +85,11 @@ export class MonitoreoVisitasComponent implements OnInit   {
       }, [Validators.required, Validators.pattern("[0-9]+")]),
       id_motivo: new FormControl({
         value: '',
-
+        disabled: false,
       }, [Validators.required, Validators.pattern("[0-9]+")]),
       id_via: new FormControl({
         value: '',
-
+        disabled: false,
       }, []),
 
 
@@ -327,9 +327,8 @@ export class MonitoreoVisitasComponent implements OnInit   {
 
 
   GoNewrequest() {
-    console.log(this.MonitorVisitas.value.id_via);
-    this.router.navigate(['../../../expediente/solicitud/nuevo'], { relativeTo: this.route });
-
+    const params = !isEmptyValue(this.MonitorVisitas.get('id_via').value) ? { id_via: this.MonitorVisitas.get('id_via').value } : {};
+    this.router.navigate(['../../../expediente/solicitud/nuevo'], { relativeTo: this.route, queryParams: params });
   }
 
 
