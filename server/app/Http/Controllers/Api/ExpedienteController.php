@@ -94,19 +94,24 @@ class ExpedienteController extends ApiController
                 $input['id_via'] = $findVia->id_via;
             }
         }
-        if ($request->has('id_visita') && $request->filled('id_visita')) {
-            $input['folio'] = $request->id_visita;
-        }
+
+        $query = Expediente::query()->select('fecha_ingreso', 'anio', 'folio')
+            ->whereYear('created_at', date('Y'))
+            ->orderBy('folio', 'desc')
+            ->first();
+
+        $input['anio'] = isset($query->anio) ? $query->anio : date('Y');
+        $input['folio'] = isset($query->folio) ? ++$query->folio : 1;
 
         $validator = Validator::make($input, [
             'anio' => 'required|integer',
             'folio' => 'integer',
             'fecha_ingreso' => 'required',
             'id_via' => 'required|integer',
-            'id_motivo' => 'required|integer',
+            'id_motivo' => 'nullable|integer',
             'id_prioridad' => 'required|integer',
-            'id_dependencia' => 'required|integer',
-            'id_funcionario' => 'required|integer',
+            'id_dependencia' => 'nullable|integer',
+            'id_funcionario' => 'nullable|integer',
             'observaciones' => 'string',
             'id_resultado' => 'nullable|integer',
             'id_auxiliatura' => 'required|integer',
