@@ -2,7 +2,7 @@ import { Component, OnInit  } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from "@angular/forms";
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { AuxiliaturaService, MotivoService } from '../../../service/catalogos';
+import { AuxiliaturaService, MotivoService , ViaService } from '../../../service/catalogos';
 import { VisitasService, ExpedienteService } from '../../../service';
 import * as $ from 'jquery';
 import 'datatables.net';
@@ -11,6 +11,9 @@ import Swal from 'sweetalert2'
 import { extractErrorMessages, FormStatus } from '../../../shared/utils';
 import "datatables.net-buttons/js/buttons.html5.js";
 import { format } from 'date-fns';
+import { first, map, switchMap  } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Via } from '../../../shared/models';
 
 interface auxiliary {
   id_auxiliatura: number,
@@ -58,10 +61,12 @@ export class MonitoreoVisitasComponent implements OnInit   {
   public auxiliatura = JSON.parse(sessionStorage.getItem('validate')).id_auxiliatura;
   public MostrarDiv: boolean = false;
   public ChangeAux: boolean = false;
+  public listVia: Array<Via>;
 
   constructor(
     private formBuilder: FormBuilder,
     private visitaService: VisitasService,
+    private viaService: ViaService,
     private auxiliaturaService: AuxiliaturaService,
     private motivoService: MotivoService,
     private Expservice: ExpedienteService,
@@ -82,6 +87,12 @@ export class MonitoreoVisitasComponent implements OnInit   {
         value: '',
 
       }, [Validators.required, Validators.pattern("[0-9]+")]),
+      id_via: new FormControl({
+        value: '',
+
+      }, []),
+
+
     });
   }
 
@@ -108,6 +119,7 @@ export class MonitoreoVisitasComponent implements OnInit   {
 
     // Se llama la construccion del formulario
     this.buildForm();
+    this.getListVia();
   }
 
   onSubmit() {
@@ -293,6 +305,30 @@ export class MonitoreoVisitasComponent implements OnInit   {
 
   GoEdit(visit) {
     this.router.navigate(['../../solicitud/editar', visit.id_visita], { relativeTo: this.route });
+
+  }
+
+  getListVia() {
+    this.viaService.getListVia()
+    .pipe(first())
+    .subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.listVia = response.result;
+        } else
+          this.toastr.error(response.message)
+      },
+      error: (error: HttpErrorResponse) => {
+        this.toastr.error(error.message);
+      }
+    });
+
+  }
+
+
+  GoNewrequest() {
+    console.log(this.MonitorVisitas.value.id_via);
+    this.router.navigate(['../../../expediente/solicitud/nuevo'], { relativeTo: this.route });
 
   }
 
