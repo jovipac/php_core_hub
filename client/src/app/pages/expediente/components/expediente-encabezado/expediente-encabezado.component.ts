@@ -22,6 +22,7 @@ export class ExpedienteEncabezadoComponent implements OnInit {
 
   public expedienteForm: FormGroup;
   id: string;
+  id_via: string;
   isAddMode: boolean;
   submitted: boolean = false;
 
@@ -77,6 +78,10 @@ export class ExpedienteEncabezadoComponent implements OnInit {
       });
 
     }
+    // Aca se asignan los valores de  los paramatros opcionales enviados desde la ruta
+    this.route.queryParams.subscribe(params => {
+      this.id_via = params['id_via'];
+    });
 
     // Se llama la construccion del formulario
     this.buildForm();
@@ -109,7 +114,7 @@ export class ExpedienteEncabezadoComponent implements OnInit {
         disabled: false,
       }, [Validators.required]),
       id_via: new FormControl({
-        value: null,
+        value: isEmptyValue(this.id_via) ? null : this.id_via,
         disabled: false,
       }, [Validators.required]),
       id_funcionario: new FormControl({

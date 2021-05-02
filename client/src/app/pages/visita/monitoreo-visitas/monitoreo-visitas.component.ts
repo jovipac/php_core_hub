@@ -97,7 +97,6 @@ export class MonitoreoVisitasComponent implements OnInit   {
   }
 
   ngOnInit() {
-    console.log(JSON.parse(sessionStorage.getItem('validate')));
     // MOTIVO 1 DENUNCIAS  ---- 2 VISISTA PERSONAL
     this.tipo = this.route.snapshot.params['id'];
     console.log("entrada");
