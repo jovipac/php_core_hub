@@ -73,6 +73,7 @@ class ExpedienteDocumentoController extends ApiController
             'id_plantilla_documento' => 'nullable|integer',
             'titulo' => 'nullable|string',
             'texto' => 'nullable|string',
+            'observaciones' => 'nullable|string',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
@@ -124,6 +125,7 @@ class ExpedienteDocumentoController extends ApiController
             'id_plantilla_documento' => 'nullable|integer',
             'titulo' => 'nullable|string',
             'texto' => 'nullable|string',
+            'observaciones' => 'nullable|string',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);

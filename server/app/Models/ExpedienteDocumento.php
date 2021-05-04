@@ -28,7 +28,7 @@ class ExpedienteDocumento extends Model
      * @var array
      */
     protected $fillable = [
-        'id_expediente_documento', 'id_expediente', 'id_plantilla_documento', 'titulo', 'texto', 'borrado'
+        'id_expediente_documento', 'id_expediente', 'id_plantilla_documento', 'titulo', 'texto', 'observaciones', 'borrado'
     ];
 
     /**
