@@ -9,6 +9,20 @@
           <div class="col-md-12 mb-12">
               <p><strong> Monitoreo de {{ titulo }}  </strong></p>
           </div>
+          <div class="col-md-8 mb-8"></div>
+          <div class="col-md-2 mb-2"  >
+            <input-label  [label]="'Forma Ingreso'" [id]="'txtVia'"></input-label>
+            <select class="form-control" id="id_via" formControlName="id_via"    >
+              <option *ngFor="let via of listVia" value="{{via.id_via}}">{{via.nombre}}</option>
+            </select>
+          </div>
+          <div class="col-md-2 mb-2"  >
+            <br>
+            <button  class="btn btn-primary"  (click)="GoNewrequest()" >Nueva Solicitud</button>
+          </div>
+
+
+
         </div>
         <!-- / PRIMER FILA -->
 
