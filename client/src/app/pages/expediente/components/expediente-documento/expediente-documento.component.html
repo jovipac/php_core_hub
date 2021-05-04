@@ -11,26 +11,26 @@
               placeholder="Descripcion en un titulo" [ngClass]="displayValidation(formDocumento.get('titulo').invalid)">
             <div [ngClass]="displayValidationMsg(formDocumento.get('titulo').valid)">
               <div *ngIf="formDocumento.get('titulo').errors?.required">El campo es requerido</div>
-              <div *ngIf="formDocumento.get('titulo').errors?.pattern">Solo se aceptan digitos</div>
+              <div *ngIf="formDocumento.get('titulo').errors?.pattern">Solo se aceptan texto sin caracteres especiales</div>
             </div>
           </div>
-          <!-- <div class="col-md-3 mb-3">
-            <input-label [requires]="false" [label]="'Plantilla'" [id]="'txtTipoMotivo'"></input-label>
-            <ng-select [items]="listPlantillaDocumento" #select bindLabel="titulo" dropdownPosition="auto" bindValue="id_plantilla_documento" formControlName="id_plantilla_documento"
-              labelForId="txtTipoMotivo" placeholder="Seleccionar" [ngClass]="displayValidation(formDocumento.get('id_plantilla_documento').invalid)" >
-            </ng-select>
-            <div [ngClass]="displayValidationMsg(formDocumento.get('id_plantilla_documento').valid)">
-              <div *ngIf="formDocumento.get('id_plantilla_documento').errors?.required">El campo es requerido</div>
-              <div *ngIf="formDocumento.get('id_plantilla_documento').errors?.pattern">Solo se aceptan digitos</div>
-            </div>
-          </div> -->
         </div>
         <div class="form-row">
           <div class="col">
               <editor id="classic" [init]="textEditorConfig" formControlName="texto" [disabled]="readOnlyEditor"></editor>
           </div>
         </div>
-
+        <div class="form-row">
+          <div class="col mb-3">
+            <input-label [label]="'Observaciones'" [id]="'txtObservaciones'"></input-label>
+            <textarea type="text" class="form-control" id="txtObservaciones" formControlName="observaciones" rows="2" maxlength="255"
+              [ngClass]="displayValidation(formDocumento.get('observaciones').invalid)" ></textarea>
+            <div [ngClass]="displayValidationMsg(formDocumento.get('observaciones').valid)">
+              <div *ngIf="formDocumento.get('observaciones').errors?.pattern">Solo se aceptan texto sin caracteres especiales
+              </div>
+            </div>
+          </div>
+        </div>
       </ng-container>
       </tab>
       <tab [id]="'archivos'" [heading]="'Adjuntos'">

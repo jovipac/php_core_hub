@@ -189,7 +189,7 @@
         <div class="form-row">
           <div class="col mb-3">
             <input-label [label]="'Observaciones'" [id]="'txtObservaciones'"></input-label>
-            <textarea type="text" class="form-control" id="txtObservaciones" rows="3" formControlName="observaciones" [ngClass]="displayErrorsCss('observaciones')"></textarea>
+            <textarea type="text" class="form-control" id="txtObservaciones" rows="3" formControlName="observaciones" maxlength="255" [ngClass]="displayErrorsCss('observaciones')"></textarea>
             <div *ngIf="isHasErrors('observaciones')" class="invalid-feedback">
               <div *ngIf="f.observaciones.errors?.required">El campo es requerido</div>
               <div *ngIf="f.observaciones.errors?.pattern">Solo se acepta texto sin caracteres especiales</div>

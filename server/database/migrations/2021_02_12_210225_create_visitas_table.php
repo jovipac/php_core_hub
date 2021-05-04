@@ -25,7 +25,7 @@ class CreateVisitasTable extends Migration
             $table->integer('id_funcionario')->nullable()->unsigned();
             $table->integer('id_estado')->unsigned();
             $table->integer('id_auxiliatura')->unsigned();
-            $table->string('observaciones')->nullable();
+            $table->string('observaciones', 255)->nullable();
             $table->integer('id_prioridad')->unsigned();
             $table->boolean('borrado')->default(0)->index();
             $table->integer('created_by')->nullable()->unsigned();

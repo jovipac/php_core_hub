@@ -151,6 +151,10 @@ export class ExpedienteDocumentoComponent implements OnInit {
         value: data?.texto,
         disabled: false,
       }, []),
+      observaciones: new FormControl({
+        value: data?.observaciones,
+        disabled: false,
+      }, []),
       archivos_adjuntos: new FormControl({
         value: data?.archivos_adjuntos,
         disabled: false,
