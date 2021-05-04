@@ -32,7 +32,6 @@ interface oficial {
   nombre_rol: string,
   id_usuario:number
 
-
 }
 
 interface position {
@@ -585,11 +584,86 @@ export class ListComponent implements OnInit {
     this.SentPdhCode = false;
   }
 
-  getEstadosU(){
-    let list = [ { id_estado: 1 , nombre: "Activo"  }, { id_estado: 0  , "nombre": "Inactivo"} ];
+  getEstadosU() {
+    let list = [
+      { id_estado: 1, nombre: "Activo" }, 
+      { id_estado: 0, "nombre": "Inactivo" }
+      //{ id_estado: 2, "nombre": "Todos" }
+    ];
     this.liststates = list;
   }
 
+
+  getAllUsuarios(){
+    $(document).ready(function () { $('#list').DataTable().destroy(); })
+    this.service.getOficials().subscribe(res => {
+      let response: any = res;
+      //console.log(response)
+      
+      let ListusersNuevo: Array<oficial>;
+      if (response.result.length > 0) {
+        this.listUsers = response.result;
+
+       
+
+        for (let usuario of response.result){
+          console.log('usuario.id_funcionario', usuario.id_funcionario);
+          
+          
+        }
+        
+        console.log('ListusersNuevo',ListusersNuevo);
+        $(document).ready(function () {
+          $('#list').DataTable({
+            dom: "Bfrtip",
+            buttons: [
+              {
+                extend: 'excel', className: 'btn btn-outline-primary', exportOptions: {
+                  columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                }
+              }
+            ],
+            language: {
+              "sProcessing": "Procesando...",
+              "sLengthMenu": "Mostrar _MENU_ registros",
+              "sZeroRecords": "No se encontraron resultados",
+              "sEmptyTable": "Ningún dato disponible en esta tabla",
+              "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+              "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+              "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+              "sInfoPostFix": "",
+              "sSearch": "Buscar en listado:",
+              "sUrl": "",
+              "sInfoThousands": ",",
+              "sLoadingRecords": "Cargando...",
+              "oPaginate": {
+                "sFirst": "Primero",
+                "sLast": "Último",
+                "sNext": "Siguiente",
+                "sPrevious": "Anterior"
+              },
+              "oAria": {
+                "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+              },
+              "buttons": {
+                "excel": "Descargar excel"
+              }
+            },
+            retrieve: true,
+            data: this.listUsers
+          });
+
+        });
+
+      } else {
+        this.listUsers = [];
+      }
+    }, err => {
+      this.listUsers = [];
+      console.log(err)
+    })
+  }
 
   getTrashEmployees() {
     $(document).ready(function () { $('#list').DataTable().destroy(); })
@@ -655,10 +729,15 @@ export class ListComponent implements OnInit {
   GetUser(){
     let estado = this.SerchOficial.value.id_estado;
     this.estado = estado;
+    
     if(estado == 1){
-
       this.getListOficial();
-    }else{
+    }
+    else if (estado == 2){
+      console.log('entro a get todos');
+      this.getAllUsuarios();
+    }
+    else{
       this.getTrashEmployees();
     }
   }

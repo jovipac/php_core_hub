@@ -45,7 +45,12 @@
               </tr>
             </thead>
             <tbody>
+
+           
               <tr *ngFor="let user of listUsers">
+
+
+
                 <td>{{user.codigo}}</td>
                 <td>{{user.username}}</td>
                 <td>{{user.nombres}}</td>
@@ -90,6 +95,22 @@
                       </div>
                     </div>
                   </div>
+
+                  <div class="row" *ngIf="estado == 2">
+                    <div class="col">
+                      <div dropdown class="d-inline-block">
+                        <button class="btn btn-outline-primary btn-mini dropdown-toggle" id="dropdownBasic1"
+                          dropdownToggle>Acciones</button>
+                        <div *dropdownMenu aria-labelledby="dropdownBasic1" class="dropdown-menu">
+
+                          <li class="dropdown-item btn-mini" (click)="restoreEmployees(user.id_funcionario)">Habilitar
+                          </li>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
                 </td>
               </tr>
             </tbody>
