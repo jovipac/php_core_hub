@@ -99,10 +99,10 @@
 
     </ul>
 
-    Oficial Asignado: &nbsp;&nbsp;
-    <ng-select id="txtAuxiliaturaTramite" #select bindLabel="nombre" dropdownPosition="auto" bindValue="id_auxiliatura"
-      labelForId="txtAuxiliaturaTramite" placeholder="Seleccionar" [virtualScroll]="true"
-      formControlName="id_auxiliatura">
+    Oficial Asignado : &nbsp;&nbsp;
+
+    <ng-select [items]="listFuncionarios" #select bindLabel="nombres_completos" dropdownPosition="auto" bindValue="id_funcionario" labelForId="txtFuncionario"
+      placeholder="Seleccionar" [virtualScroll]="true"   >
     </ng-select> &nbsp;&nbsp;
     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Asignar</button>
 
@@ -233,9 +233,9 @@
 
 <div class="col-xl-12">
   <div class="card-deck">
-   
-    
- 
+
+
+
 
 
 

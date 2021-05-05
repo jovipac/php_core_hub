@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ExpedienteService, ExpedientePersonaService, ExpedienteHechoService, ExpedienteClasificacionDerechoService, ExpedienteDocumentoService , ExpedienteComentarioService  } from '../../../service';
+import { ExpedienteService, ExpedientePersonaService, ExpedienteHechoService, ExpedienteClasificacionDerechoService, ExpedienteDocumentoService , ExpedienteComentarioService , FuncionariosService  } from '../../../service';
 import { ClasificacionDerechoService } from '../../../service/catalogos';
-import { Expediente, ExpedientePersona, ExpedienteHecho, ExpedienteClasificacionDerecho, ExpedienteDocumento } from '../../../shared/models';
+import { Expediente, ExpedientePersona, ExpedienteHecho, ExpedienteClasificacionDerecho, ExpedienteDocumento  , Funcionario} from '../../../shared/models';
 import { first } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { formatearCorrelativo } from '../../../shared/utils/helpers';
@@ -45,6 +45,7 @@ export class SolicitudComponent implements OnInit {
   public listComment: Array<any>;
   public errorState: boolean = false;
   public formcomentarios: FormGroup;
+  public listFuncionarios: Array<Funcionario>;
 
   contComment: number;
 
@@ -56,6 +57,7 @@ export class SolicitudComponent implements OnInit {
     private expedientecomentarioservice: ExpedienteComentarioService,
     private expedienteDocumentoService: ExpedienteDocumentoService,
     private clasificacionderechoservice: ClasificacionDerechoService,
+    private funcionarioService: FuncionariosService,
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
@@ -113,6 +115,7 @@ export class SolicitudComponent implements OnInit {
       this.listExpedienteDocumentos(dataSend);
       this.getClasificacionAsig();
       this.Getcomment();
+      this.getFuncionarios();
 
     }
 
@@ -453,6 +456,35 @@ export class SolicitudComponent implements OnInit {
             }
         });
 
+  }
+
+
+  getFuncionarios() {
+    //const dataSend = id_unidad ? { 'id_dependencia': id_unidad } : {};
+    this.funcionarioService.getEmployees()
+      .pipe(first())
+      .subscribe({
+        next: (data) => {
+          const response: any = data;
+          if (response.success) {
+            const personasFormateadas = response.result
+              ? response.result.map((employee) => {
+                employee.nombres_completos = [
+                  employee.nombres,
+                  employee.apellidos
+                ].filter(Boolean)
+                .join(" ");
+                return employee;
+            }) : [];
+
+            this.listFuncionarios = personasFormateadas;
+          } else
+            this.toastr.error(response.message)
+        },
+        error: (error: HttpErrorResponse) => {
+          this.toastr.error(error.message);
+        }
+      });
   }
 
 
