@@ -14,6 +14,8 @@ export interface Expediente {
   nombre_resultado: string,
   id_auxiliatura: number,
   nombre_auxiliatura: string,
+  id_auxiliatura_tramite: number,
+  nombre_auxiliatura_tramite: string,
   observaciones: string,
   id_estado_expediente: number
 }
