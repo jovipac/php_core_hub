@@ -73,7 +73,7 @@ export class RevisionSolicitudesComponent implements OnInit {
               buttons: [
                 {
                   extend: 'excel', className: 'btn btn-outline-primary', exportOptions: {
-
+                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8]
                   }
                 }
               ],
