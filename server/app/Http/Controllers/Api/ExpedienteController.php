@@ -47,6 +47,7 @@ class ExpedienteController extends ApiController
             'tt_expediente.id_dependencia', 'T04.nombre AS nombre_dependencia',
             'tt_expediente.id_funcionario', 'T05.nombres AS nombres_funcionario', 'T05.apellidos AS apellidos_funcionario',
             'tt_expediente.id_auxiliatura', 'T06.nombre AS nombre_auxiliatura',
+            'tt_expediente.id_auxiliatura_tramite', 'T09.nombre AS nombre_auxiliatura_tramite',
             'tt_expediente.id_resultado', 'T07.nombre AS nombre_resultado',
             'tt_expediente.id_estado_expediente', 'T08.nombre AS nombre_estado',
             'tt_expediente.observaciones', 'tt_expediente.id_visita'
@@ -57,6 +58,7 @@ class ExpedienteController extends ApiController
         ->leftJoin('tc_dependencia AS T04', 'tt_expediente.id_dependencia', 'T04.id_dependencia')
         ->leftJoin('tc_funcionario AS T05', 'tt_expediente.id_funcionario', 'T05.id_funcionario')
         ->leftJoin('tc_auxiliatura AS T06', 'tt_expediente.id_auxiliatura', 'T06.id_auxiliatura')
+        ->leftJoin('tc_auxiliatura AS T09', 'tt_expediente.id_auxiliatura', 'T09.id_auxiliatura')
         ->leftJoin('tc_resultado AS T07', 'tt_expediente.id_resultado', 'T07.id_resultado')
         ->leftJoin('tc_estado_expediente AS T08', 'tt_expediente.id_estado_expediente', 'T08.id_estado_expediente');
 
@@ -149,15 +151,17 @@ class ExpedienteController extends ApiController
             'tt_expediente.id_funcionario', 'T01.nombres AS nombres_funcionario', 'T01.apellidos AS apellidos_funcionario',
             'tt_expediente.id_via', 'T02.nombre AS nombre_via',
             'tt_expediente.id_auxiliatura', 'T03.nombre AS nombre_auxiliatura',
+            'tt_expediente.id_auxiliatura_tramite', 'T06.nombre AS nombre_auxiliatura_tramite',
             'tt_expediente.id_prioridad', 'T04.nombre AS nombre_prioridad',
             'tt_expediente.id_resultado', 'T05.nombre AS nombre_resultado',
             'tt_expediente.id_estado_expediente', 'T08.nombre AS nombre_estado',
             )
             ->leftJoin('tc_funcionario AS T01', 'tt_expediente.id_funcionario', 'T01.id_funcionario')
             ->leftJoin('tc_via AS T02', 'tt_expediente.id_via', 'T02.id_via')
-            ->join('tc_auxiliatura AS T03', 'tt_expediente.id_auxiliatura', 'T03.id_auxiliatura')
+            ->leftJoin('tc_auxiliatura AS T03', 'tt_expediente.id_auxiliatura', 'T03.id_auxiliatura')
             ->join('tc_prioridad AS T04', 'tt_expediente.id_prioridad', 'T04.id_prioridad')
             ->leftJoin('tc_resultado AS T05', 'tt_expediente.id_resultado', 'T05.id_resultado')
+            ->leftJoin('tc_auxiliatura AS T06', 'tt_expediente.id_auxiliatura', 'T06.id_auxiliatura')
             ->leftJoin('tc_estado_expediente AS T08', 'tt_expediente.id_estado_expediente', 'T08.id_estado_expediente')
             ->where('tt_expediente.id_expediente', $expediente->id_expediente);
 

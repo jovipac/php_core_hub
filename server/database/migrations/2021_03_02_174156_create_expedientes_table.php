@@ -58,6 +58,9 @@ class CreateExpedientesTable extends Migration
             $table->foreign('id_auxiliatura')->references('id_auxiliatura')->on('tc_auxiliatura')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
+            $table->foreign('id_auxiliatura_tramite')->references('id_auxiliatura')->on('tc_auxiliatura')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->foreign('id_estado_expediente')->references('id_estado_expediente')->on('tc_estado_expediente')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
