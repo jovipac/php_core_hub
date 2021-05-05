@@ -9,6 +9,10 @@ import { isEmptyValue } from '../../../shared/utils';
 import { NgxSpinnerService } from "ngx-spinner";
 import { HttpErrorResponse } from '@angular/common/http';
 import { extractErrorMessages } from '../../../shared/utils';
+import * as $ from 'jquery';
+import 'datatables.net';
+import 'datatables.net-dt';
+import "datatables.net-buttons/js/buttons.html5.js";
 
 @Component({
   selector: 'app-revision-solicitudes',
@@ -63,14 +67,59 @@ export class RevisionSolicitudesComponent implements OnInit {
           ].filter(Boolean)
             .join(" ")
           };
+          $(document).ready(function () {
+            $('#list').DataTable({
+              dom: "Bfrtip",
+              buttons: [
+                {
+                  extend: 'excel', className: 'btn btn-outline-primary', exportOptions: {
+
+                  }
+                }
+              ],
+
+              language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                  "sFirst": "Primero",
+                  "sLast": "Último",
+                  "sNext": "Siguiente",
+                  "sPrevious": "Anterior"
+                },
+                "oAria": {
+                  "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                  "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                },
+                "buttons": {
+                  "excel": "Descargar excel"
+                }
+              },
+              retrieve: true,
+              data: this.expediente
+            });
+
+          });
+
           return <Expediente>expediente;
       }) : [];
-        this.listSolicitudes = expedientesFormateadas;
+
+      this.listSolicitudes = expedientesFormateadas;
 
       },
       error: (error:any) => {
         this.toastr.error(error.message);
-        this.loading.hide('dashboard');
+
       }
     });
   }
