@@ -25,13 +25,13 @@
       </div>
     </div>
     <div class="col-md-3 mb-3">
-      <input-label [requires]="true" [label]="'Oficial'" [id]="'txtFuncionario'"></input-label>
+      <input-label [requires]="false" [label]="'Oficial'" [id]="'txtFuncionario'"></input-label>
       <ng-select [items]="listFuncionarios" #select bindLabel="nombres_completos" dropdownPosition="auto" bindValue="id_funcionario" labelForId="txtFuncionario"
-        placeholder="Seleccionar" [virtualScroll]="true" formControlName="id_funcionario" [ngClass]="displayErrorsCss('id_funcionario')" required>
+        placeholder="Seleccionar" [virtualScroll]="true" formControlName="id_funcionario" [ngClass]="displayErrorsCss('id_funcionario')" >
       </ng-select>
 
       <div *ngIf="isHasErrors('id_funcionario')" class="invalid-feedback">
-        <div *ngIf="f.id_auxiliatura.errors?.required">El campo es requerido</div>
+        <div *ngIf="f.id_funcionario.errors?.required">El campo es requerido</div>
       </div>
     </div>
   </div>
@@ -54,13 +54,13 @@
       <input-label [requires]="true" [label]="'Sede de trámite'" [id]="'txtAuxiliaturaTramite'"></input-label>
       <ng-select id="txtAuxiliaturaTramite" [items]="listAuxiliaturaTramite" #select bindLabel="nombre" dropdownPosition="auto"
         bindValue="id_auxiliatura" labelForId="txtAuxiliaturaTramite" placeholder="Seleccionar" [virtualScroll]="true"
-        formControlName="id_auxiliatura" [ngClass]="displayErrorsCss('id_auxiliatura')"  >
+        formControlName="id_auxiliatura_tramite" [ngClass]="displayErrorsCss('id_auxiliatura_tramite')"  >
       </ng-select>
-      <!-- <div *ngIf="isHasErrors('id_auxiliatura_tramite')" class="invalid-feedback">
+      <div *ngIf="isHasErrors('id_auxiliatura_tramite')" class="invalid-feedback">
         <div *ngIf="f.id_auxiliatura_tramite.errors?.required">El campo es requerido</div>
         <div *ngIf="f.id_auxiliatura_tramite.errors?.pattern">Solo se aceptan digitos</div>
-      </div>  -->
-    </div> 
+      </div>
+    </div>
 
 
 
@@ -81,7 +81,7 @@
         formControlName="id_resultado" [ngClass]="displayErrorsCss('id_resultado')"  >
       </ng-select>
       <div *ngIf="isHasErrors('id_resultado')" class="invalid-feedback">
-        <div *ngIf="f.id_auxiliatura.errors?.required">El campo es requerido</div>
+        <div *ngIf="f.id_resultado.errors?.required">El campo es requerido</div>
       </div>
     </div>
   </div>
