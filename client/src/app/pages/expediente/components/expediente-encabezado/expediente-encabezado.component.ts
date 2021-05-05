@@ -27,6 +27,7 @@ export class ExpedienteEncabezadoComponent implements OnInit {
   submitted: boolean = false;
 
   public listAuxiliatura: Array<Auxiliatura>;
+  public listAuxiliaturaTramite: Array<Auxiliatura>;
   public listPriority: Array<Prioridad>;
   public listVia: Array<Via>;
   public listFuncionarios: Array<Funcionario>;
@@ -50,6 +51,7 @@ export class ExpedienteEncabezadoComponent implements OnInit {
     this.isAddMode = !this.id;
 
     this.getListAuxiliatura();
+    this.getListAuxiliaturaTramite();
     this.getListPriority();
     this.getListVia();
     this.getFuncionarios();
@@ -186,6 +188,25 @@ export class ExpedienteEncabezadoComponent implements OnInit {
         }
       });
   }
+
+
+
+  getListAuxiliaturaTramite() {
+    this.auxiliaturaService.getListAuxiliaturaTramite()
+      .pipe(first())
+      .subscribe({
+        next: (response: any) => {
+          if (response.success) {
+            this.listAuxiliaturaTramite = response.result;
+          } else
+            this.toastr.error(response.message)
+        },
+        error: (error: HttpErrorResponse) => {
+          this.toastr.error(error.message);
+        }
+      });
+  }
+
 
   getListPriority() {
     this.prioridadService.getListPrioridad()

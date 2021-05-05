@@ -98,7 +98,7 @@
 
         <div class="form-row">
           <div class="col-md-3 mb-3">
-            <input-label [requires]="false" [label]="'Genero'" [id]="'txtGenero'"></input-label>
+            <input-label [requires]="false" [label]="'Género'" [id]="'txtGenero'"></input-label>
             <select class="form-control" id="txtGenero" formControlName="id_genero"
               [ngClass]="displayErrorsCss('id_genero')" >
               <option *ngFor="let genre of listGenre" value="{{genre.id_genero}}">{{genre.nombre}}</option>
@@ -122,7 +122,7 @@
             <div *ngIf="isHasErrors('id_etnia')" class="invalid-feedback">Seleccione un valor</div>
           </div>
           <div class="col-md-3 mb-3">
-            <input-label  [label]="'Comunidad'" [id]="'txtComunidad'"></input-label>
+            <input-label  [label]="'Comunidad Lingüistica'" [id]="'txtComunidad'"></input-label>
             <ng-select id="txtComunidad" [items]="listComunidadLinguistica" #select bindLabel="nombre" dropdownPosition="auto"
               bindValue="id_comunidad_linguistica" labelForId="txtComunidad" placeholder="Seleccionar un valor" [virtualScroll]="true"
               formControlName="id_comunidad_linguistica" [ngClass]="displayErrorsCss('id_comunidad_linguistica')" >

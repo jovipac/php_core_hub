@@ -14,6 +14,11 @@ export class AuxiliaturaService {
     return this.httpClient.get(`${environment.host}auxiliaturas`, getHeaders())
   }
 
+  getListAuxiliaturaTramite() {
+    return this.httpClient.get(`${environment.host}auxiliaturas`, getHeaders())
+  }
+
+
   getAuxiliatura(id: number) {
     return this.httpClient.get(`${environment.host}auxiliaturas/${id}`, getHeaders())
   }

@@ -40,7 +40,7 @@
                 <th>Perfil</th>
                 <th>Correo</th>
                 <th>Estado</th>
-                <th>Auxilatura</th>
+                <th>Sede</th>
                 <th>Acciones</th>
               </tr>
             </thead>
@@ -172,7 +172,21 @@
             </div>
           </div>
 
-          <div class="col-md-6">
+
+
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="">* Dependencia PDH:</label>
+              <select class="form-control" formControlName="id_dependencia" required>
+                <option value="">SELECCIONAR</option>
+                <option *ngFor="let dependency of listDependency" value="{{dependency.id_dependencia}}">
+                  {{dependency.nombre}}</option>
+              </select>
+            </div>
+          </div>
+
+
+          <div class="col-md-3">
             <div class="form-group">
               <label for="">* Puesto:</label>
               <select class="form-control" formControlName="id_puesto" required>
@@ -194,6 +208,33 @@
             </div>
           </div>
 
+
+
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="">* Sede:</label>
+              <select class="form-control" formControlName="id_auxiliatura" required>
+                <option value="">Seleccionar</option>
+                <option *ngFor="let auxiliary of listAuxiliary" value="{{auxiliary.id_auxiliatura}}">
+                  {{auxiliary.nombre}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="">* Unidad:</label>
+              <select class="form-control" formControlName="id_unidad" required>
+                <option value="">Seleccionar</option>
+                <option *ngFor="let auxiliary of listAuxiliary" value="{{auxiliary.id_auxiliatura}}">
+                  {{auxiliary.nombre}}</option>
+              </select>
+            </div>
+          </div>
+
+
+          
+
           <div class="col-md-3">
             <div class="form-group">
               <label for="">* Estado:</label>
@@ -209,31 +250,13 @@
 
 
           
-          <div class="col-md-3">
-            <div class="form-group">
-              <label for="">* Dependencia PDH:</label>
-              <select class="form-control" formControlName="id_dependencia" required>
-                <option value="">SELECCIONAR</option>
-                <option *ngFor="let dependency of listDependency" value="{{dependency.id_dependencia}}">
-                  {{dependency.nombre}}</option>
-              </select>
-            </div>
-          </div>
+         
 
           
 
           
 
-          <div class="col-md-3">
-            <div class="form-group">
-              <label for="">* Auxilatura:</label>
-              <select class="form-control" formControlName="id_auxiliatura" required>
-                <option value="">Seleccionar</option>
-                <option *ngFor="let auxiliary of listAuxiliary" value="{{auxiliary.id_auxiliatura}}">
-                  {{auxiliary.nombre}}</option>
-              </select>
-            </div>
-          </div>
+          
 
         </div>
         <div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="errorState">
