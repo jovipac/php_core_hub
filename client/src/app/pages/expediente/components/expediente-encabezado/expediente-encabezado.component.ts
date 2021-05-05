@@ -122,11 +122,15 @@ export class ExpedienteEncabezadoComponent implements OnInit {
       id_funcionario: new FormControl({
         value: null,
         disabled: false,
-      }, [Validators.required]),
+      }, []),
       id_auxiliatura: new FormControl({
         value: null,
         disabled: false,
       }, [Validators.required]),
+      id_auxiliatura_tramite: new FormControl({
+        value: null,
+        disabled: false,
+      }, []),
       id_resultado: new FormControl({
         value: null,
         disabled: false,

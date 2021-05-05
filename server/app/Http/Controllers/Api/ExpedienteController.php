@@ -112,9 +112,10 @@ class ExpedienteController extends ApiController
             'id_prioridad' => 'required|integer',
             'id_dependencia' => 'nullable|integer',
             'id_funcionario' => 'nullable|integer',
-            'observaciones' => 'string',
+            'observaciones' => 'nullable|string',
             'id_resultado' => 'nullable|integer',
             'id_auxiliatura' => 'required|integer',
+            'id_auxiliatura_tramite' => 'nullable|integer',
             'id_visita' => 'nullable|integer',
         ]);
 
@@ -190,6 +191,7 @@ class ExpedienteController extends ApiController
             'observaciones' => 'nullable|string',
             'id_resultado' => 'nullable|integer',
             'id_auxiliatura' => 'nullable|integer',
+            'id_auxiliatura_tramite' => 'nullable|integer',
             'id_visita' => 'nullable|integer',
         ]);
         if ($validator->fails()) {

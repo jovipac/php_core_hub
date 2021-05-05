@@ -26,6 +26,7 @@ class CreateExpedientesTable extends Migration
             $table->string('observaciones', 255)->nullable();
             $table->integer('id_resultado')->nullable()->unsigned();
             $table->integer('id_auxiliatura')->unsigned();
+            $table->integer('id_auxiliatura_tramite')->nullable()->unsigned();
             $table->integer('id_visita')->nullable()->unsigned();
             $table->integer('id_estado_expediente')->unsigned();
             $table->boolean('borrado')->default(0)->index();
