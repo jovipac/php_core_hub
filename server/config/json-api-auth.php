@@ -46,7 +46,7 @@ return [
     |
     */
 
-    'new_password_form_url' => 'https://your-frontend-app.any/new-password',
+    'new_password_form_url' => env('BASE_URL').'/reset-password',
 
     /*
     |--------------------------------------------------------------------------
@@ -84,8 +84,8 @@ return [
     |
     */
 
-    'email_account_was_already_verified_url' => 'https://your-frontend.com/already-verified',
+    'email_account_was_already_verified_url' => env('BASE_URL').'/already-verified',
 
-    'email_account_just_verified_url' => 'https://your-frontend.com/verified',
+    'email_account_just_verified_url' => env('BASE_URL').'/verified',
 
 ];
