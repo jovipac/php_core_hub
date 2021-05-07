@@ -1,22 +1,33 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { getHeaders, isEmptyValue } from '../shared/utils/helpers';
 import { STORAGE_APP_PREFIX, TOKEN_NAME } from '../constants';
 import { environment } from '../../environments/environment';
+import { map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private accountSubject: BehaviorSubject<Account>;
+  public account: Observable<Account>;
 
   constructor(
     private httpClient: HttpClient,
     public jwtHelper: JwtHelperService
-    ) { }
+    ) {
+      this.accountSubject = new BehaviorSubject<Account>(null);
+      this.account = this.accountSubject.asObservable();
+    }
 
   headers: HttpHeaders = new HttpHeaders({
     "Content-Type": "application/json"
   });
+
+  public get accountValue(): Account {
+    return this.accountSubject.value;
+  }
 
   getToken(): string {
     const session = sessionStorage.getItem(STORAGE_APP_PREFIX);
@@ -73,8 +84,61 @@ export class AuthService {
       .toPromise()
       .then(res => {
         sessionStorage.removeItem(STORAGE_APP_PREFIX);
+        //this.stopRefreshTokenTimer();
+        this.accountSubject.next(null);
         return res;
       });
+  }
+
+  refreshToken() {
+    return this.httpClient.post<any>(`${environment.host}auth/refresh-token`, {}, { withCredentials: true })
+        .pipe(map((account) => {
+            this.accountSubject.next(account);
+            this.startRefreshTokenTimer();
+            return account;
+        }));
+  }
+
+  register(account: Account) {
+    return this.httpClient.post(`${environment.host}auth/register`, account);
+  }
+
+  verifyEmail(token: string) {
+    return this.httpClient.post(`${environment.host}auth/verify-email`, { token });
+  }
+
+  forgotPassword(email: string) {
+    return this.httpClient.post(`${environment.host}auth/forgot-password`, { email });
+  }
+
+  newPassword(data: any) {
+    return this.httpClient.get(`${environment.host}auth/new-password`, { params: data});
+  }
+
+  validateResetToken(token: string) {
+    return this.httpClient.post(`${environment.host}auth/validate-reset-token`, { token });
+  }
+
+  resetPassword(token: string, password: string, confirmPassword: string) {
+    return this.httpClient.post(`${environment.host}auth/reset-password`, { token, password, confirmPassword });
+  }
+
+  // helper methods
+
+  private refreshTokenTimeout;
+
+  private startRefreshTokenTimer() {
+      // parse json object from base64 encoded jwt token
+      const jwtToken = JSON.parse(atob(this.getToken().split('.')[1]));
+
+      // set a timeout to refresh the token a minute before it expires
+      const expires = new Date(jwtToken.exp * 1000);
+      const timeout = expires.getTime() - Date.now() - (60 * 1000);
+      this.refreshTokenTimeout = setTimeout(() => this.refreshToken().subscribe(), timeout);
+  }
+
+  private stopRefreshTokenTimer() {
+      clearTimeout(this.refreshTokenTimeout);
   }
 
 }

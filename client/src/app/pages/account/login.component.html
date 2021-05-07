@@ -1,44 +1,8 @@
-<section class="login-change common-img-bg">
-  <!-- starts -->
-  <!-- <div class="row">
-    <div class="col-md-12 aling-self-center text-center" style="margin-top: 5%;">
-
-      <h1>Sistema de Gestión de Denuncias</h1>
-
-    </div>
-  </div> -->
-
-
+﻿<section class="login-change common-img-bg">
   <div class="row">
-
-    <!-- <div class="col-md-6"> -->
-      <!-- Authentication card start -->
-      <!-- <div class="login-card card-body auth-body" style="margin-top: 5%;">
-        <div class="auth-box" >
-
-          <b>Misión</b>
-          <br>
-          Ser la Institución que defiende los Derechos Humanos de los guatemaltecos sin discriminación alguna, con
-          énfasis en la acción preventiva y con capacidad de intervención: territorial, oportuna y efectiva, con
-          independencia, objetividad e imparcialidad.
-          <br>
-          <br>
-          <b>Visión</b>
-          <br>
-          Promover el respeto de los Derechos Humanos de los guatemaltecos con atención integral, educación,
-          promoción, procuración y supervisión de la administración pública, para lograr la vigencia de los mismos,
-          así como para el logro del bien común y la convivencia pacífica en observancia de la Constitución Política
-          de la República de Guatemala, Tratados y Convenciones Internacionales en materia de Derechos Humanos.
-        </div>
-
-      </div> -->
-      <!-- Authentication card end -->
-    <!-- </div> -->
     <div class="col-md-12">
       <!-- Authentication card start -->
       <div class="login-card card-body auth-body" style="margin-top: 1%;">
-
-
 
         <form class="md-float-material" novalidate [formGroup]="login" >
           <div class="auth-box" style="border: 2px solid;">
@@ -60,7 +24,7 @@
               <br>
             </div>
             <div *ngIf="
-            login.get('username').errors && login.get('username').touched ">
+                        login.get('username').errors && login.get('username').touched ">
               <p *ngIf="login.get('username').hasError('required')" class="error-message">
                 * Es un campo requerido
               </p>
@@ -80,8 +44,8 @@
             </p>
             <div class="row m-t-30">
               <div class="col-md-12">
-                <button type="button" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20"
-                  (click)="signin($event)">
+                <button type="button" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20" (click)="onSubmit($event)">
+                  <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                   Ingresar
                 </button>
               </div>

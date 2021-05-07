@@ -1,3 +1,4 @@
+export * from './alert';
 export * from './auxiliatura.interface';
 export * from './dependencia.interface';
 export * from './tipo-vinculacion.interface';
