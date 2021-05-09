@@ -13,7 +13,7 @@
         <li class="dropdown-submenu" *ngFor="let menus of menu.main">
           <a class="dropdown-item" *ngIf="menus.children.length > 0 " href="#" >{{menus.name}}</a>
           <a class="dropdown-item" *ngIf="menus.children.length == 0 && menus.name != 'Salir'" href="#" >{{menus.name}}</a>
-          <a class="dropdown-item" *ngIf="menus.children.length == 0 && menus.name == 'Salir'" (click)="logout()" >{{menus.name}}</a>
+          <!-- <a class="dropdown-item" *ngIf="menus.children.length == 0 && menus.name == 'Salir'" (click)="logout()" >{{menus.name}}</a> -->
 
           <ul class="dropdown-menu " *ngIf="menus.children.length > 0" >
             <li class="dropdown-item" *ngFor="let item of menus.children" >
@@ -53,12 +53,12 @@
         <li>
           <a class="dropdown-item waves-effect waves-light" (click)="cambiarClave()">Cambiar Clave</a>
         </li>
-        
+
 
         <a class="dropdown-item waves-effect waves-light" (click)="logout()">Cerrar Sesión</a>
-        
+
       </div>
-     
+
     </div>
   </div>
 </nav>

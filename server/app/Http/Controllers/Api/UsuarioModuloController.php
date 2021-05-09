@@ -39,25 +39,52 @@ class UsuarioModuloController extends ApiController
      */
     public function assigned($id)
     {
-        $usuario_modulo = User::query()
-            ->select(
-                'T01.id_modulo',
-                'T02.nombre AS nombre_modulo',
-                'T03.nombre AS nombre_modulo_padre'
-            )
-            ->join('tt_usuario_modulo AS T01', 'ts_usuario.id_usuario', 'T01.id_usuario')
-            ->join('ts_modulo AS T02', 'T01.id_modulo', 'T02.id_modulo')
-            ->leftJoin('ts_modulo AS T03', 'T03.id_modulo', 'T02.id_parent')
-            ->where('T01.id_usuario', $id)
-            ->get();
+        $usuarioModulos = [];
+        //Empezamos a buscar el primer Rol del usuario asignado
+        $usuario_rol = UsuarioRol::where('id_usuario', $id)->first();
+        //Procedemos a hacer una busqueda de modulos que no esten asociados con su rol y ni asocaidos al usuario
+        //y que tambien no tengan hijos asociados (nodos hojas)
+        $usuario_modulos = Modulo::select(
+            'ts_modulo.id_modulo',
+            'ts_modulo.nombre AS nombre_modulo'
+        )
+
+        ->Orwherein('ts_modulo.id_modulo', function ($query) use ($usuario_rol) {
+            $query->select('id_modulo')
+                ->from(with(new UsuarioModulo)->getTable())
+                ->where('id_usuario', $usuario_rol->id_usuario);
+        })
+        ->Orwherein('ts_modulo.id_modulo', function ($query) use ($usuario_rol) {
+            $query->select('id_modulo')
+                ->from(with(new RolModulo)->getTable())
+                ->where('id_rol', $usuario_rol->id_rol);
+        })
+
+        ->whereIsLeaf()
+        ->get();
+        //Se extrae los ID de los modulos resultantes de la consulta SQL anterior
+
+        foreach ($usuario_modulos as $usuario_modulo) {
+            array_push($usuarioModulos, $usuario_modulo->id_modulo);
+        }
+        //Se procede a hacer una consulta SQL para obtener los campos adicionales a mostrar: nombre modulo padre
+        $modulos =  Modulo::select(
+            'ts_modulo.id_modulo',
+            'ts_modulo.nombre AS nombre_modulo',
+            'T02.nombre AS nombre_modulo_padre'
+        )
+        ->leftJoin('ts_modulo AS T02', 'T02.id_modulo', 'ts_modulo.id_parent')
+        ->whereIn('ts_modulo.id_modulo', $usuarioModulos)
+        ->get();
 
         return $this->apiResponse(
             [
                 'success' => true,
-                'message' => "Listado de modulos asociados al rol",
-                'result' => $usuario_modulo
+                'message' => "Listado de modulos asociados al usuario",
+                'result' =>  $modulos
             ]
         );
+
     }
 
     /**
@@ -105,7 +132,7 @@ class UsuarioModuloController extends ApiController
         return $this->apiResponse(
             [
                 'success' => true,
-                'message' => "Listado de modulos no asociados al rol",
+                'message' => "Listado de modulos no asociados al usuario",
                 'result' => $modulos
             ]
         );
