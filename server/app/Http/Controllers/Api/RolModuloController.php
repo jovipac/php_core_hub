@@ -38,7 +38,7 @@ class RolModuloController extends ApiController
      */
     public function assigned($id)
     {
-        $rol_modulo = Rol::query()
+        $rol_modulo = RolModulo::query()
         ->select(
             'tt_rol_modulo.id_modulo',
             'T01.nombre AS nombre_modulo',
