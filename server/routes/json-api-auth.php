@@ -29,6 +29,10 @@ Route::prefix('auth')->group(function () {
     Route::post('/reset-password', NewPasswordController::class)
         ->name('json-api-auth.password.update');
 
+    Route::post('/email/vaidate-reset-token', ValidateResetTokenController::class)
+        ->middleware([(AuthKit::getMiddleware()), 'throttle:6,1'])
+        ->name('json-api-auth.verification.token');
+
     Route::post('/email/verification-notification', EmailVerificationNotificationController::class)
         ->middleware([(AuthKit::getMiddleware()), 'throttle:6,1'])
         ->name('json-api-auth.verification.send');
