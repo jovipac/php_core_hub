@@ -119,8 +119,8 @@ export class AuthService {
     return this.httpClient.post(`${environment.host}auth/validate-reset-token`, { token });
   }
 
-  resetPassword(token: string, password: string, confirmPassword: string) {
-    return this.httpClient.post(`${environment.host}auth/reset-password`, { token, password, confirmPassword });
+  resetPassword(data: any) {
+    return this.httpClient.post(`${environment.host}auth/reset-password`, data);
   }
 
   // helper methods

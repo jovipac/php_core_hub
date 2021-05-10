@@ -17,6 +17,7 @@ export class ResetPasswordComponent implements OnInit {
     TokenStatus = TokenStatus;
     tokenStatus = TokenStatus.Validating;
     token = null;
+    email = null;
     form: FormGroup;
     loading = false;
     submitted = false;
@@ -38,7 +39,7 @@ export class ResetPasswordComponent implements OnInit {
         });
 
         const token = this.route.snapshot.queryParams['token'];
-
+        const email = this.route.snapshot.queryParams['email'];
         // remove token from url to prevent http referer leakage
         this.router.navigate([], { relativeTo: this.route, replaceUrl: true });
 
@@ -48,6 +49,7 @@ export class ResetPasswordComponent implements OnInit {
                 next: () => {
                     this.token = token;
                     this.tokenStatus = TokenStatus.Valid;
+                    this.email = email;
                 },
                 error: () => {
                     this.tokenStatus = TokenStatus.Invalid;
@@ -70,7 +72,12 @@ export class ResetPasswordComponent implements OnInit {
         }
 
         this.loading = true;
-        this.authService.resetPassword(this.token, this.f.password.value, this.f.confirmPassword.value)
+        const formValues = {
+          ...this.form.value,
+          email: this.email,
+          token: this.token,
+        }
+        this.authService.resetPassword(formValues)
             .pipe(first())
             .subscribe({
                 next: () => {
