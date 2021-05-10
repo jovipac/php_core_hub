@@ -8,6 +8,7 @@ use JsonApiAuth\LoginController;
 use JsonApiAuth\LogoutController;
 use JsonApiAuth\NewPasswordController;
 use JsonApiAuth\PasswordResetLinkController;
+use JsonApiAuth\ValidateResetTokenController;
 use JsonApiAuth\RegisterController;
 use JsonApiAuth\VerifyEmailController;
 
