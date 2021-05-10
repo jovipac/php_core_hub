@@ -4,7 +4,6 @@ namespace App\Http\Controllers\JsonApiAuth;
 
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
-use App\Http\Requests\JsonApiAuth\NewPasswordRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -21,7 +20,7 @@ class ValidateResetTokenController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $token = $this->get('token');
+        $token = $request->get('token');
 
         $passwordResets = DB::table('password_resets')->where('token', $token)->first();
 
