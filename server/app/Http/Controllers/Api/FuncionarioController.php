@@ -6,9 +6,10 @@ use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
 use App\Models\Catalogs\Funcionario;
 use App\Models\Entities\User;
-use App\Models\Entities\UsuarioRol;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
+use App\Notifications\JsonApiAuth\ResetPasswordNotification;
 
 class FuncionarioController extends ApiController
 {
@@ -94,8 +95,8 @@ class FuncionarioController extends ApiController
         }
 
         $input = $request->all();
-        $random_password = Str::random(8);
 
+        $random_password = Str::random(12); //Aquí puede personalizar la longitud del password aleatorio
         $funcionario = Funcionario::create($input);
 
         $newUser = new User([
@@ -111,6 +112,15 @@ class FuncionarioController extends ApiController
         $funcionario['username'] = $input['username'];
         $funcionario['password'] = $random_password;
         $funcionario['id_auxiliatura'] = $input['id_auxiliatura'];
+
+        $token = Str::random(60);   // Aqui se puede personalizar la longitud del token
+        DB::table('password_resets')->insert([
+            'email' => $newUser->email,
+            'token' => $token,
+            'created_at' => now()
+        ]);
+
+        $newUser->notify(new ResetPasswordNotification($token));
 
         return $this->respondCreated([
             'success' => true,
