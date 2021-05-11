@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormArray, Validators } from "@angular/forms";
 import { ExpedienteDocumentoService, ExpedienteDocumentoArchivoService } from '../../../../service';
 import { PlantillaDocumentoService } from '../../../../service/catalogos';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { FileUploader } from 'ng2-file-upload';
@@ -32,6 +32,7 @@ export class ExpedienteDocumentoComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private toastr: ToastrService,
     private plantillaDocumentoService: PlantillaDocumentoService,
     private expedienteDocumentoService: ExpedienteDocumentoService,
@@ -314,6 +315,13 @@ export class ExpedienteDocumentoComponent implements OnInit {
         }
         completedProcess = false;
         this.loading.hide('step05');
+      }
+
+      if (completedProcess === true) {
+        let currentUrl = this.router.url;
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate([currentUrl]);
       }
 
   }

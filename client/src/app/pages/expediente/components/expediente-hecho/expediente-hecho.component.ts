@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormArray, Validators } from "@angular/forms";
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ExpedienteHechoService, ExpedienteHechoArchivoService } from '../../../../service';
 import { TipoAreaLugarService, DepartamentoService, MunicipioService , AreaGeograficaService } from '../../../../service/catalogos';
 import { TipoAreaLugar, Departamento, Municipio } from '../../../../shared/models';
@@ -40,6 +40,7 @@ export class ExpedienteHechoComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private toastr: ToastrService,
     private expedienteHechoService: ExpedienteHechoService,
     private expedienteHechoArchivoService: ExpedienteHechoArchivoService,
@@ -432,6 +433,13 @@ export class ExpedienteHechoComponent implements OnInit {
         }
         completedProcess = false;
         this.loading.hide('step03');
+      }
+
+      if (completedProcess === true) {
+        let currentUrl = this.router.url;
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate([currentUrl]);
       }
 
     });
