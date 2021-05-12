@@ -46,6 +46,10 @@ class ExpedienteDocumentoController extends ApiController
             ->join('ts_usuario as T02', 'tt_expediente_documento.created_by', 'T02.id_usuario')
             ->orderBy('created_at', 'desc');
 
+        if ( $request->has('id_expediente') && $request->filled('id_expediente') ) {
+            $expedienteDocumento->where('id_expediente', $request->id_expediente);
+        }
+
         if ( $request->has('id_tipo_documento') && $request->filled('id_tipo_documento') ) {
             $expedienteDocumento->where('id_tipo_documento', $request->id_tipo_documento);
         }
