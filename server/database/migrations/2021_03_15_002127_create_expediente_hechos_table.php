@@ -24,8 +24,7 @@ class CreateExpedienteHechosTable extends Migration
             $table->text('hecho')->nullable();
             $table->text('peticion')->nullable();
             $table->text('prueba')->nullable();
-            $table->text('id_area_geografica')->nullable();
-            $table->integer('created_by')->nullable()->unsigned();
+            $table->integer('id_area_geografica')->nullable()->unsigned();
             $table->boolean('borrado')->default(0)->index();
             $table->integer('created_by')->nullable()->unsigned();
             $table->integer('updated_by')->nullable()->unsigned();
