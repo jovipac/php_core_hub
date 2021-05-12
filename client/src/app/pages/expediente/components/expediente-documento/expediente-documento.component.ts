@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormArray, Validators } from "@angular/forms";
 import { ExpedienteDocumentoService, ExpedienteDocumentoArchivoService } from '../../../../service';
-import { PlantillaDocumentoService } from '../../../../service/catalogos';
+import { PlantillaDocumentoService , TipoDocumentoService } from '../../../../service/catalogos';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
@@ -29,6 +29,7 @@ export class ExpedienteDocumentoComponent implements OnInit {
   textEditorConfig: object;
 
   public listPlantillaDocumento: Array<any>;
+  public listtipoDoc: Array<any>;
 
   constructor(
     private route: ActivatedRoute,
@@ -37,6 +38,7 @@ export class ExpedienteDocumentoComponent implements OnInit {
     private plantillaDocumentoService: PlantillaDocumentoService,
     private expedienteDocumentoService: ExpedienteDocumentoService,
     private expedienteDocumentoArchivoService: ExpedienteDocumentoArchivoService,
+    private tipodocumentoService: TipoDocumentoService,
     private loading: NgxSpinnerService,
   ) {
     this.uploader = new FileUploader({
@@ -128,6 +130,8 @@ export class ExpedienteDocumentoComponent implements OnInit {
       this.formDocumento = this.buildForm({});
     }
 
+    this.getListtipodocumento();
+
   }
 
   private buildForm(data: any): FormGroup {
@@ -158,6 +162,16 @@ export class ExpedienteDocumentoComponent implements OnInit {
       }, []),
       archivos_adjuntos: new FormControl({
         value: data?.archivos_adjuntos,
+        disabled: false,
+      }, []),
+
+      id_tipo_documento: new FormControl({
+        value: data?.id_tipo_documento,
+        disabled: false,
+      }, []),
+
+      remitente: new FormControl({
+        value: data?.remitente,
         disabled: false,
       }, []),
     }, {});
@@ -324,6 +338,23 @@ export class ExpedienteDocumentoComponent implements OnInit {
         this.router.navigate([currentUrl]);
       }
 
+  }
+
+
+  getListtipodocumento() {
+    this.tipodocumentoService.getListtipodocumento()
+      .pipe(first())
+      .subscribe({
+        next: (response: any) => {
+          if (response.success) {
+            this.listtipoDoc = response.result;
+          } else
+            this.toastr.error(response.message)
+        },
+        error: (error: HttpErrorResponse) => {
+          this.toastr.error(error.message);
+        }
+      });
   }
 
 

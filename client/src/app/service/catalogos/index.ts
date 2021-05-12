@@ -28,6 +28,7 @@ export * from './escolaridad.service';
 export * from './tipo-violencia.service';
 export * from './actividad-dedica.service';
 export * from './area-geografica.service';
+export * from './tipo-documento.service';
 
 
 
