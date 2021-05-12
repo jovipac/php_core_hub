@@ -43,7 +43,7 @@ class ExpedienteDocumentoController extends ApiController
         $expedienteDocumento = ExpedienteDocumento::query()
             ->select('tt_expediente_documento.*', 'T01.nombre as nombre_tipo_documento', 'T02.username')
             ->leftJoin('tc_tipo_documento as T01', 'tt_expediente_documento.id_tipo_documento', 'T01.id_tipo_documento')
-            ->join('ts_usuario as T02', 'tt_expediente_documento.created_by', 'T01.id_usuario')
+            ->join('ts_usuario as T02', 'tt_expediente_documento.created_by', 'T02.id_usuario')
             ->orderBy('created_at', 'desc');
 
         if ( $request->has('id_tipo_documento') && $request->filled('id_tipo_documento') ) {
