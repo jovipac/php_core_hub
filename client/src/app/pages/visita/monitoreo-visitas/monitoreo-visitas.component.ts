@@ -1,6 +1,6 @@
 import { Component, OnInit  } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from "@angular/forms";
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuxiliaturaService, MotivoService , ViaService } from '../../../service/catalogos';
 import { VisitasService, ExpedienteService } from '../../../service';
@@ -11,7 +11,7 @@ import Swal from 'sweetalert2'
 import { isEmptyValue, FormStatus } from '../../../shared/utils';
 import "datatables.net-buttons/js/buttons.html5.js";
 import { format } from 'date-fns';
-import { first, map, switchMap  } from 'rxjs/operators';
+import { first } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Via } from '../../../shared/models';
 
@@ -98,16 +98,24 @@ export class MonitoreoVisitasComponent implements OnInit   {
 
   ngOnInit() {
     // MOTIVO 1 DENUNCIAS  ---- 2 VISISTA PERSONAL
-    this.tipo = this.route.snapshot.params['id'];
-    console.log("entrada");
 
-    if (this.tipo === "1") {
-      this.titulo = "Denuncias";
-    } else {
-      this.titulo = "Visitas Personales";
-    }
+    // Se crea una suscripcion a los valores de los parametros de laruta
+    this.route.paramMap.subscribe((paramMap: ParamMap) => {
+      // Se obtiene directamente el parametro de la ruta
+      const tipo_monitor = paramMap.get('id');
 
-    this.getListVisit();
+      if (tipo_monitor) {
+        this.tipo = tipo_monitor;
+      // Se hace la decision a la accion a tomar
+        if (tipo_monitor === "1") {
+          this.titulo = "Denuncias";
+        } else {
+          this.titulo = "Visitas Personales";
+        }
+        this.getListVisit();
+      }
+
+    });
 
     if (this.rol == 1) {
       this.ChangeAux = true;
