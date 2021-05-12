@@ -269,6 +269,11 @@
               </td>
               <td>{{ documento?.titulo }}</td>
               <td>{{ documento?.created_at | date:'medium' }}</td>
+              <td>{{ documento?.version || 1}}</td>
+              <td>{{ documento?.nombre_tipo_documento }}</td>
+              <td>{{ documento?.remitente }}</td>
+              <td>{{ documento?.username }}</td>
+              <td>{{ documento?.observaciones }}</td>
             </tr>
           </tbody>
         </table>
