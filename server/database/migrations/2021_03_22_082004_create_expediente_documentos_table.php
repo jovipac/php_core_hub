@@ -16,8 +16,10 @@ class CreateExpedienteDocumentosTable extends Migration
         Schema::create('tt_expediente_documento', function (Blueprint $table) {
             $table->increments('id_expediente_documento');
             $table->integer('id_expediente')->unsigned();
+            $table->integer('id_tipo_documento')->nullable()->unsigned();
             $table->integer('id_plantilla_documento')->nullable()->unsigned();
             $table->string('titulo', 255)->nullable();
+            $table->string('remitente', 255)->nullable();
             $table->mediumText('texto')->nullable();
             $table->string('observaciones', 255)->nullable();
             $table->boolean('borrado')->default(0)->index();
@@ -29,6 +31,10 @@ class CreateExpedienteDocumentosTable extends Migration
 
             //FOREIGN KEY CONSTRAINTS
             $table->foreign('id_expediente')->references('id_expediente')->on('tt_expediente')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+            $table->foreign('id_tipo_documento')->references('id_tipo_documento')->on('tc_tipo_documento')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 

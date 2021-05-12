@@ -140,6 +140,10 @@ Route::group([
     ]]);
     Route::get('tipo-direccion/restore/{tipo-direccion}', 'Api\TipoDireccionController@restore')->name('tipo-direccion.restore');
 
+    Route::resource('tipo-documento', 'Api\TipoDocumentoController', ['only' => [
+        'index', 'store', 'update', 'show', 'destroy'
+    ]]);
+
     Route::resource('personas', 'Api\PersonaController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy',
     ]]);
