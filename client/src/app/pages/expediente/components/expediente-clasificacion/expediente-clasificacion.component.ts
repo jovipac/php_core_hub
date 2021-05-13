@@ -43,6 +43,7 @@ export class ExpedienteClasificacionComponent implements OnInit {
   public listChildren: Array<any>;
   public listClasExpe: Array<any>;
   public listClasPos: Array<any>;
+  public listClasPosHecho: Array<any>;
   public titleDerecho: String;
   isAddMode: boolean;
   submitted: boolean = false;
@@ -118,6 +119,10 @@ export class ExpedienteClasificacionComponent implements OnInit {
         value: null,
       }, [Validators.required]),
 
+      id_clasificacion_derecho_Add_hecho: new FormControl({
+        value: null,
+      }, [Validators.required]),
+
       orders: new FormArray([  ]),
 
 
@@ -175,20 +180,30 @@ export class ExpedienteClasificacionComponent implements OnInit {
       this.listClasPos  = differenceWith(cmp, this.listChildren, this.listClasExpe ); //=> [{a: 1}, {a: 2}]
     }
 
-
-
-
-    //console.log( this.listChildren);
-    // this.hechosform.controls.orders =   new FormArray([  ]);
-    // let childrens = this.hechosform.controls.orders as FormArray;
-    // this.listChildren.forEach(children  => {
-    //   console.log(children);
-    //   childrens.push(this.buildChildren(children));
-    // })
-    //console.log(this.hechosform.value)
-    // (<FormArray>this.form.get('ClasificacionDerechos')).push(this.buildForm( ArrayParent[0].children));
-    // return ArrayParent[0].children;
+  
   }
+
+
+
+  getCalificacionChildrenHecho(){
+    this.listClasPosHecho = [];
+    let parent = this.hechosform.value.id_clasificacion_derecho_Add;
+    let ArrayParent = this.listClasPos.filter(x => x.id_clasificacion_derecho == parent );
+    //console.log(ArrayParent);
+    this.listChildren = ArrayParent[0].children;
+    this.titleDerecho = ArrayParent[0].nombre;
+
+    const cmp = (x, y) => x.id_clasificacion_derecho === y.id_clasificacion_derecho;
+
+    if(this.listClasExpe === undefined){
+      this.listClasPosHecho  =   this.listChildren
+    }
+    else{
+      this.listClasPosHecho  = differenceWith(cmp, this.listChildren, this.listClasExpe ); //=> [{a: 1}, {a: 2}]
+    }
+
+  }
+
 
 
   getListResultado() {
@@ -226,7 +241,9 @@ export class ExpedienteClasificacionComponent implements OnInit {
     event.preventDefault();
     let data = {
       id_expediente:  this.id ,
-      id_clasificacion_derecho :  this.hechosform.value.id_clasificacion_derecho_Add
+      id_clasificacion_derecho :  this.hechosform.value.id_clasificacion_derecho_Add_hecho
+
+      //id_clasificacion_derecho :  this.hechosform.value.id_clasificacion_derecho_Add
     }
 
 
@@ -280,6 +297,10 @@ export class ExpedienteClasificacionComponent implements OnInit {
     }
     this.ECservice.search(data).subscribe(res => {
       let response: any = res;
+
+      console.log('--->', res);
+
+
 
       if (response.result.length > 0) {
         this.listClasExpe = response.result;

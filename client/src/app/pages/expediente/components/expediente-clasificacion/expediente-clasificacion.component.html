@@ -1,108 +1,110 @@
-<form action="javascript:" class="needs-validation" novalidate [formGroup]="hechosform"
-  autocomplete="off">
+<form action="javascript:" class="needs-validation" novalidate [formGroup]="hechosform" autocomplete="off">
   <div class="row">
     <div class="col-sm-12">
-
-      <!-- PRIMER FILA -->
-      <div class="form-row">
-        <div class="col-md-3 mb-3">
-            <div class="row">
-              <div class="form-row">
-                <div class="col-md-12 mb-12">
-                  <input-label [requires]="false" [label]="'Tipo de derecho'" [id]="'txtTipoDerecho'"></input-label>
-                  <select class="form-control" id="txtTipoDerecho" formControlName="id_clasificacion_derecho"
-                    [ngClass]="displayErrorsCss('id_clasificacion_derecho')" (change)="getCalificacionChildren()">
-                    <option *ngFor="let resultado of listCaliDere" value="{{resultado.id_clasificacion_derecho}}">
-                      {{resultado.nombre}}
-                    </option>
-                  </select>
-                  <div *ngIf="isHasErrors('id_clasificacion_derecho')" class="invalid-feedback">
-                    <div *ngIf="f.id_auxiliatura.errors?.required">El campo es requerido</div>
-                  </div>
-                </div>
-              </div>
-              <div class="form-row">
-                <div class="col-md-12 mb-12">
-                  <label for="validationCustom03"> <strong> {{titleDerecho}} </strong></label>
-                  <select class="form-control" id="txtTipoDerecho" formControlName="id_clasificacion_derecho_Add"
-                    [ngClass]="displayErrorsCss('id_clasificacion_derecho_Add')" >
-                    <option *ngFor="let resultado of listClasPos" value="{{resultado.id_clasificacion_derecho}}">
-                      {{resultado.nombre}}
-                    </option>
-                  </select>
-                </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-3 mb-3">
+              <input-label [requires]="false" [label]="'Grupo de Derechos'" [id]="'txtTipoDerecho'"></input-label>
+            </div>
+            <div class="col-md-3 mb-3">
+              <!-- {{titleDerecho}} -->
+              <label for="validationCustom03"> Tipo de Derecho </label>
+            </div>
+            <div class="col-md-3 mb-3">
+              <label for="validationCustom04"> Hecho Violatorio </label>
+            </div>
+            <div class="col-md-3 mb-3">
+              &nbsp;
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3 mb-3">
+              <select class="form-control" id="txtTipoDerecho" formControlName="id_clasificacion_derecho"
+                [ngClass]="displayErrorsCss('id_clasificacion_derecho')" (change)="getCalificacionChildren()">
+                <option *ngFor="let resultado of listCaliDere" value="{{resultado.id_clasificacion_derecho}}">
+                  {{resultado.nombre}}
+                </option>
+              </select>
+              <div *ngIf="isHasErrors('id_clasificacion_derecho')" class="invalid-feedback">
+                <div *ngIf="f.id_auxiliatura.errors?.required">El campo es requerido</div>
               </div>
             </div>
-
-        </div>
-
-
-
-        <div class="col-md-2 mb-2">
-          <br>
-          <button class="btn btn-primary" (click)="addClasi($event)"  ><i class="fa fa-save"></i>Agregar</button>
-        </div>
-
-        <div class="col-md-7 mb-7">
-          <table class="table  table-striped" id="TableclasExpedienteAsig">
-            <thead>
-              <tr>
-                <th>Tipo de derecho</th>
-                <th>Hechos Violatorios</th>
-                <th>Opciones</th>
-
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let clasifi of listClasExpe">
-                <td>{{clasifi.nombre_clasificacion_derecho_P }}</td>
-                <td>{{clasifi.nombre_clasificacion_derecho_H}}</td>
-
-
-                <td>
-
-                  <button class="btn btn-primary btn-icon" title="Quitar Clasificación" (click)="QuitClasi(clasifi)" ><i
-                    class="icofont icofont-location-arrow"></i></button>
-
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <!-- / PRIMER FILA -->
-
-
-      <!-- SEGUNDA FILA -->
-      <div class="form-row">
-
-      </div>
-      <!-- / SEGUNDA FILA -->
-
-      <!-- TERCER FILA -->
-      <div class="form-row">
-        <div class="col-md-5 mb-5">
-        </div>
-        <div class="col-md-7 mb-7 ">
-          <fieldset>
-            <legend>Que tipo de acción amerita esta solicitud</legend>
-            <input-label [requires]="false" [label]="'Resultado'" [id]="'txtResultado'"></input-label>
-            <select class="form-control" id="txtResultado" formControlName="id_resultado"
-              [ngClass]="displayErrorsCss('id_resultado')">
-              <option *ngFor="let resultado of listResultado" value="{{resultado.id_resultado}}">{{resultado.nombre}}
+            <div class="col-md-3 mb-3">
+              <select class="form-control" id="txtTipoDerecho" formControlName="id_clasificacion_derecho_Add"
+                [ngClass]="displayErrorsCss('id_clasificacion_derecho_Add')" (change)="getCalificacionChildrenHecho()">
+                <option *ngFor="let resultado of listClasPos" value="{{resultado.id_clasificacion_derecho}}">
+                  {{resultado.nombre}}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-3 mb-3">
+              <select class="form-control" id="txtTipoDerechoHechos" formControlName="id_clasificacion_derecho_Add_hecho"
+              [ngClass]="displayErrorsCss('id_clasificacion_derecho_Add_hecho')">
+              <option *ngFor="let resultado of listClasPosHecho" value="{{resultado.id_clasificacion_derecho}}">
+                {{resultado.nombre}}
               </option>
             </select>
-            <div *ngIf="isHasErrors('id_resultado')" class="invalid-feedback">
+            </div>
+            <div class="col-md-3 mb-3">
+              <button class="btn btn-primary" (click)="addClasi($event)"><i class="fa fa-save"></i>Agregar</button>
+            </div>
+          </div>
+          <div class="row">
+            <hr>
+          </div>
+          <div class="row">
+            <div class="col-md-12 mb-12">
+              <table class="table  table-striped" id="TableclasExpedienteAsig">
+                <thead>
+                  <tr>
+                    <th>Grupo de Derecho</th>
+                    <th>Tipo de Derecho</th>
+                    <th>Hecho Violatorio</th>
+                    <th> &nbsp; </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let clasifi of listClasExpe">
+                    <td>{{clasifi.nombre_clasificacion_derecho_GrupoDerecho }}</td>
+                    <td>{{clasifi.nombre_clasificacion_derecho_TipoDerecho}}</td>
+                    <td>{{clasifi.nombre_clasificacion_derecho_HechoViolatorio}}</td>
+                    <td>
+                      <button class="btn btn-primary btn-icon" title="Quitar Clasificación"
+                        (click)="QuitClasi(clasifi)"><i class="icofont icofont-error close-card"></i></button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="row">
+            <hr>
+          </div>
+          <div class="row">
+            <div class="col-md-3 mb-3">
+              <input-label [requires]="false" [label]="'Resultado'" [id]="'txtResultado'"></input-label>
+            </div>
+            <div class="col-md-7 mb-7">
+              <select class="form-control" id="txtResultado" formControlName="id_resultado"
+                [ngClass]="displayErrorsCss('id_resultado')">
+                <option *ngFor="let resultado of listResultado" value="{{resultado.id_resultado}}">{{resultado.nombre}}
+                </option>
+              </select>
+              <div *ngIf="isHasErrors('id_resultado')" class="invalid-feedback">
+
+              </div>
+
 
             </div>
-
-            <button class="btn btn-primary "  title="Atender usuario" (click)="UpdateAccion()" ><i
-              class="fa fa-save"></i> Guardar </button>
-          </fieldset>
+            <div class="col-md-2 mb-2">
+              <button class="btn btn-primary " title="Atender usuario" (click)="UpdateAccion()"><i
+                  class="fa fa-save"></i>
+                Guardar </button>
+            </div>
+          </div>
         </div>
       </div>
-      <!-- / TERCER FILA -->
-
     </div>
   </div>
 </form>
