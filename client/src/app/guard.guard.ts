@@ -31,10 +31,11 @@ export class GuardGuard implements CanActivate, CanActivateChild, CanLoad {
   }
 
   canLoad() {
-    if (!sessionStorage.getItem("validate")) {
-      this.router.navigate(['/login']);
-      return false;
+    if (!this.authService.isTokenExpired()) {
+      return true;
     }
-    return true;
+
+    this.router.navigate(['/login']);
+    return false;
   }
 }
