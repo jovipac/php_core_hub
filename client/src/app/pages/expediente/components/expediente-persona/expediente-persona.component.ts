@@ -1,5 +1,5 @@
 import { Component, ViewChild, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, FormArray, Validators, FormBuilder } from "@angular/forms";
 import { TipoVinculacionService, DocumentoIdentidadService, SexoService, GeneroService, TipoDireccionService } from '../../../../service/catalogos';
 import { DepartamentoService, MunicipioService, EtniaService, ComunidadLinguisticaService } from '../../../../service/catalogos';
@@ -62,6 +62,7 @@ export class ExpedientePersonaComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private toastr: ToastrService,
     private solicitudPersonaService: ExpedientePersonaService,
     private tipoVinculacionService: TipoVinculacionService,
@@ -807,6 +808,12 @@ export class ExpedientePersonaComponent implements OnInit {
             this.toastr.success(response.message, 'Solicitud');
             this.submittedEvent.emit(true);
             this.loading.hide('step02');
+
+            let currentUrl = this.router.url;
+            this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+            this.router.onSameUrlNavigation = 'reload';
+            this.router.navigate([currentUrl]);
+
           },
           error: (response: HttpErrorResponse) => {
             if (Object.prototype.toString.call(response.error.message) === '[object Object]') {
@@ -852,6 +859,12 @@ export class ExpedientePersonaComponent implements OnInit {
             this.toastr.success(response.message, 'Solicitud')
             this.submittedEvent.emit(true);
             this.loading.hide('step02');
+
+            let currentUrl = this.router.url;
+            this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+            this.router.onSameUrlNavigation = 'reload';
+            this.router.navigate([currentUrl]);
+
           },
           error: (response: HttpErrorResponse) => {
             if (Object.prototype.toString.call(response.error.message) === '[object Object]') {
@@ -892,6 +905,12 @@ export class ExpedientePersonaComponent implements OnInit {
               this.toastr.success(response.message, 'Expediente');
               this.submittedEvent.emit(true);
               this.loading.hide('step02');
+
+              let currentUrl = this.router.url;
+              this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+              this.router.onSameUrlNavigation = 'reload';
+              this.router.navigate([currentUrl]);
+
             },
             error: (error: HttpErrorResponse) => {
                 const messages = extractErrorMessages(error);
