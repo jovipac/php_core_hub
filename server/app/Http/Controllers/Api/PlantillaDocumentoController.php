@@ -31,7 +31,7 @@ class PlantillaDocumentoController extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
-    public function list()
+    public function list(Request $request)
     {
         $resultados = PlantillaDocumento::query()
         ->select(
@@ -39,6 +39,7 @@ class PlantillaDocumentoController extends ApiController
             'titulo AS description',
             'texto AS content',
         )
+        ->where('id_clasificacion_plantilla', $request->id_clasificacion_plantilla)
         ->orderBy('created_at', 'desc')
         ->get();
 
@@ -55,8 +56,8 @@ class PlantillaDocumentoController extends ApiController
     {
         $expedienteDocumento = PlantillaDocumento::query()->orderBy('created_at', 'desc');
 
-        if ( $request->has('id_clasificacion_plantilla ') && $request->filled('id_clasificacion_plantilla ') ) {
-            $expedienteDocumento->where('id_clasificacion_plantilla ', $request->id_clasificacion_plantilla );
+        if ( $request->has('id_clasificacion_plantilla') && $request->filled('id_clasificacion_plantilla') ) {
+            $expedienteDocumento->where('id_clasificacion_plantilla', $request->id_clasificacion_plantilla );
         }
 
         if ( $request->has('titulo') && $request->filled('titulo') ) {

@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormArray, Validators } from "@angular/forms";
-import { ExpedienteDocumentoService, ExpedienteDocumentoArchivoService } from '../../../../service';
+import { ExpedienteDocumentoService, ExpedienteDocumentoArchivoService , ExpedienteService } from '../../../../service';
 import { PlantillaDocumentoService , TipoDocumentoService } from '../../../../service/catalogos';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -10,6 +10,7 @@ import { first } from 'rxjs/operators';
 import { isEmptyValue, extractErrorMessages } from '../../../../shared/utils';
 import { environment } from '../../../../../environments/environment';
 import { NgxSpinnerService } from "ngx-spinner";
+import { Expediente } from '../../../../shared/models';
 
 @Component({
   selector: 'app-expediente-documento',
@@ -30,7 +31,7 @@ export class ExpedienteDocumentoComponent implements OnInit {
 
   public listPlantillaDocumento: Array<any>;
   public listtipoDoc: Array<any>;
-
+  public expedienteForm: Expediente;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -40,6 +41,7 @@ export class ExpedienteDocumentoComponent implements OnInit {
     private expedienteDocumentoArchivoService: ExpedienteDocumentoArchivoService,
     private tipodocumentoService: TipoDocumentoService,
     private loading: NgxSpinnerService,
+    private expedienteservice: ExpedienteService,
   ) {
     this.uploader = new FileUploader({
       url: expedienteDocumentoArchivoService.uploadURL,
@@ -53,6 +55,29 @@ export class ExpedienteDocumentoComponent implements OnInit {
   ngOnInit(): void {
     this.id_expediente = this.route.snapshot.params['id'];
     this.isAddMode = !this.id_expediente_documento;
+
+
+    //DATA DEL EXPEDIENTE
+    this.expedienteservice.getExpediente(this.id_expediente)
+    .pipe(first())
+    .subscribe({
+      next: (data:any) => {
+        const expediente = {
+          ...data.result,
+          nombre_funcionario: [
+            data.result?.nombres_funcionario,
+            data.result?.apellidos_funcionario
+          ].filter(Boolean)
+          .join(" ")
+        };
+        
+        this.expedienteForm = <Expediente>expediente;
+        console.log(this.expedienteForm );
+      },
+      error: (error:any) => {
+        this.toastr.error(error.message);
+      }
+    });
 
     this.uploader.onBeforeUploadItem = (item) => {
       item.withCredentials = false;
@@ -109,7 +134,7 @@ export class ExpedienteDocumentoComponent implements OnInit {
         'template searchreplace visualblocks code fullscreen',
         'insertdatetime media table paste code help wordcount'
       ],
-      templates: `${environment.host}plantilla-documento/list`,
+      templates: `${environment.host}plantilla-documento/list?id_clasificacion_plantilla=1`,
       toolbar:
         'template | undo redo | formatselect | bold italic underline backcolor | \
         alignleft aligncenter alignright alignjustify | \
