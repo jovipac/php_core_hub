@@ -16,7 +16,7 @@ class PlantillaDocumentoController extends ApiController
      */
     public function index()
     {
-        $resultados = PlantillaDocumento::query()
+        $plantilla_documentos = PlantillaDocumento::query()
         ->select('tc_plantilla_documento.*',
             'T01.nombre as nombre_clasificacion_plantilla'
         )
@@ -27,7 +27,7 @@ class PlantillaDocumentoController extends ApiController
             [
                 'success' => true,
                 'message' => "Listado de plantillas de documentos",
-                'result' => $resultados
+                'result' => $plantilla_documentos
             ]
         );
     }
@@ -39,20 +39,20 @@ class PlantillaDocumentoController extends ApiController
      */
     public function list(Request $request)
     {
-        $resultados = PlantillaDocumento::query()
+        $plantilla_documentos = PlantillaDocumento::query()
         ->select(
-            DB::raw('CONCAT(T01.nombre, \' - \', titulo) AS title'),
+            DB::raw('CONCAT(T02.nombre, \' - \', titulo) AS title'),
             'titulo AS description',
             'texto AS content',
         )
-        ->leftJoin('tc_clasificacion_plantilla AS T01', 'tc_plantilla_documento.id_clasificacion_plantilla', 'T01.id_clasificacion_plantilla')
-        ->orderBy('created_at', 'desc');
+        ->leftJoin('tc_clasificacion_plantilla AS T02', 'tc_plantilla_documento.id_clasificacion_plantilla', 'T02.id_clasificacion_plantilla')
+        ->orderBy('tc_plantilla_documento.created_at', 'desc');
 
         if ( $request->has('id_clasificacion_plantilla') && $request->filled('id_clasificacion_plantilla') ) {
-            $resultados->where('id_clasificacion_plantilla', $request->id_clasificacion_plantilla );
+            $plantilla_documentos->where('tc_plantilla_documento.id_clasificacion_plantilla', $request->id_clasificacion_plantilla );
         }
 
-        return response()->json($resultados->get());
+        return response()->json($plantilla_documentos->get());
     }
 
     /**

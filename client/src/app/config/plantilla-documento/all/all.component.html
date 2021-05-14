@@ -1,0 +1,42 @@
+<ngx-spinner name="dashboard"></ngx-spinner>
+
+<div class="row">
+  <div class="col-lg-12">
+    <app-card [hidHeader]="true" [blockClass]="'table-border-style'">
+      <div class="table-responsive" >
+        <div class="col-md-12" style="margin-bottom: 50px;">
+          <table class="table  table-striped" id="list">
+            <thead>
+              <tr>
+                <th>Numero</th>
+                <th>Titulo</th>
+                <th>Clasificacion Plantilla</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let plantillaDocumento of listPlantillaDocumentos">
+                <td>{{plantillaDocumento?.id_plantilla_documento }}</td>
+                <td>{{plantillaDocumento?.titulo}}</td>
+                <td>{{plantillaDocumento?.nombre_clasificacion_plantilla }}</td>
+                <td>
+                  <div class="row">
+                    <div class="col">
+                      <div dropdown class="d-inline-block">
+                        <button class="btn btn-outline-primary btn-mini dropdown-toggle" id="dropdownBasic1"
+                        dropdownToggle >Acciones</button>
+                        <div *dropdownMenu aria-labelledby="dropdownBasic1" class="dropdown-menu">
+                          <li class="dropdown-item btn-mini" (click)="goEdit(plantillaDocumento);">Editar</li>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </app-card>
+  </div>
+</div>
