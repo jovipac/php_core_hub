@@ -1,3 +1,5 @@
+import { fromPairs } from 'ramda';
+
 export * from './alert';
 export * from './auxiliatura.interface';
 export * from './dependencia.interface';
@@ -11,6 +13,7 @@ export * from './sexo.interface';
 export * from './genero.interface';
 export * from './motivo.interface';
 export * from './funcionario.interface';
+export * from './plantillaDocumento.interface';
 export * from './documento-identidad.interface';
 export * from './documento-identidad-persona.interface';
 export * from './tipo-area-lugar.interface';

@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Traits\SoftDeletesBoolean;
 use App\Http\Traits\DateTimeMutator;
+use Kalnoy\Nestedset\NodeTrait;
 use App\Http\Traits\Userstamps;
 
 class ExpedienteDocumento extends Model
 {
-    use SoftDeletesBoolean, Userstamps, DateTimeMutator;
+    use NodeTrait, SoftDeletesBoolean, Userstamps, DateTimeMutator;
 
 
     const IS_DELETED = 'borrado';
@@ -38,8 +39,29 @@ class ExpedienteDocumento extends Model
      * @var array
      */
     protected $hidden = [
-        'created_by', 'updated_by', 'updated_at', 'deleted_by', 'deleted_at', 'borrado',
+        'created_by', 'updated_by', 'updated_at', 'deleted_by', 'deleted_at', 'borrado', '_lft', '_rgt'
     ];
+
+    public function getLftName()
+    {
+        return '_lft';
+    }
+
+    public function getRgtName()
+    {
+        return '_rgt';
+    }
+
+    public function getParentIdName()
+    {
+        return 'id_parent';
+    }
+
+    // Specify parent id attribute mutator
+    public function setParentAttribute($value)
+    {
+        $this->setParentIdAttribute($value);
+    }
 
     public function expediente()
     {

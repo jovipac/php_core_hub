@@ -10,6 +10,17 @@ const routes: Routes = [
     component: AdminComponent,
     children: [
       {
+        path: 'config',
+        loadChildren: () => import('./config/config.module').then(m => m.ConfigModule)
+      },
+    ],
+    canActivate: [GuardGuard]
+  },
+  {
+    path: '',
+    component: AdminComponent,
+    children: [
+      {
         path: '',
         redirectTo: 'dashboard',
         pathMatch: 'full'
