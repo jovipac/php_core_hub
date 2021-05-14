@@ -16,7 +16,13 @@ class PlantillaDocumentoController extends ApiController
      */
     public function index()
     {
-        $resultados = PlantillaDocumento::all();
+        $resultados = PlantillaDocumento::query()
+        ->select('tc_plantilla_documento.*',
+            'T01.nombre as nombre_clasificacion_plantilla'
+        )
+        ->leftJoin('tc_clasificacion_plantilla AS T01', 'tc_plantilla_documento.id_clasificacion_plantilla', 'T01.id_clasificacion_plantilla')
+        ->get();
+
         return $this->apiResponse(
             [
                 'success' => true,
