@@ -5,11 +5,10 @@ namespace App\Models\Catalogs;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Traits\SoftDeletesBoolean;
 use App\Http\Traits\DateTimeMutator;
-use App\Http\Traits\Userstamps;
 
 class PlantillaDocumento extends Model
 {
-    use SoftDeletesBoolean, Userstamps, DateTimeMutator;
+    use SoftDeletesBoolean, DateTimeMutator;
 
 
     const IS_DELETED = 'borrado';
