@@ -12,14 +12,16 @@
               <div *ngIf="formDocumento.get('titulo').errors?.pattern">Solo se aceptan texto sin caracteres especiales</div>
             </div>
           </div>
-          <!-- <div class="col-md-6 mb-3">
-            <input-label [requires]="false" [label]="'Clasificacion Plantilla'" [id]="'txttipodoc'"></input-label>
-            <select class="form-control" id="txtTipoDocumento" formControlName="id_clasificacion_plantilla">
-              <option *ngFor="let clasificacion of listClasificacionPlantilla" value="{{clasificacion.id_clasificacion_plantilla}}">
-                {{clasificacion.nombre}}
-              </option>
-            </select>
-        </div> -->
+          <div class="col-md-6 mb-3">
+            <input-label [requires]="false" [label]="'Clasificacion Plantilla'" [id]="'txtClasificacionPlantilla'"></input-label>
+            <ng-select [items]="listClasificacionPlantilla" #select bindLabel="nombre" dropdownPosition="auto"
+              bindValue="id_clasificacion_plantilla" labelForId="txtClasificacionPlantilla" placeholder="Seleccionar" [virtualScroll]="true"
+              formControlName="id_clasificacion_plantilla" [ngClass]="displayValidation(formDocumento.get('id_clasificacion_plantilla').invalid)">
+            </ng-select>
+            <div [ngClass]="displayValidationMsg(formDocumento.get('id_clasificacion_plantilla').valid)">
+              <div *ngIf="formDocumento.get('id_clasificacion_plantilla').errors?.required">El campo es requerido</div>
+            </div>
+          </div>
         </div>
         <div class="form-row">
           <div class="col">

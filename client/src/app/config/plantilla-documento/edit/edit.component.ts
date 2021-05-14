@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormArray, Validators } from "@angular/forms";
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { PlantillaDocumentoService , TipoDocumentoService } from '../../../service/catalogos';
+import { PlantillaDocumentoService , ClasificacionPlantillaService } from '../../../service/catalogos';
 import { first } from 'rxjs/operators';
 import { isEmptyValue, extractErrorMessages } from '../../../shared/utils';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -20,11 +20,14 @@ export class EditTemplateComponent implements OnInit {
   formDocumento: FormGroup;
   textEditorConfig: object;
 
+  public listClasificacionPlantilla: Array<any>;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
     private plantillaDocumentoService: PlantillaDocumentoService,
+    private clasificacionPlantillaService: ClasificacionPlantillaService,
     private loading: NgxSpinnerService,
   ) { }
 
@@ -63,7 +66,7 @@ export class EditTemplateComponent implements OnInit {
     } else {
       this.formDocumento = this.buildForm({});
     }
-
+    this.getListClasificacionPlantilla();
   }
 
   private buildForm(data: any): FormGroup {
@@ -74,7 +77,7 @@ export class EditTemplateComponent implements OnInit {
       }, [Validators.pattern("[0-9]+")]),
       id_clasificacion_plantilla: new FormControl({
         value: data?.id_clasificacion_plantilla,
-        disabled: !this.isAddMode,
+        disabled: false,
       }, [Validators.pattern("[0-9]+")]),
       titulo: new FormControl({
         value: data?.titulo,
@@ -152,6 +155,31 @@ export class EditTemplateComponent implements OnInit {
       });
   }
 
+  getListClasificacionPlantilla() {
+    this.clasificacionPlantillaService.getListClasificacionPlantilla()
+    .pipe(first())
+    .subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          const plantillasFormated = !isEmptyValue(response.result) ?
+            response.result.map((template: any) => {
+              return {
+                ...template
+              }
+            }) : [];
+
+          this.listClasificacionPlantilla = plantillasFormated;
+
+        } else
+          this.toastr.error(response.message)
+      },
+      error: (error: HttpErrorResponse) => {
+        this.toastr.error(error.message);
+      }
+    });
+
+  }
+
   private async createOrUpdateDocumento() {
     let completedProcess = false;
     //Valor del Form, incluidos los controles deshabilitados
@@ -164,7 +192,6 @@ export class EditTemplateComponent implements OnInit {
         if (isEmptyValue(plantilla.id_plantilla_documento) && plantilla.id_plantilla_documento != 0) {
           plantilla = {
             ...plantilla,
-            id_clasificacion_plantilla: 1,
           };
           let response: any = await this.plantillaDocumentoService.createPlantillaDocumento(plantilla).toPromise();
           if (response.success) {
