@@ -1,1 +1,44 @@
-<p>create works!</p>
+<div class="row">
+  <div class="col-sm-12">
+    <app-card [cardTitle]="'Plantilla documento'" [options]="false">
+      <form action="javascript:" class="needs-validation" novalidate [formGroup]="formDocumento" (ngSubmit)="onSubmit()" autocomplete="off">
+        <div class="form-row">
+          <div class="col-md-6 mb-3">
+            <input-label [label]="'Titulo'" [id]="'txtTitulo'"></input-label>
+            <input type="text" class="form-control" id="txtTitulo" formControlName="titulo"
+              placeholder="Descripcion en un titulo" [ngClass]="displayValidation(formDocumento.get('titulo').invalid)">
+            <div [ngClass]="displayValidationMsg(formDocumento.get('titulo').valid)">
+              <div *ngIf="formDocumento.get('titulo').errors?.required">El campo es requerido</div>
+              <div *ngIf="formDocumento.get('titulo').errors?.pattern">Solo se aceptan texto sin caracteres especiales</div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <input-label [requires]="false" [label]="'Clasificacion Plantilla'" [id]="'txtClasificacionPlantilla'"></input-label>
+            <ng-select [items]="listClasificacionPlantilla" #select bindLabel="nombre" dropdownPosition="auto"
+              bindValue="id_clasificacion_plantilla" labelForId="txtClasificacionPlantilla" placeholder="Seleccionar" [virtualScroll]="true"
+              formControlName="id_clasificacion_plantilla" [ngClass]="displayValidation(formDocumento.get('id_clasificacion_plantilla').invalid)">
+            </ng-select>
+            <div [ngClass]="displayValidationMsg(formDocumento.get('id_clasificacion_plantilla').valid)">
+              <div *ngIf="formDocumento.get('id_clasificacion_plantilla').errors?.required">El campo es requerido</div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col">
+              <editor id="classic" [init]="textEditorConfig" formControlName="texto" [disabled]="readOnlyEditor"></editor>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <button type="button" class="btn btn-outline-secondary" (click)="onCancel()"><i class="fa fa-chevron-left"></i>Cancelar</button>
+            <button type="button" class="btn btn-outline-success" (click)="onNew()"><i class="fa fa-plus"></i>Nuevo</button>
+          </div>
+          <div class="col text-center">
+            <button class="btn btn-primary" type="submit" id="btnSavePrint"><i class="fa fa-save"></i>Agregar</button>
+          </div>
+          <div class="col"></div>
+        </div>
+      </form>
+    </app-card>
+  </div>
+</div>

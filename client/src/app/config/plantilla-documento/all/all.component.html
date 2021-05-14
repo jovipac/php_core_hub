@@ -3,6 +3,11 @@
 <div class="row">
   <div class="col-lg-12">
     <app-card [cardTitle]="'Plantilla documento'" [options]="false" [blockClass]="'table-border-style'">
+      <div class="row">
+        <div class="col">
+          <button type="button" class="btn btn-success" (click)="goCreate()"><i class="fa fa-plus"></i>Nuevo</button>
+        </div>
+      </div>
       <div class="table-responsive" >
         <div class="col-md-12" style="margin-bottom: 50px;">
           <table class="table  table-striped" id="list">

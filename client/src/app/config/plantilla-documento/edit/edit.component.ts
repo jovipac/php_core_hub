@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, FormArray, Validators } from "@angular/forms";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { PlantillaDocumentoService , ClasificacionPlantillaService } from '../../../service/catalogos';
@@ -110,7 +110,12 @@ export class EditTemplateComponent implements OnInit {
 
   onNew() {
     this.formDocumento.reset();
-    this.router.navigate(['/plantilla-documento/create'], { relativeTo: this.route });
+    this.router.navigate(['../create'], { relativeTo: this.route });
+  }
+
+  onCancel() {
+    this.formDocumento.reset();
+    this.router.navigate(['../'], { relativeTo: this.route });
   }
 
   onSubmit() {

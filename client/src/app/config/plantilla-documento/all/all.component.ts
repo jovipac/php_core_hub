@@ -57,6 +57,10 @@ export class AllTemplateComponent implements OnInit {
     });
   }
 
+  goCreate() {
+    this.router.navigate(['../../../create'], { relativeTo: this.route });
+  }
+
   goEdit(plantilla: any) {
     this.router.navigate(['../../../edit', plantilla.id_plantilla_documento], { relativeTo: this.route });
   }
