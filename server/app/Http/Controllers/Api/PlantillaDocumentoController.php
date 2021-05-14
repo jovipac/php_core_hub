@@ -41,8 +41,7 @@ class PlantillaDocumentoController extends ApiController
     {
         $resultados = PlantillaDocumento::query()
         ->select(
-            DB::raw('CONCAT(T01.nombre as nombre_clasificacion_plantilla, \' \', titulo) AS title'),
-            'titulo AS title',
+            DB::raw('CONCAT(T01.nombre, \' - \', titulo) AS title'),
             'titulo AS description',
             'texto AS content',
         )
