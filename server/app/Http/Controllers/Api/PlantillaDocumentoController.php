@@ -6,7 +6,7 @@ use App\Http\Controllers\ApiController;
 use App\Models\Catalogs\PlantillaDocumento;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Support\Facades\DB;
 class PlantillaDocumentoController extends ApiController
 {
     /**
@@ -41,15 +41,19 @@ class PlantillaDocumentoController extends ApiController
     {
         $resultados = PlantillaDocumento::query()
         ->select(
+            DB::raw('CONCAT(T01.nombre as nombre_clasificacion_plantilla, \' \', titulo) AS title'),
             'titulo AS title',
             'titulo AS description',
             'texto AS content',
         )
-        ->where('id_clasificacion_plantilla', $request->id_clasificacion_plantilla)
-        ->orderBy('created_at', 'desc')
-        ->get();
+        ->leftJoin('tc_clasificacion_plantilla AS T01', 'tc_plantilla_documento.id_clasificacion_plantilla', 'T01.id_clasificacion_plantilla')
+        ->orderBy('created_at', 'desc');
 
-        return response()->json($resultados);
+        if ( $request->has('id_clasificacion_plantilla') && $request->filled('id_clasificacion_plantilla') ) {
+            $resultados->where('id_clasificacion_plantilla', $request->id_clasificacion_plantilla );
+        }
+
+        return response()->json($resultados->get());
     }
 
     /**
