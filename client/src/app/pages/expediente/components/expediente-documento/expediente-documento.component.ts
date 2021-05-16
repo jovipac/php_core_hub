@@ -3,15 +3,20 @@ import { FormGroup, FormControl, FormArray, Validators } from "@angular/forms";
 import { ExpedienteDocumentoService, ExpedienteDocumentoArchivoService , ExpedienteService } from '../../../../service';
 import { PlantillaDocumentoService , TipoDocumentoService } from '../../../../service/catalogos';
 import { Router, ActivatedRoute } from '@angular/router';
-import { HttpErrorResponse } from '@angular/common/http';
+import 'tinymce';
 import { ToastrService } from 'ngx-toastr';
 import { FileUploader } from 'ng2-file-upload';
-import { first } from 'rxjs/operators';
+import { AsyncSubject, Subject } from 'rxjs';
+import { first, map } from 'rxjs/operators';
 import { isEmptyValue, extractErrorMessages } from '../../../../shared/utils';
+import { formatearCorrelativo } from '../../../../shared/utils/helpers';
 import { environment } from '../../../../../environments/environment';
 import { NgxSpinnerService } from "ngx-spinner";
 import { Expediente } from '../../../../shared/models';
+import { formatDate } from "@angular/common";
+import { HttpErrorResponse } from '@angular/common/http';
 
+declare var tinymce: any;
 @Component({
   selector: 'app-expediente-documento',
   templateUrl: './expediente-documento.component.html',
@@ -28,6 +33,7 @@ export class ExpedienteDocumentoComponent implements OnInit {
   uploader: FileUploader;
   formDocumento: FormGroup;
   textEditorConfig: object;
+  editorSubject: Subject<any> = new AsyncSubject();
 
   public listPlantillaDocumento: Array<any>;
   public listtipoDoc: Array<any>;
@@ -49,35 +55,37 @@ export class ExpedienteDocumentoComponent implements OnInit {
       method: 'POST',
       authToken: `${JSON.parse(sessionStorage.getItem('validate')).token_type} ${JSON.parse(sessionStorage.getItem('validate')).access_token}`,
     });
+    this.expedienteData();
   }
 
+  private async expedienteData() {
+    //DATA DEL EXPEDIENTE
+    const response: any = await this.expedienteservice.getExpediente(this.route.snapshot.params['id']).toPromise();
+    if (response.success) {
+      const expediente = {
+        ...response.result,
+        correlativo: formatearCorrelativo(
+          null, response.result.anio, response.result.folio),
+        nombre_funcionario: [
+          response.result?.nombres_funcionario,
+          response.result?.apellidos_funcionario
+        ].filter(Boolean)
+        .join(" ")
+      };
+
+      this.expedienteForm =  <Expediente>expediente;
+    };
+
+  };
+
+  handleEditorInit(e) {
+    this.editorSubject.next(e.editor);
+    this.editorSubject.complete();
+  }
 
   ngOnInit(): void {
     this.id_expediente = this.route.snapshot.params['id'];
     this.isAddMode = !this.id_expediente_documento;
-
-
-    //DATA DEL EXPEDIENTE
-    this.expedienteservice.getExpediente(this.id_expediente)
-    .pipe(first())
-    .subscribe({
-      next: (data:any) => {
-        const expediente = {
-          ...data.result,
-          nombre_funcionario: [
-            data.result?.nombres_funcionario,
-            data.result?.apellidos_funcionario
-          ].filter(Boolean)
-          .join(" ")
-        };
-        
-        this.expedienteForm = <Expediente>expediente;
-        console.log(this.expedienteForm );
-      },
-      error: (error:any) => {
-        this.toastr.error(error.message);
-      }
-    });
 
     this.uploader.onBeforeUploadItem = (item) => {
       item.withCredentials = false;
@@ -125,6 +133,7 @@ export class ExpedienteDocumentoComponent implements OnInit {
     // Inicializacion del editor de texto
     this.textEditorConfig = {
       //selector: '#classic',
+      language: 'es_MX',
       base_url: '/tinymce',
       suffix: '.min',
       height: 500,
@@ -132,14 +141,16 @@ export class ExpedienteDocumentoComponent implements OnInit {
       plugins: [
         'advlist autolink lists link image charmap print preview anchor',
         'template searchreplace visualblocks code fullscreen',
-        'insertdatetime media table paste code help wordcount'
+        'insertdatetime media table paste code help wordcount textpattern'
       ],
-      templates: `${environment.host}plantilla-documento/list?id_clasificacion_plantilla=1`,
+      templates: `${environment.host}plantilla-documento/list`,
       toolbar:
         'template | undo redo | formatselect | bold italic underline backcolor | \
         alignleft aligncenter alignright alignjustify | \
         bullist numlist outdent indent | removeformat | help',
-      language: 'es_MX'
+      textpattern_patterns: [
+        {start: '{fecha_actual}', replacement: formatDate(new Date(), 'longDate', 'es') },
+      ],
     }
 
     // Inicializacion del formulario
@@ -292,6 +303,9 @@ export class ExpedienteDocumentoComponent implements OnInit {
     let documento = {
       ...this.formDocumento.getRawValue(),
     };
+    documento.texto = documento.texto.replaceAll("{fecha_actual}", formatDate(new Date(), 'longDate', 'es'));
+    documento.texto = documento.texto.replaceAll("{usuario}", this.expedienteForm.nombre_funcionario);
+    documento.texto = documento.texto.replaceAll("{expediente}", this.expedienteForm.correlativo);
 
       try {
         this.loading.show('step05');
