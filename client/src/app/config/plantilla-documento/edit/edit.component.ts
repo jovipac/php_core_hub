@@ -115,7 +115,7 @@ export class EditTemplateComponent implements OnInit {
 
   onCancel() {
     this.formDocumento.reset();
-    this.router.navigate(['../'], { relativeTo: this.route });
+    this.router.navigate(['../../'], { relativeTo: this.route });
   }
 
   onSubmit() {

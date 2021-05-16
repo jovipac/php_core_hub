@@ -140,6 +140,7 @@ class ExpedienteDocumentoController extends ApiController
         }
         $inputs = $request->except(['id_expediente_documento']);
         $newExpedienteDocumento = ExpedienteDocumento::create($inputs);
+        $expedienteDocumento->appendNode($newExpedienteDocumento);
 
         return $this->respondCreated([
             'success' => true,
