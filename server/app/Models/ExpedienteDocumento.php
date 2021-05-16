@@ -30,7 +30,7 @@ class ExpedienteDocumento extends Model
      */
     protected $fillable = [
         'id_expediente_documento', 'id_expediente', 'id_tipo_documento',
-        'remitente', 'titulo', 'texto', 'observaciones', 'id_parent'
+        'remitente', 'titulo', 'texto', 'observaciones', 'id_parent', 'version'
     ];
 
     /**

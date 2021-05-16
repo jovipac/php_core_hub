@@ -78,7 +78,8 @@ class ExpedienteDocumentoController extends ApiController
     {
         $validator = Validator::make($request->all(), [
             'id_expediente' => 'required|integer',
-            'id_plantilla_documento' => 'nullable|integer',
+            'id_tipo_documento' => 'required|integer',
+            'remitente' => 'nullable|string',
             'titulo' => 'nullable|string',
             'texto' => 'nullable|string',
             'observaciones' => 'nullable|string',
@@ -130,7 +131,8 @@ class ExpedienteDocumentoController extends ApiController
         $validator = Validator::make($request->all(), [
             'id_expediente_documento' => 'required|integer',
             'id_expediente' => 'nullable|integer',
-            'id_plantilla_documento' => 'nullable|integer',
+            'id_tipo_documento' => 'nullable|integer',
+            'remitente' => 'nullable|string',
             'titulo' => 'nullable|string',
             'texto' => 'nullable|string',
             'observaciones' => 'nullable|string',
@@ -139,6 +141,7 @@ class ExpedienteDocumentoController extends ApiController
             return $this->respondError($validator->errors(), 422);
         }
         $inputs = $request->except(['id_expediente_documento']);
+        $inputs['version'] = ++$expedienteDocumento->version;
         $newExpedienteDocumento = ExpedienteDocumento::create($inputs);
         $expedienteDocumento->appendNode($newExpedienteDocumento);
 

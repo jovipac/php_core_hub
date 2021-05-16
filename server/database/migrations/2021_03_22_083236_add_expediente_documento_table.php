@@ -14,6 +14,9 @@ class AddExpedienteDocumentoTable extends Migration
     public function up()
     {
         Schema::table('tt_expediente_documento', function (Blueprint $table) {
+            if (!Schema::hasColumn('tt_expediente_documento', 'version')) {
+                $table->tinyInteger('version')->default(1)->unsigned();
+            }
             if (!Schema::hasColumn('tt_expediente_documento', 'id_parent')) {
                 $table->integer('id_parent')->nullable()->unsigned();
                 $table->foreign('id_parent')->references('id_expediente_documento')
