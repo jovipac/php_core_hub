@@ -224,6 +224,7 @@ export class SolicitudComponent implements OnInit {
       next: (response:any) => {
         if (response.success) {
           const clasificacionderechos = response.result;
+          console.log('response.result',response.result);
           // Se formatea la informacion para adecuarla al formulario
           const clasificacionderechosFormateado = !isEmptyValue(clasificacionderechos) ? clasificacionderechos.map((clasificacionderecho: any) => {
             return <ExpedienteClasificacionDerecho>clasificacionderecho;
@@ -277,6 +278,7 @@ export class SolicitudComponent implements OnInit {
       console.log(response)
       if (response.result.length > 0) {
         this.listClasExpe = response.result;
+        console.log('response.result',response.result);
         $(document).ready(function () {
           $('#TableclasExpediente').DataTable({
             dom: " ",
