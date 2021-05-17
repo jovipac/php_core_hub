@@ -136,7 +136,7 @@ export class ExpedienteDocumentoComponent implements OnInit {
       language: 'es_MX',
       base_url: '/tinymce',
       suffix: '.min',
-      height: 500,
+      min_height: 350,
       menubar: true,
       plugins: [
         'advlist autolink lists link image charmap print preview anchor',
@@ -148,6 +148,7 @@ export class ExpedienteDocumentoComponent implements OnInit {
         'template | undo redo | formatselect | bold italic underline backcolor | \
         alignleft aligncenter alignright alignjustify | \
         bullist numlist outdent indent | removeformat | help',
+      template_replace_values: {},
       textpattern_patterns: [
         {start: '{fecha_actual}', replacement: formatDate(new Date(), 'longDate', 'es') },
       ],
@@ -303,9 +304,9 @@ export class ExpedienteDocumentoComponent implements OnInit {
     let documento = {
       ...this.formDocumento.getRawValue(),
     };
-    documento.texto = documento.texto.replaceAll("{fecha_actual}", formatDate(new Date(), 'longDate', 'es'));
-    documento.texto = documento.texto.replaceAll("{usuario}", this.expedienteForm.nombre_funcionario);
-    documento.texto = documento.texto.replaceAll("{expediente}", this.expedienteForm.correlativo);
+    documento.texto = documento.texto.replaceAll("{$fecha_actual}", formatDate(new Date(), 'longDate', 'es'));
+    documento.texto = documento.texto.replaceAll("{$usuario}", this.expedienteForm.nombre_funcionario);
+    documento.texto = documento.texto.replaceAll("{$expediente}", this.expedienteForm.correlativo);
 
       try {
         this.loading.show('step05');
