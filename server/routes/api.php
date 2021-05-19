@@ -232,6 +232,8 @@ Route::group([
     ]]);
     Route::get('expediente-documentos/restore/{expediente_documento}', 'Api\ExpedienteDocumentoController@restore')->name('expediente-documentos.restore');
     Route::post('expediente-documentos/search', 'Api\ExpedienteDocumentoController@search')->name('expediente-documentos.search');
+    Route::post('expediente-documentos/upload', 'Api\ExpedienteDocumentoController@upload')->name('expediente-documentos.upload');
+    Route::get('expediente-documentos/download/{expediente_documento}', 'Api\ExpedienteDocumentoController@download')->name('expediente-documentos.download');
 
     Route::resource('expediente-documento-archivos', 'Api\ExpedienteDocumentoArchivoController', ['only' => [
         'index', 'store', 'update', 'show', 'destroy'

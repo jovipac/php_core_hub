@@ -6,6 +6,7 @@ use App\Http\Controllers\ApiController;
 use App\Models\ExpedienteDocumento;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class ExpedienteDocumentoController extends ApiController
 {
@@ -83,6 +84,10 @@ class ExpedienteDocumentoController extends ApiController
             'titulo' => 'nullable|string',
             'texto' => 'nullable|string',
             'observaciones' => 'nullable|string',
+            'ubicacion' => 'nullable|string',
+            'mime' => 'nullable|string',
+            'nombre' => 'nullable|string',
+            'tamanio' => 'nullable|integer',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
@@ -136,6 +141,10 @@ class ExpedienteDocumentoController extends ApiController
             'titulo' => 'nullable|string',
             'texto' => 'nullable|string',
             'observaciones' => 'nullable|string',
+            'ubicacion' => 'nullable|string',
+            'mime' => 'nullable|string',
+            'nombre' => 'nullable|string',
+            'tamanio' => 'nullable|integer',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
@@ -177,6 +186,70 @@ class ExpedienteDocumentoController extends ApiController
         $expedienteDocumento->restore();
 
         return $this->respondSuccess('Documento del expediente restaurado con exito');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function upload(Request $request)
+    {
+        $inputs = $request->except(['file']);
+
+        $fileName = $request->file('file')->getClientOriginalName();
+        $extension = $request->file('file')->extension();
+        $mime = $request->file('file')->getMimeType();
+        $clientSize = $request->file('file')->getSize();
+        $filePath = $request->file('file')->store('uploads');
+
+        $expedienteDocumento = [
+            'params' => $inputs,
+            'filename' =>  $fileName,
+            'extension' =>  $extension,
+            'path' =>  $filePath,
+            'mime' => $mime,
+            'size' => $clientSize
+        ];
+
+        return $this->apiResponse(
+            [
+                'success' => true,
+                'message' => "Archivo adjunto del documento subido con exito",
+                'result' => $expedienteDocumento
+            ]
+        );
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function download($id)
+    {
+        try {
+            $expedienteDocumento = ExpedienteDocumento::find($id);
+
+            $fullPath = Storage::disk('uploads')->url($expedienteDocumento['ubicacion']);
+            $generatedURI = url($fullPath);
+
+            return $this->apiResponse(
+                [
+                    'success' => true,
+                    'message' => "Archivo adjunto del documento descargado con exito",
+                    'result' => [
+                        'nombre' => $expedienteDocumento['nombre'],
+                        'url' => $generatedURI
+                    ]
+                ]
+            );
+
+        } catch (\Exception $exception) {
+            return $this->respondError($exception->getMessage(), 400);
+        }
     }
 
 }
