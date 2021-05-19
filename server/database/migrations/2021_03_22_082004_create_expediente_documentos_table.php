@@ -18,10 +18,14 @@ class CreateExpedienteDocumentosTable extends Migration
             $table->integer('id_expediente')->unsigned();
             $table->integer('id_tipo_documento')->nullable()->unsigned();
             $table->integer('id_plantilla_documento')->nullable()->unsigned();
-            $table->string('titulo', 255)->nullable();
-            $table->string('remitente', 255)->nullable();
+            $table->string('titulo', 256)->nullable();
+            $table->string('remitente', 256)->nullable();
             $table->mediumText('texto')->nullable();
-            $table->string('observaciones', 255)->nullable();
+            $table->string('observaciones', 16384)->nullable();
+            $table->string('ubicacion', 4096)->nullable();
+            $table->string('nombre', 260)->nullable();
+            $table->string('mime', 100)->nullable();
+            $table->mediumInteger('tamanio')->nullable()->unsigned();
             $table->boolean('borrado')->default(0)->index();
             $table->integer('created_by')->nullable()->unsigned();
             $table->integer('updated_by')->nullable()->unsigned();

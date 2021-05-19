@@ -7,6 +7,7 @@ use App\Http\Traits\SoftDeletesBoolean;
 use App\Http\Traits\DateTimeMutator;
 use Kalnoy\Nestedset\NodeTrait;
 use App\Http\Traits\Userstamps;
+use Illuminate\Support\Facades\Storage;
 
 class ExpedienteDocumento extends Model
 {
@@ -30,7 +31,9 @@ class ExpedienteDocumento extends Model
      */
     protected $fillable = [
         'id_expediente_documento', 'id_expediente', 'id_tipo_documento',
-        'remitente', 'titulo', 'texto', 'observaciones', 'id_parent', 'version'
+        'remitente', 'titulo', 'texto', 'observaciones',
+        'nombre', 'tamanio', 'mime', 'ubicacion',
+        'id_parent', 'version'
     ];
 
     /**
@@ -41,6 +44,23 @@ class ExpedienteDocumento extends Model
     protected $hidden = [
         'created_by', 'updated_by', 'updated_at', 'deleted_by', 'deleted_at', 'borrado', '_lft', '_rgt'
     ];
+
+    /**
+     * The attributes that should be mutated.
+     *
+     * @var array
+     */
+    protected $appends = ['url'];
+
+    public function getUrlAttribute()
+    {
+        $value = null;
+        if (!is_null($this->attributes['ubicacion'] ?? null)) {
+            $fullPath = Storage::disk('uploads')->url($this->ubicacion);
+            $value = url($fullPath);
+        }
+        return $value;
+    }
 
     public function getLftName()
     {
