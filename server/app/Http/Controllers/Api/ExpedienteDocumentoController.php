@@ -184,7 +184,7 @@ class ExpedienteDocumentoController extends ApiController
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
         }
-        $inputs = $request->except(['id_expediente_documento','id_expediente']);
+        $inputs = $request->except(['id_expediente_documento']);
         $inputs['version'] = ++$expediente_documento->version;
         $newExpedienteDocumento = ExpedienteDocumento::create($inputs);
         $expediente_documento->appendNode($newExpedienteDocumento);

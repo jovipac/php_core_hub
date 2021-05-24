@@ -27,13 +27,18 @@
     </div>
   </div>
   <div class="form-row">
-    <div class="col-md-4 mb-3">
-      <input-label [label]="'Subir archivo(s)'" [id]="'txtArchivoAdjunto'"></input-label>
-      <input type="file" class="form-control" id="txtArchivoAdjunto" ng2FileSelect [uploader]="uploader" multiple />
+    <div class="col-md-6 mb-3">
+      <input-label [label]="'Archivo adjunto'" [id]="'txtArchivoAdjunto'"></input-label>
+      <input type="file" class="form-control" id="txtArchivoAdjunto" ng2FileSelect [uploader]="uploader" />
+      <div *ngIf="uploader.progress > 0">
+        Progreso de la cola:
+        <progressbar [value]="uploader.progress" [striped]="true">{{uploader.progress + '%'}}</progressbar>
+      </div>
     </div>
-    <div class="col-md-8 mb-3">
-      Progreso de la cola:
-      <progressbar [value]="uploader.progress" [striped]="true">{{uploader.progress + '%'}}</progressbar>
+    <div *ngIf="f.nombre.value" class="col-md-6 mb-3">
+      <input-label [label]="'Nombre'" [id]="'txtNombre'"></input-label>
+      <input type="text" class="form-control" id="txtRemitente" formControlName="nombre"
+        [ngClass]="displayValidation(formDocumento.get('nombre').invalid)">
     </div>
   </div>
   <div class="form-row">
@@ -48,5 +53,12 @@
     </div>
   </div>
 </ng-container>
+<div class="row">
+  <div class="col"></div>
+  <div class="col text-center">
+    <button class="btn btn-primary" type="submit" id="btnSave"><i class="fa fa-save"></i>Guardar</button>
+  </div>
+  <div class="col"></div>
+</div>
 
 </form>

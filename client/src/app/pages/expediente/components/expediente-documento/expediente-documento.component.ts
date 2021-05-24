@@ -335,7 +335,7 @@ export class ExpedienteDocumentoComponent implements OnInit {
           this.submittedEvent.emit(completedProcess);
         } else {
           documento = { ...documento, };
-          let response: any = await this.expedienteDocumentoService.updateExpedienteDocumento(documento.id_expediente_documento, documento).toPromise();
+          let response: any = await this.expedienteDocumentoService.upgradeExpedienteDocumento(documento.id_expediente_documento, documento).toPromise();
           if (response.success) {
             this.toastr.success(response.message, 'Documento del expediente');
             completedProcess = true;
