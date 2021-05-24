@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { ExpedienteService } from '../../../service';
 import { Expediente } from '../../../shared/models';
 import { first } from 'rxjs/operators';
@@ -35,19 +35,26 @@ export class RevisionSolicitudesComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading.show('dashboard');
-    this.tipo = this.route.snapshot.params['id'];
-    if(this.tipo == 1){
-      this.estadoSiguiente = 2;
-    }else{
-      this.estadoSiguiente = 3;
-    }
 
+    // Se crea una suscripcion a los valores de los parametros de la ruta
+    this.route.paramMap.subscribe((paramMap: ParamMap) => {
+      // Se obtiene directamente el parametro de la ruta
+      const tipo = paramMap.get('id');
+      if (tipo) {
+        this.tipo = Number(tipo);
 
-    console.log(this.tipo);
-    let data = {
-      id_estado_expediente: this.tipo
-    }
-    this.listExpediente(data);
+        // Se hace la decision a la accion a tomar
+        if (tipo == "1") {
+          this.estadoSiguiente = 2;
+        } else {
+          this.estadoSiguiente = 3;
+        }
+        let data = { id_estado_expediente: this.tipo };
+        this.listExpediente(data);
+      }
+
+    });
+
   }
 
   listExpediente(dataSend: any) {
