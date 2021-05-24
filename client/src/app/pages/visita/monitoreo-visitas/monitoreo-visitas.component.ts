@@ -99,7 +99,7 @@ export class MonitoreoVisitasComponent implements OnInit   {
   ngOnInit() {
     // MOTIVO 1 DENUNCIAS  ---- 2 VISISTA PERSONAL
 
-    // Se crea una suscripcion a los valores de los parametros de laruta
+    // Se crea una suscripcion a los valores de los parametros de la ruta
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       // Se obtiene directamente el parametro de la ruta
       const tipo_monitor = paramMap.get('id');

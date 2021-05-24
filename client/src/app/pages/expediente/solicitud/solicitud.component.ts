@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { ExpedienteService, ExpedientePersonaService, ExpedienteHechoService, ExpedienteClasificacionDerechoService, ExpedienteDocumentoService , ExpedienteComentarioService , FuncionariosService  } from '../../../service';
 import { ClasificacionDerechoService } from '../../../service/catalogos';
 import { Expediente, ExpedientePersona, ExpedienteHecho, ExpedienteClasificacionDerecho, ExpedienteDocumento  , Funcionario} from '../../../shared/models';
@@ -29,6 +29,9 @@ import { extractErrorMessages } from '../../../shared/utils';
   providers: [ CarouselConfig ]
 })
 export class SolicitudComponent implements OnInit {
+  @ViewChild('step05_Modal', { read: TemplateRef }) step05Content:TemplateRef<any>;
+  @ViewChild('step06_Modal', { read: TemplateRef }) step06Content:TemplateRef<any>;
+
   public modalRef: BsModalRef;
   private id: string;
   isAddMode: boolean;
@@ -77,47 +80,54 @@ export class SolicitudComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.id = this.route.snapshot.params['id'];
     this.contComment = 0 ;
-    this.isAddMode = !this.id;
     this.buildFormComment();
 
-    if (!this.isAddMode) {
-      this.loading.show('dashboard');
-      this.solicitudService.getExpediente(this.id)
-      .pipe(first())
-      .subscribe({
-        next: (data:any) => {
-          const expediente = {
-            ...data.result,
-            correlativo: formatearCorrelativo(
-              null, data.result.anio, data.result.folio),
-            nombre_funcionario: [
-              data.result?.nombres_funcionario,
-              data.result?.apellidos_funcionario
-            ].filter(Boolean)
-              .join(" ")
-          };
-          this.solicitud = <Expediente>expediente;
-          this.id_estado =  this.solicitud.id_estado_expediente;
-          this.loading.hide('dashboard');
-        },
-        error: (error:any) => {
-          this.toastr.error(error.message);
-          this.loading.hide('dashboard');
-        }
-      });
+    // Se crea una suscripcion a los valores de los parametros de laruta
+    this.route.paramMap.subscribe((paramMap: ParamMap) => {
+      // Se obtiene directamente el parametro de la ruta
+      this.id = paramMap.get('id');
+      this.isAddMode = !this.id;
 
-      const dataSend = this.id ? { 'id_expediente': this.id } : {};
-      this.listExpedientePersonas(dataSend);
-      this.listExpedienteHechos(dataSend);
-      this.listExpedienteClasificacionDerecho(dataSend);
-      this.listExpedienteDocumentos(dataSend);
-      this.getClasificacionAsig();
-      this.Getcomment();
-      this.getFuncionarios();
+      if (!this.isAddMode) {
+        this.loading.show('dashboard');
+        this.solicitudService.getExpediente(this.id)
+        .pipe(first())
+        .subscribe({
+          next: (data:any) => {
+            const expediente = {
+              ...data.result,
+              correlativo: formatearCorrelativo(
+                null, data.result.anio, data.result.folio),
+              nombre_funcionario: [
+                data.result?.nombres_funcionario,
+                data.result?.apellidos_funcionario
+              ].filter(Boolean)
+                .join(" ")
+            };
+            this.solicitud = <Expediente>expediente;
+            this.id_estado =  this.solicitud.id_estado_expediente;
+            this.loading.hide('dashboard');
+          },
+          error: (error:any) => {
+            this.toastr.error(error.message);
+            this.loading.hide('dashboard');
+          }
+        });
 
-    }
+        const dataSend = this.id ? { 'id_expediente': this.id } : {};
+        this.listExpedientePersonas(dataSend);
+        this.listExpedienteHechos(dataSend);
+        this.listExpedienteClasificacionDerecho(dataSend);
+        this.listExpedienteDocumentos(dataSend);
+        this.getClasificacionAsig();
+        this.Getcomment();
+        this.getFuncionarios();
+      }
+
+    });
+
+
 
   }
 
@@ -251,6 +261,10 @@ export class SolicitudComponent implements OnInit {
   }
   goEditExpedienteDocumento(documento: any) {
     this.id_expediente_documento = documento.id_expediente_documento;
+    if (isEmptyValue(documento.nombre))
+      this.showModalStep(this.step05Content)
+    else
+      this.showModalStep(this.step06Content);
   }
 
   onBack() {

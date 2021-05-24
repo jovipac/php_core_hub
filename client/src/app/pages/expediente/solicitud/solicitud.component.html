@@ -37,7 +37,7 @@
         (click)="dismissModalStep()"><span aria-hidden="true">&times;</span></button>
     </div>
     <div class="app-modal-body modal-body">
-      <app-expediente-hecho #step03Form [id_expediente_hecho]="id_expediente_hecho"
+      <app-expediente-hecho #step03Form [id_expediente_hecho]=""
         (submittedEvent)='submitModalStep($event)'></app-expediente-hecho>
     </div>
   </app-basic-modal>
@@ -52,8 +52,7 @@
         (click)="dismissModalStep()"><span aria-hidden="true">&times;</span></button>
     </div>
     <div class="app-modal-body modal-body">
-      <app-expediente-clasificacion #step04Form [id_expediente_hecho]="id_expediente_hecho"
-        (submittedEvent)='submitModalStep($event)'></app-expediente-clasificacion>
+      <app-expediente-clasificacion #step04Form (submittedEvent)='submitModalStep($event)'></app-expediente-clasificacion>
     </div>
   </app-basic-modal>
 </ng-template>
@@ -62,7 +61,7 @@
   <ngx-spinner name="step05"></ngx-spinner>
   <app-basic-modal #step05Modal [hideFooter]="true">
     <div class="app-modal-header modal-header">
-      <h5 class="modal-title">Paso 5: Documentos</h5>
+      <h5 class="modal-title">Paso 5: Redactar Documento</h5>
       <button type="button" class="close basic-close" data-dismiss="modal" aria-label="Close"
         (click)="dismissModalStep()"><span aria-hidden="true">&times;</span></button>
     </div>
@@ -77,7 +76,7 @@
   <ngx-spinner name="step06"></ngx-spinner>
   <app-basic-modal #step06Modal [hideFooter]="true">
     <div class="app-modal-header modal-header">
-      <h5 class="modal-title">Paso 5: Subir Documentos</h5>
+      <h5 class="modal-title">Paso 5: Subir Documento</h5>
       <button type="button" class="close basic-close" data-dismiss="modal" aria-label="Close"
         (click)="dismissModalStep()"><span aria-hidden="true">&times;</span></button>
     </div>
@@ -278,7 +277,7 @@
             <tr *ngFor="let documento of solicitudDocumentos; index as idx">
               <td scope="row">
                 <button type="button" class="btn btn-outline-primary btn-mini btn-icon-round"
-                  (click)="showModalStep(step05_Modal); goEditExpedienteDocumento(documento);">
+                  (click)="goEditExpedienteDocumento(documento)">
                   <i class="icofont icofont-ui-edit"></i>
                 </button>
               </td>

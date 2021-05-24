@@ -336,11 +336,15 @@ export class ExpedienteEncabezadoComponent implements OnInit {
             completedProcess = true;
             this.loading.hide('step01');
             solicitud.id_expediente = response.result.id_expediente;
-            this.router.navigate(['../../solicitud/editar', solicitud.id_expediente], { relativeTo: this.route });
           } else {
             completedProcess = false;
           }
+
           this.submittedEvent.emit(completedProcess);
+          if (completedProcess === true) {
+            this.router.navigate(['../../solicitud/editar', solicitud.id_expediente], { relativeTo: this.route });
+          }
+
         } else {
           solicitud = { ...solicitud, };
           let response: any = await this.solicitudService.updateExpediente(this.id, solicitud).toPromise();
@@ -353,7 +357,14 @@ export class ExpedienteEncabezadoComponent implements OnInit {
           } else {
             completedProcess = false;
           }
+
           this.submittedEvent.emit(completedProcess);
+          if (completedProcess === true) {
+            let currentUrl = this.router.url;
+            this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+            this.router.onSameUrlNavigation = 'reload';
+            this.router.navigate([currentUrl]);
+          }
 
         }
       } catch(response) {
@@ -372,12 +383,6 @@ export class ExpedienteEncabezadoComponent implements OnInit {
         this.loading.hide('step01');
       }
 
-      if (completedProcess === true) {
-        let currentUrl = this.router.url;
-        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-        this.router.onSameUrlNavigation = 'reload';
-        this.router.navigate([currentUrl]);
-      }
   }
 
 
