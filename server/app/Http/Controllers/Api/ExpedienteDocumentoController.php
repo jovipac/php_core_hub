@@ -128,10 +128,10 @@ class ExpedienteDocumentoController extends ApiController
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\ExpedienteDocumento  $expedienteDocumento
+     * @param  \App\ExpedienteDocumento  $expediente_documento
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ExpedienteDocumento $expedienteDocumento)
+    public function update(Request $request, ExpedienteDocumento $expediente_documento)
     {
         $validator = Validator::make($request->all(), [
             'id_expediente_documento' => 'required|integer',
@@ -142,21 +142,56 @@ class ExpedienteDocumentoController extends ApiController
             'texto' => 'nullable|string',
             'observaciones' => 'nullable|string',
             'ubicacion' => 'nullable|string',
-            'mime' => 'nullable|string',
             'nombre' => 'nullable|string',
+            'mime' => 'nullable|string',
             'tamanio' => 'nullable|integer',
         ]);
         if ($validator->fails()) {
             return $this->respondError($validator->errors(), 422);
         }
-        $inputs = $request->except(['id_expediente_documento']);
-        $inputs['version'] = ++$expedienteDocumento->version;
-        $newExpedienteDocumento = ExpedienteDocumento::create($inputs);
-        $expedienteDocumento->appendNode($newExpedienteDocumento);
+        $input = $request->except(['id_expediente_documento', 'id_expediente']);
+        $expediente_documento->update($input);
 
         return $this->respondCreated([
             'success' => true,
-            'message' => "Documento del expediente actualizado con exito",
+            'message' => "Actualización del documento del expediente realizado con exito",
+            'result' => $expediente_documento
+        ]);
+    }
+
+    /**
+     * Upgrade the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\ExpedienteDocumento  $expediente_documento
+     * @return \Illuminate\Http\Response
+     */
+    public function upgrade(Request $request, ExpedienteDocumento $expediente_documento)
+    {
+        $validator = Validator::make($request->all(), [
+            'id_expediente_documento' => 'required|integer',
+            'id_expediente' => 'nullable|integer',
+            'id_tipo_documento' => 'nullable|integer',
+            'remitente' => 'nullable|string',
+            'titulo' => 'nullable|string',
+            'texto' => 'nullable|string',
+            'observaciones' => 'nullable|string',
+            'ubicacion' => 'nullable|string',
+            'nombre' => 'nullable|string',
+            'mime' => 'nullable|string',
+            'tamanio' => 'nullable|integer',
+        ]);
+        if ($validator->fails()) {
+            return $this->respondError($validator->errors(), 422);
+        }
+        $inputs = $request->except(['id_expediente_documento','id_expediente']);
+        $inputs['version'] = ++$expediente_documento->version;
+        $newExpedienteDocumento = ExpedienteDocumento::create($inputs);
+        $expediente_documento->appendNode($newExpedienteDocumento);
+
+        return $this->respondCreated([
+            'success' => true,
+            'message' => "Versión actualizada del documento del expediente realizado con exito",
             'result' => $newExpedienteDocumento
         ]);
     }

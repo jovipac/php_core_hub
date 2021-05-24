@@ -7,11 +7,18 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class ExpedienteDocumentoService {
+  public uploadURL: string;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {
+    this.uploadURL = `${environment.host}expediente-documento-archivos/upload`;
+  }
 
   getListExpedienteDocumento() {
     return this.httpClient.get(`${environment.host}expediente-documentos`, getHeaders())
+  }
+
+  uploadExpedienteDocumento(data: any) {
+    return this.httpClient.post(`${environment.host}expediente-documentos/upload`, data, getHeaders())
   }
 
   searchExpedienteDocumento(data: any) {
@@ -32,6 +39,9 @@ export class ExpedienteDocumentoService {
 
   deleteExpedienteDocumento(id: number) {
     return this.httpClient.delete(`${environment.host}expediente-documentos/${id}`, getHeaders())
+  }
+  upgradeExpedienteDocumento(id: number, data:any) {
+    return this.httpClient.patch(`${environment.host}expediente-documentos/upgrade/${id}`, data, getHeaders())
   }
 
 }
