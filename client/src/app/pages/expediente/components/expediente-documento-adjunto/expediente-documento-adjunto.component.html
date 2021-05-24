@@ -1,0 +1,52 @@
+<form action="javascript:" class="needs-validation" novalidate [formGroup]="formDocumento" (ngSubmit)="onSubmit()" autocomplete="off">
+<ng-container>
+  <div class="form-row">
+    <div class="col-md-6 mb-3">
+      <input-label [label]="'Titulo'" [id]="'txtTitulo'"></input-label>
+      <input type="text" class="form-control" id="txtTitulo" formControlName="titulo"
+        placeholder="Descripcion en un titulo" [ngClass]="displayValidation(formDocumento.get('titulo').invalid)">
+      <div [ngClass]="displayValidationMsg(formDocumento.get('titulo').valid)">
+        <div *ngIf="formDocumento.get('titulo').errors?.required">El campo es requerido</div>
+        <div *ngIf="formDocumento.get('titulo').errors?.pattern">Solo se aceptan texto sin caracteres especiales</div>
+      </div>
+    </div>
+    <div class="col-md-6 mb-3">
+      <input-label [requires]="false" [label]="'Tipo documento'" [id]="'txttipodoc'"></input-label>
+      <select class="form-control" id="txtTipoDocumento" formControlName="id_tipo_documento">
+        <option *ngFor="let tipoDoc of listtipoDoc" value="{{tipoDoc.id_tipo_documento}}">
+          {{tipoDoc.nombre}}
+        </option>
+      </select>
+  </div>
+  </div>
+  <div class="form-row">
+    <div class="col-md-12 mb-12">
+      <input-label [label]="'Remitente'" [id]="'txtRemitente'"></input-label>
+      <input type="text" class="form-control" id="txtRemitente" formControlName="remitente"
+        [ngClass]="displayValidation(formDocumento.get('remitente').invalid)">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="col-md-4 mb-3">
+      <input-label [label]="'Subir archivo(s)'" [id]="'txtArchivoAdjunto'"></input-label>
+      <input type="file" class="form-control" id="txtArchivoAdjunto" ng2FileSelect [uploader]="uploader" multiple />
+    </div>
+    <div class="col-md-8 mb-3">
+      Progreso de la cola:
+      <progressbar [value]="uploader.progress" [striped]="true">{{uploader.progress + '%'}}</progressbar>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="col mb-3">
+      <input-label [label]="'Observaciones'" [id]="'txtObservaciones'"></input-label>
+      <textarea type="text" class="form-control" id="txtObservaciones" formControlName="observaciones" rows="2" maxlength="255"
+        [ngClass]="displayValidation(formDocumento.get('observaciones').invalid)" ></textarea>
+      <div [ngClass]="displayValidationMsg(formDocumento.get('observaciones').valid)">
+        <div *ngIf="formDocumento.get('observaciones').errors?.pattern">Solo se aceptan texto sin caracteres especiales
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+</form>
